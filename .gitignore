@@ -32,3 +32,5 @@ node_modules
 flow-typed
 yarn-error.log
 src_old
+
+_ignore
