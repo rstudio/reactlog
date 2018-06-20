@@ -1,0 +1,72 @@
+{
+  "private": true,
+  "scripts": {
+    "zbuild": "grunt",
+    "zclean": "grunt clean",
+    "zwatch": "grunt watch",
+    "flow-report": "flow-coverage-report",
+    "flow-status": "flow status",
+    "flow-stop": "flow stop",
+    "lint": "./bin/lint_file.sh",
+    "fix": "./bin/clean_rlog_file.sh",
+    "fix-all": "yarn run fix src/**/*.js",
+    "lint-all": "yarn run lint src/**/*.js",
+    "build": "yarn run lint-all && yarn run build-only",
+    "build-only": "grunt",
+    "watch": "yarn run lint-all && grunt webpackSetWatch default",
+    "update-license": "node ./bin/update-license.js > LICENSE.note",
+    "postinstall": "./bin/postinstall.sh",
+    "precommit": "lint-staged"
+  },
+  "lint-staged": {
+    "src/**/*.js": [
+      "yarn run fix",
+      "git add"
+    ]
+  },
+  "flow-coverage-report": {
+    "includeGlob": [
+      "src/**/*.js"
+    ],
+    "excludeGlob": [
+      "src/utils/Console.js",
+      "src/cyto/layoutOptions.js",
+      "src/log/initStep.js",
+      "src/rlog.js"
+    ],
+    "threshold": 95,
+    "type": "text"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-eslint": "8.2.3",
+    "babel-loader": "^7.1.4",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-es2015-modules-umd": "6.24.1",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-flow": "6.23.0",
+    "duplicate-package-checker-webpack-plugin": "^3.0.0",
+    "eslint": "^4.19.1",
+    "eslint-plugin-flowtype": "2.47.1",
+    "flow": "^0.2.3",
+    "flow-bin": "^0.74.0",
+    "flow-coverage-report": "^0.5.0",
+    "flow-typed": "^2.4.0",
+    "grunt": "^1.0.3",
+    "grunt-cli": "^1.2.0",
+    "grunt-webpack": "^3.1.2",
+    "husky": "^0.14.3",
+    "license-checker": "^20.1.0",
+    "lint-staged": "7.1.2",
+    "onchange": "^4.0.0",
+    "prettier": "^1.13.5",
+    "webpack": "4.8.3",
+    "webpack-bundle-analyzer": "^2.13.1"
+  },
+  "dependencies": {
+    "cytoscape": "^3.2.13",
+    "cytoscape-dagre": "^2.2.1",
+    "jquery": "^3.3.1",
+    "lodash": "^4.17.10"
+  }
+}
