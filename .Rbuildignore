@@ -13,7 +13,7 @@
 ^yarn
 ^CODE_OF_CONDUCT\.md$
 ^node_modules/
-^inst/www/log-files/
+^inst/log-files/
 ^bin/
-^inst/www/reactlog/reactlog/report.html$
+^inst/reactlogAsset/report.html$
 ^flow-typed/

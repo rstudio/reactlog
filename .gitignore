@@ -27,7 +27,7 @@ vignettes/*.pdf
 rsconnect/
 .Rproj.user
 
-inst/www/reactlog/reactlog/report.html
+inst/reactlogAsset/report.html
 node_modules
 flow-typed
 yarn-error.log
