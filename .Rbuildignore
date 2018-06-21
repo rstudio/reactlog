@@ -15,5 +15,5 @@
 ^node_modules/
 ^inst/www/log-files/
 ^bin/
-^inst/www/reactLog/reactLog/report.html$
+^inst/www/reactlog/reactlog/report.html$
 ^flow-typed/

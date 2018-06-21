@@ -28,11 +28,11 @@ module.exports = function(grunt) {
         //   minimize: false // uglify the code
         // },
       },
-      reactLog: {
+      reactlog: {
         entry: jsSrcdir + "index.js",
         output: {
-          path: instdir + "reactLog",
-          filename: 'reactLog.js'
+          path: instdir + "reactlog",
+          filename: 'reactlog.js'
         },
         plugins: [
           // new BundleAnalyzerPlugin({
@@ -58,13 +58,13 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-webpack');
 
 
-  grunt.task.registerTask("webpackSetWatch", "sets 'watch' to true for reactLog webpack task", function() {
-    gruntConfig.webpack.reactLog.watch = true
+  grunt.task.registerTask("webpackSetWatch", "sets 'watch' to true for reactlog webpack task", function() {
+    gruntConfig.webpack.reactlog.watch = true
   });
 
 
   grunt.initConfig(gruntConfig);
 
-  grunt.registerTask("default", "webpack:reactLog")
+  grunt.registerTask("default", "webpack:reactlog")
 
 };
