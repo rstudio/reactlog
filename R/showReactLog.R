@@ -46,12 +46,19 @@ show_reactlog <- function(log, time = TRUE, ...) {
 
 
 
-#' @importFrom jsonlite toJSON
 write_reactlog <- function(log, file=stdout(), sessionToken = NULL) {
   if (!is.null(sessionToken)) {
     log <- Filter(function(x) {
       is.null(x$session) || identical(x$session, sessionToken)
     }, log)
   }
-  cat(toJSON(log, pretty=TRUE), file=file)
+  json <- jsonlite::toJSON(
+    log, prett = TRUE,
+    # from shiny pkg
+    null = "null", na = "null",
+    auto_unbox = TRUE, digits = getOption("shiny.json.digits", 16),
+    use_signif = TRUE, force = TRUE, POSIXt = "ISO8601", UTC = TRUE,
+    rownames = FALSE, keep_vec_names = TRUE, strict_atomic = TRUE
+  )
+  cat(json, file = file)
 }
