@@ -39,15 +39,15 @@
 #' time that each reactive.
 #' @param ... Future parameter expansion. Currently ignored
 #' @export
-showReactLog <- function(log, time = TRUE, ...) {
-  file <- renderReactLog(log, time = as.logical(time), ...)
+show_reactlog <- function(log, time = TRUE, ...) {
+  file <- render_react_log(log, time = as.logical(time), ...)
   utils::browseURL(file)
 }
 
 
 
 #' @importFrom jsonlite toJSON
-writeReactLog <- function(log, file=stdout(), sessionToken = NULL) {
+write_reactlog <- function(log, file=stdout(), sessionToken = NULL) {
   if (!is.null(sessionToken)) {
     log <- Filter(function(x) {
       is.null(x$session) || identical(x$session, sessionToken)
