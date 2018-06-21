@@ -40,7 +40,7 @@
 #' @param ... Future parameter expansion. Currently ignored
 #' @export
 show_reactlog <- function(log, time = TRUE, ...) {
-  file <- render_react_log(log, time = as.logical(time), ...)
+  file <- render_reactlog(log, time = as.logical(time), ...)
   utils::browseURL(file)
 }
 
