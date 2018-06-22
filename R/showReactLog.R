@@ -46,11 +46,14 @@ show_reactlog <- function(log, time = TRUE, ...) {
 
 
 
-write_reactlog <- function(log, file=stdout(), sessionToken = NULL) {
-  if (!is.null(sessionToken)) {
-    log <- Filter(function(x) {
-      is.null(x$session) || identical(x$session, sessionToken)
-    }, log)
+write_reactlog <- function(log, file=stdout(), session_token = NULL) {
+  if (!is.null(session_token)) {
+    log <- Filter(
+      function(x) {
+        is.null(x$session) || identical(x$session, session_token)
+      },
+      log
+    )
   }
   json <- jsonlite::toJSON(
     log, prett = TRUE,
