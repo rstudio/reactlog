@@ -13,7 +13,7 @@ The `shinyreactlog` dependency graph provides users with the ability to visually
 
 <!-- For an introduction and examples, visit the [Shiny Dev Center](http://shiny.rstudio.com/). -->
 
-If you have general questions about using `shinyreactlog`, please use the [RStudio Community website](https://community.rstudio.com/c/shiny). For bug reports, please use the [`shinyreactlog` issue tracker](https://github.com/schloerke/shinyreactlog/issues).
+If you have general questions about using `shinyreactlog`, please use the [RStudio Community website](https://community.rstudio.com/c/shiny). For bug reports, please use the `shinyreactlog` [issue tracker](https://github.com/schloerke/shinyreactlog/issues).
 
 ## Features
 
@@ -75,7 +75,7 @@ yarn install
 yarn watch
 ```
 
-By changing the file `'./inst/defaultLog.js'` with the contents of any file in `'./inst/log-files/'`, different default log files can be loaded.  Once the local js has been built, refresh `'./inst/reactlog.html'` to avoid constantly spawning shiny applications for testing.
+By changing the file `'./inst/defaultLog.js'` with the contents of any log file in `'./inst/log-files/'`, different default log files can be loaded.  Once the local js (`'./inst/reactlogAsset/reactlog.js'`) has been built with `yarn build` or `yarn watch`, refresh `'./inst/reactlog.html'` to avoid constantly spawning shiny applications for testing.
 
 
 ## Guidelines for contributing
