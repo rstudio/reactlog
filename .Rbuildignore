@@ -19,3 +19,4 @@
 ^flow-typed/
 ^_ignore
 ^\.github/
+^index\.html$
