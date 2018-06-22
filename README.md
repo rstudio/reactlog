@@ -60,7 +60,7 @@ Installation script:
 yarn install
 
 # build on file change
-yarn run watch
+yarn watch
 ```
 
 

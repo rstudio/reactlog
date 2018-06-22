@@ -9,18 +9,18 @@
     "flow-stop": "flow stop",
     "lint": "./bin/lint_file.sh",
     "fix": "./bin/clean_rlog_file.sh",
-    "fix-all": "yarn run fix src/**/*.js",
-    "lint-all": "yarn run lint src/**/*.js",
-    "build": "yarn run lint-all && yarn run build-only",
+    "fix-all": "yarn fix src/**/*.js",
+    "lint-all": "yarn lint src/**/*.js",
+    "build": "yarn lint-all && yarn build-only",
     "build-only": "grunt",
-    "watch": "yarn run lint-all && grunt webpackSetWatch default",
+    "watch": "yarn lint-all && grunt webpackSetWatch default",
     "update-license": "node ./bin/update-license.js > LICENSE.note",
     "postinstall": "./bin/postinstall.sh",
     "precommit": "lint-staged"
   },
   "lint-staged": {
     "src/**/*.js": [
-      "yarn run fix",
+      "yarn fix",
       "git add"
     ]
   },

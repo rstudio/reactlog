@@ -4,4 +4,4 @@
 # ignore dev dependencies
 flow-typed install --skip true --ignoreDeps dev
 
-yarn run build-only
+yarn build-only
