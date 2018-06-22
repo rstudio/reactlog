@@ -80,6 +80,6 @@ By changing the file `'./inst/defaultLog.js'` with the contents of any file in `
 
 ## Guidelines for contributing
 
-We welcome contributions to the **shinyreactlog** package. Please see our [CONTRIBUTING.md](CONTRIBUTING.md) file for detailed guidelines of how to contribute.
+We welcome contributions to the **shinyreactlog** package. Please see our [CONTRIBUTING.md](.github/CONTRIBUTING.md) file for detailed guidelines of how to contribute.
 
-Please note that the 'shinyreactlog' project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md). By contributing to this project, you agree to abide by its terms.
+Please note that the 'shinyreactlog' project is released with a [Contributor Code of Conduct](.github/CODE_OF_CONDUCT.md). By contributing to this project, you agree to abide by its terms.
