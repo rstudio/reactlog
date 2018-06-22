@@ -1,6 +1,8 @@
-# Shiny Reactlog
+# shinyreactlog
 
-*Travis:* [![Travis Build Status](https://travis-ci.org/schloerke/shinyreactlog.svg?branch=master)](https://travis-ci.org/schloerke/shinyreactlog)
+[![Travis Build Status](https://travis-ci.org/schloerke/shinyreactlog.svg?branch=master)](https://travis-ci.org/schloerke/shinyreactlog) [![Coverage status](https://codecov.io/gh/schloerke/shinyreactlog/branch/master/graph/badge.svg)](https://codecov.io/github/schloerke/shinyreactlog?branch=master)
+[![CRAN version](http://www.r-pkg.org/badges/version/shinyreactlog)](https://cran.r-project.org/package=shinyreactlog)
+
 
 [Shiny](http://shiny.rstudio.com/) is an R package from RStudio that makes it incredibly easy to build interactive web applications with R.  The complexity of the reactive elements within a shiny application can quickly become complicated and are difficult to debug.  `shinyreactlog` provides a visual debugger for shiny reactivity.  After logging the reactive interactions of a shiny application, `shinyreactlog` visualizes the shiny reaction state at any time point in the record.
 
