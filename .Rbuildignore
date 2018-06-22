@@ -18,3 +18,4 @@
 ^inst/reactlogAsset/report.html$
 ^flow-typed/
 ^_ignore
+^\.github/
