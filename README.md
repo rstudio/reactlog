@@ -2,17 +2,22 @@
 
 *Travis:* [![Travis Build Status](https://travis-ci.org/schloerke/shinyreactlog.svg?branch=master)](https://travis-ci.org/schloerke/shinyreactlog)
 
-<!-- *AppVeyor:* [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/rstudio/shiny?branch=master&svg=true)](https://ci.appveyor.com/project/rstudio/shiny) -->
+[Shiny](http://shiny.rstudio.com/) is an R package from RStudio that makes it incredibly easy to build interactive web applications with R.  The complexity of the reactive elements within a shiny application can quickly become complicated and are difficult to debug.  `shinyreactlog` provides a visual debugger for shiny reactivity.  After logging the reactive interactions of a shiny application, `shinyreactlog` visualizes the shiny reaction state at any time point in the record.
 
-<!-- Shiny is a new package from RStudio that makes it incredibly easy to build interactive web applications with R. -->
+The `shinyreactlog` dependency graph provides users with the ability to visually see if reactive elements are:
+* not utilized (never retrieved)
+* over utilized (called independently many times)
+* interacting with unexpected elements
+* invalidating all expected dependencies
+* freezing (and thawing), preventing triggering of future reactivity
 
 <!-- For an introduction and examples, visit the [Shiny Dev Center](http://shiny.rstudio.com/). -->
 
-<!-- If you have general questions about using Shiny, please use the [RStudio Community website](https://community.rstudio.com). For bug reports, please use the [issue tracker](https://github.com/rstudio/shiny/issues). -->
+If you have general questions about using `shinyreactlog`, please use the [RStudio Community website](https://community.rstudio.com/c/shiny). For bug reports, please use the [`shinyreactlog` issue tracker](https://github.com/schloerke/shinyreactlog/issues).
 
 ## Features
 
-* Display the reactivity hierarchy graph of your shiny applications
+* Display the reactivity dependency graph of your shiny applications
 * See how often elements of your shiny application are being processed
 * Move throughout your reactive history to replay element interactions
 * Highlight family trees within the reactive graph
@@ -28,8 +33,10 @@ install.packages("shinyreactlog")
 
 For the latest version:
 
+<!-- cant use install-github.me, fails on recursion install -->
+
 ```r
-source("https://install-github.me/schloerke/shinyreactlog")
+devtools::install_github("schloerke/shinyreactlog")
 ```
 
 ## Usage
@@ -39,17 +46,22 @@ source("https://install-github.me/schloerke/shinyreactlog")
 library(shiny)
 library(shinyreactlog)
 
+# tell shiny to log reactivity
 options("shiny.reactlog" = TRUE)
+
+# run a shiny app
 app <- system.file("examples/01_hello", package = "shiny")
 runApp(app)
+
+# once app has closed
 showReactLog()
 ```
 
-Or while your app is running, press the key combination Ctrl+F3 (or for Mac users, Cmd+F3) to launch the reactlog application.
+Or while your shiny app is running, press the key combination `Ctrl+F3` (Mac: `Cmd+F3`) to launch the reactlog application.
 
-To mark a specific execution time within your shiny app, press the key combination Ctrl+F4 (Mac: Cmd+F4) to highlight a specific time in your shiny app react log.
+To mark a specific execution time point within your shiny app, press the key combination Ctrl+F4 (Mac: Cmd+F4). This will highlight a specific point in time in your reactlog.
 
-## Development notes
+## Development
 
 Please make sure you have [Node.js](https://nodejs.org/en/) and [yarn](https://yarnpkg.com/en/docs/install) installed.
 
@@ -62,6 +74,8 @@ yarn install
 # build on file change
 yarn watch
 ```
+
+By changing the file `'./inst/defaultLog.js'` with the contents of any file in `'./inst/log-files/'`, different default log files can be loaded.  Once the local js has been built, refresh `'./inst/reactlog.html'` to avoid constantly spawning shiny applications for testing.
 
 
 ## Guidelines for contributing
