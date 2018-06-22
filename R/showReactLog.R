@@ -39,6 +39,23 @@
 #' time that each reactive.
 #' @param ... Future parameter expansion. Currently ignored
 #' @export
+#' @examples
+#'
+#' library(shiny)
+#' library(shinyreactlog)
+#'
+#' # tell shiny to log reactivity
+#' options("shiny.reactlog" = TRUE)
+#'
+#' \dontrun{
+#' # run a shiny app
+#' app <- system.file("examples/01_hello", package = "shiny")
+#' runApp(app)
+#'
+#' # once app has closed, display reactlog
+#' show_reactlog()
+#' }
+
 show_reactlog <- function(log, time = TRUE, ...) {
   file <- render_reactlog(log, time = as.logical(time), ...)
   utils::browseURL(file)

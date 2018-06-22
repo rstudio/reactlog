@@ -52,3 +52,20 @@ For security and performance reasons, do not enable
 enabled, it's possible for any user of your app to see at least some
 of the source code of your reactive expressions and observers.
 }
+\examples{
+
+library(shiny)
+library(shinyreactlog)
+
+# tell shiny to log reactivity
+options("shiny.reactlog" = TRUE)
+
+\dontrun{
+# run a shiny app
+app <- system.file("examples/01_hello", package = "shiny")
+runApp(app)
+
+# once app has closed, display reactlog
+show_reactlog()
+}
+}

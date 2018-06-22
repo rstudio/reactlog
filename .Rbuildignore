@@ -21,3 +21,4 @@
 ^\.github/
 ^index\.html$
 ^\.lintr$
+^src/
