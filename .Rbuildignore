@@ -20,3 +20,4 @@
 ^_ignore
 ^\.github/
 ^index\.html$
+^\.lintr$

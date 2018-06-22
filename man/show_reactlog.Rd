@@ -5,14 +5,14 @@
 \alias{show_reactlog}
 \title{Reactive Log Visualizer}
 \usage{
-render_reactlog(log, sessionToken = NULL, time = TRUE)
+render_reactlog(log, session_token = NULL, time = TRUE)
 
 show_reactlog(log, time = TRUE, ...)
 }
 \arguments{
 \item{log}{Log produced by shiny to be processed}
 
-\item{sessionToken}{token to be used to subset which session is displayed.  Defaults to all sessions.}
+\item{session_token}{token to be used to subset which session is displayed.  Defaults to all sessions.}
 
 \item{time}{A boolean that specifies whether or not to display the
 time that each reactive.}
