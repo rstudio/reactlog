@@ -3,6 +3,7 @@ Title: Shiny Reactivity Visualizer
 Version: 0.0.0.9000
 Authors@R: c(
       person("Barret", "Schloerke", email = "barret@rstudio.com", role = c("aut", "cre")),
+      person("Joe", "Cheng", email = "joe@rstudio.com", role = c("ctb")),
       person("RStudio", role = "cph")
     )
 Description: Display all shiny reactions in a graphical display.
