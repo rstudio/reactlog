@@ -55,7 +55,7 @@ options("shiny.reactlog" = TRUE)
 app <- system.file("examples/01_hello", package = "shiny")
 runApp(app)
 
-# once app has closed
+# once app has closed, display reactlog
 showReactLog()
 ```
 
