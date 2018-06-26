@@ -77996,7 +77996,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             case _logStates.LogStates.invalidateStart:
               {
                 var logEntry = logItem;
-                if (logEntry.ctxId === "other") {
+                if (logEntry.type === "other") {
                   break;
                 }
                 // TODO-barret check if reactId is a reactive values. If so, skip, otherwise add

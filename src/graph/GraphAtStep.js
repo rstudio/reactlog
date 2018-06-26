@@ -132,7 +132,7 @@ class GraphAtStep {
       switch (logItem.action) {
         case LogStates.invalidateStart: {
           let logEntry = (logItem: LogEntryInvalidateStartType);
-          if (logEntry.ctxId === "other") {
+          if (logEntry.type === "other") {
             break;
           }
           // TODO-barret check if reactId is a reactive values. If so, skip, otherwise add
