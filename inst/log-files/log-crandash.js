@@ -1,4 +1,4 @@
-let log = [
+window.log = [
   {
     "action": "define",
     "reactId": "r3",
