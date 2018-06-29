@@ -1,6 +1,6 @@
 # shinyreactlog
 
-[![Travis Build Status](https://travis-ci.org/schloerke/shinyreactlog.svg?branch=master)](https://travis-ci.org/schloerke/shinyreactlog) [![Coverage status](https://codecov.io/gh/schloerke/shinyreactlog/branch/master/graph/badge.svg)](https://codecov.io/github/schloerke/shinyreactlog?branch=master)
+[![Travis Build Status](https://travis-ci.org/rstudio/shinyreactlog.svg?branch=master)](https://travis-ci.org/rstudio/shinyreactlog) [![Coverage status](https://codecov.io/gh/rstudio/shinyreactlog/branch/master/graph/badge.svg)](https://codecov.io/github/rstudio/shinyreactlog?branch=master)
 [![CRAN version](http://www.r-pkg.org/badges/version/shinyreactlog)](https://cran.r-project.org/package=shinyreactlog)
 
 
@@ -15,7 +15,7 @@ The `shinyreactlog` dependency graph provides users with the ability to visually
 
 <!-- For an introduction and examples, visit the [Shiny Dev Center](http://shiny.rstudio.com/). -->
 
-If you have general questions about using `shinyreactlog`, please use the [RStudio Community website](https://community.rstudio.com/c/shiny). For bug reports, please use the `shinyreactlog` [issue tracker](https://github.com/schloerke/shinyreactlog/issues).
+If you have general questions about using `shinyreactlog`, please use the [RStudio Community website](https://community.rstudio.com/c/shiny). For bug reports, please use the `shinyreactlog` [issue tracker](https://github.com/rstudio/shinyreactlog/issues).
 
 ## Features
 
@@ -38,7 +38,7 @@ For the latest version:
 <!-- cant use install-github.me, fails on recursion install -->
 
 ```r
-devtools::install_github("schloerke/shinyreactlog")
+devtools::install_github("rstudio/shinyreactlog")
 ```
 
 ## Usage

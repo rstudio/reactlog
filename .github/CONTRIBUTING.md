@@ -2,7 +2,7 @@ We welcome contributions to the **shinyreactlog** package!
 
 To submit a contribution:
 
-1. [Fork](https://github.com/schloerke/shinyreactlog/fork) the repository and make your changes.
+1. [Fork](https://github.com/rstudio/shinyreactlog/fork) the repository and make your changes.
 
 2. Ensure that you have signed the [individual](https://rstudioblog.files.wordpress.com/2017/05/rstudio_individual_contributor_agreement.pdf) or [corporate](https://rstudioblog.files.wordpress.com/2017/05/rstudio_corporate_contributor_agreement.pdf) contributor agreement as appropriate. You can send the signed copy to jj@rstudio.com.
 
@@ -35,4 +35,4 @@ We will try to be responsive and provide feedback in case we decide not to merge
 
 ## Filing issues
 
-If you find a bug in `shinyreactlog`, you can also [file an issue](https://github.com/schloerke/shinyreactlog/issues/new). Please provide as much relevant information as you can, and include a minimal reproducible example if possible.
+If you find a bug in `shinyreactlog`, you can also [file an issue](https://github.com/rstudio/shinyreactlog/issues/new). Please provide as much relevant information as you can, and include a minimal reproducible example if possible.
