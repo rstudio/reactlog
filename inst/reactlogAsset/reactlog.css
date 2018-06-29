@@ -24,13 +24,19 @@ div {
   font-weight: 200;
   color: #444;
   /* top: 20px; */
-  font-size: 30px;
   text-align: center;
 }
 #instructions {
   z-index: 1000;
   white-space: pre-wrap;
   text-align: left;
+  position:absolute;
+  bottom:0px;
+  left:0px;
+  font-size: 10px;
+}
+#ended {
+  font-size: 30px;
 }
 #ended strong {
   font-weight: 600;
