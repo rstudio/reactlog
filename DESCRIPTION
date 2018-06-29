@@ -18,5 +18,5 @@ LazyData: true
 RoxygenNote: 6.0.1.9000
 Remotes:
   schloerke/shiny@barret/reactlog
-URL: https://github.com/schloerke/shinyreactlog
-BugReports: https://github.com/schloerke/shinyreactlog/issues
+URL: https://github.com/rstudio/shinyreactlog
+BugReports: https://github.com/rstudio/shinyreactlog/issues
