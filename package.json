@@ -19,6 +19,9 @@
     "precommit": "lint-staged"
   },
   "lint-staged": {
+    ".flowconfig": [
+      "flow-report"
+    ],
     "src/**/*.js": [
       "yarn fix",
       "git add"
