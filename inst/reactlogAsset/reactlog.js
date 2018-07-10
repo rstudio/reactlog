@@ -76498,7 +76498,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         "border-color": _colors2.default.regular.black,
         "border-style": "solid",
         "border-width": 1,
-        "background-color": _colors2.default.regular.green1,
+        "background-color": _colors2.default.nodes.ready,
         "text-wrap": "ellipsis",
         "text-max-width": "200px"
       },
@@ -76537,20 +76537,22 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       },
       enter: {
         // "border-width": 2,
-        "background-color": _colors2.default.regular.green
+        "background-color": _colors2.default.nodes.calculating
       },
       enterActive: {
-        "background-color": _colors2.default.regular.green
+        "background-color": _colors2.default.nodes.calculating,
+        "border-width": 2.5
       },
       invalidate: {
         // "border-width": 2,
-        "background-color": _colors2.default.regular.grey2
+        "background-color": _colors2.default.nodes.invalidated
       },
       invalidateActive: {
-        "background-color": _colors2.default.regular.grey2
+        "background-color": _colors2.default.nodes.invalidated,
+        "border-width": 2.5
       },
       invalidateDone: {
-        "background-color": _colors2.default.regular.grey1
+        "background-color": _colors2.default.nodes.invalidated
       },
       isolate: {
         "border-style": "dashed"
@@ -76565,7 +76567,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       },
       valueChanged: {
         // "background-color": colors.regular.red,
-        "background-color": _colors2.default.regular.grey2
+        "background-color": _colors2.default.nodes.invalidated
         // "border-style": "dashed",
         // "border-color": "darkgrey",
         // "border-width": 3,
@@ -76608,17 +76610,17 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         "mid-target-arrow-color": _colors2.default.regular.grey2
       },
       hoverNotFocused: {
-        "line-color": _colors2.default.regular.grey1,
-        "mid-target-arrow-color": _colors2.default.regular.grey1
+        "line-color": _colors2.default.nodes.invalidated,
+        "mid-target-arrow-color": _colors2.default.nodes.invalidated
       }
     },
     focus: {
       hoverNotFocused: {
         "background-blacken": -0.75,
-        "border-color": _colors2.default.regular.grey1,
-        "line-color": _colors2.default.regular.grey1,
-        "mid-target-arrow-color": _colors2.default.regular.grey1,
-        "target-arrow-color": _colors2.default.regular.grey1
+        "border-color": _colors2.default.nodes.invalidated,
+        "line-color": _colors2.default.nodes.invalidated,
+        "mid-target-arrow-color": _colors2.default.nodes.invalidated,
+        "target-arrow-color": _colors2.default.nodes.invalidated
       },
       hoverNotFocusedButSticky: {
         "background-blacken": -0.35,
@@ -76629,10 +76631,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       },
       stickyNotFocused: {
         "background-blacken": -0.75,
-        "border-color": _colors2.default.regular.grey1,
-        "line-color": _colors2.default.regular.grey1,
-        "mid-target-arrow-color": _colors2.default.regular.grey1,
-        "target-arrow-color": _colors2.default.regular.grey1
+        "border-color": _colors2.default.nodes.invalidated,
+        "line-color": _colors2.default.nodes.invalidated,
+        "mid-target-arrow-color": _colors2.default.nodes.invalidated,
+        "target-arrow-color": _colors2.default.nodes.invalidated
       }
     },
     selected: {
@@ -79052,9 +79054,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     (0, _jquery2.default)("#prevStepButton").click(updateGraph.prevStep);
     (0, _jquery2.default)("#nextStepButton").click(updateGraph.nextStep);
 
+    (0, _jquery2.default)("#legend").html("\n    <div class=\"color\" style=\"background-color: " + _colors2.default.nodes.ready + "\"></div><div class=\"legendLabel\">Ready</div><br/>\n    <div class=\"color\" style=\"background-color: " + _colors2.default.nodes.invalidated + "\"></div><div class=\"legendLabel\">Invalidated</div><br/>\n    <div class=\"color\" style=\"background-color: " + _colors2.default.nodes.calculating + "\"></div><div class=\"legendLabel\">Calculating</div><br/>\n  ");
+
     progressBar.setContainers((0, _jquery2.default)("#timeline"), (0, _jquery2.default)("#timeline-fill"));
     var timelineBackground = (0, _jquery2.default)("#timeline-bg");
-    progressBar.addTimelineTicks(timelineBackground, _colors2.default.regular.green1, _rlog.rlog.getGraph.enterExitEmpties, _rlog.rlog.log.length);
+    progressBar.addTimelineTicks(timelineBackground, _colors2.default.nodes.ready, _rlog.rlog.getGraph.enterExitEmpties, _rlog.rlog.log.length);
     progressBar.addTimelineTicks(timelineBackground, _colors2.default.regular.red, _rlog.rlog.getGraph.queueEmpties, _rlog.rlog.log.length);
     if (_rlog.rlog.getGraph.marks.length > 0) {
       progressBar.addTimelineTicks(timelineBackground, _colors2.default.regular.purpleLite, _rlog.rlog.getGraph.marks, _rlog.rlog.log.length);
@@ -79600,6 +79604,19 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     value: true
   });
   var colors = {
+    // robby colors
+    progressBar: {
+      background: "#f0f0f0",
+      progress: "#8e8e8e",
+      mark: "#999999" // TODO-barret need real mark color
+    },
+    nodes: {
+      ready: "#a3c586",
+      invalidated: "#d9d9d9",
+      calculating: "#fcbf49"
+    },
+    // end robby colors
+
     // regular colors
     regular: {
       white: "#ffffff",

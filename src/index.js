@@ -65,11 +65,23 @@ $(function() {
   $("#prevStepButton").click(updateGraph.prevStep);
   $("#nextStepButton").click(updateGraph.nextStep);
 
+  $("#legend").html(`
+    <div class="color" style="background-color: ${
+      colors.nodes.ready
+    }"></div><div class="legendLabel">Ready</div><br/>
+    <div class="color" style="background-color: ${
+      colors.nodes.invalidated
+    }"></div><div class="legendLabel">Invalidated</div><br/>
+    <div class="color" style="background-color: ${
+      colors.nodes.calculating
+    }"></div><div class="legendLabel">Calculating</div><br/>
+  `);
+
   progressBar.setContainers($("#timeline"), $("#timeline-fill"));
   let timelineBackground = $("#timeline-bg");
   progressBar.addTimelineTicks(
     timelineBackground,
-    colors.regular.green1,
+    colors.nodes.ready,
     rlog.getGraph.enterExitEmpties,
     rlog.log.length
   );

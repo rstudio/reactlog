@@ -1,6 +1,19 @@
 // @flow
 
 let colors = {
+  // robby colors
+  progressBar: {
+    background: "#f0f0f0",
+    progress: "#8e8e8e",
+    mark: "#999999", // TODO-barret need real mark color
+  },
+  nodes: {
+    ready: "#a3c586",
+    invalidated: "#d9d9d9",
+    calculating: "#fcbf49",
+  },
+  // end robby colors
+
   // regular colors
   regular: {
     white: "#ffffff",

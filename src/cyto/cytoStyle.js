@@ -27,7 +27,7 @@ let graphStyles = {
       "border-color": colors.regular.black,
       "border-style": "solid",
       "border-width": 1,
-      "background-color": colors.regular.green1,
+      "background-color": colors.nodes.ready,
       "text-wrap": "ellipsis",
       "text-max-width": "200px",
     },
@@ -66,20 +66,22 @@ let graphStyles = {
     },
     enter: {
       // "border-width": 2,
-      "background-color": colors.regular.green,
+      "background-color": colors.nodes.calculating,
     },
     enterActive: {
-      "background-color": colors.regular.green,
+      "background-color": colors.nodes.calculating,
+      "border-width": 2.5,
     },
     invalidate: {
       // "border-width": 2,
-      "background-color": colors.regular.grey2,
+      "background-color": colors.nodes.invalidated,
     },
     invalidateActive: {
-      "background-color": colors.regular.grey2,
+      "background-color": colors.nodes.invalidated,
+      "border-width": 2.5,
     },
     invalidateDone: {
-      "background-color": colors.regular.grey1,
+      "background-color": colors.nodes.invalidated,
     },
     isolate: {
       "border-style": "dashed",
@@ -94,7 +96,7 @@ let graphStyles = {
     },
     valueChanged: {
       // "background-color": colors.regular.red,
-      "background-color": colors.regular.grey2,
+      "background-color": colors.nodes.invalidated,
       // "border-style": "dashed",
       // "border-color": "darkgrey",
       // "border-width": 3,
@@ -137,17 +139,17 @@ let graphStyles = {
       "mid-target-arrow-color": colors.regular.grey2,
     },
     hoverNotFocused: {
-      "line-color": colors.regular.grey1,
-      "mid-target-arrow-color": colors.regular.grey1,
+      "line-color": colors.nodes.invalidated,
+      "mid-target-arrow-color": colors.nodes.invalidated,
     },
   },
   focus: {
     hoverNotFocused: {
       "background-blacken": -0.75,
-      "border-color": colors.regular.grey1,
-      "line-color": colors.regular.grey1,
-      "mid-target-arrow-color": colors.regular.grey1,
-      "target-arrow-color": colors.regular.grey1,
+      "border-color": colors.nodes.invalidated,
+      "line-color": colors.nodes.invalidated,
+      "mid-target-arrow-color": colors.nodes.invalidated,
+      "target-arrow-color": colors.nodes.invalidated,
     },
     hoverNotFocusedButSticky: {
       "background-blacken": -0.35,
@@ -158,10 +160,10 @@ let graphStyles = {
     },
     stickyNotFocused: {
       "background-blacken": -0.75,
-      "border-color": colors.regular.grey1,
-      "line-color": colors.regular.grey1,
-      "mid-target-arrow-color": colors.regular.grey1,
-      "target-arrow-color": colors.regular.grey1,
+      "border-color": colors.nodes.invalidated,
+      "line-color": colors.nodes.invalidated,
+      "mid-target-arrow-color": colors.nodes.invalidated,
+      "target-arrow-color": colors.nodes.invalidated,
     },
   },
   selected: {

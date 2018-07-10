@@ -97,18 +97,28 @@ svg {
   stroke: #000;
 }
 #legend {
-  font-size: 22px;
   position: fixed;
-  bottom: 10px;
-  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 30px;
+  display: inline-block;
+
+}
+.legendLabel {
+  margin-left: 4px;
+  font-size: 12px;
+  line-height: 14px;
+  transform: translateY(-4px);
+  display: inline-block;
 }
 .color {
   display: inline-block;
   border: 1px solid #777;
   height: 14px;
   width: 14px;
+  border-radius: 2px;
 }
-.color.normal {
+/* .color.normal {
   background-color: #white;
 }
 .color.invalidated {
@@ -116,7 +126,7 @@ svg {
 }
 .color.running {
   background-color: #61b97e;
-}
+} */
 #triangle {
   fill: #ccc;
 }
