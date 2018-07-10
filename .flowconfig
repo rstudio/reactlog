@@ -3,7 +3,7 @@ src/log-files
 src/old
 
 [include]
-srcjs/src
+src
 
 [libs]
 # https://github.com/nrnb/GoogleSummerOfCode/issues/94
