@@ -79058,10 +79058,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
     progressBar.setContainers((0, _jquery2.default)("#timeline"), (0, _jquery2.default)("#timeline-fill"));
     var timelineBackground = (0, _jquery2.default)("#timeline-bg");
-    progressBar.addTimelineTicks(timelineBackground, _colors2.default.nodes.ready, _rlog.rlog.getGraph.enterExitEmpties, _rlog.rlog.log.length);
-    progressBar.addTimelineTicks(timelineBackground, _colors2.default.regular.red, _rlog.rlog.getGraph.queueEmpties, _rlog.rlog.log.length);
+    progressBar.addTimelineTicks(timelineBackground, _colors2.default.nodes.ready, _rlog.rlog.getGraph.enterExitEmpties, _rlog.rlog.log.length, 3);
+    progressBar.addTimelineTicks(timelineBackground, _colors2.default.nodes.ready, _rlog.rlog.getGraph.queueEmpties, _rlog.rlog.log.length, 0);
     if (_rlog.rlog.getGraph.marks.length > 0) {
-      progressBar.addTimelineTicks(timelineBackground, _colors2.default.regular.purpleLite, _rlog.rlog.getGraph.marks, _rlog.rlog.log.length);
+      progressBar.addTimelineTicks(timelineBackground, _colors2.default.progressBar.mark, _rlog.rlog.getGraph.marks, _rlog.rlog.log.length, 3);
     }
     logEntry.setContainer((0, _jquery2.default)("#instructions"));
 
@@ -79325,12 +79325,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! lodash/has */ "./node_modules/lodash/has.js"), __webpack_require__(/*! jquery/dist/jquery.slim */ "./node_modules/jquery/dist/jquery.slim.js"), __webpack_require__(/*! ../rlog */ "./src/rlog.js"), __webpack_require__(/*! ../updateGraph */ "./src/updateGraph/index.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! lodash/has */ "./node_modules/lodash/has.js"), __webpack_require__(/*! jquery/dist/jquery.slim */ "./node_modules/jquery/dist/jquery.slim.js"), __webpack_require__(/*! ../rlog */ "./src/rlog.js"), __webpack_require__(/*! ../updateGraph */ "./src/updateGraph/index.js"), __webpack_require__(/*! ../style/colors */ "./src/style/colors.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
-})(this, function (exports, _has2, _jquery, _rlog, _updateGraph) {
+})(this, function (exports, _has2, _jquery, _rlog, _updateGraph, _colors) {
   "use strict";
 
   Object.defineProperty(exports, "__esModule", {
@@ -79349,13 +79349,18 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   }
 
   var fillContainer = void 0;
+
   var updateProgressBar = function updateProgressBar() {
     fillContainer.width(_rlog.rlog.curTick / _rlog.rlog.log.length * 100 + "%");
   };
 
-  var setContainers = function setContainers(fullContainer_, fillContainer_) {
-    fillContainer = fillContainer_;
-    fullContainer_.on("mousedown mousemove", updateFromProgressBar);
+  var setContainers = function setContainers(fullContainerVal, fillContainerVal) {
+    fillContainerVal.css("background-color", _colors.colors.progressBar.progress);
+    fillContainer = fillContainerVal;
+
+    fullContainerVal.css("height", timelineHeight + "px");
+    fullContainerVal.css("background-color", _colors.colors.progressBar.background);
+    fullContainerVal.on("mousedown mousemove", updateFromProgressBar);
   };
 
   var updateFromProgressBar = function updateFromProgressBar(e) {
@@ -79383,16 +79388,19 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   };
 
   var addTimelineTicks = function addTimelineTicks(jqueryContainer, backgroundColor, enterExits, logLength) {
-    var className = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : "";
+    var top = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 0;
 
+    var topValue = top === 0 ? "top: 0; height: " + timelineHeight + "px;" : "top: " + top + "px; height: " + (timelineHeight - 2 * top) + "px";
     enterExits.map(function (i) {
       // add an extra step to show that it is completed
       // i = i + 1;
       var left = 100 * i / logLength;
       var width = 100 * 1 / logLength * 0.75;
-      jqueryContainer.append("<div class=\"timeline-tick " + className + "\" style=\"background-color: " + backgroundColor + "; left: " + left + "%; width: " + width + "%; margin-left: -" + width + "%;\"></div>");
+      jqueryContainer.append("<div class=\"timeline-tick\" style=\"background-color: " + backgroundColor + "; left: " + left + "%; width: " + width + "%; margin-left: -" + width + "%; " + topValue + "\"></div>");
     });
   };
+
+  var timelineHeight = 16;
 
   exports.update = updateProgressBar;
   exports.addTimelineTicks = addTimelineTicks;
@@ -79608,7 +79616,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     progressBar: {
       background: "#f0f0f0",
       progress: "#8e8e8e",
-      mark: "#999999" // TODO-barret need real mark color
+      mark: "#222222" // TODO-barret need real mark color
     },
     nodes: {
       ready: "#a3c586",

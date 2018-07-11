@@ -5,7 +5,7 @@ let colors = {
   progressBar: {
     background: "#f0f0f0",
     progress: "#8e8e8e",
-    mark: "#999999", // TODO-barret need real mark color
+    mark: "#222222", // TODO-barret need real mark color
   },
   nodes: {
     ready: "#a3c586",

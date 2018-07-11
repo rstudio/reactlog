@@ -83,20 +83,23 @@ $(function() {
     timelineBackground,
     colors.nodes.ready,
     rlog.getGraph.enterExitEmpties,
-    rlog.log.length
+    rlog.log.length,
+    3
   );
   progressBar.addTimelineTicks(
     timelineBackground,
-    colors.regular.red,
+    colors.nodes.ready,
     rlog.getGraph.queueEmpties,
-    rlog.log.length
+    rlog.log.length,
+    0
   );
   if (rlog.getGraph.marks.length > 0) {
     progressBar.addTimelineTicks(
       timelineBackground,
-      colors.regular.purpleLite,
+      colors.progressBar.mark,
       rlog.getGraph.marks,
-      rlog.log.length
+      rlog.log.length,
+      3
     );
   }
   logEntry.setContainer($("#instructions"));
