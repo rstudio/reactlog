@@ -3,16 +3,6 @@
 <head>
   <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,600' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" type="text/css" href="reactlogAsset/reactlog.css">
-  <style>
-  #cyto {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    left: 0;
-    top: 0;
-    z-index: 999;
-  }
-  </style>
 
   <script>
     try {
@@ -46,39 +36,39 @@
 </head>
 
 <body>
-  <div id="moveButtons" style="z-index:1;">
-    <table>
-      <tr>
-        <td style="text-align:right;">
-<button id="startStepButton" title="Go to beginning of log
-shortcut: 'home' key">Log Start</button>
-        </td>
-        <td>
-<button id="endStepButton" title="Go to end of log
-shotcut: 'end' key">Log End</button>
-        </td>
-      </tr>
-      <tr>
-        <td style="text-align:right;">
-<button id="prevCycleButton" title="Go to previous computation cycle
-shortcut: alt + left arrow">Previous Cycle</button>
-        </td>
-        <td>
-<button id="nextCycleButton" title="Go to next computation cycle
-shortcut: alt + right arrow">Next Cycle</button>
-        </td>
-      </tr>
-      <tr>
-        <td style="text-align:right;">
-<button id="prevStepButton" title="Go to the previous step
-shortcut: left arrow">Previous Step</button>
-        </td>
-        <td>
-<button id="nextStepButton" title="Go to the next step
-shortcut: right arrow">Next Step</button>
-        </td>
-      </tr>
-    </table>
+  <div id="bodyContent">
+    <div id="statusHeader">
+      <div id="movementButtons" style="z-index:1;">
+        <img id="prevFlushButton" class="navigationButton" src="./reactlogAsset/images/prev-flush.svg" alt="Previous flush" height="24" width="30">
+        <img id="prevCycleButton" class="navigationButton" src="./reactlogAsset/images/prev-cycle.svg" alt="Previous cycle" height="24" width="30">
+        <img id="prevStepButton"  class="navigationButton" src="./reactlogAsset/images/prev-step.svg"  alt="Previous step"  height="24" width="30">
+        <img id="nextStepButton"  class="navigationButton" src="./reactlogAsset/images/next-step.svg"  alt="Next step"      height="24" width="30">
+        <img id="nextCycleButton" class="navigationButton" src="./reactlogAsset/images/next-cycle.svg" alt="Next cycle"     height="24" width="30">
+        <img id="nextFlushButton" class="navigationButton" src="./reactlogAsset/images/next-flush.svg" alt="Next flush"     height="24" width="30">
+      </div>
+      <div id="eventStep">Step: 96</div>
+      <div id="eventStatus">A depends on B</div>
+      <div id="eventTimeSession">
+        <div id="eventTime">Time: 1234567890</div>
+        <div id="eventSession">Session: qwertyuiop</div>
+      </div>
+      <div id="filter">
+        <input id="search" type="text" size="12" />
+      </div>
+    </div> <!-- end statusHeader -->
+
+    <div id="timeline" style="z-index:1;">
+      <div id="timeline-bg">
+        <div id="timeline-fill"></div>
+      </div>
+    </div>
+
+    <div id="content">
+      <div id="cytoWrapper">
+        <div id="cyto"></div>
+      </div>
+      <div id="legend"></div>
+    </div>
   </div>
   <div id="instructions">
     Press right-arrow to advance
@@ -86,19 +76,6 @@ shortcut: right arrow">Next Step</button>
   <div id="ended" style="display: none;">
     <strong>You&rsquo;ve reached the end</strong><br/>Press the Home key to start over
   </div>
-  <div id="legend">
-  </div>
-  <div id="filter">
-    <input id="search" type="text" placeholder="Label Search..." size="15" />
-  </div>
-  <br/>
   <pre id="description"><br/></pre>
-  <div id="timeline" style="z-index:1;">
-    <div id="timeline-bg">
-      <div id="timeline-fill"></div>
-    </div>
-  </div>
-  <div id="cyto" style="z-index:0;">
-  </div>
 </body>
 </html>
