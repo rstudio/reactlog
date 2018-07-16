@@ -8,9 +8,10 @@ let colors = {
     mark: "#222222", // TODO-barret need real mark color
   },
   nodes: {
-    ready: "#a3c586",
+    invalidating: "#969696",
     invalidated: "#d9d9d9",
     calculating: "#fcbf49",
+    ready: "#a3c586",
   },
   // end robby colors
 

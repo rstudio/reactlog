@@ -74,10 +74,10 @@ let graphStyles = {
     },
     invalidate: {
       // "border-width": 2,
-      "background-color": colors.nodes.invalidated,
+      "background-color": colors.nodes.invalidating,
     },
     invalidateActive: {
-      "background-color": colors.nodes.invalidated,
+      "background-color": colors.nodes.invalidating,
       "border-width": 2.5,
     },
     invalidateDone: {
@@ -96,7 +96,7 @@ let graphStyles = {
     },
     valueChanged: {
       // "background-color": colors.regular.red,
-      "background-color": colors.nodes.invalidated,
+      "background-color": colors.nodes.invalidating,
       // "border-style": "dashed",
       // "border-color": "darkgrey",
       // "border-width": 3,
@@ -139,17 +139,17 @@ let graphStyles = {
       "mid-target-arrow-color": colors.regular.grey2,
     },
     hoverNotFocused: {
-      "line-color": colors.nodes.invalidated,
-      "mid-target-arrow-color": colors.nodes.invalidated,
+      "line-color": colors.regular.grey2,
+      "mid-target-arrow-color": colors.regular.grey2,
     },
   },
   focus: {
     hoverNotFocused: {
       "background-blacken": -0.75,
-      "border-color": colors.nodes.invalidated,
-      "line-color": colors.nodes.invalidated,
-      "mid-target-arrow-color": colors.nodes.invalidated,
-      "target-arrow-color": colors.nodes.invalidated,
+      "border-color": colors.regular.grey2,
+      "line-color": colors.regular.grey2,
+      "mid-target-arrow-color": colors.regular.grey2,
+      "target-arrow-color": colors.regular.grey2,
     },
     hoverNotFocusedButSticky: {
       "background-blacken": -0.35,
@@ -160,10 +160,10 @@ let graphStyles = {
     },
     stickyNotFocused: {
       "background-blacken": -0.75,
-      "border-color": colors.nodes.invalidated,
-      "line-color": colors.nodes.invalidated,
-      "mid-target-arrow-color": colors.nodes.invalidated,
-      "target-arrow-color": colors.nodes.invalidated,
+      "border-color": colors.regular.grey2,
+      "line-color": colors.regular.grey2,
+      "mid-target-arrow-color": colors.regular.grey2,
+      "target-arrow-color": colors.regular.grey2,
     },
   },
   selected: {

@@ -58,23 +58,26 @@ $(function() {
   rlog.graph = rlog.getGraph.atStep(rlog.getGraph.maxStep);
   console.log(rlog.graph);
 
-  $("#startStepButton").click(updateGraph.firstEnterExitEmpty);
-  $("#endStepButton").click(updateGraph.lastEnterExitEmpty);
+  $("#prevFlushButton").click(updateGraph.prevQueueEmpty);
+  $("#nextFlushButton").click(updateGraph.nextQueueEmpty);
   $("#prevCycleButton").click(updateGraph.prevEnterExitEmpty);
   $("#nextCycleButton").click(updateGraph.nextEnterExitEmpty);
   $("#prevStepButton").click(updateGraph.prevStep);
   $("#nextStepButton").click(updateGraph.nextStep);
 
   $("#legend").html(`
-    <div class="color" style="background-color: ${
-      colors.nodes.ready
-    }"></div><div class="legendLabel">Ready</div><br/>
-    <div class="color" style="background-color: ${
+    <div class="legendRow"><div class="legendColor" style="background-color: ${
+      colors.nodes.invalidating
+    }"></div><div class="legendLabel">Invalidating</div></div>
+    <div class="legendRow"><div class="legendColor" style="background-color: ${
       colors.nodes.invalidated
-    }"></div><div class="legendLabel">Invalidated</div><br/>
-    <div class="color" style="background-color: ${
+    }"></div><div class="legendLabel">Invalidated</div></div>
+    <div class="legendRow"><div class="legendColor" style="background-color: ${
       colors.nodes.calculating
-    }"></div><div class="legendLabel">Calculating</div><br/>
+    }"></div><div class="legendLabel">Calculating</div></div>
+    <div class="legendRow"><div class="legendColor" style="background-color: ${
+      colors.nodes.ready
+    }"></div><div class="legendLabel">Ready</div></div>
   `);
 
   progressBar.setContainers($("#timeline"), $("#timeline-fill"));
