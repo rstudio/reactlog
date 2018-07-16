@@ -1,7 +1,7 @@
 html,
 body {
   font-family: "Source Sans Pro", sans-serif;
-  font-weight: 400;
+  /* font-weight: 400; */
   overflow: hidden;
   height: 100%;
   width: 100%;
@@ -41,74 +41,62 @@ div {
 #ended strong {
   font-weight: 600;
 }
-svg {
+/* svg {
   position: absolute;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
-}
-.node {
+} */
+/* .node {
   cursor: pointer;
-}
-.node .tspanTime {
+} */
+/* .node .tspanTime {
   font-weight: bold;
   font-size: 87%;
   user-select: none;
   transition: fill 0.75s ease;
-}
-.node .tspanLabel {
+} */
+/* .node .tspanLabel {
   font-family: "Source Code Pro", monospace;
   font-weight: normal;
   text-anchor: start;
   fill: #999;
   user-select: none;
   transition: fill 0.75s ease;
-}
-.node.running .tspanLabel {
+} */
+/* .node.running .tspanLabel {
   fill: black;
-}
-.node.changed .tspanLabel {
+} */
+/* .node.changed .tspanLabel {
   fill: red;
-}
-.node .tspanLabel {
+} */
+/* .node .tspanLabel {
   white-space: pre;
-}
-.node path {
+} */
+/* .node path {
   fill: white;
   stroke: #999;
   stroke-width: 7.5px;
   transition: fill 0.75s ease;
-}
-.node.observer path {
-}
-.node.observable path {
-}
-.node.value path {
-}
-.node.invalidated path {
+} */
+/* .node.observer path {
+} */
+/* .node.observable path {
+} */
+/* .node.value path {
+} */
+/* .node.invalidated path {
   fill: #e0e0e0;
-  /*fill: url(#diagonalHatch);*/
-}
-.node.running path {
+  / *fill: url(#diagonalHatch);* /
+} */
+/* .node.running path {
   fill: #61b97e;
-}
-.node.fixed path {
+} */
+/* .node.fixed path {
   stroke: #000;
-}
-#legend {
-  font-size: 22px;
-  position: fixed;
-  bottom: 10px;
-  right: 20px;
-}
-.color {
-  display: inline-block;
-  border: 1px solid #777;
-  height: 14px;
-  width: 14px;
-}
-.color.normal {
+} */
+/* .color.normal {
   background-color: #white;
 }
 .color.invalidated {
@@ -116,7 +104,7 @@ svg {
 }
 .color.running {
   background-color: #61b97e;
-}
+} */
 #triangle {
   fill: #ccc;
 }
@@ -138,37 +126,20 @@ svg {
   top: 20px;
   left: 10px;
 }
-#filter {
-  position: fixed;
-  top: 20px;
-  right: 10px;
-  z-index: 1;
-}
-#timeline {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 20px;
-  transition: height 500ms;
-}
 #timeline,
-#timeline * {
+#timeline *, .navigationButton {
   cursor: pointer;
-}
-#timeline:hover {
-  height: 32px;
 }
 #timeline-bg {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  bottom: 12px;
-  background-color: silver;
+  bottom: 0;
+  /* bottom: 12px; */
+  background-color: #f0f0f0;
 }
 #timeline-fill {
-  background-color: #28a3f2;
   position: absolute;
   left: 0;
   top: 0;
@@ -184,7 +155,7 @@ svg {
   float: left;
   /* margin-left: -2px; */ /* margin and width must be equal in size, but margin is negative */
   /* width: 2px; */
-  height: 100%;
+  /* height: 100%; */
 }
 
 text {
@@ -206,3 +177,165 @@ text {
   opacity: 0.5;
   font-size: 1em;
 } */
+
+
+
+
+/* #header {
+  position: relative;
+  display: block;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1;
+  background-color: white;
+} */
+#statusHeader {
+  width: 100%;
+  height: 34px;
+  min-width: 500px;
+
+  font-size: 13px;
+  white-space: nowrap;
+  color: #606060;
+
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+  align-content: center;
+
+
+}
+#movementButtons {
+  /* position: relative;
+  display: inline-block;
+  top: 0;
+  left: 0; */
+  margin-left: 5px;
+
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  min-width: 180px
+
+}
+#eventStep {
+  margin-left: 10px;
+}
+#eventStatus {
+  margin-left: 5px;
+  flex-grow: 1;
+}
+#eventTimeSession {
+  margin-left: 5px;
+  font-size: 12px;
+}
+
+#filter {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+#search {
+  background: url(images/iconSearch.svg) no-repeat scroll 0 0;
+  background-size: 20px 20px;
+  padding-left: 20px;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+#timeline {
+  position: relative;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+
+#content {
+
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-end;
+  align-items: stretch;
+  align-content: stretch;
+
+  flex-grow: 1;
+
+  /* display: block; */
+  /* border: 2px orange solid; */
+  /* left: 0; */
+  /* top: 66px; */
+  /* bottom: 0px; */
+  /* width: 100%; */
+}
+#cytoWrapper  {
+  z-index: 0;
+  flex-grow: 1;
+  /* border: 2px red dashed; */
+  /* height: 100%;
+  width: 100%; */
+  /* align-self: stretch; */
+  /* display: inline-block; */
+}
+#cyto {
+  /* position: relative; */
+  /* width: 100%; */
+  height: 100%;
+  /* display: inline-block; */
+}
+#legend {
+  align-self: center;
+
+  margin-right: 20px;
+  margin-left: 10px;
+
+  /* position: fixed; */
+  /* top: 50%; */
+  /* https://stackoverflow.com/questions/5703552/css-center-text-horizontally-and-vertically-inside-a-div-block */
+  /* transform: translateY(-50%); */
+  /* right: 30px; */
+  /* display: inline-block; */
+
+  /* z-index: 2; */
+  /* border: 1px red solid; */
+}
+
+.legendRow {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  align-content: center;
+
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+.legendColor {
+
+  border: 1px solid #777;
+  height: 14px;
+  width: 14px;
+  border-radius: 2px;
+}
+.legendLabel {
+  flex-basis: 0;
+
+  margin-left: 4px;
+  font-size: 12px;
+  line-height: 14px;
+  /* https://stackoverflow.com/questions/5703552/css-center-text-horizontally-and-vertically-inside-a-div-block */
+  /* transform: translateY(-4px); */
+}
+
+#bodyContent {
+  height: 100%;
+
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: stretch;
+  align-content: stretch;
+}

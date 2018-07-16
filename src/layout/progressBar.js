@@ -5,6 +5,7 @@ import $ from "jquery/dist/jquery.slim";
 
 import { rlog } from "../rlog";
 import { updateGraph } from "../updateGraph";
+import { colors } from "../style/colors";
 
 let fillContainer: JQuery;
 let updateProgressBar = function(): void {
@@ -12,11 +13,15 @@ let updateProgressBar = function(): void {
 };
 
 let setContainers = function(
-  fullContainer_: JQuery,
-  fillContainer_: JQuery
+  fullContainerVal: JQuery,
+  fillContainerVal: JQuery
 ): void {
-  fillContainer = fillContainer_;
-  fullContainer_.on("mousedown mousemove", updateFromProgressBar);
+  fillContainerVal.css("background-color", colors.progressBar.progress);
+  fillContainer = fillContainerVal;
+
+  fullContainerVal.css("height", `${timelineHeight}px`);
+  fullContainerVal.css("background-color", colors.progressBar.background);
+  fullContainerVal.on("mousedown mousemove", updateFromProgressBar);
 };
 
 let updateFromProgressBar = function(e: BaseJQueryEventObject): void {
@@ -48,17 +53,23 @@ let addTimelineTicks = function(
   backgroundColor: string,
   enterExits: Array<number>,
   logLength: number,
-  className: string = ""
+  top: number = 0
 ): void {
+  let topValue =
+    top === 0
+      ? `top: 0; height: ${timelineHeight}px;`
+      : `top: ${top}px; height: ${timelineHeight - 2 * top}px`;
   enterExits.map(function(i) {
     // add an extra step to show that it is completed
     // i = i + 1;
     let left = (100 * i) / logLength;
     let width = ((100 * 1) / logLength) * 0.75;
     jqueryContainer.append(
-      `<div class="timeline-tick ${className}" style="background-color: ${backgroundColor}; left: ${left}%; width: ${width}%; margin-left: -${width}%;"></div>`
+      `<div class="timeline-tick" style="background-color: ${backgroundColor}; left: ${left}%; width: ${width}%; margin-left: -${width}%; ${topValue}"></div>`
     );
   });
 };
+
+let timelineHeight = 16;
 
 export { updateProgressBar as update, addTimelineTicks, setContainers };

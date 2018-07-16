@@ -5,6 +5,7 @@
     "zclean": "grunt clean",
     "zwatch": "grunt watch",
     "flow-report": "flow-coverage-report",
+    "flow-report-and-echo": "yarn flow-report && echo 'done flow report'",
     "flow-status": "flow status",
     "flow-stop": "flow stop",
     "lint": "./bin/lint_file.sh",
@@ -20,11 +21,12 @@
   },
   "lint-staged": {
     ".flowconfig": [
-      "flow-report"
+      "yarn flow-report-and-echo"
     ],
     "src/**/*.js": [
       "yarn fix",
-      "git add"
+      "git add",
+      "yarn flow-report-and-echo"
     ]
   },
   "flow-coverage-report": {

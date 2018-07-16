@@ -58,33 +58,51 @@ $(function() {
   rlog.graph = rlog.getGraph.atStep(rlog.getGraph.maxStep);
   console.log(rlog.graph);
 
-  $("#startStepButton").click(updateGraph.firstEnterExitEmpty);
-  $("#endStepButton").click(updateGraph.lastEnterExitEmpty);
+  $("#prevFlushButton").click(updateGraph.prevQueueEmpty);
+  $("#nextFlushButton").click(updateGraph.nextQueueEmpty);
   $("#prevCycleButton").click(updateGraph.prevEnterExitEmpty);
   $("#nextCycleButton").click(updateGraph.nextEnterExitEmpty);
   $("#prevStepButton").click(updateGraph.prevStep);
   $("#nextStepButton").click(updateGraph.nextStep);
 
+  $("#legend").html(`
+    <div class="legendRow"><div class="legendColor" style="background-color: ${
+      colors.nodes.invalidating
+    }"></div><div class="legendLabel">Invalidating</div></div>
+    <div class="legendRow"><div class="legendColor" style="background-color: ${
+      colors.nodes.invalidated
+    }"></div><div class="legendLabel">Invalidated</div></div>
+    <div class="legendRow"><div class="legendColor" style="background-color: ${
+      colors.nodes.calculating
+    }"></div><div class="legendLabel">Calculating</div></div>
+    <div class="legendRow"><div class="legendColor" style="background-color: ${
+      colors.nodes.ready
+    }"></div><div class="legendLabel">Ready</div></div>
+  `);
+
   progressBar.setContainers($("#timeline"), $("#timeline-fill"));
   let timelineBackground = $("#timeline-bg");
   progressBar.addTimelineTicks(
     timelineBackground,
-    colors.regular.green1,
+    colors.nodes.ready,
     rlog.getGraph.enterExitEmpties,
-    rlog.log.length
+    rlog.log.length,
+    3
   );
   progressBar.addTimelineTicks(
     timelineBackground,
-    colors.regular.red,
+    colors.nodes.ready,
     rlog.getGraph.queueEmpties,
-    rlog.log.length
+    rlog.log.length,
+    0
   );
   if (rlog.getGraph.marks.length > 0) {
     progressBar.addTimelineTicks(
       timelineBackground,
-      colors.regular.purpleLite,
+      colors.progressBar.mark,
       rlog.getGraph.marks,
-      rlog.log.length
+      rlog.log.length,
+      3
     );
   }
   logEntry.setContainer($("#instructions"));

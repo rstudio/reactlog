@@ -76498,7 +76498,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         "border-color": _colors2.default.regular.black,
         "border-style": "solid",
         "border-width": 1,
-        "background-color": _colors2.default.regular.green1,
+        "background-color": _colors2.default.nodes.ready,
         "text-wrap": "ellipsis",
         "text-max-width": "200px"
       },
@@ -76537,20 +76537,22 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       },
       enter: {
         // "border-width": 2,
-        "background-color": _colors2.default.regular.green
+        "background-color": _colors2.default.nodes.calculating
       },
       enterActive: {
-        "background-color": _colors2.default.regular.green
+        "background-color": _colors2.default.nodes.calculating,
+        "border-width": 2.5
       },
       invalidate: {
         // "border-width": 2,
-        "background-color": _colors2.default.regular.grey2
+        "background-color": _colors2.default.nodes.invalidating
       },
       invalidateActive: {
-        "background-color": _colors2.default.regular.grey2
+        "background-color": _colors2.default.nodes.invalidating,
+        "border-width": 2.5
       },
       invalidateDone: {
-        "background-color": _colors2.default.regular.grey1
+        "background-color": _colors2.default.nodes.invalidated
       },
       isolate: {
         "border-style": "dashed"
@@ -76565,7 +76567,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       },
       valueChanged: {
         // "background-color": colors.regular.red,
-        "background-color": _colors2.default.regular.grey2
+        "background-color": _colors2.default.nodes.invalidating
         // "border-style": "dashed",
         // "border-color": "darkgrey",
         // "border-width": 3,
@@ -76608,17 +76610,17 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         "mid-target-arrow-color": _colors2.default.regular.grey2
       },
       hoverNotFocused: {
-        "line-color": _colors2.default.regular.grey1,
-        "mid-target-arrow-color": _colors2.default.regular.grey1
+        "line-color": _colors2.default.regular.grey2,
+        "mid-target-arrow-color": _colors2.default.regular.grey2
       }
     },
     focus: {
       hoverNotFocused: {
         "background-blacken": -0.75,
-        "border-color": _colors2.default.regular.grey1,
-        "line-color": _colors2.default.regular.grey1,
-        "mid-target-arrow-color": _colors2.default.regular.grey1,
-        "target-arrow-color": _colors2.default.regular.grey1
+        "border-color": _colors2.default.regular.grey2,
+        "line-color": _colors2.default.regular.grey2,
+        "mid-target-arrow-color": _colors2.default.regular.grey2,
+        "target-arrow-color": _colors2.default.regular.grey2
       },
       hoverNotFocusedButSticky: {
         "background-blacken": -0.35,
@@ -76629,10 +76631,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       },
       stickyNotFocused: {
         "background-blacken": -0.75,
-        "border-color": _colors2.default.regular.grey1,
-        "line-color": _colors2.default.regular.grey1,
-        "mid-target-arrow-color": _colors2.default.regular.grey1,
-        "target-arrow-color": _colors2.default.regular.grey1
+        "border-color": _colors2.default.regular.grey2,
+        "line-color": _colors2.default.regular.grey2,
+        "mid-target-arrow-color": _colors2.default.regular.grey2,
+        "target-arrow-color": _colors2.default.regular.grey2
       }
     },
     selected: {
@@ -79045,19 +79047,21 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     _rlog.rlog.graph = _rlog.rlog.getGraph.atStep(_rlog.rlog.getGraph.maxStep);
     _console2.default.log(_rlog.rlog.graph);
 
-    (0, _jquery2.default)("#startStepButton").click(updateGraph.firstEnterExitEmpty);
-    (0, _jquery2.default)("#endStepButton").click(updateGraph.lastEnterExitEmpty);
+    (0, _jquery2.default)("#prevFlushButton").click(updateGraph.prevQueueEmpty);
+    (0, _jquery2.default)("#nextFlushButton").click(updateGraph.nextQueueEmpty);
     (0, _jquery2.default)("#prevCycleButton").click(updateGraph.prevEnterExitEmpty);
     (0, _jquery2.default)("#nextCycleButton").click(updateGraph.nextEnterExitEmpty);
     (0, _jquery2.default)("#prevStepButton").click(updateGraph.prevStep);
     (0, _jquery2.default)("#nextStepButton").click(updateGraph.nextStep);
 
+    (0, _jquery2.default)("#legend").html("\n    <div class=\"legendRow\"><div class=\"legendColor\" style=\"background-color: " + _colors2.default.nodes.invalidating + "\"></div><div class=\"legendLabel\">Invalidating</div></div>\n    <div class=\"legendRow\"><div class=\"legendColor\" style=\"background-color: " + _colors2.default.nodes.invalidated + "\"></div><div class=\"legendLabel\">Invalidated</div></div>\n    <div class=\"legendRow\"><div class=\"legendColor\" style=\"background-color: " + _colors2.default.nodes.calculating + "\"></div><div class=\"legendLabel\">Calculating</div></div>\n    <div class=\"legendRow\"><div class=\"legendColor\" style=\"background-color: " + _colors2.default.nodes.ready + "\"></div><div class=\"legendLabel\">Ready</div></div>\n  ");
+
     progressBar.setContainers((0, _jquery2.default)("#timeline"), (0, _jquery2.default)("#timeline-fill"));
     var timelineBackground = (0, _jquery2.default)("#timeline-bg");
-    progressBar.addTimelineTicks(timelineBackground, _colors2.default.regular.green1, _rlog.rlog.getGraph.enterExitEmpties, _rlog.rlog.log.length);
-    progressBar.addTimelineTicks(timelineBackground, _colors2.default.regular.red, _rlog.rlog.getGraph.queueEmpties, _rlog.rlog.log.length);
+    progressBar.addTimelineTicks(timelineBackground, _colors2.default.nodes.ready, _rlog.rlog.getGraph.enterExitEmpties, _rlog.rlog.log.length, 3);
+    progressBar.addTimelineTicks(timelineBackground, _colors2.default.nodes.ready, _rlog.rlog.getGraph.queueEmpties, _rlog.rlog.log.length, 0);
     if (_rlog.rlog.getGraph.marks.length > 0) {
-      progressBar.addTimelineTicks(timelineBackground, _colors2.default.regular.purpleLite, _rlog.rlog.getGraph.marks, _rlog.rlog.log.length);
+      progressBar.addTimelineTicks(timelineBackground, _colors2.default.progressBar.mark, _rlog.rlog.getGraph.marks, _rlog.rlog.log.length, 3);
     }
     logEntry.setContainer((0, _jquery2.default)("#instructions"));
 
@@ -79321,12 +79325,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! lodash/has */ "./node_modules/lodash/has.js"), __webpack_require__(/*! jquery/dist/jquery.slim */ "./node_modules/jquery/dist/jquery.slim.js"), __webpack_require__(/*! ../rlog */ "./src/rlog.js"), __webpack_require__(/*! ../updateGraph */ "./src/updateGraph/index.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! lodash/has */ "./node_modules/lodash/has.js"), __webpack_require__(/*! jquery/dist/jquery.slim */ "./node_modules/jquery/dist/jquery.slim.js"), __webpack_require__(/*! ../rlog */ "./src/rlog.js"), __webpack_require__(/*! ../updateGraph */ "./src/updateGraph/index.js"), __webpack_require__(/*! ../style/colors */ "./src/style/colors.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
-})(this, function (exports, _has2, _jquery, _rlog, _updateGraph) {
+})(this, function (exports, _has2, _jquery, _rlog, _updateGraph, _colors) {
   "use strict";
 
   Object.defineProperty(exports, "__esModule", {
@@ -79345,13 +79349,18 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   }
 
   var fillContainer = void 0;
+
   var updateProgressBar = function updateProgressBar() {
     fillContainer.width(_rlog.rlog.curTick / _rlog.rlog.log.length * 100 + "%");
   };
 
-  var setContainers = function setContainers(fullContainer_, fillContainer_) {
-    fillContainer = fillContainer_;
-    fullContainer_.on("mousedown mousemove", updateFromProgressBar);
+  var setContainers = function setContainers(fullContainerVal, fillContainerVal) {
+    fillContainerVal.css("background-color", _colors.colors.progressBar.progress);
+    fillContainer = fillContainerVal;
+
+    fullContainerVal.css("height", timelineHeight + "px");
+    fullContainerVal.css("background-color", _colors.colors.progressBar.background);
+    fullContainerVal.on("mousedown mousemove", updateFromProgressBar);
   };
 
   var updateFromProgressBar = function updateFromProgressBar(e) {
@@ -79379,16 +79388,19 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   };
 
   var addTimelineTicks = function addTimelineTicks(jqueryContainer, backgroundColor, enterExits, logLength) {
-    var className = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : "";
+    var top = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 0;
 
+    var topValue = top === 0 ? "top: 0; height: " + timelineHeight + "px;" : "top: " + top + "px; height: " + (timelineHeight - 2 * top) + "px";
     enterExits.map(function (i) {
       // add an extra step to show that it is completed
       // i = i + 1;
       var left = 100 * i / logLength;
       var width = 100 * 1 / logLength * 0.75;
-      jqueryContainer.append("<div class=\"timeline-tick " + className + "\" style=\"background-color: " + backgroundColor + "; left: " + left + "%; width: " + width + "%; margin-left: -" + width + "%;\"></div>");
+      jqueryContainer.append("<div class=\"timeline-tick\" style=\"background-color: " + backgroundColor + "; left: " + left + "%; width: " + width + "%; margin-left: -" + width + "%; " + topValue + "\"></div>");
     });
   };
+
+  var timelineHeight = 16;
 
   exports.update = updateProgressBar;
   exports.addTimelineTicks = addTimelineTicks;
@@ -79600,6 +79612,20 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     value: true
   });
   var colors = {
+    // robby colors
+    progressBar: {
+      background: "#f0f0f0",
+      progress: "#8e8e8e",
+      mark: "#222222" // TODO-barret need real mark color
+    },
+    nodes: {
+      invalidating: "#969696",
+      invalidated: "#d9d9d9",
+      calculating: "#fcbf49",
+      ready: "#a3c586"
+    },
+    // end robby colors
+
     // regular colors
     regular: {
       white: "#ffffff",
@@ -80012,10 +80038,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   var nextQueueEmpty = function nextQueueEmpty() {
     var i = void 0,
         val = void 0;
+    // traverse to the next valid step,
+    //   skipping the very close queue empties (which would be skipped on next step)
+    var nextTick = _rlog.rlog.getGraph.nextStep(_rlog.rlog.curTick);
     // move to queue empty
     for (i = 0; i < _rlog.rlog.getGraph.enterExitEmpties.length; i++) {
       val = _rlog.rlog.getGraph.queueEmpties[i];
-      if (_rlog.rlog.curTick < val) {
+      if (nextTick < val) {
         (0, _updateGraph.updateGraph)(val);
         return true;
       }
@@ -80025,10 +80054,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   var prevQueueEmpty = function prevQueueEmpty() {
     var i = void 0,
         val = void 0;
+    // traverse to the previous valid step,
+    //   skipping the very close queue empties (which would be skipped on prev step)
+    var prevTick = _rlog.rlog.getGraph.prevStep(_rlog.rlog.curTick);
     // move to queue empty
     for (i = _rlog.rlog.getGraph.queueEmpties.length - 1; i >= 0; i--) {
       val = _rlog.rlog.getGraph.queueEmpties[i];
-      if (_rlog.rlog.curTick > val) {
+      if (prevTick > val) {
         (0, _updateGraph.updateGraph)(val);
         return true;
       }
