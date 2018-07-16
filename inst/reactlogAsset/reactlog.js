@@ -76545,10 +76545,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       },
       invalidate: {
         // "border-width": 2,
-        "background-color": _colors2.default.nodes.invalidated
+        "background-color": _colors2.default.nodes.invalidating
       },
       invalidateActive: {
-        "background-color": _colors2.default.nodes.invalidated,
+        "background-color": _colors2.default.nodes.invalidating,
         "border-width": 2.5
       },
       invalidateDone: {
@@ -76567,7 +76567,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       },
       valueChanged: {
         // "background-color": colors.regular.red,
-        "background-color": _colors2.default.nodes.invalidated
+        "background-color": _colors2.default.nodes.invalidating
         // "border-style": "dashed",
         // "border-color": "darkgrey",
         // "border-width": 3,
@@ -76610,17 +76610,17 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         "mid-target-arrow-color": _colors2.default.regular.grey2
       },
       hoverNotFocused: {
-        "line-color": _colors2.default.nodes.invalidated,
-        "mid-target-arrow-color": _colors2.default.nodes.invalidated
+        "line-color": _colors2.default.regular.grey2,
+        "mid-target-arrow-color": _colors2.default.regular.grey2
       }
     },
     focus: {
       hoverNotFocused: {
         "background-blacken": -0.75,
-        "border-color": _colors2.default.nodes.invalidated,
-        "line-color": _colors2.default.nodes.invalidated,
-        "mid-target-arrow-color": _colors2.default.nodes.invalidated,
-        "target-arrow-color": _colors2.default.nodes.invalidated
+        "border-color": _colors2.default.regular.grey2,
+        "line-color": _colors2.default.regular.grey2,
+        "mid-target-arrow-color": _colors2.default.regular.grey2,
+        "target-arrow-color": _colors2.default.regular.grey2
       },
       hoverNotFocusedButSticky: {
         "background-blacken": -0.35,
@@ -76631,10 +76631,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       },
       stickyNotFocused: {
         "background-blacken": -0.75,
-        "border-color": _colors2.default.nodes.invalidated,
-        "line-color": _colors2.default.nodes.invalidated,
-        "mid-target-arrow-color": _colors2.default.nodes.invalidated,
-        "target-arrow-color": _colors2.default.nodes.invalidated
+        "border-color": _colors2.default.regular.grey2,
+        "line-color": _colors2.default.regular.grey2,
+        "mid-target-arrow-color": _colors2.default.regular.grey2,
+        "target-arrow-color": _colors2.default.regular.grey2
       }
     },
     selected: {
@@ -79047,14 +79047,14 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     _rlog.rlog.graph = _rlog.rlog.getGraph.atStep(_rlog.rlog.getGraph.maxStep);
     _console2.default.log(_rlog.rlog.graph);
 
-    (0, _jquery2.default)("#startStepButton").click(updateGraph.firstEnterExitEmpty);
-    (0, _jquery2.default)("#endStepButton").click(updateGraph.lastEnterExitEmpty);
+    (0, _jquery2.default)("#prevFlushButton").click(updateGraph.prevQueueEmpty);
+    (0, _jquery2.default)("#nextFlushButton").click(updateGraph.nextQueueEmpty);
     (0, _jquery2.default)("#prevCycleButton").click(updateGraph.prevEnterExitEmpty);
     (0, _jquery2.default)("#nextCycleButton").click(updateGraph.nextEnterExitEmpty);
     (0, _jquery2.default)("#prevStepButton").click(updateGraph.prevStep);
     (0, _jquery2.default)("#nextStepButton").click(updateGraph.nextStep);
 
-    (0, _jquery2.default)("#legend").html("\n    <div class=\"color\" style=\"background-color: " + _colors2.default.nodes.ready + "\"></div><div class=\"legendLabel\">Ready</div><br/>\n    <div class=\"color\" style=\"background-color: " + _colors2.default.nodes.invalidated + "\"></div><div class=\"legendLabel\">Invalidated</div><br/>\n    <div class=\"color\" style=\"background-color: " + _colors2.default.nodes.calculating + "\"></div><div class=\"legendLabel\">Calculating</div><br/>\n  ");
+    (0, _jquery2.default)("#legend").html("\n    <div class=\"legendRow\"><div class=\"legendColor\" style=\"background-color: " + _colors2.default.nodes.invalidating + "\"></div><div class=\"legendLabel\">Invalidating</div></div>\n    <div class=\"legendRow\"><div class=\"legendColor\" style=\"background-color: " + _colors2.default.nodes.invalidated + "\"></div><div class=\"legendLabel\">Invalidated</div></div>\n    <div class=\"legendRow\"><div class=\"legendColor\" style=\"background-color: " + _colors2.default.nodes.calculating + "\"></div><div class=\"legendLabel\">Calculating</div></div>\n    <div class=\"legendRow\"><div class=\"legendColor\" style=\"background-color: " + _colors2.default.nodes.ready + "\"></div><div class=\"legendLabel\">Ready</div></div>\n  ");
 
     progressBar.setContainers((0, _jquery2.default)("#timeline"), (0, _jquery2.default)("#timeline-fill"));
     var timelineBackground = (0, _jquery2.default)("#timeline-bg");
@@ -79619,9 +79619,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       mark: "#222222" // TODO-barret need real mark color
     },
     nodes: {
-      ready: "#a3c586",
+      invalidating: "#969696",
       invalidated: "#d9d9d9",
-      calculating: "#fcbf49"
+      calculating: "#fcbf49",
+      ready: "#a3c586"
     },
     // end robby colors
 
@@ -80037,10 +80038,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   var nextQueueEmpty = function nextQueueEmpty() {
     var i = void 0,
         val = void 0;
+    // traverse to the next valid step,
+    //   skipping the very close queue empties (which would be skipped on next step)
+    var nextTick = _rlog.rlog.getGraph.nextStep(_rlog.rlog.curTick);
     // move to queue empty
     for (i = 0; i < _rlog.rlog.getGraph.enterExitEmpties.length; i++) {
       val = _rlog.rlog.getGraph.queueEmpties[i];
-      if (_rlog.rlog.curTick < val) {
+      if (nextTick < val) {
         (0, _updateGraph.updateGraph)(val);
         return true;
       }
@@ -80050,10 +80054,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   var prevQueueEmpty = function prevQueueEmpty() {
     var i = void 0,
         val = void 0;
+    // traverse to the previous valid step,
+    //   skipping the very close queue empties (which would be skipped on prev step)
+    var prevTick = _rlog.rlog.getGraph.prevStep(_rlog.rlog.curTick);
     // move to queue empty
     for (i = _rlog.rlog.getGraph.queueEmpties.length - 1; i >= 0; i--) {
       val = _rlog.rlog.getGraph.queueEmpties[i];
-      if (_rlog.rlog.curTick > val) {
+      if (prevTick > val) {
         (0, _updateGraph.updateGraph)(val);
         return true;
       }
