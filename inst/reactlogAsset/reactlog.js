@@ -79054,7 +79054,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     (0, _jquery2.default)("#prevStepButton").click(updateGraph.prevStep);
     (0, _jquery2.default)("#nextStepButton").click(updateGraph.nextStep);
 
-    (0, _jquery2.default)("#legend").html("\n    <div class=\"legendRow\"><div class=\"legendColor\" style=\"background-color: " + _colors2.default.nodes.invalidating + "\"></div><div class=\"legendLabel\">Invalidating</div></div>\n    <div class=\"legendRow\"><div class=\"legendColor\" style=\"background-color: " + _colors2.default.nodes.invalidated + "\"></div><div class=\"legendLabel\">Invalidated</div></div>\n    <div class=\"legendRow\"><div class=\"legendColor\" style=\"background-color: " + _colors2.default.nodes.calculating + "\"></div><div class=\"legendLabel\">Calculating</div></div>\n    <div class=\"legendRow\"><div class=\"legendColor\" style=\"background-color: " + _colors2.default.nodes.ready + "\"></div><div class=\"legendLabel\">Ready</div></div>\n  ");
+    (0, _jquery2.default)("#legendInvalidating").css("background-color", _colors2.default.nodes.invalidating);
+    (0, _jquery2.default)("#legendInvalidated").css("background-color", _colors2.default.nodes.invalidated);
+    (0, _jquery2.default)("#legendCalculating").css("background-color", _colors2.default.nodes.calculating);
+    (0, _jquery2.default)("#legendReady").css("background-color", _colors2.default.nodes.ready);
 
     progressBar.setContainers((0, _jquery2.default)("#timeline"), (0, _jquery2.default)("#timeline-fill"));
     var timelineBackground = (0, _jquery2.default)("#timeline-bg");

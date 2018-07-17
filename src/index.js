@@ -65,20 +65,10 @@ $(function() {
   $("#prevStepButton").click(updateGraph.prevStep);
   $("#nextStepButton").click(updateGraph.nextStep);
 
-  $("#legend").html(`
-    <div class="legendRow"><div class="legendColor" style="background-color: ${
-      colors.nodes.invalidating
-    }"></div><div class="legendLabel">Invalidating</div></div>
-    <div class="legendRow"><div class="legendColor" style="background-color: ${
-      colors.nodes.invalidated
-    }"></div><div class="legendLabel">Invalidated</div></div>
-    <div class="legendRow"><div class="legendColor" style="background-color: ${
-      colors.nodes.calculating
-    }"></div><div class="legendLabel">Calculating</div></div>
-    <div class="legendRow"><div class="legendColor" style="background-color: ${
-      colors.nodes.ready
-    }"></div><div class="legendLabel">Ready</div></div>
-  `);
+  $("#legendInvalidating").css("background-color", colors.nodes.invalidating);
+  $("#legendInvalidated").css("background-color", colors.nodes.invalidated);
+  $("#legendCalculating").css("background-color", colors.nodes.calculating);
+  $("#legendReady").css("background-color", colors.nodes.ready);
 
   progressBar.setContainers($("#timeline"), $("#timeline-fill"));
   let timelineBackground = $("#timeline-bg");
