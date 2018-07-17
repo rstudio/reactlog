@@ -1,6 +1,6 @@
 // @flow
 
-import cytoscape from "cytoscape";
+import cytoscape from "cytoscape"; // flowlint-line untyped-import:off
 
 import { Graph } from "./graph/Graph";
 import { GraphAtStep } from "./graph/GraphAtStep";

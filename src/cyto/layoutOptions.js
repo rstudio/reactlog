@@ -1,7 +1,7 @@
 // @flow
 
-import cytoscape from "cytoscape";
-import dagre from "cytoscape-dagre";
+import cytoscape from "cytoscape"; // flowlint-line untyped-import:off
+import dagre from "cytoscape-dagre"; // flowlint-line untyped-import:off
 
 import type { CytoscapeElement, CytoscapeLibrary } from "./cytoFlowType";
 

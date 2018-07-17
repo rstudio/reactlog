@@ -4,7 +4,7 @@ import _some from "lodash/some";
 import _filter from "lodash/filter";
 import _union from "lodash/union";
 import _last from "lodash/last";
-import cytoscape from "cytoscape";
+import cytoscape from "cytoscape"; // flowlint-line untyped-import:off
 
 import { mapValues } from "../utils/MapHelper";
 import { LogStates } from "../log/logStates";

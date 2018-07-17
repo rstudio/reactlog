@@ -1,6 +1,6 @@
 // @flow
 
-import cytoscape from "cytoscape";
+import cytoscape from "cytoscape"; // flowlint-line untyped-import:off
 
 import * as cytoOn from "./cytoOn";
 import graphStyles, { style } from "./cytoStyle";
