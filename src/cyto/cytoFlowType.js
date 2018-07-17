@@ -56,6 +56,7 @@ type CytoscapeElements = {
 
 type CytoscapeLayoutObject = {
   run: () => void,
+  one: (event: string, callback: Function) => void,
 };
 type CytoscapeType = {
   $: (identifier?: string) => CytoscapeElements,

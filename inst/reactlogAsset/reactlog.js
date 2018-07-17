@@ -76713,6 +76713,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     };
   }
 
+  // flowlint-line untyped-import:off
+
   var withContainer = function withContainer(container) {
     var cyto = (0, _cytoscape2.default)({
       container: container,
@@ -76769,7 +76771,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     };
   }
 
-  _cytoscape2.default.use(_cytoscapeDagre2.default);
+  // flowlint-line untyped-import:off
+
+  _cytoscape2.default.use(_cytoscapeDagre2.default); // flowlint-line untyped-import:off
+
 
   var layoutOptions = {
     name: "dagre",
@@ -78494,7 +78499,14 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           // TODO-barret move this method to layout
           // calculate a new layout
           // time expensive!!!
-          cy.layout((0, _assign3.default)({
+
+          // stop previous layout
+          if (this.cytoLayout) {
+            this.cytoLayout.stop();
+            this.cytoLayout = null;
+          }
+
+          this.cytoLayout = cy.layout((0, _assign3.default)({
             // provide elements in sorted order to make determanistic layouts
             eles: sortedElements,
             // run on layout ready
@@ -78507,7 +78519,14 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           // ,
           // TODO-barret Make animation a setting... it's expensive!
           // {animate: true}
-          )).run();
+          ));
+          // remove the layout once it's finished
+          this.cytoLayout.one("layoutstop", function (evt) {
+            if (this.cytoLayout) {
+              this.cytoLayout = null;
+            }
+          });
+          this.cytoLayout.run();
         }
       }
     }, {
@@ -79712,7 +79731,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     curTick: 1,
     updateGraph: updateGraph,
     barret: null
-  };
+  }; // flowlint-line untyped-import:off
 
   exports.rlog = ret;
 });

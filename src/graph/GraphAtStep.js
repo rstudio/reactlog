@@ -49,6 +49,8 @@ class GraphAtStep {
   finalGraph: any;
   finalCyto: any;
 
+  cytoLayout: any;
+
   steps: Array<number>;
   asyncStarts: Array<number>;
   asyncStops: Array<number>;
@@ -730,7 +732,14 @@ class GraphAtStep {
       // TODO-barret move this method to layout
       // calculate a new layout
       // time expensive!!!
-      cy.layout(
+
+      // stop previous layout
+      if (this.cytoLayout) {
+        this.cytoLayout.stop();
+        this.cytoLayout = null;
+      }
+
+      this.cytoLayout = cy.layout(
         _assign(
           {
             // provide elements in sorted order to make determanistic layouts
@@ -747,7 +756,14 @@ class GraphAtStep {
           // TODO-barret Make animation a setting... it's expensive!
           // {animate: true}
         )
-      ).run();
+      );
+      // remove the layout once it's finished
+      this.cytoLayout.one("layoutstop", function(evt: any) {
+        if (this.cytoLayout) {
+          this.cytoLayout = null;
+        }
+      });
+      this.cytoLayout.run();
     }
   }
 }
