@@ -105,7 +105,13 @@ $(function() {
       3
     );
   }
-  logEntry.setContainer($("#instructions"));
+  logEntry.setContainers(
+    $("#eventTime"),
+    $("#eventSession"),
+    $("#eventStep"),
+    $("#eventStatus"),
+    $("#instructions")
+  );
 
   $("#search").on("input", function(e) {
     updateGraph.withSearchString($(e.target).val());

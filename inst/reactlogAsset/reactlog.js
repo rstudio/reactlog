@@ -79063,7 +79063,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     if (_rlog.rlog.getGraph.marks.length > 0) {
       progressBar.addTimelineTicks(timelineBackground, _colors2.default.progressBar.mark, _rlog.rlog.getGraph.marks, _rlog.rlog.log.length, 3);
     }
-    logEntry.setContainer((0, _jquery2.default)("#instructions"));
+    logEntry.setContainers((0, _jquery2.default)("#eventTime"), (0, _jquery2.default)("#eventSession"), (0, _jquery2.default)("#eventStep"), (0, _jquery2.default)("#eventStatus"), (0, _jquery2.default)("#instructions"));
 
     (0, _jquery2.default)("#search").on("input", function (e) {
       updateGraph.withSearchString((0, _jquery2.default)(e.target).val());
@@ -79286,32 +79286,157 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ../rlog */ "./src/rlog.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ../rlog */ "./src/rlog.js"), __webpack_require__(/*! ../log/logStates */ "./src/log/logStates.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
-})(this, function (exports, _rlog) {
+})(this, function (exports, _rlog, _logStates) {
   "use strict";
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.setContainer = exports.update = undefined;
-
-
-  var container = void 0;
+  exports.setContainers = exports.update = undefined;
+  var containers = void 0;
 
   var updateLogEntry = function updateLogEntry() {
-    container.text(JSON.stringify(_rlog.rlog.log[_rlog.rlog.curTick], null, "  "));
+    var curEntry = _rlog.rlog.log[_rlog.rlog.curTick];
+
+    containers.time.text("Time: " + curEntry.time);
+    if (curEntry.session) {
+      containers.session.text("Session: " + curEntry.session);
+    } else {
+      containers.session.text("");
+    }
+
+    containers.step.text("Step: " + curEntry.step);
+    containers.status.text(statusForEntry(curEntry));
+
+    containers.container.text(JSON.stringify(_rlog.rlog.log[_rlog.rlog.curTick], null, "  "));
   };
 
-  var setContainer = function setContainer(container_) {
-    container = container_;
+  var setContainers = function setContainers(time, session, step, status, container) {
+    containers = {
+      time: time,
+      session: session,
+      step: step,
+      status: status,
+      container: container
+    };
+  };
+
+  var getLabel = function getLabel(reactId) {
+    var node = _rlog.rlog.graph.nodes.get(reactId);
+    if (node) {
+      return node.label;
+    } else {
+      return "<unknown>";
+    }
+  };
+  var getReactIdLabel = function getReactIdLabel(entry) {
+    return getLabel(entry.reactId);
+  };
+  var statusForEntry = function statusForEntry(entry) {
+    switch (entry.action) {
+      case _logStates.LogStates.asyncStart:
+        {
+          return "Start asynchronous calculations";
+        }
+      case _logStates.LogStates.asyncStop:
+        {
+          return "Start asynchronous calculations";
+        }
+      case _logStates.LogStates.define:
+        {
+          var defineEntry = entry;
+          return "Defined " + getReactIdLabel(defineEntry);
+        }
+      case _logStates.LogStates.dependsOn:
+        {
+          var dependsOnEntry = entry;
+          return getReactIdLabel(dependsOnEntry) + " depends on " + getLabel(dependsOnEntry.depOnReactId);
+        }
+      case _logStates.LogStates.dependsOnRemove:
+        {
+          var dependsOnRemoveEntry = entry;
+          return getReactIdLabel(dependsOnRemoveEntry) + " removes dependency on " + getLabel(dependsOnRemoveEntry.depOnReactId);
+        }
+      case _logStates.LogStates.enter:
+        {
+          var enterEntry = entry;
+          return getReactIdLabel(enterEntry) + " started calculating";
+        }
+      case _logStates.LogStates.exit:
+        {
+          var exitEntry = entry;
+          return getReactIdLabel(exitEntry) + " stopped calculating";
+        }
+      case _logStates.LogStates.freeze:
+        {
+          var frozenEntry = entry;
+          return getReactIdLabel(frozenEntry) + " froze";
+        }
+      case _logStates.LogStates.invalidateEnd:
+        {
+          var invalidateEndEntry = entry;
+          return getReactIdLabel(invalidateEndEntry) + " has invalidated";
+        }
+      case _logStates.LogStates.invalidateStart:
+        {
+          var invalidateStartEntry = entry;
+          return getReactIdLabel(invalidateStartEntry) + " is invalidating";
+        }
+      case _logStates.LogStates.isolateEnter:
+        {
+          var isolateEnterEntry = entry;
+          return getReactIdLabel(isolateEnterEntry) + " is isolating future dependencies";
+        }
+      case _logStates.LogStates.isolateExit:
+        {
+          var isolateExitEntry = entry;
+          return getReactIdLabel(isolateExitEntry) + " stopped isolating future dependencies";
+        }
+      case _logStates.LogStates.isolateInvalidateEnd:
+        {
+          var isolateInvalidateEndEntry = entry;
+          return getReactIdLabel(isolateInvalidateEndEntry) + " invalidated during an isolate call";
+        }
+      case _logStates.LogStates.isolateInvalidateStart:
+        {
+          var isolateInvalidateStartEntry = entry;
+          return getReactIdLabel(isolateInvalidateStartEntry) + " is invalidating during an isolate call";
+        }
+      case _logStates.LogStates.mark:
+        {
+          return "User marked step";
+        }
+      case _logStates.LogStates.queueEmpty:
+        {
+          return "Shiny flushed";
+        }
+      case _logStates.LogStates.thaw:
+        {
+          var thawEntry = entry;
+          return getReactIdLabel(thawEntry) + " has thawed";
+        }
+      case _logStates.LogStates.updateNodeLabel:
+        {
+          var updateNodeLabelEntry = entry;
+          return "Set label to " + getReactIdLabel(updateNodeLabelEntry);
+        }
+      case _logStates.LogStates.valueChange:
+        {
+          var valueChangeEntry = entry;
+          return getReactIdLabel(valueChangeEntry) + " has a new value";
+        }
+      default:
+        throw "state: " + entry.action + " not implemented for log status";
+    }
   };
 
   exports.update = updateLogEntry;
-  exports.setContainer = setContainer;
+  exports.setContainers = setContainers;
 });
 
 /***/ }),
