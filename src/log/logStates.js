@@ -116,6 +116,21 @@ type LogEntryExitType = {
   ctxId: CtxIdType,
 };
 
+type LogEntryFreezeType = {
+  action: "freeze",
+  session: ?string,
+  time: number,
+  step: number,
+  reactId: ReactIdType,
+};
+type LogEntryThawType = {
+  action: "thaw",
+  session: ?string,
+  time: number,
+  step: number,
+  reactId: ReactIdType,
+};
+
 type LogEntryInvalidateStartType = {
   action: "invalidateStart",
   session: ?string,
@@ -169,6 +184,13 @@ type LogEntryIsolateInvalidateEndType = {
   ctxId: CtxIdType,
 };
 
+type LogEntryMark = {
+  action: "markTime",
+  session: ?string,
+  time: number,
+  step: number,
+};
+
 type LogEntryQueueEmptyType = {
   action: "queueEmpty",
   session: ?string,
@@ -194,6 +216,23 @@ type LogEntryValueChangeType = {
   value: string,
 };
 
+type LogEntryHasReactId =
+  | LogEntryDefineType
+  | LogEntryDependsOnType
+  | LogEntryDependsOnRemoveType
+  | LogEntryEnterType
+  | LogEntryExitType
+  | LogEntryFreezeType
+  | LogEntryThawType
+  | LogEntryInvalidateStartType
+  | LogEntryInvalidateEndType
+  | LogEntryIsolateEnterType
+  | LogEntryIsolateExitType
+  | LogEntryIsolateInvalidateStartType
+  | LogEntryIsolateInvalidateEndType
+  | LogEntryUpdateNodeLabelType
+  | LogEntryValueChangeType;
+
 type LogEntryAnyType =
   | LogEntryAsyncStartType
   | LogEntryAsyncStopType
@@ -202,12 +241,15 @@ type LogEntryAnyType =
   | LogEntryDependsOnRemoveType
   | LogEntryEnterType
   | LogEntryExitType
+  | LogEntryFreezeType
+  | LogEntryThawType
   | LogEntryInvalidateStartType
   | LogEntryInvalidateEndType
   | LogEntryIsolateEnterType
   | LogEntryIsolateExitType
   | LogEntryIsolateInvalidateStartType
   | LogEntryIsolateInvalidateEndType
+  | LogEntryMark
   | LogEntryQueueEmptyType
   | LogEntryUpdateNodeLabelType
   | LogEntryValueChangeType;
@@ -219,6 +261,7 @@ export type {
   ReactIdType,
   CtxIdType,
   LogType,
+  LogEntryHasReactId,
   LogEntryAnyType,
   LogEntryAsyncStartType,
   LogEntryAsyncStopType,
@@ -227,12 +270,15 @@ export type {
   LogEntryDependsOnRemoveType,
   LogEntryEnterType,
   LogEntryExitType,
+  LogEntryFreezeType,
+  LogEntryThawType,
   LogEntryInvalidateStartType,
   LogEntryInvalidateEndType,
   LogEntryIsolateEnterType,
   LogEntryIsolateExitType,
   LogEntryIsolateInvalidateStartType,
   LogEntryIsolateInvalidateEndType,
+  LogEntryMark,
   LogEntryQueueEmptyType,
   LogEntryUpdateNodeLabelType,
   LogEntryValueChangeType,
