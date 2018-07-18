@@ -1,6 +1,6 @@
 // @flow
 
-import $ from "jquery/dist/jquery.slim";
+import $ from "jquery";
 import _last from "lodash/last";
 
 import { rlog } from "./rlog";

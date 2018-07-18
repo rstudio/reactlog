@@ -1,5 +1,5 @@
 // @flow
-import $ from "jquery/dist/jquery.slim";
+import $ from "jquery";
 import _debounce from "lodash/debounce";
 import console from "../utils/console";
 
