@@ -36,6 +36,9 @@ let classes = {
   nodeSelected: ".nodeSelected",
   edgeSelected: ".edgeSelected",
   edgeGhostSelected: ".edgeGhostSelected",
+
+  nodeHidden: ".nodeHidden",
+  edgeHidden: ".edgeHidden",
 };
 
 export default classes;

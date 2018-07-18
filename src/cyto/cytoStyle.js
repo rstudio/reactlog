@@ -178,6 +178,16 @@ let graphStyles = {
       "arrow-scale": 0.5,
     },
   },
+  hidden: {
+    node: {
+      // visibility: "hidden",
+      opacity: 0.5,
+    },
+    edge: {
+      // visibility: "hidden",
+      opacity: 0.5,
+    },
+  },
 };
 
 export { graphStyles, styleHelper as style };
