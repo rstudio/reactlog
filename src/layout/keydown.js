@@ -10,7 +10,7 @@ import { hasLength } from "../graph/GraphAtStep";
 import { rlog } from "../rlog";
 
 let onKeydown = function(e: JQueryInputEventObject): void {
-  console.log("e: ", e);
+  // console.log("keydown: ", e);
   let target = $(e.target).get(0);
   if (target.id && target.id === "search") {
     // is in search text box
