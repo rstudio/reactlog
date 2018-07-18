@@ -144,7 +144,7 @@ let statusForEntry = function(entry: LogEntryAnyType): string {
       )} is invalidating during an isolate call`;
     }
     case LogStates.mark: {
-      return `User marked step`;
+      return `Marked step`;
     }
     case LogStates.queueEmpty: {
       return `Shiny flushed`;
