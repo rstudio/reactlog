@@ -4,6 +4,17 @@ import { HoverStatus } from "./HoverStatus";
 
 import type { ReactIdType, CtxIdType } from "../log/logStates";
 
+let ghostKey = function(reactId: ReactIdType, depOnReactId: ReactIdType) {
+  return `${reactId} depends on ${depOnReactId}`;
+};
+let edgeKey = function(
+  reactId: ReactIdType,
+  depOnReactId: ReactIdType,
+  ctxId: CtxIdType
+) {
+  return `${reactId} depends on ${depOnReactId} in ${ctxId}`;
+};
+
 class Edge {
   reactId: ReactIdType;
   depOnReactId: ReactIdType;
@@ -13,6 +24,7 @@ class Edge {
   status: string;
   isGhost: boolean;
   hoverStatus: HoverStatus;
+  isDisplayed: boolean;
 
   constructor(data: EdgeInputType) {
     if (typeof data.reactId === "undefined")
@@ -31,6 +43,7 @@ class Edge {
     this.status = "normal";
     this.isGhost = false;
     this.hoverStatus = data.hoverStatus || new HoverStatus();
+    this.isDisplayed = data.isDisplayed || true;
   }
   get id(): EdgeIdType {
     return `${this.reactId}_${this.depOnReactId}_${this.ctxId}`.replace(
@@ -45,10 +58,10 @@ class Edge {
     return this.reactId.replace(/\$/g, "_");
   }
   get key(): EdgeKeyType {
-    return `${this.reactId} depends on ${this.depOnReactId} in ${this.ctxId}`;
+    return edgeKey(this.reactId, this.depOnReactId, this.ctxId);
   }
   get ghostKey(): EdgeKeyType {
-    return `${this.reactId} depends on ${this.depOnReactId}`;
+    return ghostKey(this.reactId, this.depOnReactId);
   }
   get hoverKey(): EdgeHoverKeyType {
     return this.ghostKey;
@@ -74,6 +87,7 @@ class Edge {
         break;
     }
     if (this.hoverStatus.selected) classes.push("edgeSelected");
+    if (!this.isDisplayed) classes.push("edgeHidden");
     return classes.join(" ");
   }
   get cytoData() {
@@ -101,9 +115,10 @@ type EdgeLikeType = {
   session: ?string,
   time: number,
   hoverStatus?: ?HoverStatus,
+  isDisplayed?: boolean,
 };
 
-export { Edge };
+export { Edge, edgeKey, ghostKey };
 
 export type {
   EdgeLikeType,
