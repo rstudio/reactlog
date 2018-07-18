@@ -43,12 +43,13 @@ type CytoscapeNode = {
 };
 type CytoscapeElement = CytoscapeNode | CytoscapeEdge;
 type CytoscapeElements = {
-  $: (identifier?: string) => CytoscapeElements,
+  $: (identifier?: string | CytoscapeElement) => CytoscapeElements,
   $id: (id: string) => CytoscapeElement,
   length: number,
   data: (info?: SomeGraphData) => any,
   map: ((element: CytoscapeElement) => void) => void,
   diff: (other: CytoscapeElements) => CytoscapeLRB,
+  style: Object => CytoscapeElements,
   sort: (
     (a: CytoscapeElement, b: CytoscapeElement) => number
   ) => CytoscapeElements,
@@ -59,7 +60,7 @@ type CytoscapeLayoutObject = {
   one: (event: string, callback: Function) => void,
 };
 type CytoscapeType = {
-  $: (identifier?: string) => CytoscapeElements,
+  $: (identifier?: string | CytoscapeElement) => CytoscapeElements,
   $id: (id: string) => CytoscapeElement,
   add: (x: Array<CytoData> | CytoData | CytoscapeElement) => CytoscapeElement,
   on: CytoOnEvent, // | CytoOnDblClick
