@@ -604,7 +604,7 @@ class GraphAtStep {
 
     cy.startBatch();
 
-    let cytoDur = 400;
+    // let cytoDur = 0;
     let cyNodes = cy.nodes();
     let graphCyto = graph.cytoGraph;
     let graphNodes = graphCyto.nodes();
@@ -705,7 +705,8 @@ class GraphAtStep {
     edgesLRB.left.map(function(cytoEdge) {
       // var graphEdge = cytoEdge.data();
       // remove the original edge
-      cy.remove(cytoEdge).animate({ duration: cytoDur });
+      cy.remove(cytoEdge);
+      //  .animate({ duration: cytoDur });
     });
 
     cy.endBatch();
