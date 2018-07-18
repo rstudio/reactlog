@@ -78321,7 +78321,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
     nodeSelected: ".nodeSelected",
     edgeSelected: ".edgeSelected",
-    edgeGhostSelected: ".edgeGhostSelected"
+    edgeGhostSelected: ".edgeGhostSelected",
+
+    nodeHidden: ".nodeHidden",
+    edgeHidden: ".edgeHidden"
   };
 
   exports.default = classes;
@@ -78743,6 +78746,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         width: 6,
         "arrow-scale": 0.5
       }
+    },
+    hidden: {
+      node: {
+        // visibility: "hidden",
+        opacity: 0.5
+      },
+      edge: {
+        // visibility: "hidden",
+        opacity: 0.5
+      }
     }
   };
 
@@ -78818,7 +78831,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       layout: _layoutOptions2.default,
       style: [
       // order of the style definitions are how styles are applied
-      (0, _cytoStyle.style)(_cytoClasses2.default.node, _cytoStyle2.default.node.default), (0, _cytoStyle.style)(_cytoClasses2.default.edge, _cytoStyle2.default.edge.default), (0, _cytoStyle.style)(_cytoClasses2.default.edgeGhost, _cytoStyle2.default.ghostEdge.default), (0, _cytoStyle.style)(_cytoClasses2.default.edgeIsolate, _cytoStyle2.default.edge.isolate), (0, _cytoStyle.style)(_cytoClasses2.default.nodeStart, _cytoStyle2.default.node.start), (0, _cytoStyle.style)(_cytoClasses2.default.nodeMiddle, _cytoStyle2.default.node.middle), (0, _cytoStyle.style)(_cytoClasses2.default.nodeEnd, _cytoStyle2.default.node.end), (0, _cytoStyle.style)(_cytoClasses2.default.nodeStartBig, _cytoStyle2.default.node.startBig), (0, _cytoStyle.style)(_cytoClasses2.default.nodeMiddleBig, _cytoStyle2.default.node.middleBig), (0, _cytoStyle.style)(_cytoClasses2.default.nodeEndBig, _cytoStyle2.default.node.endBig), (0, _cytoStyle.style)(_cytoClasses2.default.nodeEnter, _cytoStyle2.default.node.enter), (0, _cytoStyle.style)(_cytoClasses2.default.nodeEnterActive, _cytoStyle2.default.node.enterActive), (0, _cytoStyle.style)(_cytoClasses2.default.nodeInvalidate, _cytoStyle2.default.node.invalidate), (0, _cytoStyle.style)(_cytoClasses2.default.nodeInvalidateActive, _cytoStyle2.default.node.invalidateActive), (0, _cytoStyle.style)(_cytoClasses2.default.nodeInvalidateDone, _cytoStyle2.default.node.invalidateDone), (0, _cytoStyle.style)(_cytoClasses2.default.nodeIsolate, _cytoStyle2.default.node.isolate), (0, _cytoStyle.style)(_cytoClasses2.default.nodeIsolateInvalidate, _cytoStyle2.default.node.isolateInvalidate), (0, _cytoStyle.style)(_cytoClasses2.default.nodeValueChanged, _cytoStyle2.default.node.valueChanged), (0, _cytoStyle.style)(_cytoClasses2.default.hoverNotFocused, _cytoStyle2.default.focus.hoverNotFocused), (0, _cytoStyle.style)(_cytoClasses2.default.hoverNotFocusedButSticky, _cytoStyle2.default.focus.hoverNotFocusedButSticky), (0, _cytoStyle.style)(_cytoClasses2.default.edgeGhostHoverNotFocused, _cytoStyle2.default.ghostEdge.hoverNotFocused), (0, _cytoStyle.style)(_cytoClasses2.default.edgeGhostHoverNotFocusedButSticky, _cytoStyle2.default.ghostEdge.hoverNotFocusedButSticky), (0, _cytoStyle.style)(_cytoClasses2.default.stickyNotFocused, _cytoStyle2.default.focus.stickyNotFocused), (0, _cytoStyle.style)(_cytoClasses2.default.nodeSelected, _cytoStyle2.default.selected.node), (0, _cytoStyle.style)(_cytoClasses2.default.edgeSelected, _cytoStyle2.default.selected.edge), (0, _cytoStyle.style)(_cytoClasses2.default.edgeGhostSelected, _cytoStyle2.default.selected.ghostEdge), (0, _cytoStyle.style)(_cytoClasses2.default.nodeFrozen, _cytoStyle2.default.node.frozen)]
+      (0, _cytoStyle.style)(_cytoClasses2.default.node, _cytoStyle2.default.node.default), (0, _cytoStyle.style)(_cytoClasses2.default.edge, _cytoStyle2.default.edge.default), (0, _cytoStyle.style)(_cytoClasses2.default.edgeGhost, _cytoStyle2.default.ghostEdge.default), (0, _cytoStyle.style)(_cytoClasses2.default.edgeIsolate, _cytoStyle2.default.edge.isolate), (0, _cytoStyle.style)(_cytoClasses2.default.nodeStart, _cytoStyle2.default.node.start), (0, _cytoStyle.style)(_cytoClasses2.default.nodeMiddle, _cytoStyle2.default.node.middle), (0, _cytoStyle.style)(_cytoClasses2.default.nodeEnd, _cytoStyle2.default.node.end), (0, _cytoStyle.style)(_cytoClasses2.default.nodeStartBig, _cytoStyle2.default.node.startBig), (0, _cytoStyle.style)(_cytoClasses2.default.nodeMiddleBig, _cytoStyle2.default.node.middleBig), (0, _cytoStyle.style)(_cytoClasses2.default.nodeEndBig, _cytoStyle2.default.node.endBig), (0, _cytoStyle.style)(_cytoClasses2.default.nodeEnter, _cytoStyle2.default.node.enter), (0, _cytoStyle.style)(_cytoClasses2.default.nodeEnterActive, _cytoStyle2.default.node.enterActive), (0, _cytoStyle.style)(_cytoClasses2.default.nodeInvalidate, _cytoStyle2.default.node.invalidate), (0, _cytoStyle.style)(_cytoClasses2.default.nodeInvalidateActive, _cytoStyle2.default.node.invalidateActive), (0, _cytoStyle.style)(_cytoClasses2.default.nodeInvalidateDone, _cytoStyle2.default.node.invalidateDone), (0, _cytoStyle.style)(_cytoClasses2.default.nodeIsolate, _cytoStyle2.default.node.isolate), (0, _cytoStyle.style)(_cytoClasses2.default.nodeIsolateInvalidate, _cytoStyle2.default.node.isolateInvalidate), (0, _cytoStyle.style)(_cytoClasses2.default.nodeValueChanged, _cytoStyle2.default.node.valueChanged), (0, _cytoStyle.style)(_cytoClasses2.default.hoverNotFocused, _cytoStyle2.default.focus.hoverNotFocused), (0, _cytoStyle.style)(_cytoClasses2.default.hoverNotFocusedButSticky, _cytoStyle2.default.focus.hoverNotFocusedButSticky), (0, _cytoStyle.style)(_cytoClasses2.default.edgeGhostHoverNotFocused, _cytoStyle2.default.ghostEdge.hoverNotFocused), (0, _cytoStyle.style)(_cytoClasses2.default.edgeGhostHoverNotFocusedButSticky, _cytoStyle2.default.ghostEdge.hoverNotFocusedButSticky), (0, _cytoStyle.style)(_cytoClasses2.default.stickyNotFocused, _cytoStyle2.default.focus.stickyNotFocused), (0, _cytoStyle.style)(_cytoClasses2.default.nodeSelected, _cytoStyle2.default.selected.node), (0, _cytoStyle.style)(_cytoClasses2.default.edgeSelected, _cytoStyle2.default.selected.edge), (0, _cytoStyle.style)(_cytoClasses2.default.edgeGhostSelected, _cytoStyle2.default.selected.ghostEdge), (0, _cytoStyle.style)(_cytoClasses2.default.nodeFrozen, _cytoStyle2.default.node.frozen), (0, _cytoStyle.style)(_cytoClasses2.default.nodeHidden, _cytoStyle2.default.hidden.node), (0, _cytoStyle.style)(_cytoClasses2.default.edgeHidden, _cytoStyle2.default.hidden.edge)]
     });
 
     cytoOn.addOnMethods(cyto);
@@ -79041,7 +79054,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.Edge = undefined;
+  exports.ghostKey = exports.edgeKey = exports.Edge = undefined;
 
   function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
@@ -79067,6 +79080,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     };
   }();
 
+  var ghostKey = function ghostKey(reactId, depOnReactId) {
+    return reactId + " depends on " + depOnReactId;
+  };
+  var edgeKey = function edgeKey(reactId, depOnReactId, ctxId) {
+    return reactId + " depends on " + depOnReactId + " in " + ctxId;
+  };
+
   var Edge = function () {
     function Edge(data) {
       _classCallCheck(this, Edge);
@@ -79083,6 +79103,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       this.status = "normal";
       this.isGhost = false;
       this.hoverStatus = data.hoverStatus || new _HoverStatus.HoverStatus();
+      this.isDisplayed = data.isDisplayed || true;
     }
 
     _createClass(Edge, [{
@@ -79103,12 +79124,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     }, {
       key: "key",
       get: function get() {
-        return this.reactId + " depends on " + this.depOnReactId + " in " + this.ctxId;
+        return edgeKey(this.reactId, this.depOnReactId, this.ctxId);
       }
     }, {
       key: "ghostKey",
       get: function get() {
-        return this.reactId + " depends on " + this.depOnReactId;
+        return ghostKey(this.reactId, this.depOnReactId);
       }
     }, {
       key: "hoverKey",
@@ -79142,6 +79163,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             break;
         }
         if (this.hoverStatus.selected) classes.push("edgeSelected");
+        if (!this.isDisplayed) classes.push("edgeHidden");
         return classes.join(" ");
       }
     }, {
@@ -79159,6 +79181,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   }();
 
   exports.Edge = Edge;
+  exports.edgeKey = edgeKey;
+  exports.ghostKey = ghostKey;
 });
 
 /***/ }),
@@ -79222,6 +79246,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       this.time = data.time;
       this.isGhost = true;
       this.hoverStatus = data.hoverStatus || new _HoverStatus.HoverStatus();
+      this.isDisplayed = data.isDisplayed || true;
     }
 
     _createClass(GhostEdge, [{
@@ -79271,6 +79296,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             break;
         }
         if (this.hoverStatus.selected) classes.push("edgeGhostSelected");
+        if (!this.isDisplayed) classes.push("edgeHidden");
         return classes.join(" ");
       }
     }, {
@@ -80049,11 +80075,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       this.log = log;
       this.updateSteps(log);
 
-      this.finalGraph = this.atStep(log.length);
-      this.finalCyto = this.finalGraph.cytoGraph;
+      this.updateFinalGraph();
     }
 
     _createClass(GraphAtStep, [{
+      key: "updateFinalGraph",
+      value: function updateFinalGraph() {
+        this.finalGraph = this.atStep(this.log.length);
+        // this.finalCyto = this.finalGraph.cytoGraph;
+      }
+    }, {
       key: "updateSteps",
       value: function updateSteps(log) {
         this.steps = [];
@@ -80100,6 +80131,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 var logEntry = logItem;
                 if (logEntry.type === "other") {
                   break;
+                }
+                if (log.length > i + 1 && i - 1 >= 0) {
+                  var prevLogItem = log[i - 1];
+                  var nextLogItem = log[i + 1];
+                  if (nextLogItem.action === _logStates.LogStates.invalidateEnd && prevLogItem.action === _logStates.LogStates.define && logItem.reactId === prevLogItem.reactId && logItem.reactId === nextLogItem.reactId) {
+                    // define X <-- keep
+                    // invalidte start X <-- ignore!
+                    // invalidate end X <-- already ignored
+                    break;
+                  }
                 }
                 // TODO-barret check if reactId is a reactive values. If so, skip, otherwise add
                 this.steps.push(logEntry.step);
@@ -80260,6 +80301,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             case _logStates.LogStates.dependsOnRemove:
               // check for both to and from (since it must exist beforehand)
               if (graph.nodes.has(logItem.reactId) && graph.nodes.has(logItem.depOnReactId)) {
+                // TODO-barret with filtered data, the depOnReactId could be the bridge between existing graph and new subgraph.  This edge should not be included
                 return ret;
               }
               break;
@@ -80416,11 +80458,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       key: "updateFilterDatas",
       value: function updateFilterDatas(dataArr) {
         this.filterDatas = dataArr;
+        this.updateFinalGraph();
       }
     }, {
       key: "updateFilterDatasReset",
       value: function updateFilterDatasReset() {
         this.filterDatas = [];
+        this.updateFinalGraph();
       }
     }, {
       key: "updateSearchRegex",
@@ -80478,9 +80522,32 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         return newLog;
       }
     }, {
+      key: "completeGraphAtStep",
+      value: function completeGraphAtStep(k) {
+        var graph = this.atStep(k);
+        var finalGraph = this.finalGraph;
+
+        (0, _MapHelper.mapValues)(finalGraph.nodes).map(function (finalNode) {
+          if (!graph.nodes.has(finalNode.key)) {
+            // stomps finalGraph node value, but currently not a consequence to worry about
+            finalNode.isDisplayed = false;
+            graph.nodes.set(finalNode.key, finalNode);
+          }
+        });
+        (0, _MapHelper.mapValues)(finalGraph.edgesUnique).map(function (finalEdge) {
+          if (!graph.edgesUnique.has(finalEdge.key)) {
+            // stomps finalGraph edge value, but currently not a consequence to worry about
+            finalEdge.isDisplayed = false;
+            graph.edgesUnique.set(finalEdge.key, finalEdge);
+          }
+        });
+
+        return graph;
+      }
+    }, {
       key: "displayAtStep",
       value: function displayAtStep(k, cy) {
-        var graph = this.atStep(k);
+        var graph = this.completeGraphAtStep(k);
 
         cy.startBatch();
 
@@ -80493,7 +80560,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
         var onLayoutReady = [];
 
-        // enter
+        // enter visible nodes
         nodesLRB.right.map(function (graphNode) {
           var graphNodeData = graphNode.data();
           cy.add(graphNode).classes(graphNodeData.cytoClasses).style(graphNodeData.cytoStyle);
@@ -80502,7 +80569,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           //   duration: cytoDur
           // });
         });
-        // update
+        // update visible nodes
         nodesLRB.both.map(function (cytoNode) {
           var cyNode = cy.$id(cytoNode.id());
 
@@ -80529,16 +80596,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             onLayoutReady.push(function () {
               switch (graphNodeData.type) {
                 case "observable":
-                  cyNode.flashClass("nodeMiddleBig", 1000);
+                  cyNode.flashClass("nodeMiddleBig", 125);
                   break;
                 case "observer":
-                  cyNode.flashClass("nodeEndBig", 1000);
+                  cyNode.flashClass("nodeEndBig", 125);
                   break;
               }
             });
           }
         });
-        // exit
+        // exit visible nodes
         nodesLRB.left.map(function (cytoNode) {
           cy.remove(cytoNode);
           // .animate({duration: cytoDur});
@@ -80547,7 +80614,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         var cyEdges = cy.edges();
         var graphEdges = graphCyto.edges();
         var edgesLRB = cyEdges.diff(graphEdges);
-        // enter
+        // enter visible edges
         edgesLRB.right.map(function (graphEdge) {
           var graphEdgeData = graphEdge.data();
           cy.add(graphEdge).classes(graphEdgeData.cytoClasses).removeStyle().style(graphEdgeData.cytoStyle);
@@ -80556,7 +80623,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           //   duration: cytoDur
           // });
         });
-        // update
+        // update visible edges
         edgesLRB.both.map(function (cytoEdge) {
           var graphEdgeData = graphEdges.$id(cytoEdge.id()).data();
           cy.$id(cytoEdge.id())
@@ -80567,7 +80634,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           //   duration: cytoDur
           // });
         });
-        // exit
+        // exit visible edges
         edgesLRB.left.map(function (cytoEdge) {
           // var graphEdge = cytoEdge.data();
           // remove the original edge
@@ -80817,6 +80884,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       this.statusArr = new _StatusArr.StatusArr(data.statusArr || []);
       this.value = data.value || null;
       this.hoverStatus = data.hoverStatus || new _HoverStatus.HoverStatus();
+      this.isDisplayed = data.isDisplayed || true;
 
       this.valueChangedStatus = data.valueChangedStatus || new _ActiveStateStatus.ActiveStateStatus();
 
@@ -80825,7 +80893,18 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
       this.enterStatus = data.enterStatus || new _ActiveStateStatus.ActiveStateStatus();
 
-      this.invalidateStatus = data.invalidateStatus || new _ActiveStateStatus.ActiveStateStatus();
+      if (data.invalidateStatus) {
+        this.invalidateStatus = data.invalidateStatus;
+      } else {
+        this.invalidateStatus = new _ActiveStateStatus.ActiveStateStatus();
+        // init state for observer and obervable is to be invalidated
+        switch (this.type) {
+          case "observable":
+          case "observer":
+            this.invalidateStatus.toFinished();
+            break;
+        }
+      }
     }
 
     _createClass(Node, [{
@@ -80926,6 +81005,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
         if (this.isFrozen) classes.push("nodeFrozen");
 
+        if (!this.isDisplayed) classes.push("nodeHidden");
         return classes.join(" ");
       }
     }, {
@@ -81263,7 +81343,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   }
 
   var onKeydown = function onKeydown(e) {
-    _console2.default.log("e: ", e);
+    // console.log("keydown: ", e);
     var target = (0, _jquery2.default)(e.target).get(0);
     if (target.id && target.id === "search") {
       // is in search text box
@@ -81554,7 +81634,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         }
       case _logStates.LogStates.mark:
         {
-          return "User marked step";
+          return "Marked step";
         }
       case _logStates.LogStates.queueEmpty:
         {
