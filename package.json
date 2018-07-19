@@ -10,8 +10,8 @@
     "flow-stop": "flow stop",
     "lint": "./bin/lint_file.sh",
     "fix": "./bin/clean_rlog_file.sh",
-    "fix-all": "yarn fix src/**/*.js",
-    "lint-all": "yarn lint src/**/*.js",
+    "fix-all": "yarn fix src/*.js src/**/*.js",
+    "lint-all": "yarn lint src/*.js src/**/*.js",
     "build": "yarn lint-all && yarn build-only",
     "build-only": "grunt",
     "watch": "yarn lint-all && grunt webpackSetWatch default",
@@ -21,6 +21,11 @@
   },
   "lint-staged": {
     ".flowconfig": [
+      "yarn flow-report-and-echo"
+    ],
+    "src/*.js": [
+      "yarn fix",
+      "git add",
       "yarn flow-report-and-echo"
     ],
     "src/**/*.js": [

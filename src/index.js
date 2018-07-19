@@ -117,7 +117,20 @@ $(function() {
   if (rlog.getGraph.marks.length > 0) {
     let lastMark = _last(rlog.getGraph.marks);
     // start the graph at the first enter/exit or first empty queue
-    updateGraph.atTick(lastMark, { fit: true });
+    updateGraph.atTick(lastMark, {
+      fit: true,
+      stop: function(evt) {
+        console.log(evt, "layoutstop", rlog.cyto.zoom());
+        let zoomLevel = rlog.cyto.zoom();
+        let logZoomLevel = Math.log2(zoomLevel);
+
+        // zoom out twice as far
+        rlog.cyto.minZoom(Math.pow(2, logZoomLevel - 1));
+
+        // // zoom in to double the size
+        // rlog.cyto.maxZoom(Math.pow(2, logZoomLevel + 3)); // zoom in
+      },
+    });
   } else {
     // start the graph at the first enter/exit or first empty queue
     // TODO-barret should start at nextEnterExitEmpty,

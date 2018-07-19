@@ -71,6 +71,9 @@ type CytoscapeType = {
   remove: (info: any) => CytoscapeType,
   animate: (animationInfo: { duration: number }) => CytoscapeType,
   layout: (layoutOptions: Object) => CytoscapeLayoutObject,
+  zoom: (zoomLevel?: number) => number,
+  minZoom: (zoomLevel?: number) => number,
+  maxZoom: (zoomLevel?: number) => number,
 };
 
 type CytoEvent = {

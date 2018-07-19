@@ -15,6 +15,9 @@ let withContainer = function(container: JQuery) {
     boxSelectionEnabled: false,
     autounselectify: true,
     layout: layoutOptions,
+    wheelSensitivity: 0.04,
+    // minZoom: 0.5,
+    // maxZoom: 1.5,
     style: [
       // order of the style definitions are how styles are applied
       style(cytoClasses.node, graphStyles.node.default),

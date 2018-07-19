@@ -78829,6 +78829,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       boxSelectionEnabled: false,
       autounselectify: true,
       layout: _layoutOptions2.default,
+      wheelSensitivity: 0.04,
+      // minZoom: 0.5,
+      // maxZoom: 1.5,
       style: [
       // order of the style definitions are how styles are applied
       (0, _cytoStyle.style)(_cytoClasses2.default.node, _cytoStyle2.default.node.default), (0, _cytoStyle.style)(_cytoClasses2.default.edge, _cytoStyle2.default.edge.default), (0, _cytoStyle.style)(_cytoClasses2.default.edgeGhost, _cytoStyle2.default.ghostEdge.default), (0, _cytoStyle.style)(_cytoClasses2.default.edgeIsolate, _cytoStyle2.default.edge.isolate), (0, _cytoStyle.style)(_cytoClasses2.default.nodeStart, _cytoStyle2.default.node.start), (0, _cytoStyle.style)(_cytoClasses2.default.nodeMiddle, _cytoStyle2.default.node.middle), (0, _cytoStyle.style)(_cytoClasses2.default.nodeEnd, _cytoStyle2.default.node.end), (0, _cytoStyle.style)(_cytoClasses2.default.nodeStartBig, _cytoStyle2.default.node.startBig), (0, _cytoStyle.style)(_cytoClasses2.default.nodeMiddleBig, _cytoStyle2.default.node.middleBig), (0, _cytoStyle.style)(_cytoClasses2.default.nodeEndBig, _cytoStyle2.default.node.endBig), (0, _cytoStyle.style)(_cytoClasses2.default.nodeEnter, _cytoStyle2.default.node.enter), (0, _cytoStyle.style)(_cytoClasses2.default.nodeEnterActive, _cytoStyle2.default.node.enterActive), (0, _cytoStyle.style)(_cytoClasses2.default.nodeInvalidate, _cytoStyle2.default.node.invalidate), (0, _cytoStyle.style)(_cytoClasses2.default.nodeInvalidateActive, _cytoStyle2.default.node.invalidateActive), (0, _cytoStyle.style)(_cytoClasses2.default.nodeInvalidateDone, _cytoStyle2.default.node.invalidateDone), (0, _cytoStyle.style)(_cytoClasses2.default.nodeIsolate, _cytoStyle2.default.node.isolate), (0, _cytoStyle.style)(_cytoClasses2.default.nodeIsolateInvalidate, _cytoStyle2.default.node.isolateInvalidate), (0, _cytoStyle.style)(_cytoClasses2.default.nodeValueChanged, _cytoStyle2.default.node.valueChanged), (0, _cytoStyle.style)(_cytoClasses2.default.hoverNotFocused, _cytoStyle2.default.focus.hoverNotFocused), (0, _cytoStyle.style)(_cytoClasses2.default.hoverNotFocusedButSticky, _cytoStyle2.default.focus.hoverNotFocusedButSticky), (0, _cytoStyle.style)(_cytoClasses2.default.edgeGhostHoverNotFocused, _cytoStyle2.default.ghostEdge.hoverNotFocused), (0, _cytoStyle.style)(_cytoClasses2.default.edgeGhostHoverNotFocusedButSticky, _cytoStyle2.default.ghostEdge.hoverNotFocusedButSticky), (0, _cytoStyle.style)(_cytoClasses2.default.stickyNotFocused, _cytoStyle2.default.focus.stickyNotFocused), (0, _cytoStyle.style)(_cytoClasses2.default.nodeSelected, _cytoStyle2.default.selected.node), (0, _cytoStyle.style)(_cytoClasses2.default.edgeSelected, _cytoStyle2.default.selected.edge), (0, _cytoStyle.style)(_cytoClasses2.default.edgeGhostSelected, _cytoStyle2.default.selected.ghostEdge), (0, _cytoStyle.style)(_cytoClasses2.default.nodeFrozen, _cytoStyle2.default.node.frozen), (0, _cytoStyle.style)(_cytoClasses2.default.nodeHidden, _cytoStyle2.default.hidden.node), (0, _cytoStyle.style)(_cytoClasses2.default.edgeHidden, _cytoStyle2.default.hidden.edge)]
@@ -78885,6 +78888,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
   var layoutOptions = {
+    // whether to fit to viewport
+    //   do not want to fit to viewport as user may have zoomed/panned
+    fit: false,
+
     name: "dagre",
     rankDir: "LR", // 'TB' for top to bottom flow, 'LR' for left to right,
     rankSep: 150, // the separation between node columns
@@ -80547,6 +80554,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     }, {
       key: "displayAtStep",
       value: function displayAtStep(k, cy) {
+        var cytoOptions = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
         var graph = this.completeGraphAtStep(k);
 
         cy.startBatch();
@@ -80669,7 +80678,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             this.cytoLayout = null;
           }
 
-          this.cytoLayout = cy.layout((0, _assign3.default)({
+          this.cytoLayout = cy.layout((0, _assign3.default)({}, _layoutOptions2.default, cytoOptions, {
             // provide elements in sorted order to make determanistic layouts
             eles: sortedElements,
             // run on layout ready
@@ -80678,11 +80687,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 fn();
               });
             }
-          }, _layoutOptions2.default
-          // ,
-          // TODO-barret Make animation a setting... it's expensive!
-          // {animate: true}
-          ));
+            // ,
+            // TODO-barret Make animation a setting... it's expensive!
+            // {animate: true}
+          }));
           // remove the layout once it's finished
           this.cytoLayout.one("layoutstop", function (evt) {
             if (this.cytoLayout) {
@@ -81277,12 +81285,25 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     if (_rlog.rlog.getGraph.marks.length > 0) {
       var lastMark = (0, _last3.default)(_rlog.rlog.getGraph.marks);
       // start the graph at the first enter/exit or first empty queue
-      updateGraph.atTick(lastMark);
+      updateGraph.atTick(lastMark, {
+        fit: true,
+        stop: function stop(evt) {
+          _console2.default.log(evt, "layoutstop", _rlog.rlog.cyto.zoom());
+          var zoomLevel = _rlog.rlog.cyto.zoom();
+          var logZoomLevel = Math.log2(zoomLevel);
+
+          // zoom out twice as far
+          _rlog.rlog.cyto.minZoom(Math.pow(2, logZoomLevel - 1));
+
+          // // zoom in to double the size
+          // rlog.cyto.maxZoom(Math.pow(2, logZoomLevel + 3)); // zoom in
+        }
+      });
     } else {
       // start the graph at the first enter/exit or first empty queue
       // TODO-barret should start at nextEnterExitEmpty,
       // updateGraph.nextEnterExitEmpty()
-      updateGraph.nextQueueEmpty();
+      updateGraph.nextQueueEmpty({ fit: true });
     }
   });
 });
@@ -81452,7 +81473,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
               // remove both
               _rlog.rlog.getGraph.updateStickyDatasReset();
               _rlog.rlog.getGraph.updateFilterDatasReset();
-              updateGraph.updateGraph();
+              updateGraph.updateGraph(_rlog.rlog.curTick, { fit: true });
               return;
             }
           }
@@ -82094,9 +82115,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
   var atTick = function atTick() {
     var nextTick = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _rlog.rlog.curTick;
+    var cytoOptions = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
     _rlog.rlog.curTick = nextTick;
-    _rlog.rlog.getGraph.displayAtStep(nextTick, _rlog.rlog.cyto);
+    _rlog.rlog.getGraph.displayAtStep(nextTick, _rlog.rlog.cyto, cytoOptions);
     progressBar.update();
     logEntry.update();
   };
@@ -82139,6 +82161,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   }
 
   var nextEnterExitEmpty = function nextEnterExitEmpty() {
+    var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
     var nextTick = void 0;
     if ((0, _sortedIndexOf3.default)(_rlog.rlog.getGraph.enterExitEmpties, _rlog.rlog.curTick) !== -1) {
       // not at a cycle point
@@ -82160,7 +82184,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     for (i = 0; i < _rlog.rlog.getGraph.enterExitEmpties.length; i++) {
       val = _rlog.rlog.getGraph.enterExitEmpties[i];
       if (nextTick < val) {
-        (0, _updateGraph.updateGraph)(val);
+        (0, _updateGraph.updateGraph)(val, cytoOptions);
         return true;
       }
     }
@@ -82168,6 +82192,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   };
 
   var prevEnterExitEmpty = function prevEnterExitEmpty() {
+    var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
     var prevTick = void 0;
     if ((0, _sortedIndexOf3.default)(_rlog.rlog.getGraph.enterExitEmpties, _rlog.rlog.curTick) !== -1) {
       // not at a cycle point
@@ -82190,7 +82216,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     for (i = _rlog.rlog.getGraph.enterExitEmpties.length - 1; i >= 0; i--) {
       val = _rlog.rlog.getGraph.enterExitEmpties[i];
       if (prevTick > val) {
-        (0, _updateGraph.updateGraph)(val);
+        (0, _updateGraph.updateGraph)(val, cytoOptions);
         return true;
       }
     }
@@ -82198,12 +82224,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   };
 
   var lastEnterExitEmpty = function lastEnterExitEmpty() {
+    var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
     var nextTick = _rlog.rlog.getGraph.enterExitEmpties[_rlog.rlog.getGraph.enterExitEmpties.length - 1] || 0;
-    (0, _updateGraph.updateGraph)(nextTick);
+    (0, _updateGraph.updateGraph)(nextTick, cytoOptions);
   };
   var firstEnterExitEmpty = function firstEnterExitEmpty() {
+    var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
     var nextTick = _rlog.rlog.getGraph.enterExitEmpties[0] || 0;
-    (0, _updateGraph.updateGraph)(nextTick);
+    (0, _updateGraph.updateGraph)(nextTick, cytoOptions);
   };
 
   exports.nextEnterExitEmpty = nextEnterExitEmpty;
@@ -82223,56 +82253,84 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ../rlog */ "./src/rlog.js"), __webpack_require__(/*! ../updateGraph */ "./src/updateGraph/index.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! lodash/assign */ "./node_modules/lodash/assign.js"), __webpack_require__(/*! ../rlog */ "./src/rlog.js"), __webpack_require__(/*! ../updateGraph */ "./src/updateGraph/index.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
-})(this, function (exports, _rlog, _updateGraph) {
+})(this, function (exports, _assign2, _rlog, _updateGraph) {
   "use strict";
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
   exports.resetHoverStickyFilterData = exports.searchRegexReset = exports.searchRegex = exports.filterDatasReset = exports.filterDatas = exports.stickyDatasReset = exports.stickyDatas = exports.hoverDataReset = exports.hoverData = undefined;
+
+  var _assign3 = _interopRequireDefault(_assign2);
+
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
   var hoverData = function hoverData(data) {
+    var cytoOptions = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
     _rlog.rlog.getGraph.updateHoverData(data);
-    (0, _updateGraph.updateGraph)();
+    (0, _updateGraph.updateGraph)(_rlog.rlog.curTick, cytoOptions);
   };
+
   var hoverDataReset = function hoverDataReset() {
+    var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
     _rlog.rlog.getGraph.updateHoverDataReset();
-    (0, _updateGraph.updateGraph)();
+    (0, _updateGraph.updateGraph)(_rlog.rlog.curTick, cytoOptions);
   };
   var stickyDatas = function stickyDatas(datas) {
+    var cytoOptions = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
     _rlog.rlog.getGraph.updateStickyDatas(datas);
-    (0, _updateGraph.updateGraph)();
+    (0, _updateGraph.updateGraph)(_rlog.rlog.curTick, cytoOptions);
   };
   var stickyDatasReset = function stickyDatasReset() {
+    var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
     _rlog.rlog.getGraph.updateStickyDatasReset();
-    (0, _updateGraph.updateGraph)();
+    (0, _updateGraph.updateGraph)(_rlog.rlog.curTick, cytoOptions);
   };
   var filterDatas = function filterDatas(datas) {
+    var cytoOptions = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
     _rlog.rlog.getGraph.updateFilterDatas(datas);
-    (0, _updateGraph.updateGraph)();
+    (0, _updateGraph.updateGraph)(_rlog.rlog.curTick, (0, _assign3.default)({ fit: true }, cytoOptions));
   };
   var filterDatasReset = function filterDatasReset() {
+    var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
     _rlog.rlog.getGraph.updateFilterDatasReset();
-    (0, _updateGraph.updateGraph)();
+    (0, _updateGraph.updateGraph)(_rlog.rlog.curTick, (0, _assign3.default)({ fit: true }, cytoOptions));
   };
   var searchRegex = function searchRegex(_searchRegex) {
+    var cytoOptions = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
     _rlog.rlog.getGraph.updateSearchRegex(_searchRegex);
-    (0, _updateGraph.updateGraph)();
+    (0, _updateGraph.updateGraph)(_rlog.rlog.curTick, (0, _assign3.default)({ fit: true }, cytoOptions));
   };
   var searchRegexReset = function searchRegexReset() {
+    var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
     _rlog.rlog.getGraph.updateSearchRegexReset();
-    (0, _updateGraph.updateGraph)();
+    (0, _updateGraph.updateGraph)(_rlog.rlog.curTick, (0, _assign3.default)({ fit: true }, cytoOptions));
   };
   var resetHoverStickyFilterData = function resetHoverStickyFilterData() {
+    var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
     _rlog.rlog.getGraph.updateHoverDataReset();
     _rlog.rlog.getGraph.updateStickyDatasReset();
     _rlog.rlog.getGraph.updateFilterDatasReset();
     _rlog.rlog.getGraph.updateSearchRegexReset();
-    (0, _updateGraph.updateGraph)();
+    (0, _updateGraph.updateGraph)(_rlog.rlog.curTick, (0, _assign3.default)({ fit: true }, cytoOptions));
   };
 
   exports.hoverData = hoverData;
@@ -82386,6 +82444,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   });
   exports.firstQueueEmpty = exports.lastQueueEmpty = exports.prevQueueEmpty = exports.nextQueueEmpty = undefined;
   var nextQueueEmpty = function nextQueueEmpty() {
+    var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
     var i = void 0,
         val = void 0;
     // traverse to the next valid step,
@@ -82395,13 +82455,15 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     for (i = 0; i < _rlog.rlog.getGraph.enterExitEmpties.length; i++) {
       val = _rlog.rlog.getGraph.queueEmpties[i];
       if (nextTick < val) {
-        (0, _updateGraph.updateGraph)(val);
+        (0, _updateGraph.updateGraph)(val, cytoOptions);
         return true;
       }
     }
     return false;
   };
   var prevQueueEmpty = function prevQueueEmpty() {
+    var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
     var i = void 0,
         val = void 0;
     // traverse to the previous valid step,
@@ -82411,7 +82473,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     for (i = _rlog.rlog.getGraph.queueEmpties.length - 1; i >= 0; i--) {
       val = _rlog.rlog.getGraph.queueEmpties[i];
       if (prevTick > val) {
-        (0, _updateGraph.updateGraph)(val);
+        (0, _updateGraph.updateGraph)(val, cytoOptions);
         return true;
       }
     }
