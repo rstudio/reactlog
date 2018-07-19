@@ -87,6 +87,26 @@ type CytoscapeLibrary = {
   use: (lib: any) => void,
 };
 
+type CytoscapeOptions = {
+  animate?: boolean, // whether to animate changes to the layout
+  animationDuration?: number, // duration of animation in ms, if enabled
+  animationEasing?: string, // easing of animation, if enabled
+  animateFilter?: (node: CytoscapeNode, i: number) => boolean, // a function that determines whether the node should be animated.
+  //All nodes animated by default on animate enabled.  Non-animated nodes are positioned immediately when the layout starts
+  eles?: CytoscapeElements, // collection of elements involved in the layout; set by cy.layout() or eles.layout()
+  fit?: boolean, // whether to fit the viewport to the graph
+  padding?: number, // padding to leave between graph and viewport
+  pan?: { x: number, y: number }, // pan the graph to the provided position, given as { x, y }
+  ready?: () => void, // callback for the layoutready event
+  stop?: () => void, // callback for the layoutstop event
+  spacingFactor?: number, // a positive value which adjusts spacing between nodes (>1 means greater than usual spacing)
+  transform?: (
+    node: CytoscapeNode,
+    position: { x: number, y: number }
+  ) => { x: number, y: number }, // transform a given node position. Useful for changing flow direction in discrete layouts
+  zoom?: number, // zoom level as a positive number to set after animation
+};
+
 export type {
   CytoscapeType,
   CytoEvent,
@@ -95,4 +115,5 @@ export type {
   CytoData,
   CytoscapeElement,
   CytoscapeLibrary,
+  CytoscapeOptions,
 };
