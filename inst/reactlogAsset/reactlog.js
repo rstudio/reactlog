@@ -80088,7 +80088,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     _createClass(GraphAtStep, [{
       key: "updateFinalGraph",
       value: function updateFinalGraph() {
-        this.finalGraph = this.atStep(this.log.length);
+        this.finalGraph = this.atStep(this.log.length, false);
         // this.finalCyto = this.finalGraph.cytoGraph;
       }
     }, {
@@ -80355,6 +80355,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     }, {
       key: "atStep",
       value: function atStep(k) {
+        var updateFinal = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+
         var kVal = Math.max(1, Math.min(k, this.log.length));
         var i = void 0,
             graph = void 0;
@@ -80402,10 +80404,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           if (matchedNodes.length === 0) {
             // TODO-barret warn of no matches
             _console2.default.log("no matches!");
-            this.updateFilterDatasReset();
+            this.updateFilterDatasReset(updateFinal);
           } else {
             // for some reason, an array of node does not work with an array of (node, edge, or ghostedge)
-            this.updateFilterDatas(matchedNodes);
+            this.updateFilterDatas(matchedNodes, updateFinal);
             // filter on regex
             graph.filterGraphOnNodeIds(graph.familyTreeNodeIdsForDatas(this.filterDatas));
           }
@@ -80464,25 +80466,35 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     }, {
       key: "updateFilterDatas",
       value: function updateFilterDatas(dataArr) {
+        var updateFinal = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+
         this.filterDatas = dataArr;
-        this.updateFinalGraph();
+        if (updateFinal) this.updateFinalGraph();
       }
     }, {
       key: "updateFilterDatasReset",
       value: function updateFilterDatasReset() {
+        var updateFinal = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+
         this.filterDatas = [];
-        this.updateFinalGraph();
+        if (updateFinal) this.updateFinalGraph();
       }
     }, {
       key: "updateSearchRegex",
       value: function updateSearchRegex(regex) {
+        var updateFinal = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+
         this.searchRegex = regex;
+        if (updateFinal) this.updateFinalGraph();
       }
     }, {
       key: "updateSearchRegexReset",
       value: function updateSearchRegexReset() {
-        this.updateFilterDatasReset();
+        var updateFinal = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+
+        this.updateFilterDatasReset(false);
         this.searchRegex = null;
+        if (updateFinal) this.updateFinalGraph();
       }
     }, {
       key: "filterLogOnDatas",
@@ -81269,7 +81281,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     if (_rlog.rlog.getGraph.marks.length > 0) {
       progressBar.addTimelineTicks(timelineBackground, _colors2.default.progressBar.mark, _rlog.rlog.getGraph.marks, _rlog.rlog.log.length, 3);
     }
-    logEntry.setContainers((0, _jquery2.default)("#eventTime"), (0, _jquery2.default)("#eventSession"), (0, _jquery2.default)("#eventStep"), (0, _jquery2.default)("#eventStatus"), (0, _jquery2.default)("#instructions"));
+    logEntry.setContainers((0, _jquery2.default)("#eventTime"), (0, _jquery2.default)("#eventSession"), (0, _jquery2.default)("#eventStep"), (0, _jquery2.default)("#eventStatus"), (0, _jquery2.default)("#logEntry"));
 
     (0, _jquery2.default)("#search").on("input", function (e) {
       updateGraph.withSearchString((0, _jquery2.default)(e.target).val());
@@ -81364,7 +81376,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   }
 
   var onKeydown = function onKeydown(e) {
-    // console.log("keydown: ", e);
+    _console2.default.log("keydown: ", e);
     var target = (0, _jquery2.default)(e.target).get(0);
     if (target.id && target.id === "search") {
       // is in search text box
@@ -81510,6 +81522,17 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       });
       e.stopPropagation();
       return;
+    }
+
+    if (e.which === 76) {
+      // l // for Log
+
+      var cssVal = (0, _jquery2.default)("#logEntry").css("display");
+      if (cssVal !== "none") {
+        (0, _jquery2.default)("#logEntry").css("display", "none");
+      } else {
+        (0, _jquery2.default)("#logEntry").css("display", "inline");
+      }
     }
   };
 

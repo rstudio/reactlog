@@ -95,7 +95,7 @@ class GraphAtStep {
   // }
 
   updateFinalGraph() {
-    this.finalGraph = this.atStep(this.log.length);
+    this.finalGraph = this.atStep(this.log.length, false);
     // this.finalCyto = this.finalGraph.cytoGraph;
   }
 
@@ -368,7 +368,7 @@ class GraphAtStep {
     return this.steps[0];
   }
 
-  atStep(k: number): Graph {
+  atStep(k: number, updateFinal?: boolean = true): Graph {
     let kVal = Math.max(1, Math.min(k, this.log.length));
     let i, graph;
     // if (kVal >= this.cacheStep) {
@@ -424,11 +424,12 @@ class GraphAtStep {
       if (matchedNodes.length === 0) {
         // TODO-barret warn of no matches
         console.log("no matches!");
-        this.updateFilterDatasReset();
+        this.updateFilterDatasReset(updateFinal);
       } else {
         // for some reason, an array of node does not work with an array of (node, edge, or ghostedge)
         this.updateFilterDatas(
-          ((matchedNodes: Array<Object>): Array<SomeGraphData>)
+          ((matchedNodes: Array<Object>): Array<SomeGraphData>),
+          updateFinal
         );
         // filter on regex
         graph.filterGraphOnNodeIds(
@@ -483,20 +484,25 @@ class GraphAtStep {
   updateStickyDatasReset() {
     this.stickyDatas = [];
   }
-  updateFilterDatas(dataArr: Array<SomeGraphData>) {
+  updateFilterDatas(
+    dataArr: Array<SomeGraphData>,
+    updateFinal?: boolean = true
+  ) {
     this.filterDatas = dataArr;
-    this.updateFinalGraph();
+    if (updateFinal) this.updateFinalGraph();
   }
-  updateFilterDatasReset() {
+  updateFilterDatasReset(updateFinal?: boolean = true) {
     this.filterDatas = [];
-    this.updateFinalGraph();
+    if (updateFinal) this.updateFinalGraph();
   }
-  updateSearchRegex(regex: ?RegExp) {
+  updateSearchRegex(regex: ?RegExp, updateFinal?: boolean = true) {
     this.searchRegex = regex;
+    if (updateFinal) this.updateFinalGraph();
   }
-  updateSearchRegexReset() {
-    this.updateFilterDatasReset();
+  updateSearchRegexReset(updateFinal?: boolean = true) {
+    this.updateFilterDatasReset(false);
     this.searchRegex = null;
+    if (updateFinal) this.updateFinalGraph();
   }
   // // set the value outright
   // updateHoverData(hoverData) {
