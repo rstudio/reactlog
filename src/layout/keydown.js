@@ -10,7 +10,7 @@ import { hasLength } from "../graph/GraphAtStep";
 import { rlog } from "../rlog";
 
 let onKeydown = function(e: JQueryInputEventObject): void {
-  // console.log("keydown: ", e);
+  console.log("keydown: ", e);
   let target = $(e.target).get(0);
   if (target.id && target.id === "search") {
     // is in search text box
@@ -152,6 +152,17 @@ let onKeydown = function(e: JQueryInputEventObject): void {
     });
     e.stopPropagation();
     return;
+  }
+
+  if (e.which === 76) {
+    // l // for Log
+
+    let cssVal = $("#logEntry").css("display");
+    if (cssVal !== "none") {
+      $("#logEntry").css("display", "none");
+    } else {
+      $("#logEntry").css("display", "inline");
+    }
   }
 };
 

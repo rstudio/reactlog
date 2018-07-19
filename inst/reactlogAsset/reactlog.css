@@ -19,6 +19,7 @@ div {
   color: lightgrey;
 }
 #instructions,
+#logEntry,
 #ended {
   /* position: relative; */
   font-weight: 200;
@@ -26,7 +27,7 @@ div {
   /* top: 20px; */
   text-align: center;
 }
-#instructions {
+#instructions, #logEntry {
   z-index: 1000;
   white-space: pre-wrap;
   text-align: left;
