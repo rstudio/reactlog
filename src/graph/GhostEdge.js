@@ -16,6 +16,7 @@ class GhostEdge {
   hoverStatus: HoverStatus;
   isGhost: boolean;
   session: string;
+  isDisplayed: boolean;
 
   constructor(data: EdgeLikeType) {
     if (typeof data.reactId === "undefined")
@@ -30,6 +31,7 @@ class GhostEdge {
     this.time = data.time;
     this.isGhost = true;
     this.hoverStatus = data.hoverStatus || new HoverStatus();
+    this.isDisplayed = data.isDisplayed || true;
   }
   get id(): EdgeIdType {
     return `${this.reactId}_${this.depOnReactId}`.replace(/\$/g, "_");
@@ -64,6 +66,7 @@ class GhostEdge {
         break;
     }
     if (this.hoverStatus.selected) classes.push("edgeGhostSelected");
+    if (!this.isDisplayed) classes.push("edgeHidden");
     return classes.join(" ");
   }
   get cytoData() {

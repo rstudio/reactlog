@@ -33,6 +33,8 @@ import type {
   CytoscapeEdge,
 } from "../cyto/cytoFlowType";
 
+import type { CytoscapeOptions } from "../cyto/cytoFlowType";
+
 // // TODO-barret use log states
 // import logStates from "../log/logStates"
 
@@ -48,6 +50,8 @@ class GraphAtStep {
 
   finalGraph: any;
   finalCyto: any;
+
+  cytoLayout: any;
 
   steps: Array<number>;
   asyncStarts: Array<number>;
@@ -74,8 +78,7 @@ class GraphAtStep {
     this.log = log;
     this.updateSteps(log);
 
-    this.finalGraph = this.atStep(log.length);
-    this.finalCyto = this.finalGraph.cytoGraph;
+    this.updateFinalGraph();
   }
 
   get hasSearchRegex() {
@@ -90,6 +93,11 @@ class GraphAtStep {
   // get hasHoverData() {
   //   return this.hoverData ? true : false;
   // }
+
+  updateFinalGraph() {
+    this.finalGraph = this.atStep(this.log.length);
+    // this.finalCyto = this.finalGraph.cytoGraph;
+  }
 
   updateSteps(log: LogType) {
     this.steps = [];
@@ -134,6 +142,21 @@ class GraphAtStep {
           let logEntry = (logItem: LogEntryInvalidateStartType);
           if (logEntry.type === "other") {
             break;
+          }
+          if (log.length > i + 1 && i - 1 >= 0) {
+            let prevLogItem = log[i - 1];
+            let nextLogItem = log[i + 1];
+            if (
+              nextLogItem.action === LogStates.invalidateEnd &&
+              prevLogItem.action === LogStates.define &&
+              logItem.reactId === prevLogItem.reactId &&
+              logItem.reactId === nextLogItem.reactId
+            ) {
+              // define X <-- keep
+              // invalidte start X <-- ignore!
+              // invalidate end X <-- already ignored
+              break;
+            }
           }
           // TODO-barret check if reactId is a reactive values. If so, skip, otherwise add
           this.steps.push(logEntry.step);
@@ -298,6 +321,7 @@ class GraphAtStep {
             graph.nodes.has(logItem.reactId) &&
             graph.nodes.has(logItem.depOnReactId)
           ) {
+            // TODO-barret with filtered data, the depOnReactId could be the bridge between existing graph and new subgraph.  This edge should not be included
             return ret;
           }
           break;
@@ -461,9 +485,11 @@ class GraphAtStep {
   }
   updateFilterDatas(dataArr: Array<SomeGraphData>) {
     this.filterDatas = dataArr;
+    this.updateFinalGraph();
   }
   updateFilterDatasReset() {
     this.filterDatas = [];
+    this.updateFinalGraph();
   }
   updateSearchRegex(regex: ?RegExp) {
     this.searchRegex = regex;
@@ -597,12 +623,40 @@ class GraphAtStep {
   //   return newLog;
   // }
 
-  displayAtStep(k: number, cy: CytoscapeType) {
+  // computes a graph containing all points and edges possible,
+  //   extending the original graph at step k
+  completeGraphAtStep(k: number) {
     let graph = this.atStep(k);
+    let finalGraph = this.finalGraph;
+
+    mapValues(finalGraph.nodes).map(function(finalNode) {
+      if (!graph.nodes.has(finalNode.key)) {
+        // stomps finalGraph node value, but currently not a consequence to worry about
+        finalNode.isDisplayed = false;
+        graph.nodes.set(finalNode.key, finalNode);
+      }
+    });
+    mapValues(finalGraph.edgesUnique).map(function(finalEdge) {
+      if (!graph.edgesUnique.has(finalEdge.key)) {
+        // stomps finalGraph edge value, but currently not a consequence to worry about
+        finalEdge.isDisplayed = false;
+        graph.edgesUnique.set(finalEdge.key, finalEdge);
+      }
+    });
+
+    return graph;
+  }
+
+  displayAtStep(
+    k: number,
+    cy: CytoscapeType,
+    cytoOptions?: CytoscapeOptions = {}
+  ) {
+    let graph = this.completeGraphAtStep(k);
 
     cy.startBatch();
 
-    let cytoDur = 400;
+    // let cytoDur = 0;
     let cyNodes = cy.nodes();
     let graphCyto = graph.cytoGraph;
     let graphNodes = graphCyto.nodes();
@@ -611,7 +665,7 @@ class GraphAtStep {
 
     let onLayoutReady = [];
 
-    // enter
+    // enter visible nodes
     nodesLRB.right.map(function(graphNode: CytoscapeNode) {
       let graphNodeData = (graphNode.data(): Node);
       cy.add(graphNode)
@@ -622,7 +676,7 @@ class GraphAtStep {
       //   duration: cytoDur
       // });
     });
-    // update
+    // update visible nodes
     nodesLRB.both.map(function(cytoNode: CytoscapeNode) {
       let cyNode = (cy.$id(cytoNode.id()): CytoscapeNode);
 
@@ -664,7 +718,7 @@ class GraphAtStep {
         });
       }
     });
-    // exit
+    // exit visible nodes
     nodesLRB.left.map(function(cytoNode) {
       cy.remove(cytoNode);
       // .animate({duration: cytoDur});
@@ -673,7 +727,7 @@ class GraphAtStep {
     let cyEdges = cy.edges();
     let graphEdges = graphCyto.edges();
     let edgesLRB = cyEdges.diff(graphEdges);
-    // enter
+    // enter visible edges
     edgesLRB.right.map(function(graphEdge: CytoscapeEdge) {
       let graphEdgeData = (graphEdge.data(): Edge);
       cy.add(graphEdge)
@@ -685,7 +739,7 @@ class GraphAtStep {
       //   duration: cytoDur
       // });
     });
-    // update
+    // update visible edges
     edgesLRB.both.map(function(cytoEdge) {
       let graphEdgeData = graphEdges.$id(cytoEdge.id()).data();
       cy.$id(cytoEdge.id())
@@ -699,11 +753,12 @@ class GraphAtStep {
       //   duration: cytoDur
       // });
     });
-    // exit
+    // exit visible edges
     edgesLRB.left.map(function(cytoEdge) {
       // var graphEdge = cytoEdge.data();
       // remove the original edge
-      cy.remove(cytoEdge).animate({ duration: cytoDur });
+      cy.remove(cytoEdge);
+      //  .animate({ duration: cytoDur });
     });
 
     cy.endBatch();
@@ -730,8 +785,18 @@ class GraphAtStep {
       // TODO-barret move this method to layout
       // calculate a new layout
       // time expensive!!!
-      cy.layout(
+
+      // stop previous layout
+      if (this.cytoLayout) {
+        this.cytoLayout.stop();
+        this.cytoLayout = null;
+      }
+
+      this.cytoLayout = cy.layout(
         _assign(
+          {},
+          layoutOptions,
+          cytoOptions,
           {
             // provide elements in sorted order to make determanistic layouts
             eles: sortedElements,
@@ -741,13 +806,19 @@ class GraphAtStep {
                 fn();
               });
             },
-          },
-          layoutOptions
+          }
           // ,
           // TODO-barret Make animation a setting... it's expensive!
           // {animate: true}
         )
-      ).run();
+      );
+      // remove the layout once it's finished
+      this.cytoLayout.one("layoutstop", function(evt: any) {
+        if (this.cytoLayout) {
+          this.cytoLayout = null;
+        }
+      });
+      this.cytoLayout.run();
     }
   }
 }

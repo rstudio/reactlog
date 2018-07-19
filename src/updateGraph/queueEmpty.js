@@ -3,7 +3,9 @@
 import { rlog } from "../rlog";
 import { updateGraph } from "../updateGraph";
 
-let nextQueueEmpty = function(): boolean {
+import type { CytoscapeOptions } from "../cyto/cytoFlowType.js";
+
+let nextQueueEmpty = function(cytoOptions?: CytoscapeOptions = {}): boolean {
   let i, val;
   // traverse to the next valid step,
   //   skipping the very close queue empties (which would be skipped on next step)
@@ -12,13 +14,13 @@ let nextQueueEmpty = function(): boolean {
   for (i = 0; i < rlog.getGraph.enterExitEmpties.length; i++) {
     val = rlog.getGraph.queueEmpties[i];
     if (nextTick < val) {
-      updateGraph(val);
+      updateGraph(val, cytoOptions);
       return true;
     }
   }
   return false;
 };
-let prevQueueEmpty = function(): boolean {
+let prevQueueEmpty = function(cytoOptions?: CytoscapeOptions = {}): boolean {
   let i, val;
   // traverse to the previous valid step,
   //   skipping the very close queue empties (which would be skipped on prev step)
@@ -27,7 +29,7 @@ let prevQueueEmpty = function(): boolean {
   for (i = rlog.getGraph.queueEmpties.length - 1; i >= 0; i--) {
     val = rlog.getGraph.queueEmpties[i];
     if (prevTick > val) {
-      updateGraph(val);
+      updateGraph(val, cytoOptions);
       return true;
     }
   }

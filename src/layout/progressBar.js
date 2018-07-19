@@ -1,7 +1,7 @@
 // @flow
 
 import _has from "lodash/has";
-import $ from "jquery/dist/jquery.slim";
+import $ from "jquery";
 
 import { rlog } from "../rlog";
 import { updateGraph } from "../updateGraph";

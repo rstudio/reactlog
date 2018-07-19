@@ -7,7 +7,9 @@ import { rlog } from "../rlog";
 import { updateGraph } from "../updateGraph";
 import { hasLength } from "../graph/GraphAtStep";
 
-let nextEnterExitEmpty = function() {
+import type { CytoscapeOptions } from "../cyto/cytoFlowType";
+
+let nextEnterExitEmpty = function(cytoOptions?: CytoscapeOptions = {}) {
   let nextTick;
   if (_sortedIndexOf(rlog.getGraph.enterExitEmpties, rlog.curTick) !== -1) {
     // not at a cycle point
@@ -28,14 +30,14 @@ let nextEnterExitEmpty = function() {
   for (i = 0; i < rlog.getGraph.enterExitEmpties.length; i++) {
     val = rlog.getGraph.enterExitEmpties[i];
     if (nextTick < val) {
-      updateGraph(val);
+      updateGraph(val, cytoOptions);
       return true;
     }
   }
   return false;
 };
 
-let prevEnterExitEmpty = function() {
+let prevEnterExitEmpty = function(cytoOptions?: CytoscapeOptions = {}) {
   let prevTick;
   if (_sortedIndexOf(rlog.getGraph.enterExitEmpties, rlog.curTick) !== -1) {
     // not at a cycle point
@@ -57,22 +59,22 @@ let prevEnterExitEmpty = function() {
   for (i = rlog.getGraph.enterExitEmpties.length - 1; i >= 0; i--) {
     val = rlog.getGraph.enterExitEmpties[i];
     if (prevTick > val) {
-      updateGraph(val);
+      updateGraph(val, cytoOptions);
       return true;
     }
   }
   return false;
 };
 
-let lastEnterExitEmpty = function() {
+let lastEnterExitEmpty = function(cytoOptions?: CytoscapeOptions = {}) {
   let nextTick =
     rlog.getGraph.enterExitEmpties[rlog.getGraph.enterExitEmpties.length - 1] ||
     0;
-  updateGraph(nextTick);
+  updateGraph(nextTick, cytoOptions);
 };
-let firstEnterExitEmpty = function() {
+let firstEnterExitEmpty = function(cytoOptions?: CytoscapeOptions = {}) {
   let nextTick = rlog.getGraph.enterExitEmpties[0] || 0;
-  updateGraph(nextTick);
+  updateGraph(nextTick, cytoOptions);
 };
 
 export {

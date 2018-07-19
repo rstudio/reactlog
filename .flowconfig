@@ -12,7 +12,11 @@ src
 
 [lints]
 # all=off by default
-all=warn
+all=error
+sketchy-null=warn
+untyped-type-import=off
+unclear-type=off
+unsafe-getters-setters=off
 
 [options]
 suppress_comment=\\(.\\|\n\\)*\\$Flow

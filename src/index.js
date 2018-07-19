@@ -1,6 +1,6 @@
 // @flow
 
-import $ from "jquery/dist/jquery.slim";
+import $ from "jquery";
 import _last from "lodash/last";
 
 import { rlog } from "./rlog";
@@ -65,20 +65,10 @@ $(function() {
   $("#prevStepButton").click(updateGraph.prevStep);
   $("#nextStepButton").click(updateGraph.nextStep);
 
-  $("#legend").html(`
-    <div class="legendRow"><div class="legendColor" style="background-color: ${
-      colors.nodes.invalidating
-    }"></div><div class="legendLabel">Invalidating</div></div>
-    <div class="legendRow"><div class="legendColor" style="background-color: ${
-      colors.nodes.invalidated
-    }"></div><div class="legendLabel">Invalidated</div></div>
-    <div class="legendRow"><div class="legendColor" style="background-color: ${
-      colors.nodes.calculating
-    }"></div><div class="legendLabel">Calculating</div></div>
-    <div class="legendRow"><div class="legendColor" style="background-color: ${
-      colors.nodes.ready
-    }"></div><div class="legendLabel">Ready</div></div>
-  `);
+  $("#legendInvalidating").css("background-color", colors.nodes.invalidating);
+  $("#legendInvalidated").css("background-color", colors.nodes.invalidated);
+  $("#legendCalculating").css("background-color", colors.nodes.calculating);
+  $("#legendReady").css("background-color", colors.nodes.ready);
 
   progressBar.setContainers($("#timeline"), $("#timeline-fill"));
   let timelineBackground = $("#timeline-bg");
@@ -105,7 +95,13 @@ $(function() {
       3
     );
   }
-  logEntry.setContainer($("#instructions"));
+  logEntry.setContainers(
+    $("#eventTime"),
+    $("#eventSession"),
+    $("#eventStep"),
+    $("#eventStatus"),
+    $("#instructions")
+  );
 
   $("#search").on("input", function(e) {
     updateGraph.withSearchString($(e.target).val());
@@ -121,11 +117,24 @@ $(function() {
   if (rlog.getGraph.marks.length > 0) {
     let lastMark = _last(rlog.getGraph.marks);
     // start the graph at the first enter/exit or first empty queue
-    updateGraph.atTick(lastMark);
+    updateGraph.atTick(lastMark, {
+      fit: true,
+      stop: function(evt) {
+        console.log(evt, "layoutstop", rlog.cyto.zoom());
+        let zoomLevel = rlog.cyto.zoom();
+        let logZoomLevel = Math.log2(zoomLevel);
+
+        // zoom out twice as far
+        rlog.cyto.minZoom(Math.pow(2, logZoomLevel - 1));
+
+        // // zoom in to double the size
+        // rlog.cyto.maxZoom(Math.pow(2, logZoomLevel + 3)); // zoom in
+      },
+    });
   } else {
     // start the graph at the first enter/exit or first empty queue
     // TODO-barret should start at nextEnterExitEmpty,
     // updateGraph.nextEnterExitEmpty()
-    updateGraph.nextQueueEmpty();
+    updateGraph.nextQueueEmpty({ fit: true });
   }
 });

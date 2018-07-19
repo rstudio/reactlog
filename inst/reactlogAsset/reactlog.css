@@ -228,6 +228,8 @@ text {
 #eventStatus {
   margin-left: 5px;
   flex-grow: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 #eventTimeSession {
   margin-left: 5px;

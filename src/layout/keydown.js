@@ -1,6 +1,6 @@
 // @flow
 
-import $ from "jquery/dist/jquery.slim";
+import $ from "jquery";
 import _defer from "lodash/defer";
 
 import console from "../utils/console";
@@ -10,13 +10,15 @@ import { hasLength } from "../graph/GraphAtStep";
 import { rlog } from "../rlog";
 
 let onKeydown = function(e: JQueryInputEventObject): void {
-  console.log("e: ", e);
+  // console.log("keydown: ", e);
   let target = $(e.target).get(0);
   if (target.id && target.id === "search") {
     // is in search text box
     if (e.which === 27) {
+      // esc hit. remove focus from search box
       target.blur();
     } else {
+      // let act like normal
       // if (e.which == 13) { // enter
       // }
     }
@@ -93,18 +95,39 @@ let onKeydown = function(e: JQueryInputEventObject): void {
 
     // remove hover
     // remove sticky
+    //   if sicky == filter
+    //     remove sticky and filter
     // remove filter
     if (rlog.getGraph.hoverData) {
       console.log("reset hover");
       updateGraph.hoverDataReset();
+      return;
     } else if (hasLength(rlog.getGraph.stickyDatas)) {
       console.log("reset sticky");
+      let sd = rlog.getGraph.stickyDatas;
+      let fd = rlog.getGraph.filterDatas;
+      if (hasLength(fd)) {
+        if (sd.length === fd.length) {
+          let sdReactIdStr = sd.map(x => x.reactId).join(", ");
+          let fdReactIdStr = fd.map(x => x.reactId).join(", ");
+          if (sdReactIdStr === fdReactIdStr) {
+            // the filter data is the same as the sticky data
+            // remove both
+            rlog.getGraph.updateStickyDatasReset();
+            rlog.getGraph.updateFilterDatasReset();
+            updateGraph.updateGraph(rlog.curTick, { fit: true });
+            return;
+          }
+        }
+      }
       updateGraph.stickyDatasReset();
+      return;
     } else if (hasLength(rlog.getGraph.filterDatas)) {
       console.log("reset filter");
       // must be in filter... so exit filter
       $("#search").val("");
       updateGraph.searchRegexReset();
+      return;
     }
     return;
   }

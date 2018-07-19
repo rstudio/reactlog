@@ -10,8 +10,8 @@
     "flow-stop": "flow stop",
     "lint": "./bin/lint_file.sh",
     "fix": "./bin/clean_rlog_file.sh",
-    "fix-all": "yarn fix src/**/*.js",
-    "lint-all": "yarn lint src/**/*.js",
+    "fix-all": "yarn fix src/*.js src/**/*.js",
+    "lint-all": "yarn lint src/*.js src/**/*.js",
     "build": "yarn lint-all && yarn build-only",
     "build-only": "grunt",
     "watch": "yarn lint-all && grunt webpackSetWatch default",
@@ -21,6 +21,11 @@
   },
   "lint-staged": {
     ".flowconfig": [
+      "yarn flow-report-and-echo"
+    ],
+    "src/*.js": [
+      "yarn fix",
+      "git add",
       "yarn flow-report-and-echo"
     ],
     "src/**/*.js": [
@@ -53,8 +58,7 @@
     "duplicate-package-checker-webpack-plugin": "^3.0.0",
     "eslint": "^4.19.1",
     "eslint-plugin-flowtype": "2.47.1",
-    "flow": "^0.2.3",
-    "flow-bin": "^0.74.0",
+    "flow-bin": "^0.76.0",
     "flow-coverage-report": "^0.5.0",
     "flow-typed": "^2.4.0",
     "grunt": "^1.0.3",

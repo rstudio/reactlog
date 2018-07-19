@@ -23,6 +23,7 @@ class Node {
   valueChangedStatus: ActiveStateStatus;
   enterStatus: ActiveStateStatus;
   invalidateStatus: ActiveStateStatus;
+  isDisplayed: boolean;
 
   constructor(data: NodeInputType) {
     if (typeof data.reactId === "undefined")
@@ -44,6 +45,7 @@ class Node {
     this.statusArr = new StatusArr(data.statusArr || []);
     this.value = data.value || null;
     this.hoverStatus = data.hoverStatus || new HoverStatus();
+    this.isDisplayed = data.isDisplayed || true;
 
     this.valueChangedStatus =
       data.valueChangedStatus || new ActiveStateStatus();
@@ -53,7 +55,18 @@ class Node {
 
     this.enterStatus = data.enterStatus || new ActiveStateStatus();
 
-    this.invalidateStatus = data.invalidateStatus || new ActiveStateStatus();
+    if (data.invalidateStatus) {
+      this.invalidateStatus = data.invalidateStatus;
+    } else {
+      this.invalidateStatus = new ActiveStateStatus();
+      // init state for observer and obervable is to be invalidated
+      switch (this.type) {
+        case "observable":
+        case "observer":
+          this.invalidateStatus.toFinished();
+          break;
+      }
+    }
   }
   get id(): NodeIdType {
     return this.reactId.replace(/\$/g, "_");
@@ -133,6 +146,7 @@ class Node {
 
     if (this.isFrozen) classes.push("nodeFrozen");
 
+    if (!this.isDisplayed) classes.push("nodeHidden");
     return classes.join(" ");
   }
   get cytoData(): CytoData {
@@ -161,6 +175,7 @@ type NodeInputType = {
   valueChangedStatus?: ActiveStateStatus,
   enterStatus?: ActiveStateStatus,
   invalidateStatus?: ActiveStateStatus,
+  isDisplayed?: boolean,
 };
 
 export { Node };

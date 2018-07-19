@@ -1,6 +1,6 @@
 // @flow
 
-import cytoscape from "cytoscape";
+import cytoscape from "cytoscape"; // flowlint-line untyped-import:off
 
 import * as cytoOn from "./cytoOn";
 import graphStyles, { style } from "./cytoStyle";
@@ -15,6 +15,9 @@ let withContainer = function(container: JQuery) {
     boxSelectionEnabled: false,
     autounselectify: true,
     layout: layoutOptions,
+    wheelSensitivity: 0.04,
+    // minZoom: 0.5,
+    // maxZoom: 1.5,
     style: [
       // order of the style definitions are how styles are applied
       style(cytoClasses.node, graphStyles.node.default),
@@ -59,6 +62,8 @@ let withContainer = function(container: JQuery) {
       style(cytoClasses.edgeSelected, graphStyles.selected.edge),
       style(cytoClasses.edgeGhostSelected, graphStyles.selected.ghostEdge),
       style(cytoClasses.nodeFrozen, graphStyles.node.frozen),
+      style(cytoClasses.nodeHidden, graphStyles.hidden.node),
+      style(cytoClasses.edgeHidden, graphStyles.hidden.edge),
     ],
   });
 
