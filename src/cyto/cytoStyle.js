@@ -167,6 +167,21 @@ let graphStyles = {
     },
   },
   selected: {
+    startBig: {
+      "border-width": 2,
+      width: 50 * 0.75 * pulseScale,
+      height: 30 * pulseScale,
+    },
+    middleBig: {
+      "border-width": 2,
+      width: 50 * pulseScale,
+      height: 30 * pulseScale,
+    },
+    endBig: {
+      "border-width": 2,
+      width: 50 * 0.75 * pulseScale,
+      height: 30 * pulseScale,
+    },
     node: {
       "border-width": 4,
     },

@@ -17,7 +17,8 @@
     "watch": "yarn lint-all && grunt webpackSetWatch default",
     "update-license": "node ./bin/update-license.js > LICENSE.note",
     "postinstall": "./bin/postinstall.sh",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "git_add_map": "git add inst/reactlogAsset/reactlog.js.map && git add"
   },
   "lint-staged": {
     ".flowconfig": [
@@ -25,12 +26,12 @@
     ],
     "src/*.js": [
       "yarn fix",
-      "git add inst/reactlogAsset/reactlog.js.map; git add",
+      "yarn git_add_map",
       "yarn flow-report-and-echo"
     ],
     "src/**/*.js": [
       "yarn fix",
-      "git add",
+      "yarn git_add_map",
       "yarn flow-report-and-echo"
     ]
   },
