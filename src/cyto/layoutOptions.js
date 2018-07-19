@@ -8,6 +8,10 @@ import type { CytoscapeElement, CytoscapeLibrary } from "./cytoFlowType";
 (cytoscape: CytoscapeLibrary).use(dagre);
 
 let layoutOptions = {
+  // whether to fit to viewport
+  //   do not want to fit to viewport as user may have zoomed/panned
+  fit: false,
+
   name: "dagre",
   rankDir: "LR", // 'TB' for top to bottom flow, 'LR' for left to right,
   rankSep: 150, // the separation between node columns
