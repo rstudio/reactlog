@@ -115,7 +115,7 @@ let onKeydown = function(e: JQueryInputEventObject): void {
             // remove both
             rlog.getGraph.updateStickyDatasReset();
             rlog.getGraph.updateFilterDatasReset();
-            updateGraph.updateGraph();
+            updateGraph.updateGraph(rlog.curTick, { fit: true });
             return;
           }
         }

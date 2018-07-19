@@ -117,11 +117,11 @@ $(function() {
   if (rlog.getGraph.marks.length > 0) {
     let lastMark = _last(rlog.getGraph.marks);
     // start the graph at the first enter/exit or first empty queue
-    updateGraph.atTick(lastMark);
+    updateGraph.atTick(lastMark, { fit: true });
   } else {
     // start the graph at the first enter/exit or first empty queue
     // TODO-barret should start at nextEnterExitEmpty,
     // updateGraph.nextEnterExitEmpty()
-    updateGraph.nextQueueEmpty();
+    updateGraph.nextQueueEmpty({ fit: true });
   }
 });

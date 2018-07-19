@@ -33,6 +33,8 @@ import type {
   CytoscapeEdge,
 } from "../cyto/cytoFlowType";
 
+import type { CytoscapeOptions } from "../cyto/cytoFlowType";
+
 // // TODO-barret use log states
 // import logStates from "../log/logStates"
 
@@ -645,7 +647,11 @@ class GraphAtStep {
     return graph;
   }
 
-  displayAtStep(k: number, cy: CytoscapeType) {
+  displayAtStep(
+    k: number,
+    cy: CytoscapeType,
+    cytoOptions?: CytoscapeOptions = {}
+  ) {
     let graph = this.completeGraphAtStep(k);
 
     cy.startBatch();
@@ -788,6 +794,9 @@ class GraphAtStep {
 
       this.cytoLayout = cy.layout(
         _assign(
+          {},
+          layoutOptions,
+          cytoOptions,
           {
             // provide elements in sorted order to make determanistic layouts
             eles: sortedElements,
@@ -797,8 +806,7 @@ class GraphAtStep {
                 fn();
               });
             },
-          },
-          layoutOptions
+          }
           // ,
           // TODO-barret Make animation a setting... it's expensive!
           // {animate: true}
