@@ -25,7 +25,7 @@
     ],
     "src/*.js": [
       "yarn fix",
-      "git add",
+      "git add inst/reactlogAsset/reactlog.js.map; git add",
       "yarn flow-report-and-echo"
     ],
     "src/**/*.js": [
