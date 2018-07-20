@@ -58,6 +58,10 @@ let withContainer = function(container: JQuery) {
         graphStyles.ghostEdge.hoverNotFocusedButSticky
       ),
       style(cytoClasses.stickyNotFocused, graphStyles.focus.stickyNotFocused),
+      style(cytoClasses.nodeFiltered, graphStyles.filtered.node),
+      style(cytoClasses.nodeFilteredStart, graphStyles.filtered.start),
+      style(cytoClasses.nodeFilteredMiddle, graphStyles.filtered.middle),
+      style(cytoClasses.nodeFilteredEnd, graphStyles.filtered.end),
       style(cytoClasses.nodeSelected, graphStyles.selected.node),
       style(cytoClasses.edgeSelected, graphStyles.selected.edge),
       style(cytoClasses.edgeGhostSelected, graphStyles.selected.ghostEdge),

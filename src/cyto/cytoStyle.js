@@ -10,11 +10,25 @@ let styleHelper = function(selector: string, style: Object) {
 };
 
 let nodeShapes = {
-  start: "-1 1 0.33333333333 1 1 0 0.33333333333 -1 -1 -1",
-  middle: "-1 1 0.5 1 1 0 0.5 -1 -1 -1 -0.5 0",
-  end: "-1 1 1 1 1 -1 -1 -1 -0.33333333333 0",
+  start: {
+    shape: "-1 1 0.33333333333 1 1 0 0.33333333333 -1 -1 -1",
+    width: 50 * 0.75,
+    height: 30,
+  },
+  middle: {
+    shape: "-1 1 0.5 1 1 0 0.5 -1 -1 -1 -0.5 0",
+    width: 50,
+    height: 30,
+  },
+  end: {
+    shape: "-1 1 1 1 1 -1 -1 -1 -0.33333333333 0",
+    width: 50 * 0.75,
+    height: 30,
+  },
 };
+
 let pulseScale = 1 + 1 / 16;
+let selectedScale = 2;
 
 let graphStyles = {
   node: {
@@ -29,40 +43,40 @@ let graphStyles = {
       "border-width": 1,
       "background-color": colors.nodes.ready,
       "text-wrap": "ellipsis",
-      "text-max-width": "200px",
+      "text-max-width": "400px",
     },
     start: {
       shape: "polygon",
-      "shape-polygon-points": nodeShapes.start,
-      width: 50 * 0.75,
-      height: 30,
+      "shape-polygon-points": nodeShapes.start.shape,
+      width: nodeShapes.start.width,
+      height: nodeShapes.start.height,
     },
     startBig: {
       "border-width": 2,
-      width: 50 * 0.75 * pulseScale,
-      height: 30 * pulseScale,
+      width: nodeShapes.start.width * pulseScale,
+      height: nodeShapes.start.height * pulseScale,
     },
     middle: {
       shape: "polygon",
-      "shape-polygon-points": nodeShapes.middle,
-      width: 50,
-      height: 30,
+      "shape-polygon-points": nodeShapes.middle.shape,
+      width: nodeShapes.middle.width,
+      height: nodeShapes.middle.height,
     },
     middleBig: {
       "border-width": 2,
-      width: 50 * pulseScale,
-      height: 30 * pulseScale,
+      width: nodeShapes.middle.width * pulseScale,
+      height: nodeShapes.middle.height * pulseScale,
     },
     end: {
       shape: "polygon",
-      "shape-polygon-points": nodeShapes.end,
-      width: 50 * 0.75,
-      height: 30,
+      "shape-polygon-points": nodeShapes.end.shape,
+      width: nodeShapes.end.width,
+      height: nodeShapes.end.height,
     },
     endBig: {
       "border-width": 2,
-      width: 50 * 0.75 * pulseScale,
-      height: 30 * pulseScale,
+      width: nodeShapes.end.width * pulseScale,
+      height: nodeShapes.end.height * pulseScale,
     },
     enter: {
       // "border-width": 2,
@@ -171,11 +185,29 @@ let graphStyles = {
       "border-width": 4,
     },
     edge: {
-      width: 10,
+      width: 10 * 2,
     },
     ghostEdge: {
-      width: 6,
+      width: 6 * 2,
       "arrow-scale": 0.5,
+    },
+  },
+  filtered: {
+    node: {
+      "border-width": 3,
+      "font-size": "30",
+    },
+    start: {
+      width: nodeShapes.start.width * selectedScale,
+      height: nodeShapes.start.height * selectedScale,
+    },
+    middle: {
+      width: nodeShapes.middle.width * selectedScale,
+      height: nodeShapes.middle.height * selectedScale,
+    },
+    end: {
+      width: nodeShapes.end.width * selectedScale,
+      height: nodeShapes.end.height * selectedScale,
     },
   },
   hidden: {

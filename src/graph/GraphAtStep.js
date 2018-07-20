@@ -95,7 +95,7 @@ class GraphAtStep {
   // }
 
   updateFinalGraph() {
-    this.finalGraph = this.atStep(this.log.length);
+    this.finalGraph = this.atStep(this.log.length, false);
     // this.finalCyto = this.finalGraph.cytoGraph;
   }
 
@@ -368,7 +368,7 @@ class GraphAtStep {
     return this.steps[0];
   }
 
-  atStep(k: number): Graph {
+  atStep(k: number, updateFinal?: boolean = true): Graph {
     let kVal = Math.max(1, Math.min(k, this.log.length));
     let i, graph;
     // if (kVal >= this.cacheStep) {
@@ -386,7 +386,7 @@ class GraphAtStep {
         graph.familyTreeNodeIds(this.hoverData),
         "state"
       );
-      graph.highlightSelected(this.hoverData);
+      graph.highlightSelected(this.hoverData, "selected");
     }
     // if any sticky...
     if (hasLength(this.stickyDatas)) {
@@ -401,7 +401,7 @@ class GraphAtStep {
         let stickyTree = graph.familyTreeNodeIdsForDatas(this.stickyDatas);
         graph.hoverStatusOnNodeIds(stickyTree, "sticky");
         this.stickyDatas.map(function(data) {
-          graph.highlightSelected(data);
+          graph.highlightSelected(data, "selected");
         });
         if (!this.hoverData) {
           // if sticky data no hover data... make the sticky data hover!
@@ -424,16 +424,22 @@ class GraphAtStep {
       if (matchedNodes.length === 0) {
         // TODO-barret warn of no matches
         console.log("no matches!");
-        this.updateFilterDatasReset();
+        graph.hoverStatusOnNodeIds([], "filtered");
+        this.updateFilterDatasReset(updateFinal);
       } else {
         // for some reason, an array of node does not work with an array of (node, edge, or ghostedge)
         this.updateFilterDatas(
-          ((matchedNodes: Array<Object>): Array<SomeGraphData>)
+          ((matchedNodes: Array<Object>): Array<SomeGraphData>),
+          updateFinal
         );
         // filter on regex
         graph.filterGraphOnNodeIds(
           graph.familyTreeNodeIdsForDatas(this.filterDatas)
         );
+        matchedNodes.map(function(data) {
+          graph.highlightSelected(data, "filtered");
+        });
+        // graph.hoverStatusOnNodeIds(matchedNodes.map((x) => x.reactId), "filtered");
       }
     } else {
       // if any filtering...
@@ -441,6 +447,10 @@ class GraphAtStep {
         graph.filterGraphOnNodeIds(
           graph.familyTreeNodeIdsForDatas(this.filterDatas)
         );
+        // graph.hoverStatusOnNodeIds(this.filterDatas.map((x) => x.reactId), "filtered");
+        this.filterDatas.map(function(data) {
+          graph.highlightSelected(data, "filtered");
+        });
       }
     }
 
@@ -483,20 +493,25 @@ class GraphAtStep {
   updateStickyDatasReset() {
     this.stickyDatas = [];
   }
-  updateFilterDatas(dataArr: Array<SomeGraphData>) {
+  updateFilterDatas(
+    dataArr: Array<SomeGraphData>,
+    updateFinal?: boolean = true
+  ) {
     this.filterDatas = dataArr;
-    this.updateFinalGraph();
+    if (updateFinal) this.updateFinalGraph();
   }
-  updateFilterDatasReset() {
+  updateFilterDatasReset(updateFinal?: boolean = true) {
     this.filterDatas = [];
-    this.updateFinalGraph();
+    if (updateFinal) this.updateFinalGraph();
   }
-  updateSearchRegex(regex: ?RegExp) {
+  updateSearchRegex(regex: ?RegExp, updateFinal?: boolean = true) {
     this.searchRegex = regex;
+    if (updateFinal) this.updateFinalGraph();
   }
-  updateSearchRegexReset() {
-    this.updateFilterDatasReset();
+  updateSearchRegexReset(updateFinal?: boolean = true) {
+    this.updateFilterDatasReset(false);
     this.searchRegex = null;
+    if (updateFinal) this.updateFinalGraph();
   }
   // // set the value outright
   // updateHoverData(hoverData) {

@@ -33,6 +33,11 @@ let classes = {
   edgeGhostHoverNotFocusedButSticky: ".edgeGhostHoverNotFocusedButSticky",
   stickyNotFocused: ".stickyNotFocused",
 
+  nodeFiltered: ".nodeFiltered",
+  nodeFilteredStart: ".nodeFilteredStart",
+  nodeFilteredMiddle: ".nodeFilteredMiddle",
+  nodeFilteredEnd: ".nodeFilteredEnd",
+
   nodeSelected: ".nodeSelected",
   edgeSelected: ".edgeSelected",
   edgeGhostSelected: ".edgeGhostSelected",

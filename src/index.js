@@ -100,7 +100,7 @@ $(function() {
     $("#eventSession"),
     $("#eventStep"),
     $("#eventStatus"),
-    $("#instructions")
+    $("#logEntry")
   );
 
   $("#search").on("input", function(e) {

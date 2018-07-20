@@ -142,7 +142,32 @@ class Node {
         }
         break;
     }
-    if (this.hoverStatus.selected) classes.push("nodeSelected");
+    if (this.hoverStatus.isSelected()) {
+      classes.push("nodeSelected");
+      switch (this.type) {
+        case "observable":
+          classes.push("nodeSelectedMiddle");
+          break;
+        case "observer":
+          classes.push("nodeSelectedEnd");
+          break;
+        default:
+          classes.push("nodeSelectedStart");
+      }
+    }
+    if (this.hoverStatus.isFiltered()) {
+      classes.push("nodeFiltered");
+      switch (this.type) {
+        case "observable":
+          classes.push("nodeFilteredMiddle");
+          break;
+        case "observer":
+          classes.push("nodeFilteredEnd");
+          break;
+        default:
+          classes.push("nodeFilteredStart");
+      }
+    }
 
     if (this.isFrozen) classes.push("nodeFrozen");
 
