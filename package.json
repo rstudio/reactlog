@@ -1,9 +1,6 @@
 {
   "private": true,
   "scripts": {
-    "zbuild": "grunt",
-    "zclean": "grunt clean",
-    "zwatch": "grunt watch",
     "flow-report": "flow-coverage-report",
     "flow-report-and-echo": "yarn flow-report && echo 'done flow report'",
     "flow-status": "flow status",
