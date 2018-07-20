@@ -386,7 +386,7 @@ class GraphAtStep {
         graph.familyTreeNodeIds(this.hoverData),
         "state"
       );
-      graph.highlightSelected(this.hoverData);
+      graph.highlightSelected(this.hoverData, "selected");
     }
     // if any sticky...
     if (hasLength(this.stickyDatas)) {
@@ -401,7 +401,7 @@ class GraphAtStep {
         let stickyTree = graph.familyTreeNodeIdsForDatas(this.stickyDatas);
         graph.hoverStatusOnNodeIds(stickyTree, "sticky");
         this.stickyDatas.map(function(data) {
-          graph.highlightSelected(data);
+          graph.highlightSelected(data, "selected");
         });
         if (!this.hoverData) {
           // if sticky data no hover data... make the sticky data hover!
@@ -424,6 +424,7 @@ class GraphAtStep {
       if (matchedNodes.length === 0) {
         // TODO-barret warn of no matches
         console.log("no matches!");
+        graph.hoverStatusOnNodeIds([], "filtered");
         this.updateFilterDatasReset(updateFinal);
       } else {
         // for some reason, an array of node does not work with an array of (node, edge, or ghostedge)
@@ -435,6 +436,10 @@ class GraphAtStep {
         graph.filterGraphOnNodeIds(
           graph.familyTreeNodeIdsForDatas(this.filterDatas)
         );
+        matchedNodes.map(function(data) {
+          graph.highlightSelected(data, "filtered");
+        });
+        // graph.hoverStatusOnNodeIds(matchedNodes.map((x) => x.reactId), "filtered");
       }
     } else {
       // if any filtering...
@@ -442,6 +447,10 @@ class GraphAtStep {
         graph.filterGraphOnNodeIds(
           graph.familyTreeNodeIdsForDatas(this.filterDatas)
         );
+        // graph.hoverStatusOnNodeIds(this.filterDatas.map((x) => x.reactId), "filtered");
+        this.filterDatas.map(function(data) {
+          graph.highlightSelected(data, "filtered");
+        });
       }
     }
 

@@ -113,19 +113,20 @@ class Graph {
     }
   }
 
-  highlightSelected(data: ?SomeGraphData) {
+  highlightSelected(data: ?SomeGraphData, hoverKey: "selected" | "filtered") {
     if (!data) return;
+    let onFn = HoverStatus.onFn(hoverKey);
     if (data instanceof Node) {
       let node = this.nodes.get(data.key);
       if (typeof node !== "undefined") {
-        node.hoverStatus.selected = HoverStatus.valSelected;
+        onFn(node);
         return;
       }
     } else if (isEdgeLike(data)) {
       if (data instanceof Edge) {
         let edge = this.edges.get(data.key);
         if (typeof edge !== "undefined") {
-          edge.hoverStatus.selected = HoverStatus.valSelected;
+          onFn(edge);
           return;
         }
       }
@@ -135,7 +136,7 @@ class Graph {
       let depOnReactId = data.depOnReactId;
       let selectMatchingEdges = function(edge) {
         if (edge.reactId === reactId && edge.depOnReactId === depOnReactId) {
-          edge.hoverStatus.selected = HoverStatus.valSelected;
+          onFn(edge);
         }
       };
       mapValues(this.edgesUnique).map(selectMatchingEdges);
@@ -295,30 +296,11 @@ class Graph {
 
   hoverStatusOnNodeIds(
     nodeIds: Array<ReactIdType>,
-    hoverKey: "state" | "sticky"
+    hoverKey: "state" | "sticky" | "selected" | "filtered"
   ) {
     let nodeSet = new Set(nodeIds);
-
-    let onFn = function(x: Node | Edge | GhostEdge) {
-      switch (hoverKey) {
-        case HoverStatus.keyState:
-          x.hoverStatus.toFocused();
-          break;
-        case HoverStatus.keySticky:
-          x.hoverStatus.toSticky();
-          break;
-      }
-    };
-    let offFn = function(x: Node | Edge | GhostEdge) {
-      switch (hoverKey) {
-        case HoverStatus.keyState:
-          x.hoverStatus.toNotFocused();
-          break;
-        case HoverStatus.keySticky:
-          x.hoverStatus.toNotSticky();
-          break;
-      }
-    };
+    let onFn = HoverStatus.onFn(hoverKey);
+    let offFn = HoverStatus.offFn(hoverKey);
 
     // highlight nodes
     mapValues(this.nodes).map(function(node) {
