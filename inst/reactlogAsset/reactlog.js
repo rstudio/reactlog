@@ -80193,9 +80193,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           }
         }
 
-        this.stepsVisible = [].concat(this.steps).concat(this.marks)
-        // .concat(this.enterExitEmpties)
-        .concat(this.queueEmpties).sort(function (a, b) {
+        this.stepsVisible = [].concat(this.steps).concat(this.marks).concat(this.queueEmpties).sort(function (a, b) {
           return a - b;
         });
 
@@ -81713,6 +81711,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         var smallerStepValVisible = (0, _sortedIndex3.default)(_rlog.rlog.getGraph.stepsVisible, smallerStepVal);
         var smallerPos = (0, _sortedIndex3.default)(_rlog.rlog.getGraph.steps, smallerStepVal);
         var halfStepPos = (0, _sortedIndex3.default)(_rlog.rlog.getGraph.steps, curEntry.step);
+        // display number of steps away from lower, visible step
         var diffSteps = halfStepPos - smallerPos;
         stepDisplayVal = smallerStepValVisible + 1 + "_" + diffSteps;
       }

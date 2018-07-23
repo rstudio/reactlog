@@ -58,10 +58,28 @@ $(function() {
   rlog.graph = rlog.getGraph.atStep(rlog.getGraph.maxStep);
   console.log(rlog.graph);
 
-  $("#prevFlushButton").click(updateGraph.prevQueueEmpty);
-  $("#nextFlushButton").click(updateGraph.nextQueueEmpty);
-  $("#prevCycleButton").click(updateGraph.prevEnterExitEmpty);
-  $("#nextCycleButton").click(updateGraph.nextEnterExitEmpty);
+  $("#prevStartButton").click(() => {
+    updateGraph.firstStep();
+  });
+  $("#nextEndButton").click(() => {
+    updateGraph.lastStep();
+  });
+  $("#prevFlushButton").click(() => {
+    updateGraph.prevQueueEmpty() ||
+      updateGraph.prevEnterExitEmpty() ||
+      updateGraph.prevStep();
+  });
+  $("#nextFlushButton").click(() => {
+    updateGraph.nextQueueEmpty() ||
+      updateGraph.nextEnterExitEmpty() ||
+      updateGraph.nextStep();
+  });
+  $("#prevCycleButton").click(() => {
+    updateGraph.prevEnterExitEmpty() || updateGraph.prevStep();
+  });
+  $("#nextCycleButton").click(() => {
+    updateGraph.nextEnterExitEmpty() || updateGraph.nextStep();
+  });
   $("#prevStepButton").click(updateGraph.prevStep);
   $("#nextStepButton").click(updateGraph.nextStep);
 
@@ -76,14 +94,12 @@ $(function() {
     timelineBackground,
     colors.nodes.ready,
     rlog.getGraph.enterExitEmpties,
-    rlog.log.length,
     3
   );
   progressBar.addTimelineTicks(
     timelineBackground,
     colors.nodes.ready,
     rlog.getGraph.queueEmpties,
-    rlog.log.length,
     0
   );
   if (rlog.getGraph.marks.length > 0) {
@@ -91,7 +107,6 @@ $(function() {
       timelineBackground,
       colors.progressBar.mark,
       rlog.getGraph.marks,
-      rlog.log.length,
       3
     );
   }
