@@ -220,8 +220,7 @@ text {
   justify-content: center;
   align-items: center;
   align-content: center;
-  min-width: 180px
-
+  min-width: 240px;
 }
 #eventStep {
   margin-left: 10px;
