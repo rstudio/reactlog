@@ -1,5 +1,8 @@
 // @flow
 
+import _sortedIndex from "lodash/sortedIndex";
+import _sortedIndexOf from "lodash/sortedIndexOf";
+
 import { rlog } from "../rlog";
 
 import { LogStates } from "../log/logStates";
@@ -42,7 +45,33 @@ let updateLogEntry = function(): void {
     containers.session.text("");
   }
 
-  containers.step.text(`Step: ${curEntry.step}`);
+  let stepDisplayVal = _sortedIndex(rlog.getGraph.stepsVisible, curEntry.step);
+  if (_sortedIndexOf(rlog.getGraph.stepsVisible, curEntry.step) === -1) {
+    // does not contain the step. display how many steps advanced from last visible step
+
+    if (stepDisplayVal === 0) {
+      // occurs before any visible step
+      // let halfStepPos = _sortedIndex(rlog.getGraph.steps, curEntry.step);
+      stepDisplayVal = `${0}_${curEntry.step}`;
+    } else {
+      // get visible step location
+      let smallerStepVal = rlog.getGraph.stepsVisible[stepDisplayVal - 1];
+      let smallerStepValVisible = _sortedIndex(
+        rlog.getGraph.stepsVisible,
+        smallerStepVal
+      );
+      let smallerPos = _sortedIndex(rlog.getGraph.steps, smallerStepVal);
+      let halfStepPos = _sortedIndex(rlog.getGraph.steps, curEntry.step);
+
+      // display number of steps away from lower, visible step
+      let diffSteps = halfStepPos - smallerPos;
+      stepDisplayVal = `${smallerStepValVisible + 1}_${diffSteps}`;
+    }
+  } else {
+    // 1 start counting (not 0)
+    stepDisplayVal = stepDisplayVal + 1;
+  }
+  containers.step.text(`Step: ${stepDisplayVal}`);
   containers.status.text(statusForEntry(curEntry));
 
   containers.container.text(JSON.stringify(rlog.log[rlog.curTick], null, "  "));
@@ -147,7 +176,7 @@ let statusForEntry = function(entry: LogEntryAnyType): string {
       return `Marked step`;
     }
     case LogStates.queueEmpty: {
-      return `Shiny flushed`;
+      return `Shiny App idle`;
     }
     case LogStates.thaw: {
       let thawEntry = ((entry: Object): LogEntryThawType);

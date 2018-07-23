@@ -81704,13 +81704,15 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
       if (stepDisplayVal === 0) {
         // occurs before any visible step
-        throw "asdfsadf";
+        // let halfStepPos = _sortedIndex(rlog.getGraph.steps, curEntry.step);
+        stepDisplayVal = 0 + "_" + curEntry.step;
       } else {
         // get visible step location
         var smallerStepVal = _rlog.rlog.getGraph.stepsVisible[stepDisplayVal - 1];
         var smallerStepValVisible = (0, _sortedIndex3.default)(_rlog.rlog.getGraph.stepsVisible, smallerStepVal);
         var smallerPos = (0, _sortedIndex3.default)(_rlog.rlog.getGraph.steps, smallerStepVal);
         var halfStepPos = (0, _sortedIndex3.default)(_rlog.rlog.getGraph.steps, curEntry.step);
+
         // display number of steps away from lower, visible step
         var diffSteps = halfStepPos - smallerPos;
         stepDisplayVal = smallerStepValVisible + 1 + "_" + diffSteps;
@@ -82839,10 +82841,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   });
   exports.prevTick = exports.nextTick = undefined;
   var nextTick = function nextTick() {
+    if (_rlog.rlog.curTick >= _rlog.rlog.log.length) return false;
     return (0, _updateGraph.updateGraph)(_rlog.rlog.curTick + 1);
   };
 
   var prevTick = function prevTick() {
+    if (_rlog.rlog.curTick <= 0) return false;
     return (0, _updateGraph.updateGraph)(_rlog.rlog.curTick - 1);
   };
 
