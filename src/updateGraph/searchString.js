@@ -6,18 +6,18 @@ import * as updateGraph from "./hoverStickyFilterSearch";
 // when str length < 3 do not search
 // when str length = 0, reset filter
 // when str length >= 3, set filter to all elements that match
-let withSearchString = function(str: string): void {
+let withSearchString = function(str: string) {
   // if less than three chars...
   if (str.length < 3) {
     if (str.length === 0) {
       // TODO-barret show warning of resetting
       console.log("resetting log!");
-      updateGraph.searchRegexReset();
+      return updateGraph.searchRegexReset();
     } else {
       // TODO-barret show warning of not enough characters
       console.log("do nothing");
+      return false;
     }
-    return;
   }
   // escape the string
   // https://stackoverflow.com/a/17606289
@@ -25,8 +25,7 @@ let withSearchString = function(str: string): void {
     return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // $& means the whole matched string
   };
   let searchRegex = new RegExp(escapeRegExp(str));
-  updateGraph.searchRegex(searchRegex);
-  return;
+  return updateGraph.searchRegex(searchRegex);
 };
 
 export { withSearchString };

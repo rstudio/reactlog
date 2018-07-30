@@ -36,14 +36,14 @@ let prevQueueEmpty = function(cytoOptions?: CytoscapeOptions = {}): boolean {
   return false;
 };
 
-let lastQueueEmpty = function(): void {
+let lastQueueEmpty = function() {
   let nextTick =
     rlog.getGraph.queueEmpties[rlog.getGraph.queueEmpties.length - 1] || 0;
-  updateGraph(nextTick);
+  return updateGraph(nextTick);
 };
-let firstQueueEmpty = function(): void {
+let firstQueueEmpty = function() {
   let nextTick = rlog.getGraph.queueEmpties[0] || 0;
-  updateGraph(nextTick);
+  return updateGraph(nextTick);
 };
 
 export { nextQueueEmpty, prevQueueEmpty, lastQueueEmpty, firstQueueEmpty };

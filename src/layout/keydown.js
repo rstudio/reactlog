@@ -80,13 +80,13 @@ let onKeydown = function(e: JQueryInputEventObject): void {
   if (e.which === 35) {
     // end
     // Seek to end
-    updateGraph.lastEnterExitEmpty();
+    updateGraph.lastStep();
     return;
   }
   if (e.which === 36) {
     // home
     // Seek to beginning
-    updateGraph.firstEnterExitEmpty();
+    updateGraph.firstStep();
     return;
   }
 

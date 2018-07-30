@@ -24,7 +24,7 @@ import type {
   LogType,
   LogEntryInvalidateStartType,
   LogEntryDefineType,
-  ReactIdType,
+  // ReactIdType,
 } from "../log/logStates";
 import type { SomeGraphData } from "./Graph";
 import type {
@@ -54,6 +54,7 @@ class GraphAtStep {
   cytoLayout: any;
 
   steps: Array<number>;
+  stepsVisible: Array<number>;
   asyncStarts: Array<number>;
   asyncStops: Array<number>;
   queueEmpties: Array<number>;
@@ -147,6 +148,12 @@ class GraphAtStep {
             let prevLogItem = log[i - 1];
             let nextLogItem = log[i + 1];
             if (
+              nextLogItem.action === LogStates.asyncStart &&
+              log.length > i + 2
+            ) {
+              nextLogItem = log[i + 2];
+            }
+            if (
               nextLogItem.action === LogStates.invalidateEnd &&
               prevLogItem.action === LogStates.define &&
               logItem.reactId === prevLogItem.reactId &&
@@ -180,6 +187,12 @@ class GraphAtStep {
       }
     }
 
+    this.stepsVisible = []
+      .concat(this.steps)
+      .concat(this.marks)
+      .concat(this.queueEmpties)
+      .sort((a, b) => a - b);
+
     // this.graphCache = {};
     // this.cacheStep = 250;
     // var tmpGraph = new Graph(log);
@@ -194,14 +207,14 @@ class GraphAtStep {
   nextStep(k: number): number {
     // if no filtering... get next step from step array
     if (!hasLength(this.filterDatas)) {
-      let nextStepPos = _sortedIndex(this.steps, k);
-      if (_sortedIndexOf(this.steps, k) >= 0) {
+      let nextStepPos = _sortedIndex(this.stepsVisible, k);
+      if (_sortedIndexOf(this.stepsVisible, k) >= 0) {
         // go to the next step location
         nextStepPos += 1;
       }
       // else, does not exist, so it is directly there
-      nextStepPos = Math.min(this.steps.length - 1, nextStepPos);
-      return this.steps[nextStepPos];
+      nextStepPos = Math.min(this.stepsVisible.length - 1, nextStepPos);
+      return this.stepsVisible[nextStepPos];
     }
 
     let graph = this.atStep(k);
@@ -214,9 +227,10 @@ class GraphAtStep {
       logEntry = this.log[i];
 
       // skip if if it's not a valid step anyways...
-      if (_sortedIndexOf(this.steps, logEntry.step) === -1) {
+      if (_sortedIndexOf(this.stepsVisible, logEntry.step) === -1) {
         continue;
       }
+      console.log(logEntry);
       ret = logEntry.step;
       switch (logEntry.action) {
         case LogStates.dependsOn:
@@ -281,10 +295,12 @@ class GraphAtStep {
           }
           break;
 
-        case LogStates.asyncStart:
-        case LogStates.asyncStop:
         case LogStates.queueEmpty:
         case LogStates.mark:
+          return ret;
+
+        case LogStates.asyncStart:
+        case LogStates.asyncStop:
           break;
         default:
           console.error(logEntry);
@@ -293,13 +309,13 @@ class GraphAtStep {
     }
 
     // return the max step possible
-    return this.steps[this.steps.length - 1];
+    return -1;
   }
   prevStep(k: number): number {
     // if no filtering... get next step from step array
     if (!hasLength(this.filterDatas)) {
-      let prevStepPos = Math.max(_sortedIndex(this.steps, k) - 1, 1);
-      return this.steps[prevStepPos];
+      let prevStepPos = Math.max(_sortedIndex(this.stepsVisible, k) - 1, 0);
+      return this.stepsVisible[prevStepPos];
     }
 
     let graph = this.atStep(k);
@@ -309,7 +325,7 @@ class GraphAtStep {
       logItem = this.log[i];
 
       // skip if if it's not a valid step anyways...
-      if (_sortedIndexOf(this.steps, logItem.step) === -1) {
+      if (_sortedIndexOf(this.stepsVisible, logItem.step) === -1) {
         continue;
       }
       ret = logItem.step;
@@ -354,10 +370,11 @@ class GraphAtStep {
             return ret;
           }
           break;
-        case LogStates.asyncStart:
-        case LogStates.asyncStop:
         case LogStates.queueEmpty:
         case LogStates.mark:
+          return ret;
+        case LogStates.asyncStart:
+        case LogStates.asyncStop:
           break;
         default:
           console.error(logItem);
@@ -365,7 +382,7 @@ class GraphAtStep {
       }
     }
 
-    return this.steps[0];
+    return -1;
   }
 
   atStep(k: number, updateFinal?: boolean = true): Graph {
@@ -548,50 +565,50 @@ class GraphAtStep {
   //   // })
   // }
 
-  filterLogOnDatas(datas: Array<SomeGraphData>) {
-    let nodeMap: Map<ReactIdType, Node> = new Map();
-    datas.map(function(data) {
-      if (data instanceof Node) {
-        nodeMap.set(data.reactId, data);
-      }
-    });
-    let newLog = _filter(this.originalLog, function(logItem) {
-      switch (logItem.action) {
-        case LogStates.dependsOn:
-        case LogStates.dependsOnRemove:
-          // check for both to and from
-          return (
-            nodeMap.has(logItem.reactId) && nodeMap.has(logItem.depOnReactId)
-          );
-        case LogStates.freeze:
-        case LogStates.thaw:
-        case LogStates.define:
-        case LogStates.updateNodeLabel:
-        case LogStates.valueChange:
-        case LogStates.invalidateStart:
-        case LogStates.enter:
-        case LogStates.isolateInvalidateStart:
-        case LogStates.isolateEnter:
-        case LogStates.invalidateEnd:
-        case LogStates.exit:
-        case LogStates.isolateExit:
-        case LogStates.isolateInvalidateEnd:
-          // check for reactId
-          return nodeMap.has(logItem.reactId);
-        case LogStates.queueEmpty:
-        case LogStates.asyncStart:
-        case LogStates.asyncStop:
-        case LogStates.mark:
-          // always add
-          return true;
-        default:
-          console.error("logItem.action: ", logItem.action, logItem);
-          throw logItem;
-      }
-    });
-    console.log("new Log: ", newLog);
-    return newLog;
-  }
+  // filterLogOnDatas(datas: Array<SomeGraphData>) {
+  //   let nodeMap: Map<ReactIdType, Node> = new Map();
+  //   datas.map(function(data) {
+  //     if (data instanceof Node) {
+  //       nodeMap.set(data.reactId, data);
+  //     }
+  //   });
+  //   let newLog = _filter(this.originalLog, function(logItem) {
+  //     switch (logItem.action) {
+  //       case LogStates.dependsOn:
+  //       case LogStates.dependsOnRemove:
+  //         // check for both to and from
+  //         return (
+  //           nodeMap.has(logItem.reactId) && nodeMap.has(logItem.depOnReactId)
+  //         );
+  //       case LogStates.freeze:
+  //       case LogStates.thaw:
+  //       case LogStates.define:
+  //       case LogStates.updateNodeLabel:
+  //       case LogStates.valueChange:
+  //       case LogStates.invalidateStart:
+  //       case LogStates.enter:
+  //       case LogStates.isolateInvalidateStart:
+  //       case LogStates.isolateEnter:
+  //       case LogStates.invalidateEnd:
+  //       case LogStates.exit:
+  //       case LogStates.isolateExit:
+  //       case LogStates.isolateInvalidateEnd:
+  //         // check for reactId
+  //         return nodeMap.has(logItem.reactId);
+  //       case LogStates.queueEmpty:
+  //       case LogStates.asyncStart:
+  //       case LogStates.asyncStop:
+  //       case LogStates.mark:
+  //         // always add
+  //         return true;
+  //       default:
+  //         console.error("logItem.action: ", logItem.action, logItem);
+  //         throw logItem;
+  //     }
+  //   });
+  //   console.log("new Log: ", newLog);
+  //   return newLog;
+  // }
 
   // filterDatasLog() {
   //   var nodeMap = {};

@@ -59,8 +59,7 @@ let prevEnterExitEmpty = function(cytoOptions?: CytoscapeOptions = {}) {
   for (i = rlog.getGraph.enterExitEmpties.length - 1; i >= 0; i--) {
     val = rlog.getGraph.enterExitEmpties[i];
     if (prevTick > val) {
-      updateGraph(val, cytoOptions);
-      return true;
+      return updateGraph(val, cytoOptions);
     }
   }
   return false;
@@ -70,11 +69,11 @@ let lastEnterExitEmpty = function(cytoOptions?: CytoscapeOptions = {}) {
   let nextTick =
     rlog.getGraph.enterExitEmpties[rlog.getGraph.enterExitEmpties.length - 1] ||
     0;
-  updateGraph(nextTick, cytoOptions);
+  return updateGraph(nextTick, cytoOptions);
 };
 let firstEnterExitEmpty = function(cytoOptions?: CytoscapeOptions = {}) {
   let nextTick = rlog.getGraph.enterExitEmpties[0] || 0;
-  updateGraph(nextTick, cytoOptions);
+  return updateGraph(nextTick, cytoOptions);
 };
 
 export {

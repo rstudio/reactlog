@@ -3,13 +3,23 @@
 import _has from "lodash/has";
 import $ from "jquery";
 
+import _sortedIndex from "lodash/sortedIndex";
+import _sortedIndexOf from "lodash/sortedIndexOf";
+
 import { rlog } from "../rlog";
 import { updateGraph } from "../updateGraph";
 import { colors } from "../style/colors";
 
 let fillContainer: JQuery;
 let updateProgressBar = function(): void {
-  fillContainer.width((rlog.curTick / rlog.log.length) * 100 + "%");
+  // fillContainer.width((rlog.curTick / rlog.log.length) * 100 + "%");
+  let stepsToPresent = rlog.getGraph.stepsVisible;
+  let tickPos = _sortedIndexOf(stepsToPresent, rlog.curTick);
+  if (tickPos === -1) {
+    tickPos = _sortedIndex(stepsToPresent, rlog.curTick) - 1;
+  }
+  // console.log("progress bar: ", tickPos, stepsToPresent.length, tickPos / stepsToPresent.length, rlog.curTick, stepsToPresent)
+  fillContainer.width(`${(tickPos / (stepsToPresent.length - 1)) * 100}%`);
 };
 
 let setContainers = function(
@@ -41,7 +51,13 @@ let updateFromProgressBar = function(e: BaseJQueryEventObject): void {
   let pos = e.pageX; // pageX in pixels  // || e.originalEvent.pageX;
 
   let width = timeline.offsetWidth; // width in pixels
-  let targetStep = Math.max(Math.round((pos / width) * rlog.log.length), 1);
+
+  let stepsToPresent = rlog.getGraph.stepsVisible;
+  let targetStepPos = Math.min(
+    Math.max(Math.round((pos / width) * stepsToPresent.length), 0),
+    stepsToPresent.length - 1
+  );
+  let targetStep = stepsToPresent[targetStepPos];
   if (targetStep !== rlog.curTick) {
     updateGraph(targetStep);
   }
@@ -51,19 +67,21 @@ let updateFromProgressBar = function(e: BaseJQueryEventObject): void {
 let addTimelineTicks = function(
   jqueryContainer: JQuery,
   backgroundColor: string,
-  enterExits: Array<number>,
-  logLength: number,
+  stepArr: Array<number>,
   top: number = 0
 ): void {
+  let visibleSteps = rlog.getGraph.stepsVisible;
+  let visibleStepLengthMinusOne = visibleSteps.length - 1;
   let topValue =
     top === 0
       ? `top: 0; height: ${timelineHeight}px;`
       : `top: ${top}px; height: ${timelineHeight - 2 * top}px`;
-  enterExits.map(function(i) {
+  stepArr.map(function(step) {
+    let stepPos = _sortedIndex(visibleSteps, step);
     // add an extra step to show that it is completed
     // i = i + 1;
-    let left = (100 * i) / logLength;
-    let width = ((100 * 1) / logLength) * 0.75;
+    let left = (100 * stepPos) / visibleStepLengthMinusOne;
+    let width = ((100 * 1) / visibleStepLengthMinusOne) * 0.75;
     jqueryContainer.append(
       `<div class="timeline-tick" style="background-color: ${backgroundColor}; left: ${left}%; width: ${width}%; margin-left: -${width}%; ${topValue}"></div>`
     );
