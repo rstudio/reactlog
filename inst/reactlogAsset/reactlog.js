@@ -81363,16 +81363,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       updateGraph.lastStep();
     });
     (0, _jquery2.default)("#prevFlushButton").click(function () {
-      updateGraph.prevQueueEmpty() || updateGraph.prevEnterExitEmpty() || updateGraph.prevStep();
+      updateGraph.prevQueueEmpty() || updateGraph.firstStep();
     });
     (0, _jquery2.default)("#nextFlushButton").click(function () {
-      updateGraph.nextQueueEmpty() || updateGraph.nextEnterExitEmpty() || updateGraph.nextStep();
+      updateGraph.nextQueueEmpty() || updateGraph.lastStep();
     });
     (0, _jquery2.default)("#prevCycleButton").click(function () {
-      updateGraph.prevEnterExitEmpty() || updateGraph.prevStep();
+      updateGraph.prevEnterExitEmpty() || updateGraph.firstStep();
     });
     (0, _jquery2.default)("#nextCycleButton").click(function () {
-      updateGraph.nextEnterExitEmpty() || updateGraph.nextStep();
+      updateGraph.nextEnterExitEmpty() || updateGraph.lastStep();
     });
     (0, _jquery2.default)("#prevStepButton").click(updateGraph.prevStep);
     (0, _jquery2.default)("#nextStepButton").click(updateGraph.nextStep);

@@ -65,20 +65,16 @@ $(function() {
     updateGraph.lastStep();
   });
   $("#prevFlushButton").click(() => {
-    updateGraph.prevQueueEmpty() ||
-      updateGraph.prevEnterExitEmpty() ||
-      updateGraph.prevStep();
+    updateGraph.prevQueueEmpty() || updateGraph.firstStep();
   });
   $("#nextFlushButton").click(() => {
-    updateGraph.nextQueueEmpty() ||
-      updateGraph.nextEnterExitEmpty() ||
-      updateGraph.nextStep();
+    updateGraph.nextQueueEmpty() || updateGraph.lastStep();
   });
   $("#prevCycleButton").click(() => {
-    updateGraph.prevEnterExitEmpty() || updateGraph.prevStep();
+    updateGraph.prevEnterExitEmpty() || updateGraph.firstStep();
   });
   $("#nextCycleButton").click(() => {
-    updateGraph.nextEnterExitEmpty() || updateGraph.nextStep();
+    updateGraph.nextEnterExitEmpty() || updateGraph.lastStep();
   });
   $("#prevStepButton").click(updateGraph.prevStep);
   $("#nextStepButton").click(updateGraph.nextStep);
