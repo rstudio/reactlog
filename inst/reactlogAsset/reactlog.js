@@ -79135,9 +79135,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     function Edge(data) {
       _classCallCheck(this, Edge);
 
-      if (!data.reactId) {
-        window.console.error(data);
-      }
       if (typeof data.reactId === "undefined") throw "data.reactId not provided to new Edge()";
       if (typeof data.depOnReactId === "undefined") throw "data.depOnReactId not provided to new Edge()";
       if (typeof data.ctxId === "undefined") throw "data.ctxId not provided to new Edge()";
