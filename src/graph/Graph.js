@@ -530,6 +530,9 @@ class Graph {
 
       case LogStates.dependsOn: {
         let logEntry = ((data: LogEntryDependsOnType): Object);
+        if (!logEntry.reactId) {
+          break;
+        }
         edge = new Edge(logEntry);
         let edgeKey = edge.key;
 
