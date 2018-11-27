@@ -566,6 +566,7 @@ class Graph {
         break;
       }
 
+      case LogStates.createContext:
       case LogStates.queueEmpty:
       case LogStates.asyncStart:
       case LogStates.asyncStop:

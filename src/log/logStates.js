@@ -3,6 +3,7 @@
 let states = {
   asyncStart: "asyncStart",
   asyncStop: "asyncStop",
+  createContext: "createContext",
   define: "define",
   dependsOn: "dependsOn",
   dependsOnRemove: "dependsOnRemove",
@@ -68,6 +69,20 @@ type LogEntryAsyncStopType = {
   session: ?string,
   time: number,
   step: number,
+};
+
+// used to capture srcref and srcfile information for a given context
+type LogEntryCreateContextType = {
+  action: "createContext",
+  session: ?string,
+  time: number,
+  step: number,
+  ctxId: CtxIdType,
+  label: string,
+  type: string,
+  prevCtxId: ?CtxIdType,
+  srcref: ?Array<number>,
+  srcfile: ?string,
 };
 
 type LogEntryDefineType = {
@@ -236,6 +251,7 @@ type LogEntryHasReactId =
 type LogEntryAnyType =
   | LogEntryAsyncStartType
   | LogEntryAsyncStopType
+  | LogEntryCreateContextType
   | LogEntryDefineType
   | LogEntryDependsOnType
   | LogEntryDependsOnRemoveType
@@ -265,6 +281,7 @@ export type {
   LogEntryAnyType,
   LogEntryAsyncStartType,
   LogEntryAsyncStopType,
+  LogEntryCreateContextType,
   LogEntryDefineType,
   LogEntryDependsOnType,
   LogEntryDependsOnRemoveType,
