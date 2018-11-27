@@ -1,9 +1,11 @@
 {
   "sourceMap": true,
   "compact": false,
-  "presets": ["flow", "env"],
+  "presets": [
+    "@babel/preset-flow",
+    ["@babel/preset-env", {"modules": "umd"}]
+  ],
   "plugins": [
-    "transform-class-properties",
-    "transform-es2015-modules-umd"
+    "@babel/plugin-proposal-class-properties"
   ]
 }
