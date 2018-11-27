@@ -30,6 +30,8 @@ let nodeShapes = {
 let pulseScale = 1 + 1 / 16;
 let selectedScale = 2;
 
+let edgePixelWidth = 4;
+
 let graphStyles = {
   node: {
     default: {
@@ -44,6 +46,8 @@ let graphStyles = {
       "background-color": colors.nodes.ready,
       "text-wrap": "ellipsis",
       "text-max-width": "400px",
+      "text-background-color": "white",
+      "text-background-opacity": 0.8,
     },
     start: {
       shape: "polygon",
@@ -123,7 +127,7 @@ let graphStyles = {
   edge: {
     default: {
       "curve-style": "bezier",
-      width: 4,
+      width: edgePixelWidth,
       "target-arrow-shape": "triangle",
       "mid-target-arrow-shape": "triangle",
       "line-color": colors.edges.running, //"#9dbaea",
@@ -131,7 +135,7 @@ let graphStyles = {
       "target-arrow-color": colors.edges.running,
     },
     isolate: {
-      width: 4,
+      width: edgePixelWidth,
       "line-color": colors.edges.isolate,
       "mid-target-arrow-color": colors.edges.isolate,
       "target-arrow-color": colors.edges.isolate,
@@ -185,11 +189,11 @@ let graphStyles = {
       "border-width": 4,
     },
     edge: {
-      width: 10 * 2,
+      width: edgePixelWidth * 2,
     },
     ghostEdge: {
-      width: 6 * 2,
-      "arrow-scale": 0.5,
+      width: edgePixelWidth * 2,
+      "arrow-scale": (2/3),
     },
   },
   filtered: {
