@@ -17,6 +17,11 @@
     "precommit": "lint-staged",
     "git_add_map": "git add inst/reactlogAsset/reactlog.js inst/reactlogAsset/reactlog.js.map && git add"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
   "lint-staged": {
     ".flowconfig": [
       "yarn flow-report-and-echo"
@@ -61,6 +66,7 @@
     "grunt": "1.x",
     "grunt-cli": "1.x",
     "grunt-webpack": "3.x",
+    "husky": "1.x",
     "license-checker": "^20.1.0",
     "lint-staged": "8.x",
     "prettier": "1.x",
