@@ -79947,6 +79947,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
               break;
             }
 
+          case _logStates.LogStates.createContext:
           case _logStates.LogStates.queueEmpty:
           case _logStates.LogStates.asyncStart:
           case _logStates.LogStates.asyncStop:
@@ -80128,7 +80129,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         var logItem = void 0,
             i = void 0;
         var enterExitQueue = [];
-        for (i = 0; i < log.length; i++) {
+        var startI = 0;
+        while (log.length > startI + 2 && log[startI].action === _logStates.LogStates.asyncStart && log[startI].session === null && log[startI + 1].action === _logStates.LogStates.asyncStop && log[startI + 1].session === null && log[startI + 2].action === _logStates.LogStates.queueEmpty && log[startI + 2].session === null) {
+          startI = startI + 3;
+        }
+        for (i = startI; i < log.length; i++) {
           logItem = log[i];
           switch (logItem.action) {
             case _logStates.LogStates.enter:
@@ -80185,6 +80190,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             case _logStates.LogStates.isolateInvalidateEnd:
             // case "isolateEnter":
             // case "isolateExit":
+            case _logStates.LogStates.createContext:
             case _logStates.LogStates.asyncStart:
             case _logStates.LogStates.asyncStop:
             case _logStates.LogStates.queueEmpty:
@@ -80300,9 +80306,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             case _logStates.LogStates.mark:
               return ret;
 
+            case _logStates.LogStates.createContext:
             case _logStates.LogStates.asyncStart:
             case _logStates.LogStates.asyncStop:
               break;
+
             default:
               _console2.default.error(logEntry);
               throw "unknown logEntry action in 'next'";
@@ -80371,12 +80379,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 return ret;
               }
               break;
+
             case _logStates.LogStates.queueEmpty:
             case _logStates.LogStates.mark:
               return ret;
+
+            case _logStates.LogStates.createContext:
             case _logStates.LogStates.asyncStart:
             case _logStates.LogStates.asyncStop:
               break;
+
             default:
               _console2.default.error(logItem);
               throw "unknown logItem action in 'prev'";
@@ -82026,6 +82038,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   var states = {
     asyncStart: "asyncStart",
     asyncStop: "asyncStop",
+    createContext: "createContext",
     define: "define",
     dependsOn: "dependsOn",
     dependsOnRemove: "dependsOnRemove",
@@ -82077,6 +82090,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   //   ctxId: CtxIdType,
   // };
 
+  // used to capture srcref and srcfile information for a given context
   exports.LogStates = states;
 });
 
