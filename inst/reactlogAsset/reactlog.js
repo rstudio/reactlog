@@ -74081,7 +74081,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       progressBar.addTimelineTicks(timelineBackground, _colors.default.progressBar.mark, _rlog.rlog.getGraph.marks, 3);
     }
 
-    logEntry.setContainers((0, _jquery.default)("#eventTime"), (0, _jquery.default)("#eventSession"), (0, _jquery.default)("#eventStepNum"), (0, _jquery.default)("#eventStatus"), (0, _jquery.default)("#logEntry"));
+    logEntry.setContainers((0, _jquery.default)("#eventTimeNum"), (0, _jquery.default)("#eventSessionNum"), (0, _jquery.default)("#eventStepNum"), (0, _jquery.default)("#eventStatus"), (0, _jquery.default)("#logEntry"), _rlog.rlog.log);
     (0, _jquery.default)("#search").on("input", function (e) {
       updateGraph.withSearchString((0, _jquery.default)(e.target).val());
     });
@@ -74359,12 +74359,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! lodash/sortedIndex */ "./node_modules/lodash/sortedIndex.js"), __webpack_require__(/*! lodash/sortedIndexOf */ "./node_modules/lodash/sortedIndexOf.js"), __webpack_require__(/*! ../rlog */ "./src/rlog.js"), __webpack_require__(/*! ../log/logStates */ "./src/log/logStates.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! lodash/sortedIndex */ "./node_modules/lodash/sortedIndex.js"), __webpack_require__(/*! lodash/sortedIndexOf */ "./node_modules/lodash/sortedIndexOf.js"), __webpack_require__(/*! ../rlog */ "./src/rlog.js"), __webpack_require__(/*! ../utils/numbers */ "./src/utils/numbers.js"), __webpack_require__(/*! ../log/logStates */ "./src/log/logStates.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
-})(this, function (_exports, _sortedIndex2, _sortedIndexOf2, _rlog, _logStates) {
+})(this, function (_exports, _sortedIndex2, _sortedIndexOf2, _rlog, _numbers, _logStates) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
@@ -74377,19 +74377,30 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
   var containers;
+  var timeDecimalDigits = 4;
+  var logInfo = {
+    logLength: 0,
+    firstTime: 0,
+    lastTimeCharLength: 0,
+    maxSessionCharLength: 0
+  };
 
   var updateLogEntry = function updateLogEntry() {
+    if (logInfo.logLength === 0) return;
     var curEntry = _rlog.rlog.log[_rlog.rlog.curTick];
-    containers.time.text("Time: ".concat(curEntry.time));
+    var timeDiff = curEntry.time - logInfo.firstTime; // milliseconds
+
+    timeDiff = (0, _numbers.roundDecimals)(timeDiff, timeDecimalDigits).toFixed(timeDecimalDigits).padStart(logInfo.lastTimeCharLength, " ");
+    containers.time.text("".concat(timeDiff, "s"));
 
     if (curEntry.session) {
-      containers.session.text("Session: ".concat(curEntry.session));
+      containers.session.text("".concat(curEntry.session).padEnd(logInfo.maxSessionCharLength, " "));
     } else {
-      containers.session.text("");
+      containers.session.text("".padEnd(logInfo.maxSessionCharLength, " "));
     }
 
     var stepDisplayValPadding = function stepDisplayValPadding(i) {
-      var logNumDigits = "".concat(_rlog.rlog.log.length).length;
+      var logNumDigits = "".concat(logInfo.logLength).length;
       return "".concat(i).padStart(logNumDigits, " ");
     };
 
@@ -74417,13 +74428,35 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     }
 
     containers.step.text("".concat(stepDisplayVal));
-    containers.status.text(statusForEntry(curEntry));
+    containers.status.html(statusForEntry(curEntry));
     containers.container.text(JSON.stringify(_rlog.rlog.log[_rlog.rlog.curTick], null, "  "));
   };
 
   _exports.update = updateLogEntry;
 
-  var setContainers = function setContainers(time, session, step, status, container) {
+  var setContainers = function setContainers(time, session, step, status, container, log) {
+    var logInfoLength = log.length;
+    var maxSessionCharLength = 0;
+    var logEntry, sessionCharLength; // find largest session name length
+
+    for (var i = 0; i < logInfoLength; i++) {
+      logEntry = log[i];
+
+      if (logEntry.session) {
+        sessionCharLength = logEntry.session.length;
+
+        if (sessionCharLength > maxSessionCharLength) {
+          maxSessionCharLength = sessionCharLength;
+        }
+      }
+    }
+
+    logInfo = {
+      logLength: logInfoLength,
+      firstTime: log[0].time,
+      maxSessionCharLength: maxSessionCharLength,
+      lastTimeCharLength: (log[logInfoLength - 1].time - log[0].time).toFixed(timeDecimalDigits).length
+    };
     containers = {
       time: time,
       session: session,
@@ -74449,6 +74482,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     return getLabel(entry.reactId);
   };
 
+  var pre = function pre(txt) {
+    return "<span class=\"monospaced-pre\">".concat(txt, "</span>");
+  };
+
   var statusForEntry = function statusForEntry(entry) {
     switch (entry.action) {
       case _logStates.LogStates.asyncStart:
@@ -74464,73 +74501,73 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       case _logStates.LogStates.define:
         {
           var defineEntry = entry;
-          return "Defined ".concat(getReactIdLabel(defineEntry));
+          return "Defined ".concat(pre(getReactIdLabel(defineEntry)));
         }
 
       case _logStates.LogStates.dependsOn:
         {
           var dependsOnEntry = entry;
-          return "".concat(getReactIdLabel(dependsOnEntry), " depends on ").concat(getLabel(dependsOnEntry.depOnReactId));
+          return "".concat(pre(getReactIdLabel(dependsOnEntry)), " depends on ").concat(pre(getLabel(dependsOnEntry.depOnReactId)));
         }
 
       case _logStates.LogStates.dependsOnRemove:
         {
           var dependsOnRemoveEntry = entry;
-          return "".concat(getReactIdLabel(dependsOnRemoveEntry), " removes dependency on ").concat(getLabel(dependsOnRemoveEntry.depOnReactId));
+          return "".concat(pre(getReactIdLabel(dependsOnRemoveEntry)), " removes dependency on ").concat(pre(getLabel(dependsOnRemoveEntry.depOnReactId)));
         }
 
       case _logStates.LogStates.enter:
         {
           var enterEntry = entry;
-          return "".concat(getReactIdLabel(enterEntry), " started calculating");
+          return "".concat(pre(getReactIdLabel(enterEntry)), " started calculating");
         }
 
       case _logStates.LogStates.exit:
         {
           var exitEntry = entry;
-          return "".concat(getReactIdLabel(exitEntry), " stopped calculating");
+          return "".concat(pre(getReactIdLabel(exitEntry)), " stopped calculating");
         }
 
       case _logStates.LogStates.freeze:
         {
           var frozenEntry = entry;
-          return "".concat(getReactIdLabel(frozenEntry), " froze");
+          return "".concat(pre(getReactIdLabel(frozenEntry)), " froze");
         }
 
       case _logStates.LogStates.invalidateEnd:
         {
           var invalidateEndEntry = entry;
-          return "".concat(getReactIdLabel(invalidateEndEntry), " has invalidated");
+          return "".concat(pre(getReactIdLabel(invalidateEndEntry)), " has invalidated");
         }
 
       case _logStates.LogStates.invalidateStart:
         {
           var invalidateStartEntry = entry;
-          return "".concat(getReactIdLabel(invalidateStartEntry), " is invalidating");
+          return "".concat(pre(getReactIdLabel(invalidateStartEntry)), " is invalidating");
         }
 
       case _logStates.LogStates.isolateEnter:
         {
           var isolateEnterEntry = entry;
-          return "".concat(getReactIdLabel(isolateEnterEntry), " is isolating future dependencies");
+          return "".concat(pre(getReactIdLabel(isolateEnterEntry)), " is isolating future dependencies");
         }
 
       case _logStates.LogStates.isolateExit:
         {
           var isolateExitEntry = entry;
-          return "".concat(getReactIdLabel(isolateExitEntry), " stopped isolating future dependencies");
+          return "".concat(pre(getReactIdLabel(isolateExitEntry)), " stopped isolating future dependencies");
         }
 
       case _logStates.LogStates.isolateInvalidateEnd:
         {
           var isolateInvalidateEndEntry = entry;
-          return "".concat(getReactIdLabel(isolateInvalidateEndEntry), " invalidated during an isolate call");
+          return "".concat(pre(getReactIdLabel(isolateInvalidateEndEntry)), " invalidated during an isolate call");
         }
 
       case _logStates.LogStates.isolateInvalidateStart:
         {
           var isolateInvalidateStartEntry = entry;
-          return "".concat(getReactIdLabel(isolateInvalidateStartEntry), " is invalidating during an isolate call");
+          return "".concat(pre(getReactIdLabel(isolateInvalidateStartEntry)), " is invalidating during an isolate call");
         }
 
       case _logStates.LogStates.mark:
@@ -74546,23 +74583,23 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       case _logStates.LogStates.thaw:
         {
           var thawEntry = entry;
-          return "".concat(getReactIdLabel(thawEntry), " has thawed");
+          return "".concat(pre(getReactIdLabel(thawEntry)), " has thawed");
         }
 
       case _logStates.LogStates.updateNodeLabel:
         {
           var updateNodeLabelEntry = entry;
-          return "Set label to ".concat(getReactIdLabel(updateNodeLabelEntry));
+          return "Set label to ".concat(pre(getReactIdLabel(updateNodeLabelEntry)));
         }
 
       case _logStates.LogStates.valueChange:
         {
           var valueChangeEntry = entry;
-          return "".concat(getReactIdLabel(valueChangeEntry), " has a new value");
+          return "".concat(pre(getReactIdLabel(valueChangeEntry)), " has a new value");
         }
 
       default:
-        throw "state: ".concat(entry.action, " not implemented for log status");
+        throw "state: ".concat(pre(entry.action), " not implemented for log status");
     }
   };
 });
@@ -75690,6 +75727,38 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   };
   var _default = console;
   _exports.default = _default;
+});
+
+/***/ }),
+
+/***/ "./src/utils/numbers.js":
+/*!******************************!*\
+  !*** ./src/utils/numbers.js ***!
+  \******************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
+  if (true) {
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+  } else { var mod; }
+})(this, function (_exports) {
+  "use strict";
+
+  Object.defineProperty(_exports, "__esModule", {
+    value: true
+  });
+  _exports.roundDecimals = void 0;
+
+  var roundDecimals = function roundDecimals(value, decimals) {
+    var roundedNumber = Math.round(Number("".concat(value, "e").concat(decimals)));
+    return Number("".concat(roundedNumber, "e-").concat(decimals));
+  };
+
+  _exports.roundDecimals = roundDecimals;
 });
 
 /***/ })

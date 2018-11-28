@@ -107,11 +107,12 @@ $(function() {
     );
   }
   logEntry.setContainers(
-    $("#eventTime"),
-    $("#eventSession"),
+    $("#eventTimeNum"),
+    $("#eventSessionNum"),
     $("#eventStepNum"),
     $("#eventStatus"),
-    $("#logEntry")
+    $("#logEntry"),
+    rlog.log
   );
 
   $("#search").on("input", function(e) {

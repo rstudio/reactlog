@@ -225,9 +225,10 @@ text {
 #eventStep {
   margin-left: 10px;
 }
-#eventStepNum {
+.monospaced-pre {
   white-space: pre;
   font-family: "Space Mono";
+  height: 15.2px;
 }
 #eventStatus {
   margin-left: 5px;
@@ -235,9 +236,18 @@ text {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+#eventTime {
+  text-align: right;
+}
+#eventTimeSessionLabel {
+  margin-left: 5px;
+  font-size: 12px;
+}
 #eventTimeSession {
   margin-left: 5px;
   font-size: 12px;
+  /* monospaced font is "larger", so must move this block up */
+  margin-top: -3px;
 }
 
 #filter {
