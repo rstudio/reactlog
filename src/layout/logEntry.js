@@ -45,6 +45,11 @@ let updateLogEntry = function(): void {
     containers.session.text("");
   }
 
+  let stepDisplayValPadding = function(i) {
+    let logNumDigits = `${rlog.log.length}`.length;
+    return `${i}`.padStart(logNumDigits, " ");
+  };
+
   let stepDisplayVal = _sortedIndex(rlog.getGraph.stepsVisible, curEntry.step);
   if (_sortedIndexOf(rlog.getGraph.stepsVisible, curEntry.step) === -1) {
     // does not contain the step. display how many steps advanced from last visible step
@@ -52,7 +57,7 @@ let updateLogEntry = function(): void {
     if (stepDisplayVal === 0) {
       // occurs before any visible step
       // let halfStepPos = _sortedIndex(rlog.getGraph.steps, curEntry.step);
-      stepDisplayVal = `${0}_${curEntry.step}`;
+      stepDisplayVal = `${stepDisplayValPadding(0)}_${curEntry.step}`;
     } else {
       // get visible step location
       let smallerStepVal = rlog.getGraph.stepsVisible[stepDisplayVal - 1];
@@ -65,13 +70,15 @@ let updateLogEntry = function(): void {
 
       // display number of steps away from lower, visible step
       let diffSteps = halfStepPos - smallerPos;
-      stepDisplayVal = `${smallerStepValVisible + 1}_${diffSteps}`;
+      stepDisplayVal = `${stepDisplayValPadding(
+        smallerStepValVisible + 1
+      )}_${diffSteps}`;
     }
   } else {
     // 1 start counting (not 0)
-    stepDisplayVal = stepDisplayVal + 1;
+    stepDisplayVal = stepDisplayValPadding(stepDisplayVal + 1);
   }
-  containers.step.text(`Step: ${stepDisplayVal}`);
+  containers.step.text(`${stepDisplayVal}`);
   containers.status.text(statusForEntry(curEntry));
 
   containers.container.text(JSON.stringify(rlog.log[rlog.curTick], null, "  "));

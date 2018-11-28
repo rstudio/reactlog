@@ -71121,7 +71121,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         "text-wrap": "ellipsis",
         "text-max-width": "400px",
         "text-background-color": "white",
-        "text-background-opacity": 0.8
+        "text-background-opacity": 0.8,
+        "font-family": '"Space Mono", monospace'
       },
       start: {
         shape: "polygon",
@@ -74080,7 +74081,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       progressBar.addTimelineTicks(timelineBackground, _colors.default.progressBar.mark, _rlog.rlog.getGraph.marks, 3);
     }
 
-    logEntry.setContainers((0, _jquery.default)("#eventTime"), (0, _jquery.default)("#eventSession"), (0, _jquery.default)("#eventStep"), (0, _jquery.default)("#eventStatus"), (0, _jquery.default)("#logEntry"));
+    logEntry.setContainers((0, _jquery.default)("#eventTime"), (0, _jquery.default)("#eventSession"), (0, _jquery.default)("#eventStepNum"), (0, _jquery.default)("#eventStatus"), (0, _jquery.default)("#logEntry"));
     (0, _jquery.default)("#search").on("input", function (e) {
       updateGraph.withSearchString((0, _jquery.default)(e.target).val());
     });
@@ -74387,6 +74388,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       containers.session.text("");
     }
 
+    var stepDisplayValPadding = function stepDisplayValPadding(i) {
+      var logNumDigits = "".concat(_rlog.rlog.log.length).length;
+      return "".concat(i).padStart(logNumDigits, " ");
+    };
+
     var stepDisplayVal = (0, _sortedIndex2.default)(_rlog.rlog.getGraph.stepsVisible, curEntry.step);
 
     if ((0, _sortedIndexOf2.default)(_rlog.rlog.getGraph.stepsVisible, curEntry.step) === -1) {
@@ -74394,7 +74400,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       if (stepDisplayVal === 0) {
         // occurs before any visible step
         // let halfStepPos = _sortedIndex(rlog.getGraph.steps, curEntry.step);
-        stepDisplayVal = "".concat(0, "_", curEntry.step);
+        stepDisplayVal = "".concat(stepDisplayValPadding(0), "_").concat(curEntry.step);
       } else {
         // get visible step location
         var smallerStepVal = _rlog.rlog.getGraph.stepsVisible[stepDisplayVal - 1];
@@ -74403,14 +74409,14 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         var halfStepPos = (0, _sortedIndex2.default)(_rlog.rlog.getGraph.steps, curEntry.step); // display number of steps away from lower, visible step
 
         var diffSteps = halfStepPos - smallerPos;
-        stepDisplayVal = "".concat(smallerStepValVisible + 1, "_").concat(diffSteps);
+        stepDisplayVal = "".concat(stepDisplayValPadding(smallerStepValVisible + 1), "_").concat(diffSteps);
       }
     } else {
       // 1 start counting (not 0)
-      stepDisplayVal = stepDisplayVal + 1;
+      stepDisplayVal = stepDisplayValPadding(stepDisplayVal + 1);
     }
 
-    containers.step.text("Step: ".concat(stepDisplayVal));
+    containers.step.text("".concat(stepDisplayVal));
     containers.status.text(statusForEntry(curEntry));
     containers.container.text(JSON.stringify(_rlog.rlog.log[_rlog.rlog.curTick], null, "  "));
   };

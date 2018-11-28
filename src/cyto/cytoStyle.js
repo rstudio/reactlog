@@ -48,6 +48,7 @@ let graphStyles = {
       "text-max-width": "400px",
       "text-background-color": "white",
       "text-background-opacity": 0.8,
+      "font-family": '"Space Mono", monospace',
     },
     start: {
       shape: "polygon",
@@ -193,7 +194,7 @@ let graphStyles = {
     },
     ghostEdge: {
       width: edgePixelWidth * 2,
-      "arrow-scale": (2/3),
+      "arrow-scale": 2 / 3,
     },
   },
   filtered: {

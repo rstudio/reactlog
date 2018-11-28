@@ -109,7 +109,7 @@ $(function() {
   logEntry.setContainers(
     $("#eventTime"),
     $("#eventSession"),
-    $("#eventStep"),
+    $("#eventStepNum"),
     $("#eventStatus"),
     $("#logEntry")
   );
