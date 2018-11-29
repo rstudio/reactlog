@@ -141,6 +141,7 @@ let onDblClick = function(cyto: CytoscapeType) {
     // var familyEles = cytoFamilySuccPred(target, false);
     // var familyDatas = elesData(familyEles)
 
+    updateGraph.searchRegexReset();
     updateGraph.filterDatas([target.data()]);
   };
 };

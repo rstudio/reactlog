@@ -125,7 +125,6 @@ let onKeydown = function(e: JQueryInputEventObject): void {
     } else if (hasLength(rlog.getGraph.filterDatas)) {
       console.log("reset filter");
       // must be in filter... so exit filter
-      $("#search").val("");
       updateGraph.searchRegexReset();
       return;
     }
