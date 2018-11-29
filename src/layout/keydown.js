@@ -98,11 +98,12 @@ let onKeydown = function(e: JQueryInputEventObject): void {
     //   if sicky == filter
     //     remove sticky and filter
     // remove filter
-    if (rlog.getGraph.hoverData) {
-      console.log("reset hover");
-      updateGraph.hoverDataReset();
-      return;
-    } else if (hasLength(rlog.getGraph.stickyDatas)) {
+    // if (rlog.getGraph.hoverData) {
+    //   console.log("reset hover");
+    //   updateGraph.hoverDataReset();
+    //   return;
+    // }
+    if (hasLength(rlog.getGraph.stickyDatas)) {
       console.log("reset sticky");
       let sd = rlog.getGraph.stickyDatas;
       let fd = rlog.getGraph.filterDatas;

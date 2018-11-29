@@ -74244,12 +74244,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       //   if sicky == filter
       //     remove sticky and filter
       // remove filter
-      if (_rlog.rlog.getGraph.hoverData) {
-        _console.default.log("reset hover");
-
-        updateGraph.hoverDataReset();
-        return;
-      } else if ((0, _GraphAtStep.hasLength)(_rlog.rlog.getGraph.stickyDatas)) {
+      // if (rlog.getGraph.hoverData) {
+      //   console.log("reset hover");
+      //   updateGraph.hoverDataReset();
+      //   return;
+      // }
+      if ((0, _GraphAtStep.hasLength)(_rlog.rlog.getGraph.stickyDatas)) {
         _console.default.log("reset sticky");
 
         var sd = _rlog.rlog.getGraph.stickyDatas;
