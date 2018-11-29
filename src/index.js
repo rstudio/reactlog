@@ -13,8 +13,6 @@ import colors from "./style/colors";
 
 import * as cytoscapeInit from "./cyto/cytoscapeInit";
 
-import console from "./utils/console";
-
 import * as layoutKeydown from "./layout/keydown";
 
 import * as updateGraph from "./updateGraph";
@@ -50,7 +48,6 @@ import "./log/initStep";
 //
 
 $(function() {
-  console.log(rlog);
   window.barret = rlog;
 
   rlog.log = (window.log: LogType);
@@ -58,7 +55,6 @@ $(function() {
 
   rlog.getGraph = new GraphAtStep(rlog.log);
   rlog.graph = rlog.getGraph.atStep(rlog.getGraph.maxStep);
-  console.log(rlog.graph);
 
   $("#prevMarkButton").click(updateGraph.buttonPrevMark);
   $("#nextMarkButton").click(updateGraph.buttonNextMark);

@@ -1,7 +1,7 @@
 // @flow
 import $ from "jquery";
 import _debounce from "lodash/debounce";
-import console from "../utils/console";
+// import console from "../utils/console";
 
 import { rlog } from "../rlog";
 import * as updateGraph from "../updateGraph";
@@ -96,7 +96,7 @@ let onClick = function(cyto: CytoscapeType) {
       }, 400);
       cytoClickedBefore = target;
       // continue like regular click
-      console.log("click!!", evt);
+      // console.log("click!!", evt);
     }
 
     if (target === rlog.cyto) {
@@ -113,7 +113,7 @@ let onClick = function(cyto: CytoscapeType) {
 let onDblClick = function(cyto: CytoscapeType) {
   return function(evt: CytoEvent) {
     //, originalEvt: Event) {
-    console.log("dbl click!!");
+    // console.log("dbl click!!");
     // console.log("dbl click!!", evt, originalEvt);
     let target = evt.target;
 

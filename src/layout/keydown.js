@@ -3,14 +3,14 @@
 import $ from "jquery";
 import _defer from "lodash/defer";
 
-import console from "../utils/console";
+// import console from "../utils/console";
 
 import * as updateGraph from "../updateGraph";
 import { hasLength } from "../graph/GraphAtStep";
 import { rlog } from "../rlog";
 
 let onKeydown = function(e: JQueryInputEventObject): void {
-  console.log("keydown: ", e);
+  // console.log("keydown: ", e);
   let target = $(e.target).get(0);
   if (target.id && target.id === "search") {
     // is in search text box
@@ -104,7 +104,7 @@ let onKeydown = function(e: JQueryInputEventObject): void {
     //   return;
     // }
     if (hasLength(rlog.getGraph.stickyDatas)) {
-      console.log("reset sticky");
+      // console.log("reset sticky");
       let sd = rlog.getGraph.stickyDatas;
       let fd = rlog.getGraph.filterDatas;
       if (hasLength(fd)) {
@@ -124,7 +124,7 @@ let onKeydown = function(e: JQueryInputEventObject): void {
       updateGraph.stickyDatasReset();
       return;
     } else if (hasLength(rlog.getGraph.filterDatas)) {
-      console.log("reset filter");
+      // console.log("reset filter");
       // must be in filter... so exit filter
       updateGraph.searchRegexReset();
       return;
@@ -134,14 +134,16 @@ let onKeydown = function(e: JQueryInputEventObject): void {
   if (e.which === 38) {
     // arrow up
     if (hasLength(rlog.getGraph.filterDatas)) {
-      console.log("add layer!");
+      // TODO-barret add filter expansion layer here
+      // console.log("add layer!");
     }
     return;
   }
   if (e.which === 40) {
     // arrow down
     if (hasLength(rlog.getGraph.filterDatas)) {
-      console.log("remove layer!");
+      // TODO-barret remove filter expansion layer here
+      // console.log("remove layer!");
     }
     return;
   }
