@@ -1,6 +1,7 @@
 html,
 body {
   font-family: "Source Sans Pro", sans-serif;
+  /* font-family: "Open Sans", sans-serif; */
   /* font-weight: 400; */
   overflow: hidden;
   height: 100%;
@@ -32,8 +33,9 @@ div {
   white-space: pre-wrap;
   text-align: left;
   position:absolute;
-  bottom:0px;
+  top:0px;
   left:0px;
+  padding: 10px;
   font-size: 10px;
 }
 #ended {
@@ -300,6 +302,8 @@ text {
 
   flex-grow: 1;
 
+  position: relative;
+
   /* display: block; */
   /* border: 2px orange solid; */
   /* left: 0; */
@@ -325,8 +329,12 @@ text {
 #legend {
   align-self: center;
 
-  margin-right: 20px;
-  margin-left: 10px;
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  /* margin-right: 20px; */
+  padding: 10px;
+  background-color: rgba(255,255,255, 0.85);
 
   /* position: fixed; */
   /* top: 50%; */
@@ -337,6 +345,8 @@ text {
 
   /* z-index: 2; */
   /* border: 1px red solid; */
+  border-top: 1px rgba(217, 217, 217, 0.2) dotted;
+  border-right: 1px rgba(217, 217, 217, 0.2) dotted;
 }
 
 .legendRow {
@@ -345,9 +355,9 @@ text {
   justify-content: flex-start;
   align-items: center;
   align-content: center;
-
-  margin-top: 4px;
-  margin-bottom: 4px;
+}
+.legendRowTopMiddle {
+  margin-bottom: 8px;
 }
 .legendColor {
 
@@ -358,7 +368,7 @@ text {
 }
 .legendLabel {
   flex-basis: 0;
-
+  color: #606060;
   margin-left: 4px;
   font-size: 12px;
   line-height: 14px;
