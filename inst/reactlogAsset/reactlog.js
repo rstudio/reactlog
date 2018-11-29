@@ -74002,16 +74002,15 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js"), __webpack_require__(/*! lodash/last */ "./node_modules/lodash/last.js"), __webpack_require__(/*! ./rlog */ "./src/rlog.js"), __webpack_require__(/*! ./log/logStates */ "./src/log/logStates.js"), __webpack_require__(/*! ./graph/GraphAtStep */ "./src/graph/GraphAtStep.js"), __webpack_require__(/*! ./style/colors */ "./src/style/colors.js"), __webpack_require__(/*! ./cyto/cytoscapeInit */ "./src/cyto/cytoscapeInit.js"), __webpack_require__(/*! ./layout/keydown */ "./src/layout/keydown.js"), __webpack_require__(/*! ./updateGraph */ "./src/updateGraph/index.js"), __webpack_require__(/*! ./layout/logEntry */ "./src/layout/logEntry.js"), __webpack_require__(/*! ./layout/progressBar */ "./src/layout/progressBar.js"), __webpack_require__(/*! ./log/initStep */ "./src/log/initStep.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js"), __webpack_require__(/*! ./rlog */ "./src/rlog.js"), __webpack_require__(/*! ./log/logStates */ "./src/log/logStates.js"), __webpack_require__(/*! ./graph/GraphAtStep */ "./src/graph/GraphAtStep.js"), __webpack_require__(/*! ./style/colors */ "./src/style/colors.js"), __webpack_require__(/*! ./cyto/cytoscapeInit */ "./src/cyto/cytoscapeInit.js"), __webpack_require__(/*! ./layout/keydown */ "./src/layout/keydown.js"), __webpack_require__(/*! ./updateGraph */ "./src/updateGraph/index.js"), __webpack_require__(/*! ./layout/logEntry */ "./src/layout/logEntry.js"), __webpack_require__(/*! ./layout/progressBar */ "./src/layout/progressBar.js"), __webpack_require__(/*! ./log/initStep */ "./src/log/initStep.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
-})(this, function (_jquery, _last2, _rlog, _logStates, _GraphAtStep, _colors, cytoscapeInit, layoutKeydown, updateGraph, logEntry, progressBar, _initStep) {
+})(this, function (_jquery, _rlog, _logStates, _GraphAtStep, _colors, cytoscapeInit, layoutKeydown, updateGraph, logEntry, progressBar, _initStep) {
   "use strict";
 
   _jquery = _interopRequireDefault(_jquery);
-  _last2 = _interopRequireDefault(_last2);
   _colors = _interopRequireDefault(_colors);
   cytoscapeInit = _interopRequireWildcard(cytoscapeInit);
   layoutKeydown = _interopRequireWildcard(layoutKeydown);
