@@ -74070,7 +74070,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       progressBar.addTimelineTicks(timelineBackground, _colors.default.progressBar.mark, _rlog.rlog.getGraph.marks, 3);
     }
 
-    logEntry.setContainers((0, _jquery.default)("#eventTimeNum"), (0, _jquery.default)("#eventSessionNum"), (0, _jquery.default)("#eventStepNum"), (0, _jquery.default)("#eventStatus"), (0, _jquery.default)("#logEntry"), _rlog.rlog.log);
+    logEntry.setContainers((0, _jquery.default)("#eventTimeNum"), (0, _jquery.default)("#eventSessionNum"), (0, _jquery.default)("#eventStepNum"), (0, _jquery.default)("#eventStatus"), (0, _jquery.default)("#logEntry"), _rlog.rlog.log, _rlog.rlog.getGraph.stepsVisible.length);
     (0, _jquery.default)("#search").on("input", function (e) {
       updateGraph.withSearchString((0, _jquery.default)(e.target).val());
     });
@@ -74373,12 +74373,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     if (curEntry.session) {
       containers.session.text("".concat(curEntry.session).padEnd(logInfo.maxSessionCharLength, " "));
     } else {
-      containers.session.text("".padEnd(logInfo.maxSessionCharLength, " "));
+      containers.session.text("(Global)".padEnd(logInfo.maxSessionCharLength, " "));
     }
 
     var stepDisplayValPadding = function stepDisplayValPadding(i) {
-      var logNumDigits = "".concat(logInfo.logLength).length;
-      return "".concat(i).padStart(logNumDigits, " ");
+      return "".concat(i).padStart("".concat(logInfo.logLength).length, " ");
     };
 
     var stepDisplayVal = (0, _sortedIndex2.default)(_rlog.rlog.getGraph.stepsVisible, curEntry.step);
@@ -74411,7 +74410,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
   _exports.update = updateLogEntry;
 
-  var setContainers = function setContainers(time, session, step, status, container, log) {
+  var setContainers = function setContainers(time, session, step, status, container, log, maxVisibleStep) {
     var logInfoLength = log.length;
     var maxSessionCharLength = 0;
     var logEntry, sessionCharLength; // find largest session name length
@@ -74429,7 +74428,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     }
 
     logInfo = {
-      logLength: logInfoLength,
+      logLength: maxVisibleStep,
       firstTime: log[0].time,
       maxSessionCharLength: maxSessionCharLength,
       lastTimeCharLength: (log[logInfoLength - 1].time - log[0].time).toFixed(timeDecimalDigits).length
@@ -74549,7 +74548,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
       case _logStates.LogStates.mark:
         {
-          return "Marked step";
+          return "User marked step";
         }
 
       case _logStates.LogStates.queueEmpty:

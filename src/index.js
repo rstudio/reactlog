@@ -100,7 +100,8 @@ $(function() {
     $("#eventStepNum"),
     $("#eventStatus"),
     $("#logEntry"),
-    rlog.log
+    rlog.log,
+    rlog.getGraph.stepsVisible.length
   );
 
   $("#search").on("input", function(e) {

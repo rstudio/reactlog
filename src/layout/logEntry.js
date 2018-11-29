@@ -67,12 +67,13 @@ let updateLogEntry = function(): void {
       `${curEntry.session}`.padEnd(logInfo.maxSessionCharLength, " ")
     );
   } else {
-    containers.session.text("".padEnd(logInfo.maxSessionCharLength, " "));
+    containers.session.text(
+      "(Global)".padEnd(logInfo.maxSessionCharLength, " ")
+    );
   }
 
   let stepDisplayValPadding = function(i) {
-    let logNumDigits = `${logInfo.logLength}`.length;
-    return `${i}`.padStart(logNumDigits, " ");
+    return `${i}`.padStart(`${logInfo.logLength}`.length, " ");
   };
 
   let stepDisplayVal = _sortedIndex(rlog.getGraph.stepsVisible, curEntry.step);
@@ -115,11 +116,13 @@ let setContainers = function(
   step: JQuery,
   status: JQuery,
   container: JQuery,
-  log: LogType
+  log: LogType,
+  maxVisibleStep: number
 ): void {
   let logInfoLength = log.length;
   let maxSessionCharLength = 0;
   let logEntry, sessionCharLength;
+
   // find largest session name length
   for (let i = 0; i < logInfoLength; i++) {
     logEntry = log[i];
@@ -130,8 +133,9 @@ let setContainers = function(
       }
     }
   }
+
   logInfo = {
-    logLength: logInfoLength,
+    logLength: maxVisibleStep,
     firstTime: log[0].time,
     maxSessionCharLength: maxSessionCharLength,
     lastTimeCharLength: (log[logInfoLength - 1].time - log[0].time).toFixed(
@@ -232,7 +236,7 @@ let statusForEntry = function(entry: LogEntryAnyType): string {
       )} is invalidating during an isolate call`;
     }
     case LogStates.mark: {
-      return `Marked step`;
+      return `User marked step`;
     }
     case LogStates.queueEmpty: {
       return `Shiny App idle`;

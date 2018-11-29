@@ -227,8 +227,9 @@ text {
 }
 .monospaced-pre {
   white-space: pre;
-  font-family: "Space Mono";
-  height: 15.2px;
+  font-family: "Fira Mono", monospace;
+  /* height: 15.5px; */
+  /* padding-top: 1.5px; */
 }
 #eventStatus {
   margin-left: 5px;
@@ -237,17 +238,36 @@ text {
   text-overflow: ellipsis;
 }
 #eventTime {
-  text-align: right;
+  line-height: 15px;
+  /* text-align: right; */
 }
 #eventTimeSessionLabel {
   margin-left: 5px;
-  font-size: 12px;
+  font-size: 11px;
 }
 #eventTimeSession {
   margin-left: 5px;
-  font-size: 12px;
+  /* font-size: 11px; */
   /* monospaced font is "larger", so must move this block up */
-  margin-top: -3px;
+  /* margin-top: -3px; */
+}
+#eventTime, #eventTimeNum, #eventSession, #eventSessionNum {
+  line-height: 15px;
+}
+#eventTime, #eventSession {
+  flex: 0 0 45px;
+}
+#eventTimeNum, #eventSessionNum {
+  flex: 0 0 auto;
+}
+#eventTimeBlock, #eventSessionBlock {
+  display: flex;
+  align-items: baseline;
+}
+#eventWrapper {
+  /* display: flex; */
+  font-size: 11px;
+  border-spacing: 0;
 }
 
 #filter {
