@@ -92,11 +92,11 @@ $(function() {
     timelineBackground,
     colors.nodes.ready,
     rlog.getGraph.enterExitEmpties,
-    3
+    progressBar.timelinePadding * 2
   );
   progressBar.addTimelineTicks(
     timelineBackground,
-    colors.nodes.ready,
+    colors.progressBar.idle,
     rlog.getGraph.queueEmpties,
     0
   );
@@ -105,7 +105,7 @@ $(function() {
       timelineBackground,
       colors.progressBar.mark,
       rlog.getGraph.marks,
-      3
+      0
     );
   }
   logEntry.setContainers(

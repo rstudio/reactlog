@@ -74078,11 +74078,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     }
     progressBar.setContainers((0, _jquery.default)("#timeline"), (0, _jquery.default)("#timeline-fill"));
     var timelineBackground = (0, _jquery.default)("#timeline-bg");
-    progressBar.addTimelineTicks(timelineBackground, _colors.default.nodes.ready, _rlog.rlog.getGraph.enterExitEmpties, 3);
-    progressBar.addTimelineTicks(timelineBackground, _colors.default.nodes.ready, _rlog.rlog.getGraph.queueEmpties, 0);
+    progressBar.addTimelineTicks(timelineBackground, _colors.default.nodes.ready, _rlog.rlog.getGraph.enterExitEmpties, progressBar.timelinePadding * 2);
+    progressBar.addTimelineTicks(timelineBackground, _colors.default.progressBar.idle, _rlog.rlog.getGraph.queueEmpties, 0);
 
     if (_rlog.rlog.getGraph.marks.length > 0) {
-      progressBar.addTimelineTicks(timelineBackground, _colors.default.progressBar.mark, _rlog.rlog.getGraph.marks, 3);
+      progressBar.addTimelineTicks(timelineBackground, _colors.default.progressBar.mark, _rlog.rlog.getGraph.marks, 0);
     }
 
     logEntry.setContainers((0, _jquery.default)("#eventTimeNum"), (0, _jquery.default)("#eventSessionNum"), (0, _jquery.default)("#eventStepNum"), (0, _jquery.default)("#eventStatus"), (0, _jquery.default)("#logEntry"), _rlog.rlog.log, _rlog.rlog.getGraph.stepsVisible.length);
@@ -74617,7 +74617,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   Object.defineProperty(_exports, "__esModule", {
     value: true
   });
-  _exports.setContainers = _exports.addTimelineTicks = _exports.update = void 0;
+  _exports.timelinePadding = _exports.setContainers = _exports.addTimelineTicks = _exports.update = void 0;
   _has2 = _interopRequireDefault(_has2);
   _jquery = _interopRequireDefault(_jquery);
   _sortedIndex2 = _interopRequireDefault(_sortedIndex2);
@@ -74644,6 +74644,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
   var setContainers = function setContainers(fullContainerVal, fillContainerVal) {
     fillContainerVal.css("background-color", _colors.colors.progressBar.progress);
+    fillContainerVal.css("top", "".concat(timelinePadding, "px"));
+    fillContainerVal.css("bottom", "".concat(timelinePadding, "px"));
     fillContainer = fillContainerVal;
     fullContainerVal.css("height", "".concat(timelineHeight, "px"));
     fullContainerVal.css("background-color", _colors.colors.progressBar.background);
@@ -74699,7 +74701,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   };
 
   _exports.addTimelineTicks = addTimelineTicks;
-  var timelineHeight = 16;
+  var timelineHeight = 20;
+  var timelinePadding = 3;
+  _exports.timelinePadding = timelinePadding;
 });
 
 /***/ }),
@@ -74855,8 +74859,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     progressBar: {
       background: "#f0f0f0",
       progress: "#8e8e8e",
-      mark: "#222222" // TODO-barret need real mark color
-
+      mark: "#666666",
+      // matches right/left stop buttons
+      idle: "#a3c586"
     },
     nodes: {
       invalidating: "#969696",

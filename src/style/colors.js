@@ -5,7 +5,8 @@ let colors = {
   progressBar: {
     background: "#f0f0f0",
     progress: "#8e8e8e",
-    mark: "#222222", // TODO-barret need real mark color
+    mark: "#666666", // matches right/left stop buttons
+    idle: "#a3c586",
   },
   nodes: {
     invalidating: "#969696",
