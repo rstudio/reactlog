@@ -5,8 +5,11 @@ import _sortedIndexOf from "lodash/sortedIndexOf";
 
 import { rlog } from "../rlog";
 
+import { roundDecimals } from "../utils/numbers";
+
 import { LogStates } from "../log/logStates";
 import type {
+  LogType,
   ReactIdType,
   LogEntryHasReactId,
   LogEntryAnyType,
@@ -34,16 +37,44 @@ let containers: {
   step: JQuery,
   status: JQuery,
 };
+let timeDecimalDigits = 4;
+let logInfo: {
+  logLength: number,
+  firstTime: number,
+  lastTimeCharLength: number,
+  maxSessionCharLength: number,
+} = {
+  logLength: 0,
+  firstTime: 0,
+  lastTimeCharLength: 0,
+  maxSessionCharLength: 0,
+};
 
 let updateLogEntry = function(): void {
+  if (logInfo.logLength === 0) return;
+
   let curEntry = rlog.log[rlog.curTick];
 
-  containers.time.text(`Time: ${curEntry.time}`);
+  let timeDiff = curEntry.time - logInfo.firstTime; // milliseconds
+
+  timeDiff = roundDecimals(timeDiff, timeDecimalDigits)
+    .toFixed(timeDecimalDigits)
+    .padStart(logInfo.lastTimeCharLength, " ");
+
+  containers.time.text(`${timeDiff}s`);
   if (curEntry.session) {
-    containers.session.text(`Session: ${curEntry.session}`);
+    containers.session.text(
+      `${curEntry.session}`.padEnd(logInfo.maxSessionCharLength, " ")
+    );
   } else {
-    containers.session.text("");
+    containers.session.text(
+      "(Global)".padEnd(logInfo.maxSessionCharLength, " ")
+    );
   }
+
+  let stepDisplayValPadding = function(i) {
+    return `${i}`.padStart(`${logInfo.logLength}`.length, " ");
+  };
 
   let stepDisplayVal = _sortedIndex(rlog.getGraph.stepsVisible, curEntry.step);
   if (_sortedIndexOf(rlog.getGraph.stepsVisible, curEntry.step) === -1) {
@@ -52,7 +83,7 @@ let updateLogEntry = function(): void {
     if (stepDisplayVal === 0) {
       // occurs before any visible step
       // let halfStepPos = _sortedIndex(rlog.getGraph.steps, curEntry.step);
-      stepDisplayVal = `${0}_${curEntry.step}`;
+      stepDisplayVal = `${stepDisplayValPadding(0)}_${curEntry.step}`;
     } else {
       // get visible step location
       let smallerStepVal = rlog.getGraph.stepsVisible[stepDisplayVal - 1];
@@ -65,14 +96,16 @@ let updateLogEntry = function(): void {
 
       // display number of steps away from lower, visible step
       let diffSteps = halfStepPos - smallerPos;
-      stepDisplayVal = `${smallerStepValVisible + 1}_${diffSteps}`;
+      stepDisplayVal = `${stepDisplayValPadding(
+        smallerStepValVisible + 1
+      )}_${diffSteps}`;
     }
   } else {
     // 1 start counting (not 0)
-    stepDisplayVal = stepDisplayVal + 1;
+    stepDisplayVal = stepDisplayValPadding(stepDisplayVal + 1);
   }
-  containers.step.text(`Step: ${stepDisplayVal}`);
-  containers.status.text(statusForEntry(curEntry));
+  containers.step.text(`${stepDisplayVal}`);
+  containers.status.html(statusForEntry(curEntry));
 
   containers.container.text(JSON.stringify(rlog.log[rlog.curTick], null, "  "));
 };
@@ -82,8 +115,33 @@ let setContainers = function(
   session: JQuery,
   step: JQuery,
   status: JQuery,
-  container: JQuery
+  container: JQuery,
+  log: LogType,
+  maxVisibleStep: number
 ): void {
+  let logInfoLength = log.length;
+  let maxSessionCharLength = 0;
+  let logEntry, sessionCharLength;
+
+  // find largest session name length
+  for (let i = 0; i < logInfoLength; i++) {
+    logEntry = log[i];
+    if (logEntry.session) {
+      sessionCharLength = logEntry.session.length;
+      if (sessionCharLength > maxSessionCharLength) {
+        maxSessionCharLength = sessionCharLength;
+      }
+    }
+  }
+
+  logInfo = {
+    logLength: maxVisibleStep,
+    firstTime: log[0].time,
+    maxSessionCharLength: maxSessionCharLength,
+    lastTimeCharLength: (log[logInfoLength - 1].time - log[0].time).toFixed(
+      timeDecimalDigits
+    ).length,
+  };
   containers = {
     time: time,
     session: session,
@@ -104,6 +162,9 @@ let getLabel = function(reactId: ReactIdType): string {
 let getReactIdLabel = function(entry: LogEntryHasReactId) {
   return getLabel(entry.reactId);
 };
+let pre = function(txt: string | number) {
+  return `<span class="monospaced-pre">${txt}</span>`;
+};
 let statusForEntry = function(entry: LogEntryAnyType): string {
   switch (entry.action) {
     case LogStates.asyncStart: {
@@ -114,84 +175,86 @@ let statusForEntry = function(entry: LogEntryAnyType): string {
     }
     case LogStates.define: {
       let defineEntry = ((entry: Object): LogEntryDefineType);
-      return `Defined ${getReactIdLabel(defineEntry)}`;
+      return `Defined ${pre(getReactIdLabel(defineEntry))}`;
     }
     case LogStates.dependsOn: {
       let dependsOnEntry = ((entry: Object): LogEntryDependsOnType);
-      return `${getReactIdLabel(dependsOnEntry)} depends on ${getLabel(
-        dependsOnEntry.depOnReactId
+      return `${pre(getReactIdLabel(dependsOnEntry))} depends on ${pre(
+        getLabel(dependsOnEntry.depOnReactId)
       )}`;
     }
     case LogStates.dependsOnRemove: {
       let dependsOnRemoveEntry = ((entry: Object): LogEntryDependsOnRemoveType);
-      return `${getReactIdLabel(
-        dependsOnRemoveEntry
-      )} removes dependency on ${getLabel(dependsOnRemoveEntry.depOnReactId)}`;
+      return `${pre(
+        getReactIdLabel(dependsOnRemoveEntry)
+      )} removes dependency on ${pre(
+        getLabel(dependsOnRemoveEntry.depOnReactId)
+      )}`;
     }
     case LogStates.enter: {
       let enterEntry = ((entry: Object): LogEntryEnterType);
-      return `${getReactIdLabel(enterEntry)} started calculating`;
+      return `${pre(getReactIdLabel(enterEntry))} started calculating`;
     }
     case LogStates.exit: {
       let exitEntry = ((entry: Object): LogEntryExitType);
-      return `${getReactIdLabel(exitEntry)} stopped calculating`;
+      return `${pre(getReactIdLabel(exitEntry))} stopped calculating`;
     }
     case LogStates.freeze: {
       let frozenEntry = ((entry: Object): LogEntryFreezeType);
-      return `${getReactIdLabel(frozenEntry)} froze`;
+      return `${pre(getReactIdLabel(frozenEntry))} froze`;
     }
     case LogStates.invalidateEnd: {
       let invalidateEndEntry = ((entry: Object): LogEntryInvalidateEndType);
-      return `${getReactIdLabel(invalidateEndEntry)} has invalidated`;
+      return `${pre(getReactIdLabel(invalidateEndEntry))} has invalidated`;
     }
     case LogStates.invalidateStart: {
       let invalidateStartEntry = ((entry: Object): LogEntryInvalidateStartType);
-      return `${getReactIdLabel(invalidateStartEntry)} is invalidating`;
+      return `${pre(getReactIdLabel(invalidateStartEntry))} is invalidating`;
     }
     case LogStates.isolateEnter: {
       let isolateEnterEntry = ((entry: Object): LogEntryIsolateEnterType);
-      return `${getReactIdLabel(
-        isolateEnterEntry
+      return `${pre(
+        getReactIdLabel(isolateEnterEntry)
       )} is isolating future dependencies`;
     }
     case LogStates.isolateExit: {
       let isolateExitEntry = ((entry: Object): LogEntryIsolateExitType);
-      return `${getReactIdLabel(
-        isolateExitEntry
+      return `${pre(
+        getReactIdLabel(isolateExitEntry)
       )} stopped isolating future dependencies`;
     }
     case LogStates.isolateInvalidateEnd: {
       let isolateInvalidateEndEntry = ((entry: Object): LogEntryIsolateInvalidateEndType);
-      return `${getReactIdLabel(
-        isolateInvalidateEndEntry
+      return `${pre(
+        getReactIdLabel(isolateInvalidateEndEntry)
       )} invalidated during an isolate call`;
     }
     case LogStates.isolateInvalidateStart: {
       let isolateInvalidateStartEntry = ((entry: Object): LogEntryIsolateInvalidateStartType);
-      return `${getReactIdLabel(
-        isolateInvalidateStartEntry
+      return `${pre(
+        getReactIdLabel(isolateInvalidateStartEntry)
       )} is invalidating during an isolate call`;
     }
     case LogStates.mark: {
-      return `Marked step`;
+      return `User marked step`;
     }
     case LogStates.queueEmpty: {
       return `Shiny App idle`;
     }
     case LogStates.thaw: {
       let thawEntry = ((entry: Object): LogEntryThawType);
-      return `${getReactIdLabel(thawEntry)} has thawed`;
+      return `${pre(getReactIdLabel(thawEntry))} has thawed`;
     }
     case LogStates.updateNodeLabel: {
       let updateNodeLabelEntry = ((entry: Object): LogEntryUpdateNodeLabelType);
-      return `Set label to ${getReactIdLabel(updateNodeLabelEntry)}`;
+      return `Set label to ${pre(getReactIdLabel(updateNodeLabelEntry))}`;
     }
     case LogStates.valueChange: {
       let valueChangeEntry = ((entry: Object): LogEntryValueChangeType);
-      return `${getReactIdLabel(valueChangeEntry)} has a new value`;
+      return `${pre(getReactIdLabel(valueChangeEntry))} has a new value`;
     }
     default:
-      throw `state: ${entry.action} not implemented for log status`;
+      throw `state: ${pre(entry.action)} not implemented for log status`;
   }
 };
 

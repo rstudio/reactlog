@@ -1,7 +1,6 @@
 // @flow
 
 import _sortedIndexOf from "lodash/sortedIndexOf";
-import console from "../utils/console";
 
 import { rlog } from "../rlog";
 import { updateGraph } from "../updateGraph";
@@ -50,9 +49,8 @@ let prevEnterExitEmpty = function(cytoOptions?: CytoscapeOptions = {}) {
     }
   } else {
     // at cycle point
-    // first move one step forward... then find next enter/exit empty
+    // first move one step backward... then find prev enter/exit empty
     prevTick = rlog.getGraph.prevStep(rlog.curTick);
-    console.log("at cycle point", rlog.curTick, prevTick);
   }
   let val, i;
   // move to queue empty

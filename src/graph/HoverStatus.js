@@ -31,7 +31,7 @@ class HoverStatus {
         };
       case "selected":
         return function(x: Node | Edge | GhostEdge) {
-          x.hoverStatus.toFiltered();
+          x.hoverStatus.toSelected();
         };
       case "filtered":
         return function(x: Node | Edge | GhostEdge) {

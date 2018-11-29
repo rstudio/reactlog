@@ -1,6 +1,6 @@
 // @flow
 
-import console from "../utils/console";
+// import console from "../utils/console";
 import * as updateGraph from "./hoverStickyFilterSearch";
 
 // when str length < 3 do not search
@@ -11,11 +11,11 @@ let withSearchString = function(str: string) {
   if (str.length < 3) {
     if (str.length === 0) {
       // TODO-barret show warning of resetting
-      console.log("resetting log!");
+      // console.log("resetting log!");
       return updateGraph.searchRegexReset();
     } else {
       // TODO-barret show warning of not enough characters
-      console.log("do nothing");
+      // console.log("do nothing");
       return false;
     }
   }

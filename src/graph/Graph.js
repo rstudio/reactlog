@@ -285,7 +285,7 @@ class Graph {
       })
     );
   }
-  ancestorNodeIdsForDatas(datas: Array<SomeGraphData>) {
+  ancestorNodeIdsForDatas(datas: Array<SomeGraphData>): Array<ReactIdType> {
     let self = this;
     return _union(
       flatMap(datas, function(data) {

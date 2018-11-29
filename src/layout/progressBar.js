@@ -27,6 +27,8 @@ let setContainers = function(
   fillContainerVal: JQuery
 ): void {
   fillContainerVal.css("background-color", colors.progressBar.progress);
+  fillContainerVal.css("top", `${timelinePadding}px`);
+  fillContainerVal.css("bottom", `${timelinePadding}px`);
   fillContainer = fillContainerVal;
 
   fullContainerVal.css("height", `${timelineHeight}px`);
@@ -88,6 +90,12 @@ let addTimelineTicks = function(
   });
 };
 
-let timelineHeight = 16;
+let timelineHeight = 20;
+let timelinePadding = 3;
 
-export { updateProgressBar as update, addTimelineTicks, setContainers };
+export {
+  updateProgressBar as update,
+  addTimelineTicks,
+  setContainers,
+  timelinePadding,
+};

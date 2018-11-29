@@ -5,13 +5,13 @@ import _last from "lodash/last";
 
 import { rlog } from "./rlog";
 
+import { LogStates } from "./log/logStates";
+
 import { GraphAtStep } from "./graph/GraphAtStep";
 
 import colors from "./style/colors";
 
 import * as cytoscapeInit from "./cyto/cytoscapeInit";
-
-import console from "./utils/console";
 
 import * as layoutKeydown from "./layout/keydown";
 
@@ -48,7 +48,6 @@ import "./log/initStep";
 //
 
 $(function() {
-  console.log(rlog);
   window.barret = rlog;
 
   rlog.log = (window.log: LogType);
@@ -56,33 +55,32 @@ $(function() {
 
   rlog.getGraph = new GraphAtStep(rlog.log);
   rlog.graph = rlog.getGraph.atStep(rlog.getGraph.maxStep);
-  console.log(rlog.graph);
 
-  $("#prevStartButton").click(() => {
-    updateGraph.firstStep();
-  });
-  $("#nextEndButton").click(() => {
-    updateGraph.lastStep();
-  });
-  $("#prevFlushButton").click(() => {
-    updateGraph.prevQueueEmpty() || updateGraph.firstStep();
-  });
-  $("#nextFlushButton").click(() => {
-    updateGraph.nextQueueEmpty() || updateGraph.lastStep();
-  });
-  $("#prevCycleButton").click(() => {
-    updateGraph.prevEnterExitEmpty() || updateGraph.firstStep();
-  });
-  $("#nextCycleButton").click(() => {
-    updateGraph.nextEnterExitEmpty() || updateGraph.lastStep();
-  });
-  $("#prevStepButton").click(updateGraph.prevStep);
-  $("#nextStepButton").click(updateGraph.nextStep);
+  $("#prevMarkButton").click(updateGraph.buttonPrevMark);
+  $("#nextMarkButton").click(updateGraph.buttonNextMark);
+  $("#prevFlushButton").click(updateGraph.buttonPrevIdle);
+  $("#nextFlushButton").click(updateGraph.buttonNextIdle);
+  $("#prevCycleButton").click(updateGraph.buttonPrevCycle);
+  $("#nextCycleButton").click(updateGraph.buttonNextCycle);
+  $("#prevStepButton").click(updateGraph.buttonPrevStep);
+  $("#nextStepButton").click(updateGraph.buttonNextStep);
 
   $("#legendInvalidating").css("background-color", colors.nodes.invalidating);
   $("#legendInvalidated").css("background-color", colors.nodes.invalidated);
   $("#legendCalculating").css("background-color", colors.nodes.calculating);
   $("#legendReady").css("background-color", colors.nodes.ready);
+  {
+    // display the frozen legend item only if a frozen state exists
+    let entry;
+    for (let i = 0; i < rlog.log.length; i++) {
+      entry = rlog.log[i];
+      if (entry.action === LogStates.freeze) {
+        $("#legendRowFrozen").css("display", ""); // remove display none form css
+        $("#legendFrozen").css("background-color", colors.frozen.default);
+        break;
+      }
+    }
+  }
 
   progressBar.setContainers($("#timeline"), $("#timeline-fill"));
   let timelineBackground = $("#timeline-bg");
@@ -90,11 +88,11 @@ $(function() {
     timelineBackground,
     colors.nodes.ready,
     rlog.getGraph.enterExitEmpties,
-    3
+    progressBar.timelinePadding * 2
   );
   progressBar.addTimelineTicks(
     timelineBackground,
-    colors.nodes.ready,
+    colors.progressBar.idle,
     rlog.getGraph.queueEmpties,
     0
   );
@@ -103,15 +101,17 @@ $(function() {
       timelineBackground,
       colors.progressBar.mark,
       rlog.getGraph.marks,
-      3
+      0
     );
   }
   logEntry.setContainers(
-    $("#eventTime"),
-    $("#eventSession"),
-    $("#eventStep"),
+    $("#eventTimeNum"),
+    $("#eventSessionNum"),
+    $("#eventStepNum"),
     $("#eventStatus"),
-    $("#logEntry")
+    $("#logEntry"),
+    rlog.log,
+    rlog.getGraph.stepsVisible.length
   );
 
   $("#search").on("input", function(e) {
@@ -125,13 +125,10 @@ $(function() {
     }
   }
 
-  if (rlog.getGraph.marks.length > 0) {
-    let lastMark = _last(rlog.getGraph.marks);
-    // start the graph at the first enter/exit or first empty queue
-    updateGraph.atTick(lastMark, {
+  {
+    let cytoOpts = {
       fit: true,
       stop: function(evt) {
-        console.log(evt, "layoutstop", rlog.cyto.zoom());
         let zoomLevel = rlog.cyto.zoom();
         let logZoomLevel = Math.log2(zoomLevel);
 
@@ -141,11 +138,7 @@ $(function() {
         // // zoom in to double the size
         // rlog.cyto.maxZoom(Math.pow(2, logZoomLevel + 3)); // zoom in
       },
-    });
-  } else {
-    // start the graph at the first enter/exit or first empty queue
-    // TODO-barret should start at nextEnterExitEmpty,
-    // updateGraph.nextEnterExitEmpty()
-    updateGraph.nextQueueEmpty({ fit: true });
+    };
+    updateGraph.lastUserMark(cytoOpts) || updateGraph.nextQueueEmpty(cytoOpts);
   }
 });

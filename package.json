@@ -17,6 +17,11 @@
     "precommit": "lint-staged",
     "git_add_map": "git add inst/reactlogAsset/reactlog.js inst/reactlogAsset/reactlog.js.map && git add"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
   "lint-staged": {
     ".flowconfig": [
       "yarn flow-report-and-echo"
@@ -33,47 +38,45 @@
     ]
   },
   "flow-coverage-report": {
-    "includeGlob": [
+    "globIncludePatterns": [
       "src/**/*.js"
     ],
-    "excludeGlob": [
+    "globExcludeGlob": [
       "src/utils/Console.js",
       "src/cyto/layoutOptions.js",
       "src/log/initStep.js",
       "src/rlog.js"
     ],
     "threshold": 95,
-    "type": "text"
+    "reportType": "text"
   },
   "devDependencies": {
-    "babel-core": "^6.26.3",
-    "babel-eslint": "8.2.3",
-    "babel-loader": "^7.1.4",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-plugin-transform-es2015-modules-umd": "6.24.1",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-flow": "6.23.0",
-    "duplicate-package-checker-webpack-plugin": "^3.0.0",
-    "eslint": "^4.19.1",
-    "eslint-plugin-flowtype": "2.47.1",
-    "flow-bin": "^0.76.0",
-    "flow-coverage-report": "^0.5.0",
-    "flow-typed": "^2.4.0",
-    "grunt": "^1.0.3",
-    "grunt-cli": "^1.2.0",
-    "grunt-webpack": "^3.1.2",
-    "husky": "^0.14.3",
+    "@babel/core": "7.x",
+    "@babel/plugin-proposal-class-properties": "7.x",
+    "@babel/preset-env": "7.x",
+    "@babel/preset-flow": "7.x",
+    "babel-eslint": "10.x",
+    "babel-loader": "8.x",
+    "duplicate-package-checker-webpack-plugin": "3.x",
+    "eslint": "5.x",
+    "eslint-plugin-flowtype": "3.x",
+    "flow-bin": "^0.86.0",
+    "flow-coverage-report": "0.6.x",
+    "flow-typed": "^2.5.1",
+    "grunt": "1.x",
+    "grunt-cli": "1.x",
+    "grunt-webpack": "3.x",
+    "husky": "1.x",
     "license-checker": "^20.1.0",
-    "lint-staged": "7.1.2",
-    "onchange": "^4.0.0",
-    "prettier": "^1.13.5",
-    "webpack": "4.8.3",
-    "webpack-bundle-analyzer": "^2.13.1"
+    "lint-staged": "8.x",
+    "prettier": "1.x",
+    "webpack": "4.x",
+    "webpack-bundle-analyzer": "3.x"
   },
   "dependencies": {
-    "cytoscape": "^3.2.13",
-    "cytoscape-dagre": "^2.2.1",
-    "jquery": "^3.3.1",
-    "lodash": "^4.17.10"
+    "cytoscape": "3.x",
+    "cytoscape-dagre": "2.x",
+    "jquery": "3.x",
+    "lodash": "4.x"
   }
 }

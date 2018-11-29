@@ -5,9 +5,14 @@ let colors = {
   progressBar: {
     background: "#f0f0f0",
     progress: "#8e8e8e",
-    mark: "#222222", // TODO-barret need real mark color
+    mark: "#666666", // matches right/left stop buttons
+    idle: "#a3c586",
   },
   nodes: {
+    label_text_color: "#606060",
+    label_text_opacity: 1,
+    label_background_color: "white",
+    label_background_opacity: 0.8,
     invalidating: "#969696",
     invalidated: "#d9d9d9",
     calculating: "#fcbf49",

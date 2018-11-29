@@ -1,5 +1,6 @@
 // @flow
 
+import $ from "jquery";
 import _assign from "lodash/assign";
 
 import { rlog } from "../rlog";
@@ -50,6 +51,7 @@ let searchRegex = function(
   return updateGraph(rlog.curTick, _assign({ fit: true }, cytoOptions));
 };
 let searchRegexReset = function(cytoOptions?: CytoscapeOptions = {}) {
+  $("#search").val("");
   rlog.getGraph.updateSearchRegexReset();
   return updateGraph(rlog.curTick, _assign({ fit: true }, cytoOptions));
 };

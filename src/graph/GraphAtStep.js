@@ -240,7 +240,7 @@ class GraphAtStep {
       if (_sortedIndexOf(this.stepsVisible, logEntry.step) === -1) {
         continue;
       }
-      console.log(logEntry);
+      // console.log(logEntry);
       ret = logEntry.step;
       switch (logEntry.action) {
         case LogStates.dependsOn:
@@ -456,7 +456,7 @@ class GraphAtStep {
 
       if (matchedNodes.length === 0) {
         // TODO-barret warn of no matches
-        console.log("no matches!");
+        // console.log("no matches!");
         graph.hoverStatusOnNodeIds([], "filtered");
         this.updateFilterDatasReset(updateFinal);
       } else {

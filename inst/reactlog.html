@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,600' rel='stylesheet' type='text/css'>
+  <!-- <link href='https://fonts.googleapis.com/css?family=Fira+Mono|Open+Sans:400,600,800' rel='stylesheet' type='text/css'> -->
+  <link href='https://fonts.googleapis.com/css?family=Fira+Mono|Source+Sans+Pro:200,400,600' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" type="text/css" href="reactlogAsset/reactlog.css">
 
   <script>
@@ -10,22 +11,6 @@
       window.__APP_TIME__ = String(__TIME__).toLowerCase() === "true";
     } catch (e) {}
   </script>
-
-  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script> -->
-  <!-- <script src="https://unpkg.com/jquery@3.3.1/dist/jquery.slim.min.js"></script>
-
-  <script src="https://unpkg.com/lodash@4.17.10/lodash.js"></script>
-  <script src="https://unpkg.com/heap@0.2.6/lib/heap.js"></script> -->
-  <!-- <script>
-    window.lodash = _;
-    window["lodash.debounce"] = _.debounce;
-    window.heap = Heap;
-  </script> -->
-  <!-- <script src="https://unpkg.com/cytoscape@3.2.11/dist/cytoscape.cjs.js"></script>
-  <script src="https://unpkg.com/dagre@0.8.2/dist/dagre.js"></script>
-  <script src="https://unpkg.com/cytoscape-dagre@2.2.1/cytoscape-dagre.js"></script> -->
-
-
 
   <script src="defaultLog.js"></script>
   <script src="reactlogAsset/reactlog.js"></script>
@@ -39,20 +24,36 @@
   <div id="bodyContent">
     <div id="statusHeader">
       <div id="movementButtons" style="z-index:1;">
-        <img id="prevStartButton" class="navigationButton" src="./reactlogAsset/images/prev-start.svg" alt="Start" title="Start (home)" height="24" width="30">
+        <img id="prevMarkButton" class="navigationButton" src="./reactlogAsset/images/prev-mark.svg" alt="Previous User Mark" title="Previous User Mark (home)" height="24" width="30">
         <img id="prevFlushButton" class="navigationButton" src="./reactlogAsset/images/prev-flush.svg" alt="Previous idle" title="Previous idle (&#8997; &#8679; &#8592;)" height="24" width="30">
         <img id="prevCycleButton" class="navigationButton" src="./reactlogAsset/images/prev-cycle.svg" alt="Previous calculation cycle" title="Previous calculation cycle (&#8997; &#8592;)" height="24" width="30">
         <img id="prevStepButton"  class="navigationButton" src="./reactlogAsset/images/prev-step.svg"  alt="Previous step"  title="Previous step (&#8592;)"  height="24" width="30">
         <img id="nextStepButton"  class="navigationButton" src="./reactlogAsset/images/next-step.svg"  alt="Next step"      title="Next step (&#8594;)"      height="24" width="30">
         <img id="nextCycleButton" class="navigationButton" src="./reactlogAsset/images/next-cycle.svg" alt="Next calculation cycle"     title="Next calculation cycle (&#8997; &#8594;)"     height="24" width="30">
         <img id="nextFlushButton" class="navigationButton" src="./reactlogAsset/images/next-flush.svg" alt="Next idle"     title="Next idle (&#8997; &#8679; &#8594;)"     height="24" width="30">
-        <img id="nextEndButton" class="navigationButton" src="./reactlogAsset/images/next-end.svg" alt="End"     title="End (end)"     height="24" width="30">
+        <img id="nextMarkButton" class="navigationButton" src="./reactlogAsset/images/next-mark.svg" alt="Next User Mark"     title="Next User Mark (end)"     height="24" width="30">
       </div>
-      <div id="eventStep"></div>
+      <div id="eventStep">Step: <span id="eventStepNum" class="monospaced-pre"><span></div>
       <div id="eventStatus"></div>
-      <div id="eventTimeSession">
-        <div id="eventTime"></div>
-        <div id="eventSession"></div>
+      <!-- <table id="eventWrapper">
+        <tr>
+          <td id="eventTime">Time: </td>
+          <td id="eventTimeNum" class="monospaced-pre"></td>
+        </tr>
+        <tr>
+          <td id="eventSession">Session: </td>
+          <td id="eventSessionNum" class="monospaced-pre"></td>
+        </tr>
+      </table> -->
+      <div id="eventWrapper">
+        <div id="eventTimeBlock">
+          <div id="eventTime">Time: </div>
+          <div id="eventTimeNum" class="monospaced-pre"></div>
+        </div>
+        <div id="eventSessionBlock">
+          <div id="eventSession">Session: </div>
+          <div id="eventSessionNum" class="monospaced-pre"></div>
+        </div>
       </div>
       <div id="filter">
         <input id="search" type="text" size="12" />
@@ -70,13 +71,17 @@
         <div id="cyto"></div>
       </div>
       <div id="legend">
-        <div class="legendRow"><div id="legendInvalidating" class="legendColor"></div><div class="legendLabel">Invalidating</div></div>
-        <div class="legendRow"><div id="legendInvalidated" class="legendColor"></div><div class="legendLabel">Invalidated</div></div>
-        <div class="legendRow"><div id="legendCalculating" class="legendColor"></div><div class="legendLabel">Calculating</div></div>
+        <div class="legendRow" id="legendRowFrozen" style="display:none"><div id="legendFrozen" class="legendColor legendRowTopMiddle"></div><div class="legendLabel">Frozen</div></div>
+        <div class="legendRow"><div id="legendInvalidating" class="legendColor legendRowTopMiddle"></div><div class="legendLabel">Invalidating</div></div>
+        <div class="legendRow"><div id="legendInvalidated" class="legendColor legendRowTopMiddle"></div><div class="legendLabel">Invalidated</div></div>
+        <div class="legendRow"><div id="legendCalculating" class="legendColor legendRowTopMiddle"></div><div class="legendLabel">Calculating</div></div>
         <div class="legendRow"><div id="legendReady" class="legendColor"></div><div class="legendLabel">Ready</div></div>
     </div>
+    <div id="logEntry" style="display: none;">
+      Press right-arrow to advance
+    </div>
   </div>
-  <div id="logEntry" style="display: none;">
+  <div id="logEntryOld" style="display: none;">
     Press right-arrow to advance
   </div>
   <div id="ended" style="display: none;">

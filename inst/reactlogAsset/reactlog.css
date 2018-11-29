@@ -1,6 +1,7 @@
 html,
 body {
   font-family: "Source Sans Pro", sans-serif;
+  /* font-family: "Open Sans", sans-serif; */
   /* font-weight: 400; */
   overflow: hidden;
   height: 100%;
@@ -32,8 +33,9 @@ div {
   white-space: pre-wrap;
   text-align: left;
   position:absolute;
-  bottom:0px;
+  top:0px;
   left:0px;
+  padding: 10px;
   font-size: 10px;
 }
 #ended {
@@ -225,15 +227,49 @@ text {
 #eventStep {
   margin-left: 10px;
 }
+.monospaced-pre {
+  white-space: pre;
+  font-family: "Fira Mono", monospace;
+  /* height: 15.5px; */
+  /* padding-top: 1.5px; */
+}
 #eventStatus {
   margin-left: 5px;
   flex-grow: 1;
   overflow: hidden;
   text-overflow: ellipsis;
 }
+#eventTime {
+  line-height: 15px;
+  /* text-align: right; */
+}
+#eventTimeSessionLabel {
+  margin-left: 5px;
+  font-size: 11px;
+}
 #eventTimeSession {
   margin-left: 5px;
-  font-size: 12px;
+  /* font-size: 11px; */
+  /* monospaced font is "larger", so must move this block up */
+  /* margin-top: -3px; */
+}
+#eventTime, #eventTimeNum, #eventSession, #eventSessionNum {
+  line-height: 15px;
+}
+#eventTime, #eventSession {
+  flex: 0 0 45px;
+}
+#eventTimeNum, #eventSessionNum {
+  flex: 0 0 auto;
+}
+#eventTimeBlock, #eventSessionBlock {
+  display: flex;
+  align-items: baseline;
+}
+#eventWrapper {
+  /* display: flex; */
+  font-size: 11px;
+  border-spacing: 0;
 }
 
 #filter {
@@ -266,6 +302,8 @@ text {
 
   flex-grow: 1;
 
+  position: relative;
+
   /* display: block; */
   /* border: 2px orange solid; */
   /* left: 0; */
@@ -291,8 +329,12 @@ text {
 #legend {
   align-self: center;
 
-  margin-right: 20px;
-  margin-left: 10px;
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  /* margin-right: 20px; */
+  padding: 10px;
+  background-color: rgba(255,255,255, 0.85);
 
   /* position: fixed; */
   /* top: 50%; */
@@ -303,6 +345,8 @@ text {
 
   /* z-index: 2; */
   /* border: 1px red solid; */
+  border-top: 1px rgba(217, 217, 217, 0.2) dotted;
+  border-right: 1px rgba(217, 217, 217, 0.2) dotted;
 }
 
 .legendRow {
@@ -311,9 +355,9 @@ text {
   justify-content: flex-start;
   align-items: center;
   align-content: center;
-
-  margin-top: 4px;
-  margin-bottom: 4px;
+}
+.legendRowTopMiddle {
+  margin-bottom: 8px;
 }
 .legendColor {
 
@@ -324,7 +368,7 @@ text {
 }
 .legendLabel {
   flex-basis: 0;
-
+  color: #606060;
   margin-left: 4px;
   font-size: 12px;
   line-height: 14px;

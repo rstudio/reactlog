@@ -34,3 +34,4 @@ yarn-error.log
 src_old
 
 _ignore
+*.rej

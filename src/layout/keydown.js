@@ -3,14 +3,14 @@
 import $ from "jquery";
 import _defer from "lodash/defer";
 
-import console from "../utils/console";
+// import console from "../utils/console";
 
 import * as updateGraph from "../updateGraph";
 import { hasLength } from "../graph/GraphAtStep";
 import { rlog } from "../rlog";
 
 let onKeydown = function(e: JQueryInputEventObject): void {
-  console.log("keydown: ", e);
+  // console.log("keydown: ", e);
   let target = $(e.target).get(0);
   if (target.id && target.id === "search") {
     // is in search text box
@@ -29,14 +29,14 @@ let onKeydown = function(e: JQueryInputEventObject): void {
     if (e.altKey) {
       if (e.shiftKey) {
         // option + shift + right
-        if (updateGraph.nextQueueEmpty()) {
+        if (updateGraph.buttonNextIdle()) {
           return;
         }
         // if it can't go right, try a cycle
       }
       // option + right
       // return false if there is no more enter/exit empty marks
-      if (updateGraph.nextEnterExitEmpty()) {
+      if (updateGraph.buttonNextCycle()) {
         return;
       }
       // if it cant go right, try a step
@@ -47,7 +47,7 @@ let onKeydown = function(e: JQueryInputEventObject): void {
     }
     if (rlog.curTick < rlog.getGraph.maxStep) {
       // right
-      updateGraph.nextStep();
+      updateGraph.buttonNextStep();
       return;
     }
   }
@@ -56,13 +56,13 @@ let onKeydown = function(e: JQueryInputEventObject): void {
     if (e.altKey) {
       if (e.shiftKey) {
         // option + shift + left
-        if (updateGraph.prevQueueEmpty()) {
+        if (updateGraph.buttonPrevIdle()) {
           return;
         }
         // if can't go left, try cycle
       }
       // option + left
-      if (updateGraph.prevEnterExitEmpty()) {
+      if (updateGraph.buttonPrevCycle()) {
         return;
       }
       // if can't go left, try step
@@ -73,20 +73,20 @@ let onKeydown = function(e: JQueryInputEventObject): void {
     }
     if (rlog.curTick > 1) {
       // left
-      updateGraph.prevStep();
+      updateGraph.buttonPrevStep();
       return;
     }
   }
   if (e.which === 35) {
     // end
-    // Seek to end
-    updateGraph.lastStep();
+    // Seek to next mark or end
+    updateGraph.buttonNextMark();
     return;
   }
   if (e.which === 36) {
     // home
-    // Seek to beginning
-    updateGraph.firstStep();
+    // Seek to prev mark or beginning
+    updateGraph.buttonPrevMark();
     return;
   }
 
@@ -98,12 +98,13 @@ let onKeydown = function(e: JQueryInputEventObject): void {
     //   if sicky == filter
     //     remove sticky and filter
     // remove filter
-    if (rlog.getGraph.hoverData) {
-      console.log("reset hover");
-      updateGraph.hoverDataReset();
-      return;
-    } else if (hasLength(rlog.getGraph.stickyDatas)) {
-      console.log("reset sticky");
+    // if (rlog.getGraph.hoverData) {
+    //   console.log("reset hover");
+    //   updateGraph.hoverDataReset();
+    //   return;
+    // }
+    if (hasLength(rlog.getGraph.stickyDatas)) {
+      // console.log("reset sticky");
       let sd = rlog.getGraph.stickyDatas;
       let fd = rlog.getGraph.filterDatas;
       if (hasLength(fd)) {
@@ -123,9 +124,8 @@ let onKeydown = function(e: JQueryInputEventObject): void {
       updateGraph.stickyDatasReset();
       return;
     } else if (hasLength(rlog.getGraph.filterDatas)) {
-      console.log("reset filter");
+      // console.log("reset filter");
       // must be in filter... so exit filter
-      $("#search").val("");
       updateGraph.searchRegexReset();
       return;
     }
@@ -134,14 +134,16 @@ let onKeydown = function(e: JQueryInputEventObject): void {
   if (e.which === 38) {
     // arrow up
     if (hasLength(rlog.getGraph.filterDatas)) {
-      console.log("add layer!");
+      // TODO-barret add filter expansion layer here
+      // console.log("add layer!");
     }
     return;
   }
   if (e.which === 40) {
     // arrow down
     if (hasLength(rlog.getGraph.filterDatas)) {
-      console.log("remove layer!");
+      // TODO-barret remove filter expansion layer here
+      // console.log("remove layer!");
     }
     return;
   }

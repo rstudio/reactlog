@@ -797,7 +797,7 @@ var log = [
   },
   {
     "action": "freeze",
-    "reactId": "r1$detail_ip_name",
+    "reactId": "r1$details-detail_ip_name",
     "session": "f0dc00bf84bd35afb9c670b66c2d862e",
     "time": 1528310727.74254
   },
@@ -858,7 +858,7 @@ var log = [
   },
   {
     "action": "thaw",
-    "reactId": "r1$detail_ip_name",
+    "reactId": "r1$details-detail_ip_name",
     "session": "f0dc00bf84bd35afb9c670b66c2d862e",
     "time": 1528310727.75164
   },
@@ -1699,7 +1699,7 @@ var log = [
   },
   {
     "action": "freeze",
-    "reactId": "r1$detail_ip_name",
+    "reactId": "r1$details-detail_ip_name",
     "session": "f0dc00bf84bd35afb9c670b66c2d862e",
     "time": 1528310760.13604
   },
@@ -1900,7 +1900,7 @@ var log = [
   },
   {
     "action": "thaw",
-    "reactId": "r1$detail_ip_name",
+    "reactId": "r1$details-detail_ip_name",
     "session": "f0dc00bf84bd35afb9c670b66c2d862e",
     "time": 1528310760.48258
   },
