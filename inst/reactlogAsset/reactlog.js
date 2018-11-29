@@ -73996,12 +73996,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js"), __webpack_require__(/*! lodash/last */ "./node_modules/lodash/last.js"), __webpack_require__(/*! ./rlog */ "./src/rlog.js"), __webpack_require__(/*! ./graph/GraphAtStep */ "./src/graph/GraphAtStep.js"), __webpack_require__(/*! ./style/colors */ "./src/style/colors.js"), __webpack_require__(/*! ./cyto/cytoscapeInit */ "./src/cyto/cytoscapeInit.js"), __webpack_require__(/*! ./utils/console */ "./src/utils/console.js"), __webpack_require__(/*! ./layout/keydown */ "./src/layout/keydown.js"), __webpack_require__(/*! ./updateGraph */ "./src/updateGraph/index.js"), __webpack_require__(/*! ./layout/logEntry */ "./src/layout/logEntry.js"), __webpack_require__(/*! ./layout/progressBar */ "./src/layout/progressBar.js"), __webpack_require__(/*! ./log/initStep */ "./src/log/initStep.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js"), __webpack_require__(/*! lodash/last */ "./node_modules/lodash/last.js"), __webpack_require__(/*! ./rlog */ "./src/rlog.js"), __webpack_require__(/*! ./log/logStates */ "./src/log/logStates.js"), __webpack_require__(/*! ./graph/GraphAtStep */ "./src/graph/GraphAtStep.js"), __webpack_require__(/*! ./style/colors */ "./src/style/colors.js"), __webpack_require__(/*! ./cyto/cytoscapeInit */ "./src/cyto/cytoscapeInit.js"), __webpack_require__(/*! ./utils/console */ "./src/utils/console.js"), __webpack_require__(/*! ./layout/keydown */ "./src/layout/keydown.js"), __webpack_require__(/*! ./updateGraph */ "./src/updateGraph/index.js"), __webpack_require__(/*! ./layout/logEntry */ "./src/layout/logEntry.js"), __webpack_require__(/*! ./layout/progressBar */ "./src/layout/progressBar.js"), __webpack_require__(/*! ./log/initStep */ "./src/log/initStep.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
-})(this, function (_jquery, _last2, _rlog, _GraphAtStep, _colors, cytoscapeInit, _console, layoutKeydown, updateGraph, logEntry, progressBar, _initStep) {
+})(this, function (_jquery, _last2, _rlog, _logStates, _GraphAtStep, _colors, cytoscapeInit, _console, layoutKeydown, updateGraph, logEntry, progressBar, _initStep) {
   "use strict";
 
   _jquery = _interopRequireDefault(_jquery);
@@ -74061,6 +74061,21 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     (0, _jquery.default)("#legendInvalidated").css("background-color", _colors.default.nodes.invalidated);
     (0, _jquery.default)("#legendCalculating").css("background-color", _colors.default.nodes.calculating);
     (0, _jquery.default)("#legendReady").css("background-color", _colors.default.nodes.ready);
+    {
+      // display the frozen legend item only if a frozen state exists
+      var entry;
+
+      for (var i = 0; i < _rlog.rlog.log.length; i++) {
+        entry = _rlog.rlog.log[i];
+
+        if (entry.action === _logStates.LogStates.freeze) {
+          (0, _jquery.default)("#legendRowFrozen").css("display", ""); // remove display none form css
+
+          (0, _jquery.default)("#legendFrozen").css("background-color", _colors.default.frozen.default);
+          break;
+        }
+      }
+    }
     progressBar.setContainers((0, _jquery.default)("#timeline"), (0, _jquery.default)("#timeline-fill"));
     var timelineBackground = (0, _jquery.default)("#timeline-bg");
     progressBar.addTimelineTicks(timelineBackground, _colors.default.nodes.ready, _rlog.rlog.getGraph.enterExitEmpties, 3);

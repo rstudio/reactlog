@@ -5,6 +5,8 @@ import _last from "lodash/last";
 
 import { rlog } from "./rlog";
 
+import { LogStates } from "./log/logStates";
+
 import { GraphAtStep } from "./graph/GraphAtStep";
 
 import colors from "./style/colors";
@@ -71,6 +73,18 @@ $(function() {
   $("#legendInvalidated").css("background-color", colors.nodes.invalidated);
   $("#legendCalculating").css("background-color", colors.nodes.calculating);
   $("#legendReady").css("background-color", colors.nodes.ready);
+  {
+    // display the frozen legend item only if a frozen state exists
+    let entry;
+    for (let i = 0; i < rlog.log.length; i++) {
+      entry = rlog.log[i];
+      if (entry.action === LogStates.freeze) {
+        $("#legendRowFrozen").css("display", ""); // remove display none form css
+        $("#legendFrozen").css("background-color", colors.frozen.default);
+        break;
+      }
+    }
+  }
 
   progressBar.setContainers($("#timeline"), $("#timeline-fill"));
   let timelineBackground = $("#timeline-bg");
