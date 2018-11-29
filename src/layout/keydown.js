@@ -29,14 +29,14 @@ let onKeydown = function(e: JQueryInputEventObject): void {
     if (e.altKey) {
       if (e.shiftKey) {
         // option + shift + right
-        if (updateGraph.nextQueueEmpty()) {
+        if (updateGraph.buttonNextIdle()) {
           return;
         }
         // if it can't go right, try a cycle
       }
       // option + right
       // return false if there is no more enter/exit empty marks
-      if (updateGraph.nextEnterExitEmpty()) {
+      if (updateGraph.buttonNextCycle()) {
         return;
       }
       // if it cant go right, try a step
@@ -47,7 +47,7 @@ let onKeydown = function(e: JQueryInputEventObject): void {
     }
     if (rlog.curTick < rlog.getGraph.maxStep) {
       // right
-      updateGraph.nextStep();
+      updateGraph.buttonNextStep();
       return;
     }
   }
@@ -56,13 +56,13 @@ let onKeydown = function(e: JQueryInputEventObject): void {
     if (e.altKey) {
       if (e.shiftKey) {
         // option + shift + left
-        if (updateGraph.prevQueueEmpty()) {
+        if (updateGraph.buttonPrevIdle()) {
           return;
         }
         // if can't go left, try cycle
       }
       // option + left
-      if (updateGraph.prevEnterExitEmpty()) {
+      if (updateGraph.buttonPrevCycle()) {
         return;
       }
       // if can't go left, try step
@@ -73,20 +73,20 @@ let onKeydown = function(e: JQueryInputEventObject): void {
     }
     if (rlog.curTick > 1) {
       // left
-      updateGraph.prevStep();
+      updateGraph.buttonPrevStep();
       return;
     }
   }
   if (e.which === 35) {
     // end
-    // Seek to end
-    updateGraph.lastStep();
+    // Seek to next mark or end
+    updateGraph.buttonNextMark();
     return;
   }
   if (e.which === 36) {
     // home
-    // Seek to beginning
-    updateGraph.firstStep();
+    // Seek to prev mark or beginning
+    updateGraph.buttonPrevMark();
     return;
   }
 

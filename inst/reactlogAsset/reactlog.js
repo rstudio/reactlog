@@ -74048,26 +74048,14 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
     _console.default.log(_rlog.rlog.graph);
 
-    (0, _jquery.default)("#prevStartButton").click(function () {
-      updateGraph.firstStep();
-    });
-    (0, _jquery.default)("#nextEndButton").click(function () {
-      updateGraph.lastStep();
-    });
-    (0, _jquery.default)("#prevFlushButton").click(function () {
-      updateGraph.prevQueueEmpty() || updateGraph.firstStep();
-    });
-    (0, _jquery.default)("#nextFlushButton").click(function () {
-      updateGraph.nextQueueEmpty() || updateGraph.lastStep();
-    });
-    (0, _jquery.default)("#prevCycleButton").click(function () {
-      updateGraph.prevEnterExitEmpty() || updateGraph.firstStep();
-    });
-    (0, _jquery.default)("#nextCycleButton").click(function () {
-      updateGraph.nextEnterExitEmpty() || updateGraph.lastStep();
-    });
-    (0, _jquery.default)("#prevStepButton").click(updateGraph.prevStep);
-    (0, _jquery.default)("#nextStepButton").click(updateGraph.nextStep);
+    (0, _jquery.default)("#prevMarkButton").click(updateGraph.buttonPrevMark);
+    (0, _jquery.default)("#nextMarkButton").click(updateGraph.buttonNextMark);
+    (0, _jquery.default)("#prevFlushButton").click(updateGraph.buttonPrevIdle);
+    (0, _jquery.default)("#nextFlushButton").click(updateGraph.buttonNextIdle);
+    (0, _jquery.default)("#prevCycleButton").click(updateGraph.buttonPrevCycle);
+    (0, _jquery.default)("#nextCycleButton").click(updateGraph.buttonNextCycle);
+    (0, _jquery.default)("#prevStepButton").click(updateGraph.buttonPrevStep);
+    (0, _jquery.default)("#nextStepButton").click(updateGraph.buttonNextStep);
     (0, _jquery.default)("#legendInvalidating").css("background-color", _colors.default.nodes.invalidating);
     (0, _jquery.default)("#legendInvalidated").css("background-color", _colors.default.nodes.invalidated);
     (0, _jquery.default)("#legendCalculating").css("background-color", _colors.default.nodes.calculating);
@@ -74092,15 +74080,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         layoutKeydown.addKeydown((0, _jquery.default)(docBody));
       }
     }
-
-    if (_rlog.rlog.getGraph.marks.length > 0) {
-      var lastMark = (0, _last2.default)(_rlog.rlog.getGraph.marks); // start the graph at the first enter/exit or first empty queue
-
-      updateGraph.atTick(lastMark, {
+    {
+      var cytoOpts = {
         fit: true,
         stop: function stop(evt) {
-          _console.default.log(evt, "layoutstop", _rlog.rlog.cyto.zoom());
-
           var zoomLevel = _rlog.rlog.cyto.zoom();
 
           var logZoomLevel = Math.log2(zoomLevel); // zoom out twice as far
@@ -74109,14 +74092,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           // rlog.cyto.maxZoom(Math.pow(2, logZoomLevel + 3)); // zoom in
 
         }
-      });
-    } else {
-      // start the graph at the first enter/exit or first empty queue
-      // TODO-barret should start at nextEnterExitEmpty,
-      // updateGraph.nextEnterExitEmpty()
-      updateGraph.nextQueueEmpty({
-        fit: true
-      });
+      };
+      updateGraph.lastUserMark(cytoOpts) || updateGraph.nextQueueEmpty(cytoOpts);
     }
   });
 });
@@ -74176,7 +74153,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       if (e.altKey) {
         if (e.shiftKey) {
           // option + shift + right
-          if (updateGraph.nextQueueEmpty()) {
+          if (updateGraph.buttonNextIdle()) {
             return;
           } // if it can't go right, try a cycle
 
@@ -74184,7 +74161,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         // return false if there is no more enter/exit empty marks
 
 
-        if (updateGraph.nextEnterExitEmpty()) {
+        if (updateGraph.buttonNextCycle()) {
           return;
         } // if it cant go right, try a step
 
@@ -74196,7 +74173,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
       if (_rlog.rlog.curTick < _rlog.rlog.getGraph.maxStep) {
         // right
-        updateGraph.nextStep();
+        updateGraph.buttonNextStep();
         return;
       }
     }
@@ -74206,14 +74183,14 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       if (e.altKey) {
         if (e.shiftKey) {
           // option + shift + left
-          if (updateGraph.prevQueueEmpty()) {
+          if (updateGraph.buttonPrevIdle()) {
             return;
           } // if can't go left, try cycle
 
         } // option + left
 
 
-        if (updateGraph.prevEnterExitEmpty()) {
+        if (updateGraph.buttonPrevCycle()) {
           return;
         } // if can't go left, try step
 
@@ -74225,22 +74202,22 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
       if (_rlog.rlog.curTick > 1) {
         // left
-        updateGraph.prevStep();
+        updateGraph.buttonPrevStep();
         return;
       }
     }
 
     if (e.which === 35) {
       // end
-      // Seek to end
-      updateGraph.lastStep();
+      // Seek to next mark or end
+      updateGraph.buttonNextMark();
       return;
     }
 
     if (e.which === 36) {
       // home
-      // Seek to beginning
-      updateGraph.firstStep();
+      // Seek to prev mark or beginning
+      updateGraph.buttonPrevMark();
       return;
     }
 
@@ -75003,6 +74980,93 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
+/***/ "./src/updateGraph/buttons.js":
+/*!************************************!*\
+  !*** ./src/updateGraph/buttons.js ***!
+  \************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
+  if (true) {
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ./enterExit */ "./src/updateGraph/enterExit.js"), __webpack_require__(/*! ./step */ "./src/updateGraph/step.js"), __webpack_require__(/*! ./userMarks */ "./src/updateGraph/userMarks.js"), __webpack_require__(/*! ./queueEmpty */ "./src/updateGraph/queueEmpty.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+  } else { var mod; }
+})(this, function (_exports, enterExit, step, userMarks, queueEmpty) {
+  "use strict";
+
+  Object.defineProperty(_exports, "__esModule", {
+    value: true
+  });
+  _exports.buttonNextStep = _exports.buttonPrevStep = _exports.buttonNextCycle = _exports.buttonPrevCycle = _exports.buttonNextIdle = _exports.buttonPrevIdle = _exports.buttonNextMark = _exports.buttonPrevMark = void 0;
+  enterExit = _interopRequireWildcard(enterExit);
+  step = _interopRequireWildcard(step);
+  userMarks = _interopRequireWildcard(userMarks);
+  queueEmpty = _interopRequireWildcard(queueEmpty);
+
+  function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+  var buttonPrevMark = function buttonPrevMark() {
+    var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    return userMarks.prevUserMark() || step.firstStep();
+  };
+
+  _exports.buttonPrevMark = buttonPrevMark;
+
+  var buttonNextMark = function buttonNextMark() {
+    var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    return userMarks.nextUserMark() || step.lastStep();
+  };
+
+  _exports.buttonNextMark = buttonNextMark;
+
+  var buttonPrevIdle = function buttonPrevIdle() {
+    var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    return queueEmpty.prevQueueEmpty() || step.firstStep();
+  };
+
+  _exports.buttonPrevIdle = buttonPrevIdle;
+
+  var buttonNextIdle = function buttonNextIdle() {
+    var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    return queueEmpty.nextQueueEmpty() || step.lastStep();
+  };
+
+  _exports.buttonNextIdle = buttonNextIdle;
+
+  var buttonPrevCycle = function buttonPrevCycle() {
+    var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    return enterExit.prevEnterExitEmpty() || step.firstStep();
+  };
+
+  _exports.buttonPrevCycle = buttonPrevCycle;
+
+  var buttonNextCycle = function buttonNextCycle() {
+    var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    return enterExit.nextEnterExitEmpty() || step.lastStep();
+  };
+
+  _exports.buttonNextCycle = buttonNextCycle;
+
+  var buttonPrevStep = function buttonPrevStep() {
+    var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    return step.prevStep(cytoOptions);
+  };
+
+  _exports.buttonPrevStep = buttonPrevStep;
+
+  var buttonNextStep = function buttonNextStep() {
+    var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    return step.nextStep(cytoOptions);
+  };
+
+  _exports.buttonNextStep = buttonNextStep;
+});
+
+/***/ }),
+
 /***/ "./src/updateGraph/enterExit.js":
 /*!**************************************!*\
   !*** ./src/updateGraph/enterExit.js ***!
@@ -75012,12 +75076,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! lodash/sortedIndexOf */ "./node_modules/lodash/sortedIndexOf.js"), __webpack_require__(/*! ../utils/console */ "./src/utils/console.js"), __webpack_require__(/*! ../rlog */ "./src/rlog.js"), __webpack_require__(/*! ../updateGraph */ "./src/updateGraph/index.js"), __webpack_require__(/*! ../graph/GraphAtStep */ "./src/graph/GraphAtStep.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! lodash/sortedIndexOf */ "./node_modules/lodash/sortedIndexOf.js"), __webpack_require__(/*! ../rlog */ "./src/rlog.js"), __webpack_require__(/*! ../updateGraph */ "./src/updateGraph/index.js"), __webpack_require__(/*! ../graph/GraphAtStep */ "./src/graph/GraphAtStep.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
-})(this, function (_exports, _sortedIndexOf2, _console, _rlog, _updateGraph, _GraphAtStep) {
+})(this, function (_exports, _sortedIndexOf2, _rlog, _updateGraph, _GraphAtStep) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
@@ -75025,7 +75089,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   });
   _exports.lastEnterExitEmpty = _exports.firstEnterExitEmpty = _exports.prevEnterExitEmpty = _exports.nextEnterExitEmpty = void 0;
   _sortedIndexOf2 = _interopRequireDefault(_sortedIndexOf2);
-  _console = _interopRequireDefault(_console);
 
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -75079,10 +75142,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       }
     } else {
       // at cycle point
-      // first move one step forward... then find next enter/exit empty
+      // first move one step backward... then find prev enter/exit empty
       prevTick = _rlog.rlog.getGraph.prevStep(_rlog.rlog.curTick);
-
-      _console.default.log("at cycle point", _rlog.rlog.curTick, prevTick);
     }
 
     var val, i; // move to queue empty
@@ -75262,12 +75323,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ./atTick */ "./src/updateGraph/atTick.js"), __webpack_require__(/*! ./enterExit */ "./src/updateGraph/enterExit.js"), __webpack_require__(/*! ./queueEmpty */ "./src/updateGraph/queueEmpty.js"), __webpack_require__(/*! ./step */ "./src/updateGraph/step.js"), __webpack_require__(/*! ./tick */ "./src/updateGraph/tick.js"), __webpack_require__(/*! ./searchString */ "./src/updateGraph/searchString.js"), __webpack_require__(/*! ./hoverStickyFilterSearch */ "./src/updateGraph/hoverStickyFilterSearch.js"), __webpack_require__(/*! ./userMarks */ "./src/updateGraph/userMarks.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ./atTick */ "./src/updateGraph/atTick.js"), __webpack_require__(/*! ./enterExit */ "./src/updateGraph/enterExit.js"), __webpack_require__(/*! ./queueEmpty */ "./src/updateGraph/queueEmpty.js"), __webpack_require__(/*! ./step */ "./src/updateGraph/step.js"), __webpack_require__(/*! ./tick */ "./src/updateGraph/tick.js"), __webpack_require__(/*! ./searchString */ "./src/updateGraph/searchString.js"), __webpack_require__(/*! ./hoverStickyFilterSearch */ "./src/updateGraph/hoverStickyFilterSearch.js"), __webpack_require__(/*! ./userMarks */ "./src/updateGraph/userMarks.js"), __webpack_require__(/*! ./buttons */ "./src/updateGraph/buttons.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
-})(this, function (_exports, _atTick, _enterExit, _queueEmpty, _step, _tick, _searchString, _hoverStickyFilterSearch, _userMarks) {
+})(this, function (_exports, _atTick, _enterExit, _queueEmpty, _step, _tick, _searchString, _hoverStickyFilterSearch, _userMarks, _buttons) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
@@ -75374,6 +75435,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       enumerable: true,
       get: function get() {
         return _userMarks[key];
+      }
+    });
+  });
+  Object.keys(_buttons).forEach(function (key) {
+    if (key === "default" || key === "__esModule") return;
+    if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+    Object.defineProperty(_exports, key, {
+      enumerable: true,
+      get: function get() {
+        return _buttons[key];
       }
     });
   });
