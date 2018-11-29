@@ -13,6 +13,7 @@ export * from "./step";
 export * from "./tick";
 export * from "./searchString";
 export * from "./hoverStickyFilterSearch";
+export * from "./userMarks";
 
 export { atTick, atTick as updateGraph };
 export {

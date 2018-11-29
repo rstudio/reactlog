@@ -75262,12 +75262,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ./atTick */ "./src/updateGraph/atTick.js"), __webpack_require__(/*! ./enterExit */ "./src/updateGraph/enterExit.js"), __webpack_require__(/*! ./queueEmpty */ "./src/updateGraph/queueEmpty.js"), __webpack_require__(/*! ./step */ "./src/updateGraph/step.js"), __webpack_require__(/*! ./tick */ "./src/updateGraph/tick.js"), __webpack_require__(/*! ./searchString */ "./src/updateGraph/searchString.js"), __webpack_require__(/*! ./hoverStickyFilterSearch */ "./src/updateGraph/hoverStickyFilterSearch.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ./atTick */ "./src/updateGraph/atTick.js"), __webpack_require__(/*! ./enterExit */ "./src/updateGraph/enterExit.js"), __webpack_require__(/*! ./queueEmpty */ "./src/updateGraph/queueEmpty.js"), __webpack_require__(/*! ./step */ "./src/updateGraph/step.js"), __webpack_require__(/*! ./tick */ "./src/updateGraph/tick.js"), __webpack_require__(/*! ./searchString */ "./src/updateGraph/searchString.js"), __webpack_require__(/*! ./hoverStickyFilterSearch */ "./src/updateGraph/hoverStickyFilterSearch.js"), __webpack_require__(/*! ./userMarks */ "./src/updateGraph/userMarks.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
-})(this, function (_exports, _atTick, _enterExit, _queueEmpty, _step, _tick, _searchString, _hoverStickyFilterSearch) {
+})(this, function (_exports, _atTick, _enterExit, _queueEmpty, _step, _tick, _searchString, _hoverStickyFilterSearch, _userMarks) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
@@ -75364,6 +75364,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       enumerable: true,
       get: function get() {
         return _hoverStickyFilterSearch[key];
+      }
+    });
+  });
+  Object.keys(_userMarks).forEach(function (key) {
+    if (key === "default" || key === "__esModule") return;
+    if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+    Object.defineProperty(_exports, key, {
+      enumerable: true,
+      get: function get() {
+        return _userMarks[key];
       }
     });
   });
@@ -75614,6 +75624,119 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   };
 
   _exports.prevTick = prevTick;
+});
+
+/***/ }),
+
+/***/ "./src/updateGraph/userMarks.js":
+/*!**************************************!*\
+  !*** ./src/updateGraph/userMarks.js ***!
+  \**************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
+  if (true) {
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! lodash/sortedIndexOf */ "./node_modules/lodash/sortedIndexOf.js"), __webpack_require__(/*! ../rlog */ "./src/rlog.js"), __webpack_require__(/*! ../updateGraph */ "./src/updateGraph/index.js"), __webpack_require__(/*! ../graph/GraphAtStep */ "./src/graph/GraphAtStep.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+  } else { var mod; }
+})(this, function (_exports, _sortedIndexOf2, _rlog, _updateGraph, _GraphAtStep) {
+  "use strict";
+
+  Object.defineProperty(_exports, "__esModule", {
+    value: true
+  });
+  _exports.lastUserMark = _exports.firstUserMark = _exports.prevUserMark = _exports.nextUserMark = void 0;
+  _sortedIndexOf2 = _interopRequireDefault(_sortedIndexOf2);
+
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+  var nextUserMark = function nextUserMark() {
+    var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    var nextTick;
+
+    if ((0, _sortedIndexOf2.default)(_rlog.rlog.getGraph.marks, _rlog.rlog.curTick) !== -1) {
+      // not at a user mark
+      if ((0, _GraphAtStep.hasLength)(_rlog.rlog.getGraph.filterDatas)) {
+        // if filtered, will go to previous step, then next step location
+        nextTick = _rlog.rlog.getGraph.nextStep(_rlog.rlog.getGraph.prevStep(_rlog.rlog.curTick));
+      } else {
+        // if not filtered
+        nextTick = _rlog.rlog.curTick;
+      }
+    } else {
+      // at user mark
+      // first move one step forward... then find next user mark
+      nextTick = _rlog.rlog.getGraph.nextStep(_rlog.rlog.curTick);
+    }
+
+    var val, i; // move to user mark
+
+    for (i = 0; i < _rlog.rlog.getGraph.marks.length; i++) {
+      val = _rlog.rlog.getGraph.marks[i];
+
+      if (nextTick < val) {
+        (0, _updateGraph.updateGraph)(val, cytoOptions);
+        return true;
+      }
+    }
+
+    return false;
+  };
+
+  _exports.nextUserMark = nextUserMark;
+
+  var prevUserMark = function prevUserMark() {
+    var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    var prevTick;
+
+    if ((0, _sortedIndexOf2.default)(_rlog.rlog.getGraph.marks, _rlog.rlog.curTick) !== -1) {
+      // not at a marked point
+      if ((0, _GraphAtStep.hasLength)(_rlog.rlog.getGraph.filterDatas)) {
+        // if filtered, will go to next step, then prev step location
+        prevTick = _rlog.rlog.getGraph.prevStep(_rlog.rlog.getGraph.nextStep(_rlog.rlog.curTick));
+      } else {
+        // if not filtered
+        prevTick = _rlog.rlog.curTick;
+      }
+    } else {
+      // at marked point
+      // first move one step backward... then find prev user mark
+      prevTick = _rlog.rlog.getGraph.prevStep(_rlog.rlog.curTick);
+    }
+
+    var val, i; // move to user mark
+
+    for (i = _rlog.rlog.getGraph.marks.length - 1; i >= 0; i--) {
+      val = _rlog.rlog.getGraph.marks[i];
+
+      if (prevTick > val) {
+        return (0, _updateGraph.updateGraph)(val, cytoOptions);
+      }
+    }
+
+    return false;
+  };
+
+  _exports.prevUserMark = prevUserMark;
+
+  var lastUserMark = function lastUserMark() {
+    var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    if (_rlog.rlog.getGraph.marks.length === 0) return false;
+    return (0, _updateGraph.updateGraph)(_rlog.rlog.getGraph.marks[_rlog.rlog.getGraph.marks.length - 1], cytoOptions);
+  };
+
+  _exports.lastUserMark = lastUserMark;
+
+  var firstUserMark = function firstUserMark() {
+    var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    if (_rlog.rlog.getGraph.marks.length === 0) return false;
+    return (0, _updateGraph.updateGraph)(_rlog.rlog.getGraph.marks[0], cytoOptions);
+  };
+
+  _exports.firstUserMark = firstUserMark;
 });
 
 /***/ }),
