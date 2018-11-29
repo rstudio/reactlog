@@ -70882,12 +70882,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js"), __webpack_require__(/*! lodash/debounce */ "./node_modules/lodash/debounce.js"), __webpack_require__(/*! ../utils/console */ "./src/utils/console.js"), __webpack_require__(/*! ../rlog */ "./src/rlog.js"), __webpack_require__(/*! ../updateGraph */ "./src/updateGraph/index.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js"), __webpack_require__(/*! lodash/debounce */ "./node_modules/lodash/debounce.js"), __webpack_require__(/*! ../rlog */ "./src/rlog.js"), __webpack_require__(/*! ../updateGraph */ "./src/updateGraph/index.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
-})(this, function (_exports, _jquery, _debounce2, _console, _rlog, updateGraph) {
+})(this, function (_exports, _jquery, _debounce2, _rlog, updateGraph) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
@@ -70896,13 +70896,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   _exports.default = _exports.addOnMethods = _exports.onDblClick = _exports.onClick = _exports.onMouseOver = void 0;
   _jquery = _interopRequireDefault(_jquery);
   _debounce2 = _interopRequireDefault(_debounce2);
-  _console = _interopRequireDefault(_console);
   updateGraph = _interopRequireWildcard(updateGraph);
 
   function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+  // import console from "../utils/console";
   // cytoFamilySuccPred = function(ele, addExtraLayer = true) {
   //   var familyEles = cyto.collection();
   //   if (ele.isEdge()) {
@@ -70986,8 +70986,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           cytoClickedBefore = null;
         }, 400);
         cytoClickedBefore = target; // continue like regular click
-
-        _console.default.log("click!!", evt);
+        // console.log("click!!", evt);
       }
 
       if (target === _rlog.rlog.cyto) {
@@ -71006,9 +71005,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   var onDblClick = function onDblClick(cyto) {
     return function (evt) {
       //, originalEvt: Event) {
-      _console.default.log("dbl click!!"); // console.log("dbl click!!", evt, originalEvt);
-
-
+      // console.log("dbl click!!");
+      // console.log("dbl click!!", evt, originalEvt);
       var target = evt.target;
 
       if (target === _rlog.rlog.cyto) {
@@ -71111,9 +71109,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     node: {
       default: {
         label: "data(cytoLabel)",
-        "text-opacity": 0.5,
+        color: _colors.default.nodes.label_text_color,
+        "text-opacity": _colors.default.nodes.label_text_opacity,
         "text-valign": "bottom",
-        "text-margin-x": "-5",
+        // "text-margin-x": "-5",
+        // "text-margin-y": "-5",
         "text-halign": "right",
         "border-color": _colors.default.regular.black,
         "border-style": "solid",
@@ -71121,9 +71121,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         "background-color": _colors.default.nodes.ready,
         "text-wrap": "ellipsis",
         "text-max-width": "400px",
-        "text-background-color": "white",
-        "text-background-opacity": 0.8,
-        "font-family": '"Space Mono", monospace'
+        "text-background-color": _colors.default.nodes.label_background_color,
+        "text-background-opacity": _colors.default.nodes.label_background_opacity,
+        "font-family": '"Fira Mono", monospace' // "font-family": "monospace",
+
       },
       start: {
         shape: "polygon",
@@ -72814,9 +72815,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
           if ((0, _sortedIndexOf2.default)(this.stepsVisible, logEntry.step) === -1) {
             continue;
-          }
+          } // console.log(logEntry);
 
-          _console.default.log(logEntry);
 
           ret = logEntry.step;
 
@@ -73030,8 +73030,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
           if (matchedNodes.length === 0) {
             // TODO-barret warn of no matches
-            _console.default.log("no matches!");
-
+            // console.log("no matches!");
             graph.hoverStatusOnNodeIds([], "filtered");
             this.updateFilterDatasReset(updateFinal);
           } else {
@@ -73996,19 +73995,18 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js"), __webpack_require__(/*! lodash/last */ "./node_modules/lodash/last.js"), __webpack_require__(/*! ./rlog */ "./src/rlog.js"), __webpack_require__(/*! ./log/logStates */ "./src/log/logStates.js"), __webpack_require__(/*! ./graph/GraphAtStep */ "./src/graph/GraphAtStep.js"), __webpack_require__(/*! ./style/colors */ "./src/style/colors.js"), __webpack_require__(/*! ./cyto/cytoscapeInit */ "./src/cyto/cytoscapeInit.js"), __webpack_require__(/*! ./utils/console */ "./src/utils/console.js"), __webpack_require__(/*! ./layout/keydown */ "./src/layout/keydown.js"), __webpack_require__(/*! ./updateGraph */ "./src/updateGraph/index.js"), __webpack_require__(/*! ./layout/logEntry */ "./src/layout/logEntry.js"), __webpack_require__(/*! ./layout/progressBar */ "./src/layout/progressBar.js"), __webpack_require__(/*! ./log/initStep */ "./src/log/initStep.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js"), __webpack_require__(/*! lodash/last */ "./node_modules/lodash/last.js"), __webpack_require__(/*! ./rlog */ "./src/rlog.js"), __webpack_require__(/*! ./log/logStates */ "./src/log/logStates.js"), __webpack_require__(/*! ./graph/GraphAtStep */ "./src/graph/GraphAtStep.js"), __webpack_require__(/*! ./style/colors */ "./src/style/colors.js"), __webpack_require__(/*! ./cyto/cytoscapeInit */ "./src/cyto/cytoscapeInit.js"), __webpack_require__(/*! ./layout/keydown */ "./src/layout/keydown.js"), __webpack_require__(/*! ./updateGraph */ "./src/updateGraph/index.js"), __webpack_require__(/*! ./layout/logEntry */ "./src/layout/logEntry.js"), __webpack_require__(/*! ./layout/progressBar */ "./src/layout/progressBar.js"), __webpack_require__(/*! ./log/initStep */ "./src/log/initStep.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
-})(this, function (_jquery, _last2, _rlog, _logStates, _GraphAtStep, _colors, cytoscapeInit, _console, layoutKeydown, updateGraph, logEntry, progressBar, _initStep) {
+})(this, function (_jquery, _last2, _rlog, _logStates, _GraphAtStep, _colors, cytoscapeInit, layoutKeydown, updateGraph, logEntry, progressBar, _initStep) {
   "use strict";
 
   _jquery = _interopRequireDefault(_jquery);
   _last2 = _interopRequireDefault(_last2);
   _colors = _interopRequireDefault(_colors);
   cytoscapeInit = _interopRequireWildcard(cytoscapeInit);
-  _console = _interopRequireDefault(_console);
   layoutKeydown = _interopRequireWildcard(layoutKeydown);
   updateGraph = _interopRequireWildcard(updateGraph);
   logEntry = _interopRequireWildcard(logEntry);
@@ -74039,16 +74037,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   // should filtering be done with the full layout?
   //
   (0, _jquery.default)(function () {
-    _console.default.log(_rlog.rlog);
-
     window.barret = _rlog.rlog;
     _rlog.rlog.log = window.log;
     _rlog.rlog.cyto = cytoscapeInit.withContainer((0, _jquery.default)("#cyto"));
     _rlog.rlog.getGraph = new _GraphAtStep.GraphAtStep(_rlog.rlog.log);
     _rlog.rlog.graph = _rlog.rlog.getGraph.atStep(_rlog.rlog.getGraph.maxStep);
-
-    _console.default.log(_rlog.rlog.graph);
-
     (0, _jquery.default)("#prevMarkButton").click(updateGraph.buttonPrevMark);
     (0, _jquery.default)("#nextMarkButton").click(updateGraph.buttonNextMark);
     (0, _jquery.default)("#prevFlushButton").click(updateGraph.buttonPrevIdle);
@@ -74125,12 +74118,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js"), __webpack_require__(/*! lodash/defer */ "./node_modules/lodash/defer.js"), __webpack_require__(/*! ../utils/console */ "./src/utils/console.js"), __webpack_require__(/*! ../updateGraph */ "./src/updateGraph/index.js"), __webpack_require__(/*! ../graph/GraphAtStep */ "./src/graph/GraphAtStep.js"), __webpack_require__(/*! ../rlog */ "./src/rlog.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js"), __webpack_require__(/*! lodash/defer */ "./node_modules/lodash/defer.js"), __webpack_require__(/*! ../updateGraph */ "./src/updateGraph/index.js"), __webpack_require__(/*! ../graph/GraphAtStep */ "./src/graph/GraphAtStep.js"), __webpack_require__(/*! ../rlog */ "./src/rlog.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
-})(this, function (_exports, _jquery, _defer2, _console, updateGraph, _GraphAtStep, _rlog) {
+})(this, function (_exports, _jquery, _defer2, updateGraph, _GraphAtStep, _rlog) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
@@ -74139,16 +74132,15 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   _exports.default = _exports.addKeydown = void 0;
   _jquery = _interopRequireDefault(_jquery);
   _defer2 = _interopRequireDefault(_defer2);
-  _console = _interopRequireDefault(_console);
   updateGraph = _interopRequireWildcard(updateGraph);
 
   function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+  // import console from "../utils/console";
   var onKeydown = function onKeydown(e) {
-    _console.default.log("keydown: ", e);
-
+    // console.log("keydown: ", e);
     var target = (0, _jquery.default)(e.target).get(0);
 
     if (target.id && target.id === "search") {
@@ -74250,8 +74242,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       //   return;
       // }
       if ((0, _GraphAtStep.hasLength)(_rlog.rlog.getGraph.stickyDatas)) {
-        _console.default.log("reset sticky");
-
+        // console.log("reset sticky");
         var sd = _rlog.rlog.getGraph.stickyDatas;
         var fd = _rlog.rlog.getGraph.filterDatas;
 
@@ -74282,9 +74273,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         updateGraph.stickyDatasReset();
         return;
       } else if ((0, _GraphAtStep.hasLength)(_rlog.rlog.getGraph.filterDatas)) {
-        _console.default.log("reset filter"); // must be in filter... so exit filter
-
-
+        // console.log("reset filter");
+        // must be in filter... so exit filter
         updateGraph.searchRegexReset();
         return;
       }
@@ -74294,8 +74284,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
     if (e.which === 38) {
       // arrow up
-      if ((0, _GraphAtStep.hasLength)(_rlog.rlog.getGraph.filterDatas)) {
-        _console.default.log("add layer!");
+      if ((0, _GraphAtStep.hasLength)(_rlog.rlog.getGraph.filterDatas)) {// TODO-barret add filter expansion layer here
+        // console.log("add layer!");
       }
 
       return;
@@ -74303,8 +74293,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
     if (e.which === 40) {
       // arrow down
-      if ((0, _GraphAtStep.hasLength)(_rlog.rlog.getGraph.filterDatas)) {
-        _console.default.log("remove layer!");
+      if ((0, _GraphAtStep.hasLength)(_rlog.rlog.getGraph.filterDatas)) {// TODO-barret remove filter expansion layer here
+        // console.log("remove layer!");
       }
 
       return;
@@ -74864,6 +74854,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       idle: "#a3c586"
     },
     nodes: {
+      label_text_color: "#606060",
+      label_text_opacity: 1,
+      label_background_color: "white",
+      label_background_opacity: 0.8,
       invalidating: "#969696",
       invalidated: "#d9d9d9",
       calculating: "#fcbf49",
@@ -75565,25 +75559,23 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ../utils/console */ "./src/utils/console.js"), __webpack_require__(/*! ./hoverStickyFilterSearch */ "./src/updateGraph/hoverStickyFilterSearch.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ./hoverStickyFilterSearch */ "./src/updateGraph/hoverStickyFilterSearch.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
-})(this, function (_exports, _console, updateGraph) {
+})(this, function (_exports, updateGraph) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
     value: true
   });
   _exports.withSearchString = void 0;
-  _console = _interopRequireDefault(_console);
   updateGraph = _interopRequireWildcard(updateGraph);
 
   function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+  // import console from "../utils/console";
   // when str length < 3 do not search
   // when str length = 0, reset filter
   // when str length >= 3, set filter to all elements that match
@@ -75592,13 +75584,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     if (str.length < 3) {
       if (str.length === 0) {
         // TODO-barret show warning of resetting
-        _console.default.log("resetting log!");
-
+        // console.log("resetting log!");
         return updateGraph.searchRegexReset();
       } else {
         // TODO-barret show warning of not enough characters
-        _console.default.log("do nothing");
-
+        // console.log("do nothing");
         return false;
       }
     } // escape the string

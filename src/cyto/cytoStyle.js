@@ -36,9 +36,11 @@ let graphStyles = {
   node: {
     default: {
       label: "data(cytoLabel)",
-      "text-opacity": 0.5,
+      color: colors.nodes.label_text_color,
+      "text-opacity": colors.nodes.label_text_opacity,
       "text-valign": "bottom",
-      "text-margin-x": "-5",
+      // "text-margin-x": "-5",
+      // "text-margin-y": "-5",
       "text-halign": "right",
       "border-color": colors.regular.black,
       "border-style": "solid",
@@ -46,9 +48,10 @@ let graphStyles = {
       "background-color": colors.nodes.ready,
       "text-wrap": "ellipsis",
       "text-max-width": "400px",
-      "text-background-color": "white",
-      "text-background-opacity": 0.8,
-      "font-family": '"Space Mono", monospace',
+      "text-background-color": colors.nodes.label_background_color,
+      "text-background-opacity": colors.nodes.label_background_opacity,
+      "font-family": '"Fira Mono", monospace',
+      // "font-family": "monospace",
     },
     start: {
       shape: "polygon",

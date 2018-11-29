@@ -9,6 +9,10 @@ let colors = {
     idle: "#a3c586",
   },
   nodes: {
+    label_text_color: "#606060",
+    label_text_opacity: 1,
+    label_background_color: "white",
+    label_background_opacity: 0.8,
     invalidating: "#969696",
     invalidated: "#d9d9d9",
     calculating: "#fcbf49",
