@@ -23,19 +23,17 @@
     }
   },
   "lint-staged": {
-    ".flowconfig": [
-      "yarn flow-report-and-echo"
-    ],
-    "src/*.js": [
-      "yarn fix",
-      "yarn git_add_map",
-      "yarn flow-report-and-echo"
-    ],
-    "src/**/*.js": [
-      "yarn fix",
-      "yarn git_add_map",
-      "yarn flow-report-and-echo"
-    ]
+    "concurrent": false,
+    "linters": {
+      ".flowconfig": [
+        "yarn flow-report-and-echo"
+      ],
+      "src/**/*.js": [
+        "yarn fix",
+        "yarn git_add_map",
+        "yarn flow-report-and-echo"
+      ]
+    }
   },
   "flow-coverage-report": {
     "globIncludePatterns": [

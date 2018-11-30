@@ -72493,6 +72493,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
               break;
             }
 
+          case _logStates.LogStates.createContext:
           case _logStates.LogStates.queueEmpty:
           case _logStates.LogStates.asyncStart:
           case _logStates.LogStates.asyncStop:
@@ -72606,8 +72607,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
   function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-  // // TODO-barret use log states
-  // import logStates from "../log/logStates"
   // TODO-barret make filterDatas and hoverDatas sub modules of subsetDatas or something
   var GraphAtStep =
   /*#__PURE__*/
@@ -72692,8 +72691,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         this.maxStep = log.length > 0 ? log[log.length - 1].step : -1;
         var logItem, i;
         var enterExitQueue = [];
+        var startI = 0;
 
-        for (i = 0; i < log.length; i++) {
+        while (log.length > startI + 2 && log[startI].action === _logStates.LogStates.asyncStart && log[startI].session === null && log[startI + 1].action === _logStates.LogStates.asyncStop && log[startI + 1].session === null && log[startI + 2].action === _logStates.LogStates.queueEmpty && log[startI + 2].session === null) {
+          startI = startI + 3;
+        }
+
+        for (i = startI; i < log.length; i++) {
           logItem = log[i];
 
           switch (logItem.action) {
@@ -72764,6 +72768,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             case _logStates.LogStates.isolateInvalidateEnd: // case "isolateEnter":
             // case "isolateExit":
 
+            case _logStates.LogStates.createContext:
             case _logStates.LogStates.asyncStart:
             case _logStates.LogStates.asyncStop:
             case _logStates.LogStates.queueEmpty:
@@ -72886,6 +72891,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             case _logStates.LogStates.mark:
               return ret;
 
+            case _logStates.LogStates.createContext:
             case _logStates.LogStates.asyncStart:
             case _logStates.LogStates.asyncStop:
               break;
@@ -72966,6 +72972,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             case _logStates.LogStates.mark:
               return ret;
 
+            case _logStates.LogStates.createContext:
             case _logStates.LogStates.asyncStart:
             case _logStates.LogStates.asyncStop:
               break;
@@ -73995,16 +74002,15 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js"), __webpack_require__(/*! lodash/last */ "./node_modules/lodash/last.js"), __webpack_require__(/*! ./rlog */ "./src/rlog.js"), __webpack_require__(/*! ./log/logStates */ "./src/log/logStates.js"), __webpack_require__(/*! ./graph/GraphAtStep */ "./src/graph/GraphAtStep.js"), __webpack_require__(/*! ./style/colors */ "./src/style/colors.js"), __webpack_require__(/*! ./cyto/cytoscapeInit */ "./src/cyto/cytoscapeInit.js"), __webpack_require__(/*! ./layout/keydown */ "./src/layout/keydown.js"), __webpack_require__(/*! ./updateGraph */ "./src/updateGraph/index.js"), __webpack_require__(/*! ./layout/logEntry */ "./src/layout/logEntry.js"), __webpack_require__(/*! ./layout/progressBar */ "./src/layout/progressBar.js"), __webpack_require__(/*! ./log/initStep */ "./src/log/initStep.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js"), __webpack_require__(/*! ./rlog */ "./src/rlog.js"), __webpack_require__(/*! ./log/logStates */ "./src/log/logStates.js"), __webpack_require__(/*! ./graph/GraphAtStep */ "./src/graph/GraphAtStep.js"), __webpack_require__(/*! ./style/colors */ "./src/style/colors.js"), __webpack_require__(/*! ./cyto/cytoscapeInit */ "./src/cyto/cytoscapeInit.js"), __webpack_require__(/*! ./layout/keydown */ "./src/layout/keydown.js"), __webpack_require__(/*! ./updateGraph */ "./src/updateGraph/index.js"), __webpack_require__(/*! ./layout/logEntry */ "./src/layout/logEntry.js"), __webpack_require__(/*! ./layout/progressBar */ "./src/layout/progressBar.js"), __webpack_require__(/*! ./log/initStep */ "./src/log/initStep.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
-})(this, function (_jquery, _last2, _rlog, _logStates, _GraphAtStep, _colors, cytoscapeInit, layoutKeydown, updateGraph, logEntry, progressBar, _initStep) {
+})(this, function (_jquery, _rlog, _logStates, _GraphAtStep, _colors, cytoscapeInit, layoutKeydown, updateGraph, logEntry, progressBar, _initStep) {
   "use strict";
 
   _jquery = _interopRequireDefault(_jquery);
-  _last2 = _interopRequireDefault(_last2);
   _colors = _interopRequireDefault(_colors);
   cytoscapeInit = _interopRequireWildcard(cytoscapeInit);
   layoutKeydown = _interopRequireWildcard(layoutKeydown);
@@ -74755,6 +74761,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   var states = {
     asyncStart: "asyncStart",
     asyncStop: "asyncStop",
+    createContext: "createContext",
     define: "define",
     dependsOn: "dependsOn",
     dependsOnRemove: "dependsOnRemove",
