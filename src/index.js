@@ -1,7 +1,6 @@
 // @flow
 
 import $ from "jquery";
-import _last from "lodash/last";
 
 import { rlog } from "./rlog";
 

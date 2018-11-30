@@ -35,9 +35,6 @@ import type {
 
 import type { CytoscapeOptions } from "../cyto/cytoFlowType";
 
-// // TODO-barret use log states
-// import logStates from "../log/logStates"
-
 // TODO-barret make filterDatas and hoverDatas sub modules of subsetDatas or something
 
 class GraphAtStep {
@@ -112,7 +109,19 @@ class GraphAtStep {
 
     let logItem, i;
     let idleArr = [];
-    for (i = 0; i < log.length; i++) {
+    let startI = 0;
+    while (
+      log.length > startI + 2 &&
+      log[startI].action === LogStates.asyncStart &&
+      log[startI].session === null &&
+      log[startI + 1].action === LogStates.asyncStop &&
+      log[startI + 1].session === null &&
+      log[startI + 2].action === LogStates.queueEmpty &&
+      log[startI + 2].session === null
+    ) {
+      startI = startI + 3;
+    }
+    for (i = startI; i < log.length; i++) {
       logItem = log[i];
       switch (logItem.action) {
         case LogStates.enter:
@@ -176,6 +185,7 @@ class GraphAtStep {
         case LogStates.isolateInvalidateEnd:
         // case "isolateEnter":
         // case "isolateExit":
+        case LogStates.createContext:
         case LogStates.asyncStart:
         case LogStates.asyncStop:
         case LogStates.queueEmpty:
@@ -299,9 +309,11 @@ class GraphAtStep {
         case LogStates.mark:
           return ret;
 
+        case LogStates.createContext:
         case LogStates.asyncStart:
         case LogStates.asyncStop:
           break;
+
         default:
           console.error(logEntry);
           throw "unknown logEntry action in 'next'";
@@ -370,12 +382,16 @@ class GraphAtStep {
             return ret;
           }
           break;
+
         case LogStates.queueEmpty:
         case LogStates.mark:
           return ret;
+
+        case LogStates.createContext:
         case LogStates.asyncStart:
         case LogStates.asyncStop:
           break;
+
         default:
           console.error(logItem);
           throw "unknown logItem action in 'prev'";
