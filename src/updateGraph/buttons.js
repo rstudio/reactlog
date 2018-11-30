@@ -1,9 +1,9 @@
 // @flow
 
-import * as enterExit from "./enterExit";
+import * as outputCalc from "./outputCalc";
 import * as step from "./step";
 import * as userMarks from "./userMarks";
-import * as queueEmpty from "./queueEmpty";
+import * as idle from "./idle";
 
 import type { CytoscapeOptions } from "../cyto/cytoFlowType";
 
@@ -15,17 +15,17 @@ let buttonNextMark = function(cytoOptions?: CytoscapeOptions = {}) {
 };
 
 let buttonPrevIdle = function(cytoOptions?: CytoscapeOptions = {}) {
-  return queueEmpty.prevQueueEmpty() || step.firstStep();
+  return idle.prevIdle() || step.firstStep();
 };
 let buttonNextIdle = function(cytoOptions?: CytoscapeOptions = {}) {
-  return queueEmpty.nextQueueEmpty() || step.lastStep();
+  return idle.nextIdle() || step.lastStep();
 };
 
-let buttonPrevCycle = function(cytoOptions?: CytoscapeOptions = {}) {
-  return enterExit.prevEnterExitEmpty() || step.firstStep();
+let buttonPrevOutputCalc = function(cytoOptions?: CytoscapeOptions = {}) {
+  return outputCalc.prevOutputCalc() || step.firstStep();
 };
-let buttonNextCycle = function(cytoOptions?: CytoscapeOptions = {}) {
-  return enterExit.nextEnterExitEmpty() || step.lastStep();
+let buttonNextOutputCalc = function(cytoOptions?: CytoscapeOptions = {}) {
+  return outputCalc.nextOutputCalc() || step.lastStep();
 };
 
 let buttonPrevStep = function(cytoOptions?: CytoscapeOptions = {}) {
@@ -40,8 +40,8 @@ export {
   buttonNextMark,
   buttonPrevIdle,
   buttonNextIdle,
-  buttonPrevCycle,
-  buttonNextCycle,
+  buttonPrevOutputCalc,
+  buttonNextOutputCalc,
   buttonPrevStep,
   buttonNextStep,
 };

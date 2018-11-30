@@ -72637,13 +72637,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
       _defineProperty(this, "stepsVisible", void 0);
 
-      _defineProperty(this, "asyncStarts", void 0);
+      _defineProperty(this, "stepsAsyncStart", void 0);
 
-      _defineProperty(this, "asyncStops", void 0);
+      _defineProperty(this, "stepsAsyncStop", void 0);
 
-      _defineProperty(this, "queueEmpties", void 0);
+      _defineProperty(this, "stepsIdle", void 0);
 
-      _defineProperty(this, "enterExitEmpties", void 0);
+      _defineProperty(this, "stepsOutputCalc", void 0);
 
       _defineProperty(this, "marks", void 0);
 
@@ -72683,43 +72683,43 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       key: "updateSteps",
       value: function updateSteps(log) {
         this.steps = [];
-        this.asyncStarts = [];
-        this.asyncStops = [];
-        this.queueEmpties = [];
-        this.enterExitEmpties = [];
+        this.stepsAsyncStart = [];
+        this.stepsAsyncStop = [];
+        this.stepsIdle = [];
+        this.stepsOutputCalc = [];
         this.marks = [];
         this.minStep = log.length > 0 ? log[0].step : -1;
         this.maxStep = log.length > 0 ? log[log.length - 1].step : -1;
         var logItem, i;
-        var enterExitQueue = [];
+        var idleArr = [];
 
         for (i = 0; i < log.length; i++) {
           logItem = log[i];
 
           switch (logItem.action) {
             case _logStates.LogStates.enter:
-              enterExitQueue.push(i);
+              idleArr.push(i);
               break;
 
             case _logStates.LogStates.exit:
-              enterExitQueue.pop();
+              idleArr.pop();
 
-              if (enterExitQueue.length === 0) {
-                this.enterExitEmpties.push(logItem.step);
+              if (idleArr.length === 0) {
+                this.stepsOutputCalc.push(logItem.step);
               }
 
               break;
 
             case _logStates.LogStates.asyncStart:
-              this.asyncStarts.push(logItem.step);
+              this.stepsAsyncStart.push(logItem.step);
               break;
 
             case _logStates.LogStates.asyncStop:
-              this.asyncStops.push(logItem.step);
+              this.stepsAsyncStop.push(logItem.step);
               break;
 
             case _logStates.LogStates.queueEmpty:
-              this.queueEmpties.push(logItem.step);
+              this.stepsIdle.push(logItem.step);
               break;
 
             case _logStates.LogStates.mark:
@@ -72776,7 +72776,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           }
         }
 
-        this.stepsVisible = [].concat(this.steps).concat(this.marks).concat(this.queueEmpties).sort(function (a, b) {
+        this.stepsVisible = [].concat(this.steps).concat(this.marks).concat(this.stepsIdle).sort(function (a, b) {
           return a - b;
         }); // this.graphCache = {};
         // this.cacheStep = 250;
@@ -74042,12 +74042,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     _rlog.rlog.cyto = cytoscapeInit.withContainer((0, _jquery.default)("#cyto"));
     _rlog.rlog.getGraph = new _GraphAtStep.GraphAtStep(_rlog.rlog.log);
     _rlog.rlog.graph = _rlog.rlog.getGraph.atStep(_rlog.rlog.getGraph.maxStep);
-    (0, _jquery.default)("#prevMarkButton").click(updateGraph.buttonPrevMark);
-    (0, _jquery.default)("#nextMarkButton").click(updateGraph.buttonNextMark);
-    (0, _jquery.default)("#prevFlushButton").click(updateGraph.buttonPrevIdle);
-    (0, _jquery.default)("#nextFlushButton").click(updateGraph.buttonNextIdle);
-    (0, _jquery.default)("#prevCycleButton").click(updateGraph.buttonPrevCycle);
-    (0, _jquery.default)("#nextCycleButton").click(updateGraph.buttonNextCycle);
+    (0, _jquery.default)("#prevUserMarkButton").click(updateGraph.buttonPrevMark);
+    (0, _jquery.default)("#nextUserMarkButton").click(updateGraph.buttonNextMark);
+    (0, _jquery.default)("#prevOutputCalcButton").click(updateGraph.buttonPrevOutputCalc);
+    (0, _jquery.default)("#nextOutputCalcButton").click(updateGraph.buttonNextOutputCalc);
+    (0, _jquery.default)("#prevIdleButton").click(updateGraph.buttonPrevIdle);
+    (0, _jquery.default)("#nextIdleButton").click(updateGraph.buttonNextIdle);
     (0, _jquery.default)("#prevStepButton").click(updateGraph.buttonPrevStep);
     (0, _jquery.default)("#nextStepButton").click(updateGraph.buttonNextStep);
     (0, _jquery.default)("#legendInvalidating").css("background-color", _colors.default.nodes.invalidating);
@@ -74071,8 +74071,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     }
     progressBar.setContainers((0, _jquery.default)("#timeline"), (0, _jquery.default)("#timeline-fill"));
     var timelineBackground = (0, _jquery.default)("#timeline-bg");
-    progressBar.addTimelineTicks(timelineBackground, _colors.default.nodes.ready, _rlog.rlog.getGraph.enterExitEmpties, progressBar.timelinePadding * 2);
-    progressBar.addTimelineTicks(timelineBackground, _colors.default.progressBar.idle, _rlog.rlog.getGraph.queueEmpties, 0);
+    progressBar.addTimelineTicks(timelineBackground, _colors.default.nodes.ready, _rlog.rlog.getGraph.stepsOutputCalc, progressBar.timelinePadding * 2);
+    progressBar.addTimelineTicks(timelineBackground, _colors.default.progressBar.idle, _rlog.rlog.getGraph.stepsIdle, 0);
 
     if (_rlog.rlog.getGraph.marks.length > 0) {
       progressBar.addTimelineTicks(timelineBackground, _colors.default.progressBar.mark, _rlog.rlog.getGraph.marks, 0);
@@ -74101,8 +74101,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           // rlog.cyto.maxZoom(Math.pow(2, logZoomLevel + 3)); // zoom in
 
         }
-      };
-      updateGraph.lastUserMark(cytoOpts) || updateGraph.nextQueueEmpty(cytoOpts);
+      }; // start at last user mark or first idle location
+
+      updateGraph.lastUserMark(cytoOpts) || updateGraph.nextIdle(cytoOpts);
     }
   });
 });
@@ -74169,7 +74170,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         // return false if there is no more enter/exit empty marks
 
 
-        if (updateGraph.buttonNextCycle()) {
+        if (updateGraph.buttonNextOutputCalc()) {
           return;
         } // if it cant go right, try a step
 
@@ -74198,7 +74199,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         } // option + left
 
 
-        if (updateGraph.buttonPrevCycle()) {
+        if (updateGraph.buttonPrevOutputCalc()) {
           return;
         } // if can't go left, try step
 
@@ -75002,22 +75003,22 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ./enterExit */ "./src/updateGraph/enterExit.js"), __webpack_require__(/*! ./step */ "./src/updateGraph/step.js"), __webpack_require__(/*! ./userMarks */ "./src/updateGraph/userMarks.js"), __webpack_require__(/*! ./queueEmpty */ "./src/updateGraph/queueEmpty.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ./outputCalc */ "./src/updateGraph/outputCalc.js"), __webpack_require__(/*! ./step */ "./src/updateGraph/step.js"), __webpack_require__(/*! ./userMarks */ "./src/updateGraph/userMarks.js"), __webpack_require__(/*! ./idle */ "./src/updateGraph/idle.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
-})(this, function (_exports, enterExit, step, userMarks, queueEmpty) {
+})(this, function (_exports, outputCalc, step, userMarks, idle) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
     value: true
   });
-  _exports.buttonNextStep = _exports.buttonPrevStep = _exports.buttonNextCycle = _exports.buttonPrevCycle = _exports.buttonNextIdle = _exports.buttonPrevIdle = _exports.buttonNextMark = _exports.buttonPrevMark = void 0;
-  enterExit = _interopRequireWildcard(enterExit);
+  _exports.buttonNextStep = _exports.buttonPrevStep = _exports.buttonNextOutputCalc = _exports.buttonPrevOutputCalc = _exports.buttonNextIdle = _exports.buttonPrevIdle = _exports.buttonNextMark = _exports.buttonPrevMark = void 0;
+  outputCalc = _interopRequireWildcard(outputCalc);
   step = _interopRequireWildcard(step);
   userMarks = _interopRequireWildcard(userMarks);
-  queueEmpty = _interopRequireWildcard(queueEmpty);
+  idle = _interopRequireWildcard(idle);
 
   function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
@@ -75037,31 +75038,31 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
   var buttonPrevIdle = function buttonPrevIdle() {
     var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    return queueEmpty.prevQueueEmpty() || step.firstStep();
+    return idle.prevIdle() || step.firstStep();
   };
 
   _exports.buttonPrevIdle = buttonPrevIdle;
 
   var buttonNextIdle = function buttonNextIdle() {
     var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    return queueEmpty.nextQueueEmpty() || step.lastStep();
+    return idle.nextIdle() || step.lastStep();
   };
 
   _exports.buttonNextIdle = buttonNextIdle;
 
-  var buttonPrevCycle = function buttonPrevCycle() {
+  var buttonPrevOutputCalc = function buttonPrevOutputCalc() {
     var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    return enterExit.prevEnterExitEmpty() || step.firstStep();
+    return outputCalc.prevOutputCalc() || step.firstStep();
   };
 
-  _exports.buttonPrevCycle = buttonPrevCycle;
+  _exports.buttonPrevOutputCalc = buttonPrevOutputCalc;
 
-  var buttonNextCycle = function buttonNextCycle() {
+  var buttonNextOutputCalc = function buttonNextOutputCalc() {
     var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    return enterExit.nextEnterExitEmpty() || step.lastStep();
+    return outputCalc.nextOutputCalc() || step.lastStep();
   };
 
-  _exports.buttonNextCycle = buttonNextCycle;
+  _exports.buttonNextOutputCalc = buttonNextOutputCalc;
 
   var buttonPrevStep = function buttonPrevStep() {
     var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -75076,119 +75077,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   };
 
   _exports.buttonNextStep = buttonNextStep;
-});
-
-/***/ }),
-
-/***/ "./src/updateGraph/enterExit.js":
-/*!**************************************!*\
-  !*** ./src/updateGraph/enterExit.js ***!
-  \**************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
-  if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! lodash/sortedIndexOf */ "./node_modules/lodash/sortedIndexOf.js"), __webpack_require__(/*! ../rlog */ "./src/rlog.js"), __webpack_require__(/*! ../updateGraph */ "./src/updateGraph/index.js"), __webpack_require__(/*! ../graph/GraphAtStep */ "./src/graph/GraphAtStep.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-  } else { var mod; }
-})(this, function (_exports, _sortedIndexOf2, _rlog, _updateGraph, _GraphAtStep) {
-  "use strict";
-
-  Object.defineProperty(_exports, "__esModule", {
-    value: true
-  });
-  _exports.lastEnterExitEmpty = _exports.firstEnterExitEmpty = _exports.prevEnterExitEmpty = _exports.nextEnterExitEmpty = void 0;
-  _sortedIndexOf2 = _interopRequireDefault(_sortedIndexOf2);
-
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-  var nextEnterExitEmpty = function nextEnterExitEmpty() {
-    var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    var nextTick;
-
-    if ((0, _sortedIndexOf2.default)(_rlog.rlog.getGraph.enterExitEmpties, _rlog.rlog.curTick) !== -1) {
-      // not at a cycle point
-      if ((0, _GraphAtStep.hasLength)(_rlog.rlog.getGraph.filterDatas)) {
-        // if filtered, will go to previous step, then next step location
-        nextTick = _rlog.rlog.getGraph.nextStep(_rlog.rlog.getGraph.prevStep(_rlog.rlog.curTick));
-      } else {
-        // if not filtered
-        nextTick = _rlog.rlog.curTick;
-      }
-    } else {
-      // at cycle point
-      // first move one step forward... then find next enter/exit empty
-      nextTick = _rlog.rlog.getGraph.nextStep(_rlog.rlog.curTick);
-    }
-
-    var val, i; // move to queue empty
-
-    for (i = 0; i < _rlog.rlog.getGraph.enterExitEmpties.length; i++) {
-      val = _rlog.rlog.getGraph.enterExitEmpties[i];
-
-      if (nextTick < val) {
-        (0, _updateGraph.updateGraph)(val, cytoOptions);
-        return true;
-      }
-    }
-
-    return false;
-  };
-
-  _exports.nextEnterExitEmpty = nextEnterExitEmpty;
-
-  var prevEnterExitEmpty = function prevEnterExitEmpty() {
-    var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    var prevTick;
-
-    if ((0, _sortedIndexOf2.default)(_rlog.rlog.getGraph.enterExitEmpties, _rlog.rlog.curTick) !== -1) {
-      // not at a cycle point
-      if ((0, _GraphAtStep.hasLength)(_rlog.rlog.getGraph.filterDatas)) {
-        // if filtered, will go to next step, then prev step location
-        prevTick = _rlog.rlog.getGraph.prevStep(_rlog.rlog.getGraph.nextStep(_rlog.rlog.curTick));
-      } else {
-        // if not filtered
-        prevTick = _rlog.rlog.curTick;
-      }
-    } else {
-      // at cycle point
-      // first move one step backward... then find prev enter/exit empty
-      prevTick = _rlog.rlog.getGraph.prevStep(_rlog.rlog.curTick);
-    }
-
-    var val, i; // move to queue empty
-
-    for (i = _rlog.rlog.getGraph.enterExitEmpties.length - 1; i >= 0; i--) {
-      val = _rlog.rlog.getGraph.enterExitEmpties[i];
-
-      if (prevTick > val) {
-        return (0, _updateGraph.updateGraph)(val, cytoOptions);
-      }
-    }
-
-    return false;
-  };
-
-  _exports.prevEnterExitEmpty = prevEnterExitEmpty;
-
-  var lastEnterExitEmpty = function lastEnterExitEmpty() {
-    var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    var nextTick = _rlog.rlog.getGraph.enterExitEmpties[_rlog.rlog.getGraph.enterExitEmpties.length - 1] || 0;
-    return (0, _updateGraph.updateGraph)(nextTick, cytoOptions);
-  };
-
-  _exports.lastEnterExitEmpty = lastEnterExitEmpty;
-
-  var firstEnterExitEmpty = function firstEnterExitEmpty() {
-    var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    var nextTick = _rlog.rlog.getGraph.enterExitEmpties[0] || 0;
-    return (0, _updateGraph.updateGraph)(nextTick, cytoOptions);
-  };
-
-  _exports.firstEnterExitEmpty = firstEnterExitEmpty;
 });
 
 /***/ }),
@@ -75329,6 +75217,89 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
+/***/ "./src/updateGraph/idle.js":
+/*!*********************************!*\
+  !*** ./src/updateGraph/idle.js ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
+  if (true) {
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ../rlog */ "./src/rlog.js"), __webpack_require__(/*! ../updateGraph */ "./src/updateGraph/index.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+  } else { var mod; }
+})(this, function (_exports, _rlog, _updateGraph) {
+  "use strict";
+
+  Object.defineProperty(_exports, "__esModule", {
+    value: true
+  });
+  _exports.firstIdle = _exports.lastIdle = _exports.prevIdle = _exports.nextIdle = void 0;
+
+  var nextIdle = function nextIdle() {
+    var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    var i, val; // traverse to the next valid step,
+    //   skipping the very close queue empties (which would be skipped on next step)
+
+    var nextTick = _rlog.rlog.getGraph.nextStep(_rlog.rlog.curTick); // move to queue empty
+
+
+    for (i = 0; i < _rlog.rlog.getGraph.stepsOutputCalc.length; i++) {
+      val = _rlog.rlog.getGraph.stepsIdle[i];
+
+      if (nextTick < val) {
+        (0, _updateGraph.updateGraph)(val, cytoOptions);
+        return true;
+      }
+    }
+
+    return false;
+  };
+
+  _exports.nextIdle = nextIdle;
+
+  var prevIdle = function prevIdle() {
+    var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    var i, val; // traverse to the previous valid step,
+    //   skipping the very close queue empties (which would be skipped on prev step)
+
+    var prevTick = _rlog.rlog.getGraph.prevStep(_rlog.rlog.curTick); // move to queue empty
+
+
+    for (i = _rlog.rlog.getGraph.stepsIdle.length - 1; i >= 0; i--) {
+      val = _rlog.rlog.getGraph.stepsIdle[i];
+
+      if (prevTick > val) {
+        (0, _updateGraph.updateGraph)(val, cytoOptions);
+        return true;
+      }
+    }
+
+    return false;
+  };
+
+  _exports.prevIdle = prevIdle;
+
+  var lastIdle = function lastIdle() {
+    var nextTick = _rlog.rlog.getGraph.stepsIdle.length > 0 ? _rlog.rlog.getGraph.stepsIdle[_rlog.rlog.getGraph.stepsIdle.length - 1] : 0;
+    return (0, _updateGraph.updateGraph)(nextTick);
+  };
+
+  _exports.lastIdle = lastIdle;
+
+  var firstIdle = function firstIdle() {
+    var nextTick = _rlog.rlog.getGraph.stepsIdle.length > 0 ? _rlog.rlog.getGraph.stepsIdle[0] : 0;
+    return (0, _updateGraph.updateGraph)(nextTick);
+  };
+
+  _exports.firstIdle = firstIdle;
+});
+
+/***/ }),
+
 /***/ "./src/updateGraph/index.js":
 /*!**********************************!*\
   !*** ./src/updateGraph/index.js ***!
@@ -75338,12 +75309,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ./atTick */ "./src/updateGraph/atTick.js"), __webpack_require__(/*! ./enterExit */ "./src/updateGraph/enterExit.js"), __webpack_require__(/*! ./queueEmpty */ "./src/updateGraph/queueEmpty.js"), __webpack_require__(/*! ./step */ "./src/updateGraph/step.js"), __webpack_require__(/*! ./tick */ "./src/updateGraph/tick.js"), __webpack_require__(/*! ./searchString */ "./src/updateGraph/searchString.js"), __webpack_require__(/*! ./hoverStickyFilterSearch */ "./src/updateGraph/hoverStickyFilterSearch.js"), __webpack_require__(/*! ./userMarks */ "./src/updateGraph/userMarks.js"), __webpack_require__(/*! ./buttons */ "./src/updateGraph/buttons.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ./atTick */ "./src/updateGraph/atTick.js"), __webpack_require__(/*! ./outputCalc */ "./src/updateGraph/outputCalc.js"), __webpack_require__(/*! ./idle */ "./src/updateGraph/idle.js"), __webpack_require__(/*! ./step */ "./src/updateGraph/step.js"), __webpack_require__(/*! ./tick */ "./src/updateGraph/tick.js"), __webpack_require__(/*! ./searchString */ "./src/updateGraph/searchString.js"), __webpack_require__(/*! ./hoverStickyFilterSearch */ "./src/updateGraph/hoverStickyFilterSearch.js"), __webpack_require__(/*! ./userMarks */ "./src/updateGraph/userMarks.js"), __webpack_require__(/*! ./buttons */ "./src/updateGraph/buttons.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
-})(this, function (_exports, _atTick, _enterExit, _queueEmpty, _step, _tick, _searchString, _hoverStickyFilterSearch, _userMarks, _buttons) {
+})(this, function (_exports, _atTick, _outputCalc, _idle, _step, _tick, _searchString, _hoverStickyFilterSearch, _userMarks, _buttons) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
@@ -75351,11 +75322,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   });
   var _exportNames = {
     atTick: true,
-    updateGraph: true,
-    nextEnterExitEmpty: true,
-    prevEnterExitEmpty: true,
-    firstEnterExitEmpty: true,
-    lastEnterExitEmpty: true
+    updateGraph: true
   };
   Object.defineProperty(_exports, "atTick", {
     enumerable: true,
@@ -75369,37 +75336,23 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       return _atTick.atTick;
     }
   });
-  Object.defineProperty(_exports, "nextEnterExitEmpty", {
-    enumerable: true,
-    get: function get() {
-      return _enterExit.nextEnterExitEmpty;
-    }
-  });
-  Object.defineProperty(_exports, "prevEnterExitEmpty", {
-    enumerable: true,
-    get: function get() {
-      return _enterExit.prevEnterExitEmpty;
-    }
-  });
-  Object.defineProperty(_exports, "firstEnterExitEmpty", {
-    enumerable: true,
-    get: function get() {
-      return _enterExit.firstEnterExitEmpty;
-    }
-  });
-  Object.defineProperty(_exports, "lastEnterExitEmpty", {
-    enumerable: true,
-    get: function get() {
-      return _enterExit.lastEnterExitEmpty;
-    }
-  });
-  Object.keys(_queueEmpty).forEach(function (key) {
+  Object.keys(_outputCalc).forEach(function (key) {
     if (key === "default" || key === "__esModule") return;
     if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
     Object.defineProperty(_exports, key, {
       enumerable: true,
       get: function get() {
-        return _queueEmpty[key];
+        return _outputCalc[key];
+      }
+    });
+  });
+  Object.keys(_idle).forEach(function (key) {
+    if (key === "default" || key === "__esModule") return;
+    if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+    Object.defineProperty(_exports, key, {
+      enumerable: true,
+      get: function get() {
+        return _idle[key];
       }
     });
   });
@@ -75467,38 +75420,54 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
-/***/ "./src/updateGraph/queueEmpty.js":
+/***/ "./src/updateGraph/outputCalc.js":
 /*!***************************************!*\
-  !*** ./src/updateGraph/queueEmpty.js ***!
+  !*** ./src/updateGraph/outputCalc.js ***!
   \***************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ../rlog */ "./src/rlog.js"), __webpack_require__(/*! ../updateGraph */ "./src/updateGraph/index.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! lodash/sortedIndexOf */ "./node_modules/lodash/sortedIndexOf.js"), __webpack_require__(/*! ../rlog */ "./src/rlog.js"), __webpack_require__(/*! ../updateGraph */ "./src/updateGraph/index.js"), __webpack_require__(/*! ../graph/GraphAtStep */ "./src/graph/GraphAtStep.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
-})(this, function (_exports, _rlog, _updateGraph) {
+})(this, function (_exports, _sortedIndexOf2, _rlog, _updateGraph, _GraphAtStep) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
     value: true
   });
-  _exports.firstQueueEmpty = _exports.lastQueueEmpty = _exports.prevQueueEmpty = _exports.nextQueueEmpty = void 0;
+  _exports.lastOutputCalc = _exports.firstOutputCalc = _exports.prevOutputCalc = _exports.nextOutputCalc = void 0;
+  _sortedIndexOf2 = _interopRequireDefault(_sortedIndexOf2);
 
-  var nextQueueEmpty = function nextQueueEmpty() {
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+  var nextOutputCalc = function nextOutputCalc() {
     var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    var i, val; // traverse to the next valid step,
-    //   skipping the very close queue empties (which would be skipped on next step)
+    var nextTick;
 
-    var nextTick = _rlog.rlog.getGraph.nextStep(_rlog.rlog.curTick); // move to queue empty
+    if ((0, _sortedIndexOf2.default)(_rlog.rlog.getGraph.stepsOutputCalc, _rlog.rlog.curTick) !== -1) {
+      // not at a cycle point
+      if ((0, _GraphAtStep.hasLength)(_rlog.rlog.getGraph.filterDatas)) {
+        // if filtered, will go to previous step, then next step location
+        nextTick = _rlog.rlog.getGraph.nextStep(_rlog.rlog.getGraph.prevStep(_rlog.rlog.curTick));
+      } else {
+        // if not filtered
+        nextTick = _rlog.rlog.curTick;
+      }
+    } else {
+      // at cycle point
+      // first move one step forward... then find next enter/exit empty
+      nextTick = _rlog.rlog.getGraph.nextStep(_rlog.rlog.curTick);
+    }
 
+    var val, i; // move to queue empty
 
-    for (i = 0; i < _rlog.rlog.getGraph.enterExitEmpties.length; i++) {
-      val = _rlog.rlog.getGraph.queueEmpties[i];
+    for (i = 0; i < _rlog.rlog.getGraph.stepsOutputCalc.length; i++) {
+      val = _rlog.rlog.getGraph.stepsOutputCalc[i];
 
       if (nextTick < val) {
         (0, _updateGraph.updateGraph)(val, cytoOptions);
@@ -75509,43 +75478,57 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     return false;
   };
 
-  _exports.nextQueueEmpty = nextQueueEmpty;
+  _exports.nextOutputCalc = nextOutputCalc;
 
-  var prevQueueEmpty = function prevQueueEmpty() {
+  var prevOutputCalc = function prevOutputCalc() {
     var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    var i, val; // traverse to the previous valid step,
-    //   skipping the very close queue empties (which would be skipped on prev step)
+    var prevTick;
 
-    var prevTick = _rlog.rlog.getGraph.prevStep(_rlog.rlog.curTick); // move to queue empty
+    if ((0, _sortedIndexOf2.default)(_rlog.rlog.getGraph.stepsOutputCalc, _rlog.rlog.curTick) !== -1) {
+      // not at a cycle point
+      if ((0, _GraphAtStep.hasLength)(_rlog.rlog.getGraph.filterDatas)) {
+        // if filtered, will go to next step, then prev step location
+        prevTick = _rlog.rlog.getGraph.prevStep(_rlog.rlog.getGraph.nextStep(_rlog.rlog.curTick));
+      } else {
+        // if not filtered
+        prevTick = _rlog.rlog.curTick;
+      }
+    } else {
+      // at cycle point
+      // first move one step backward... then find prev enter/exit empty
+      prevTick = _rlog.rlog.getGraph.prevStep(_rlog.rlog.curTick);
+    }
 
+    var val, i; // move to queue empty
 
-    for (i = _rlog.rlog.getGraph.queueEmpties.length - 1; i >= 0; i--) {
-      val = _rlog.rlog.getGraph.queueEmpties[i];
+    for (i = _rlog.rlog.getGraph.stepsOutputCalc.length - 1; i >= 0; i--) {
+      val = _rlog.rlog.getGraph.stepsOutputCalc[i];
 
       if (prevTick > val) {
-        (0, _updateGraph.updateGraph)(val, cytoOptions);
-        return true;
+        return (0, _updateGraph.updateGraph)(val, cytoOptions);
       }
     }
 
     return false;
   };
 
-  _exports.prevQueueEmpty = prevQueueEmpty;
+  _exports.prevOutputCalc = prevOutputCalc;
 
-  var lastQueueEmpty = function lastQueueEmpty() {
-    var nextTick = _rlog.rlog.getGraph.queueEmpties[_rlog.rlog.getGraph.queueEmpties.length - 1] || 0;
-    return (0, _updateGraph.updateGraph)(nextTick);
+  var lastOutputCalc = function lastOutputCalc() {
+    var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    var nextTick = _rlog.rlog.getGraph.stepsOutputCalc[_rlog.rlog.getGraph.stepsOutputCalc.length - 1] || 0;
+    return (0, _updateGraph.updateGraph)(nextTick, cytoOptions);
   };
 
-  _exports.lastQueueEmpty = lastQueueEmpty;
+  _exports.lastOutputCalc = lastOutputCalc;
 
-  var firstQueueEmpty = function firstQueueEmpty() {
-    var nextTick = _rlog.rlog.getGraph.queueEmpties[0] || 0;
-    return (0, _updateGraph.updateGraph)(nextTick);
+  var firstOutputCalc = function firstOutputCalc() {
+    var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    var nextTick = _rlog.rlog.getGraph.stepsOutputCalc[0] || 0;
+    return (0, _updateGraph.updateGraph)(nextTick, cytoOptions);
   };
 
-  _exports.firstQueueEmpty = firstQueueEmpty;
+  _exports.firstOutputCalc = firstOutputCalc;
 });
 
 /***/ }),
