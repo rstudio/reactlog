@@ -55,7 +55,7 @@ of the source code of your reactive expressions and observers.
 \examples{
 
 library(shiny)
-library(shinyreactlog)
+library(reactlog)
 
 # tell shiny to log reactivity
 options("shiny.reactlog" = TRUE)

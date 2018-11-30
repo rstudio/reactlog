@@ -1,4 +1,4 @@
-Package: shinyreactlog
+Package: reactlog
 Title: Shiny Reactivity Visualizer
 Version: 0.0.0.9000
 Authors@R: c(
@@ -18,5 +18,5 @@ LazyData: true
 RoxygenNote: 6.0.1.9000
 Remotes:
   schloerke/shiny@barret/reactlog
-URL: https://github.com/rstudio/shinyreactlog
-BugReports: https://github.com/rstudio/shinyreactlog/issues
+URL: https://github.com/rstudio/reactlog
+BugReports: https://github.com/rstudio/reactlog/issues

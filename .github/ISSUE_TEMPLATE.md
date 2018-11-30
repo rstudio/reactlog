@@ -12,7 +12,7 @@ Brief description of the problem
 
 ```r
 library(shiny)
-library(shinyreactlog)
+library(reactlog)
 
 options("shiny.reactlog" = TRUE)
 

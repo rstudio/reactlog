@@ -5,7 +5,7 @@
 render_reactlog <- function(log, session_token = NULL, time = TRUE) {
   log <- upgrade_reactlog(log)
 
-  template_file <- system.file("reactlog.html", package = "shinyreactlog")
+  template_file <- system.file("reactlog.html", package = "reactlog")
   html <- paste(readLines(template_file, warn = FALSE), collapse = "\r\n")
 
   tc <- textConnection(NULL, "w")
@@ -23,7 +23,7 @@ render_reactlog <- function(log, session_token = NULL, time = TRUE) {
 
   # copy js and style folder
   file.copy(
-    system.file("reactlogAsset", package = "shinyreactlog"),
+    system.file("reactlogAsset", package = "reactlog"),
     dirname(file),
     recursive = TRUE
   )

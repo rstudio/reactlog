@@ -8,10 +8,10 @@ Before you submit a pull request, please do the following:
 
 * Run Build->Check Package in the RStudio IDE, or `devtools::check()`, to make sure your change did not add any messages, warnings, or errors.  (Known NOTE of large package size and sub-directories 'reactlogAsset' size.)
 
-Doing these things will make it easier for the `shinyreactlog` development team to evaluate your pull request. Even so, we may still decide to modify your code or even not merge it at all. Factors that may prevent us from merging the pull request include:
+Doing these things will make it easier for the `reactlog` development team to evaluate your pull request. Even so, we may still decide to modify your code or even not merge it at all. Factors that may prevent us from merging the pull request include:
 
 * breaking backward compatibility
-* adding a feature that we do not consider relevant for `shinyreactlog`
+* adding a feature that we do not consider relevant for `reactlog`
 * is hard to understand
 * is hard to maintain in the future
 * is computationally expensive
@@ -33,7 +33,7 @@ Brief description of the problem
 
 ```r
 library(shiny)
-library(shinyreactlog)
+library(reactlog)
 
 options("shiny.reactlog" = TRUE)
 
