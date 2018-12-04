@@ -42,7 +42,7 @@
 #' @examples
 #'
 #' library(shiny)
-#' library(shinyreactlog)
+#' library(reactlog)
 #'
 #' # tell shiny to log reactivity
 #' options("shiny.reactlog" = TRUE)

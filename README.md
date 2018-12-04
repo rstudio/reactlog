@@ -1,12 +1,12 @@
-# shinyreactlog
+# reactlog
 
-[![Travis Build Status](https://travis-ci.org/rstudio/shinyreactlog.svg?branch=master)](https://travis-ci.org/rstudio/shinyreactlog) [![Coverage status](https://codecov.io/gh/rstudio/shinyreactlog/branch/master/graph/badge.svg)](https://codecov.io/github/rstudio/shinyreactlog?branch=master)
-[![CRAN version](http://www.r-pkg.org/badges/version/shinyreactlog)](https://cran.r-project.org/package=shinyreactlog)
+[![Travis Build Status](https://travis-ci.org/rstudio/reactlog.svg?branch=master)](https://travis-ci.org/rstudio/reactlog) [![Coverage status](https://codecov.io/gh/rstudio/reactlog/branch/master/graph/badge.svg)](https://codecov.io/github/rstudio/reactlog?branch=master)
+[![CRAN version](http://www.r-pkg.org/badges/version/reactlog)](https://cran.r-project.org/package=reactlog)
 
 
-[Shiny](http://shiny.rstudio.com/) is an R package from RStudio that makes it incredibly easy to build interactive web applications with R.  The complexity of the reactive elements within a shiny application can quickly become complicated and are difficult to debug.  `shinyreactlog` provides a visual debugger for shiny reactivity.  After logging the reactive interactions of a shiny application, `shinyreactlog` visualizes the shiny reaction state at any time point in the record.
+[Shiny](http://shiny.rstudio.com/) is an R package from RStudio that makes it incredibly easy to build interactive web applications with R.  The complexity of the reactive elements within a shiny application can quickly become complicated and are difficult to debug.  `reactlog` provides a visual debugger for shiny reactivity.  After logging the reactive interactions of a shiny application, `reactlog` visualizes the shiny reaction state at any time point in the record.
 
-The `shinyreactlog` dependency graph provides users with the ability to visually see if reactive elements are:
+The `reactlog` dependency graph provides users with the ability to visually see if reactive elements are:
 * not utilized (never retrieved)
 * over utilized (called independently many times)
 * interacting with unexpected elements
@@ -15,7 +15,7 @@ The `shinyreactlog` dependency graph provides users with the ability to visually
 
 <!-- For an introduction and examples, visit the [Shiny Dev Center](http://shiny.rstudio.com/). -->
 
-If you have general questions about using `shinyreactlog`, please use the [RStudio Community website](https://community.rstudio.com/c/shiny). For bug reports, please use the `shinyreactlog` [issue tracker](https://github.com/rstudio/shinyreactlog/issues).
+If you have general questions about using `reactlog`, please use the [RStudio Community website](https://community.rstudio.com/c/shiny). For bug reports, please use the `reactlog` [issue tracker](https://github.com/rstudio/reactlog/issues).
 
 ## Features
 
@@ -30,7 +30,7 @@ If you have general questions about using `shinyreactlog`, please use the [RStud
 <!-- To install the stable version from CRAN, simply run the following from an R console:
 
 ```r
-install.packages("shinyreactlog")
+install.packages("reactlog")
 ``` -->
 
 For the latest version:
@@ -38,7 +38,7 @@ For the latest version:
 <!-- cant use install-github.me, fails on recursion install -->
 
 ```r
-devtools::install_github("rstudio/shinyreactlog")
+devtools::install_github("rstudio/reactlog")
 ```
 
 ## Usage
@@ -46,7 +46,7 @@ devtools::install_github("rstudio/shinyreactlog")
 
 ```r
 library(shiny)
-library(shinyreactlog)
+library(reactlog)
 
 # tell shiny to log reactivity
 options("shiny.reactlog" = TRUE)
@@ -82,6 +82,6 @@ By changing the file `'./inst/defaultLog.js'` with the contents of any log file 
 
 ## Guidelines for contributing
 
-We welcome contributions to the **shinyreactlog** package. Please see our [CONTRIBUTING.md](.github/CONTRIBUTING.md) file for detailed guidelines of how to contribute.
+We welcome contributions to the **reactlog** package. Please see our [CONTRIBUTING.md](.github/CONTRIBUTING.md) file for detailed guidelines of how to contribute.
 
-Please note that the 'shinyreactlog' project is released with a [Contributor Code of Conduct](.github/CODE_OF_CONDUCT.md). By contributing to this project, you agree to abide by its terms.
+Please note that the 'reactlog' project is released with a [Contributor Code of Conduct](.github/CODE_OF_CONDUCT.md). By contributing to this project, you agree to abide by its terms.

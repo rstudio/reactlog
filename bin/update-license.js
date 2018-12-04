@@ -28,7 +28,7 @@ checker.init(
       }
     }
 
-    console.log("The shinyreactlog package as a whole is distributed under GPL-3 (GNU GENERAL PUBLIC LICENSE version 3).\n\nThe shinyreactlog package includes other open source software components. The following\nis a list of these components (full copies of the license agreements used by\nthese components are included below):");
+    console.log("The reactlog package as a whole is distributed under GPL-3 (GNU GENERAL PUBLIC LICENSE version 3).\n\nThe reactlog package includes other open source software components. The following\nis a list of these components (full copies of the license agreements used by\nthese components are included below):");
     console.log("");
 
     //The sorted json data
