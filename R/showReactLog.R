@@ -61,8 +61,13 @@ show_reactlog <- function(log, time = TRUE, ...) {
   utils::browseURL(file)
 }
 
-
-
+#' Write reactlog
+#'
+#' Write the reactlog to a file.  If a session token is provided, all reactive interactions will be subsetted to either the global session or the session provided.
+#' @param log produced by shiny to be written
+#' @param file location to \code{cat} the file to
+#' @param session_token Session token identifier to be used when subsetting the complete reactlog
+#' @export
 write_reactlog <- function(log, file=stdout(), session_token = NULL) {
   if (!is.null(session_token)) {
     log <- Filter(

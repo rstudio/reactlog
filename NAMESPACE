@@ -2,3 +2,4 @@
 
 export(render_reactlog)
 export(show_reactlog)
+export(write_reactlog)
