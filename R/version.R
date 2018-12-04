@@ -9,5 +9,9 @@ upgrade_reactlog <- function(log) {
     return(log)
   }
 
-  stop("Versions available: 1\nLatest reactlog version: 1\nVersion provided: ", version)
+  stop(
+    "Versions available: 1\n",
+    "Latest reactlog version: 1\n",
+    "Version provided: ", version
+  )
 }

@@ -14,9 +14,20 @@ render_reactlog <- function(log, session_token = NULL, time = TRUE) {
   cat("\n", file = tc)
   flush(tc)
 
-  html <- sub("__DATA__", paste(textConnectionValue(tc), collapse = "\r\n"), html, fixed = TRUE)
-  html <- sub("__TIME__", paste0("\"", time, "\""), html, fixed = TRUE)
-  html <- sub("<script src=\"defaultLog.js\"></script>", "", html, fixed = TRUE)
+  fixed_sub <- function(...) {
+    sub(..., fixed = TRUE)
+  }
+
+  fixed_sub(
+    "__DATA__", paste(textConnectionValue(tc), collapse = "\r\n"),
+    fixed_sub(
+      "__TIME__", paste0("\"", time, "\""),
+      fixed_sub(
+        "<script src=\"defaultLog.js\"></script>", "",
+        html
+      )
+    )
+  )
 
   file <- tempfile(fileext = ".html")
   writeLines(html, file)
