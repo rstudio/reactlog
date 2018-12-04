@@ -270,6 +270,7 @@ text {
   /* display: flex; */
   font-size: 11px;
   border-spacing: 0;
+  padding-right: 10px
 }
 
 #filter {
