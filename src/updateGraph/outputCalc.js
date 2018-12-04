@@ -8,9 +8,9 @@ import { hasLength } from "../graph/GraphAtStep";
 
 import type { CytoscapeOptions } from "../cyto/cytoFlowType";
 
-let nextEnterExitEmpty = function(cytoOptions?: CytoscapeOptions = {}) {
+let nextOutputCalc = function(cytoOptions?: CytoscapeOptions = {}) {
   let nextTick;
-  if (_sortedIndexOf(rlog.getGraph.enterExitEmpties, rlog.curTick) !== -1) {
+  if (_sortedIndexOf(rlog.getGraph.stepsOutputCalc, rlog.curTick) !== -1) {
     // not at a cycle point
     if (hasLength(rlog.getGraph.filterDatas)) {
       // if filtered, will go to previous step, then next step location
@@ -26,8 +26,8 @@ let nextEnterExitEmpty = function(cytoOptions?: CytoscapeOptions = {}) {
   }
   let val, i;
   // move to queue empty
-  for (i = 0; i < rlog.getGraph.enterExitEmpties.length; i++) {
-    val = rlog.getGraph.enterExitEmpties[i];
+  for (i = 0; i < rlog.getGraph.stepsOutputCalc.length; i++) {
+    val = rlog.getGraph.stepsOutputCalc[i];
     if (nextTick < val) {
       updateGraph(val, cytoOptions);
       return true;
@@ -36,9 +36,9 @@ let nextEnterExitEmpty = function(cytoOptions?: CytoscapeOptions = {}) {
   return false;
 };
 
-let prevEnterExitEmpty = function(cytoOptions?: CytoscapeOptions = {}) {
+let prevOutputCalc = function(cytoOptions?: CytoscapeOptions = {}) {
   let prevTick;
-  if (_sortedIndexOf(rlog.getGraph.enterExitEmpties, rlog.curTick) !== -1) {
+  if (_sortedIndexOf(rlog.getGraph.stepsOutputCalc, rlog.curTick) !== -1) {
     // not at a cycle point
     if (hasLength(rlog.getGraph.filterDatas)) {
       // if filtered, will go to next step, then prev step location
@@ -54,8 +54,8 @@ let prevEnterExitEmpty = function(cytoOptions?: CytoscapeOptions = {}) {
   }
   let val, i;
   // move to queue empty
-  for (i = rlog.getGraph.enterExitEmpties.length - 1; i >= 0; i--) {
-    val = rlog.getGraph.enterExitEmpties[i];
+  for (i = rlog.getGraph.stepsOutputCalc.length - 1; i >= 0; i--) {
+    val = rlog.getGraph.stepsOutputCalc[i];
     if (prevTick > val) {
       return updateGraph(val, cytoOptions);
     }
@@ -63,20 +63,15 @@ let prevEnterExitEmpty = function(cytoOptions?: CytoscapeOptions = {}) {
   return false;
 };
 
-let lastEnterExitEmpty = function(cytoOptions?: CytoscapeOptions = {}) {
+let lastOutputCalc = function(cytoOptions?: CytoscapeOptions = {}) {
   let nextTick =
-    rlog.getGraph.enterExitEmpties[rlog.getGraph.enterExitEmpties.length - 1] ||
+    rlog.getGraph.stepsOutputCalc[rlog.getGraph.stepsOutputCalc.length - 1] ||
     0;
   return updateGraph(nextTick, cytoOptions);
 };
-let firstEnterExitEmpty = function(cytoOptions?: CytoscapeOptions = {}) {
-  let nextTick = rlog.getGraph.enterExitEmpties[0] || 0;
+let firstOutputCalc = function(cytoOptions?: CytoscapeOptions = {}) {
+  let nextTick = rlog.getGraph.stepsOutputCalc[0] || 0;
   return updateGraph(nextTick, cytoOptions);
 };
 
-export {
-  nextEnterExitEmpty,
-  prevEnterExitEmpty,
-  firstEnterExitEmpty,
-  lastEnterExitEmpty,
-};
+export { nextOutputCalc, prevOutputCalc, firstOutputCalc, lastOutputCalc };

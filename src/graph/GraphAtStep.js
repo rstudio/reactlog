@@ -52,10 +52,10 @@ class GraphAtStep {
 
   steps: Array<number>;
   stepsVisible: Array<number>;
-  asyncStarts: Array<number>;
-  asyncStops: Array<number>;
-  queueEmpties: Array<number>;
-  enterExitEmpties: Array<number>;
+  stepsAsyncStart: Array<number>;
+  stepsAsyncStop: Array<number>;
+  stepsIdle: Array<number>;
+  stepsOutputCalc: Array<number>;
   marks: Array<number>;
   minStep: number;
   maxStep: number;
@@ -99,16 +99,16 @@ class GraphAtStep {
 
   updateSteps(log: LogType) {
     this.steps = [];
-    this.asyncStarts = [];
-    this.asyncStops = [];
-    this.queueEmpties = [];
-    this.enterExitEmpties = [];
+    this.stepsAsyncStart = [];
+    this.stepsAsyncStop = [];
+    this.stepsIdle = [];
+    this.stepsOutputCalc = [];
     this.marks = [];
     this.minStep = log.length > 0 ? log[0].step : -1;
     this.maxStep = log.length > 0 ? log[log.length - 1].step : -1;
 
     let logItem, i;
-    let enterExitQueue = [];
+    let idleArr = [];
     let startI = 0;
     while (
       log.length > startI + 2 &&
@@ -125,22 +125,22 @@ class GraphAtStep {
       logItem = log[i];
       switch (logItem.action) {
         case LogStates.enter:
-          enterExitQueue.push(i);
+          idleArr.push(i);
           break;
         case LogStates.exit:
-          enterExitQueue.pop();
-          if (enterExitQueue.length === 0) {
-            this.enterExitEmpties.push(logItem.step);
+          idleArr.pop();
+          if (idleArr.length === 0) {
+            this.stepsOutputCalc.push(logItem.step);
           }
           break;
         case LogStates.asyncStart:
-          this.asyncStarts.push(logItem.step);
+          this.stepsAsyncStart.push(logItem.step);
           break;
         case LogStates.asyncStop:
-          this.asyncStops.push(logItem.step);
+          this.stepsAsyncStop.push(logItem.step);
           break;
         case LogStates.queueEmpty:
-          this.queueEmpties.push(logItem.step);
+          this.stepsIdle.push(logItem.step);
           break;
         case LogStates.mark:
           this.marks.push(logItem.step);
@@ -200,7 +200,7 @@ class GraphAtStep {
     this.stepsVisible = []
       .concat(this.steps)
       .concat(this.marks)
-      .concat(this.queueEmpties)
+      .concat(this.stepsIdle)
       .sort((a, b) => a - b);
 
     // this.graphCache = {};

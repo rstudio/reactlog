@@ -55,12 +55,12 @@ $(function() {
   rlog.getGraph = new GraphAtStep(rlog.log);
   rlog.graph = rlog.getGraph.atStep(rlog.getGraph.maxStep);
 
-  $("#prevMarkButton").click(updateGraph.buttonPrevMark);
-  $("#nextMarkButton").click(updateGraph.buttonNextMark);
-  $("#prevFlushButton").click(updateGraph.buttonPrevIdle);
-  $("#nextFlushButton").click(updateGraph.buttonNextIdle);
-  $("#prevCycleButton").click(updateGraph.buttonPrevCycle);
-  $("#nextCycleButton").click(updateGraph.buttonNextCycle);
+  $("#prevUserMarkButton").click(updateGraph.buttonPrevMark);
+  $("#nextUserMarkButton").click(updateGraph.buttonNextMark);
+  $("#prevOutputCalcButton").click(updateGraph.buttonPrevOutputCalc);
+  $("#nextOutputCalcButton").click(updateGraph.buttonNextOutputCalc);
+  $("#prevIdleButton").click(updateGraph.buttonPrevIdle);
+  $("#nextIdleButton").click(updateGraph.buttonNextIdle);
   $("#prevStepButton").click(updateGraph.buttonPrevStep);
   $("#nextStepButton").click(updateGraph.buttonNextStep);
 
@@ -86,13 +86,13 @@ $(function() {
   progressBar.addTimelineTicks(
     timelineBackground,
     colors.nodes.ready,
-    rlog.getGraph.enterExitEmpties,
+    rlog.getGraph.stepsOutputCalc,
     progressBar.timelinePadding * 2
   );
   progressBar.addTimelineTicks(
     timelineBackground,
     colors.progressBar.idle,
-    rlog.getGraph.queueEmpties,
+    rlog.getGraph.stepsIdle,
     0
   );
   if (rlog.getGraph.marks.length > 0) {
@@ -138,6 +138,7 @@ $(function() {
         // rlog.cyto.maxZoom(Math.pow(2, logZoomLevel + 3)); // zoom in
       },
     };
-    updateGraph.lastUserMark(cytoOpts) || updateGraph.nextQueueEmpty(cytoOpts);
+    // start at last user mark or first idle location
+    updateGraph.lastUserMark(cytoOpts) || updateGraph.nextIdle(cytoOpts);
   }
 });

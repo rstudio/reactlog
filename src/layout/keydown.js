@@ -36,7 +36,7 @@ let onKeydown = function(e: JQueryInputEventObject): void {
       }
       // option + right
       // return false if there is no more enter/exit empty marks
-      if (updateGraph.buttonNextCycle()) {
+      if (updateGraph.buttonNextOutputCalc()) {
         return;
       }
       // if it cant go right, try a step
@@ -62,7 +62,7 @@ let onKeydown = function(e: JQueryInputEventObject): void {
         // if can't go left, try cycle
       }
       // option + left
-      if (updateGraph.buttonPrevCycle()) {
+      if (updateGraph.buttonPrevOutputCalc()) {
         return;
       }
       // if can't go left, try step
