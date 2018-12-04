@@ -25,6 +25,9 @@
   "lint-staged": {
     "concurrent": false,
     "linters": {
+      "R/*.R": [
+        "Rscript -e \"devtools::load_all(); devtools::lint() -> lints; if(length(lints) > 0) print(lints); testthat::expect_equal(length(lints), 0)\""
+      ],
       ".flowconfig": [
         "yarn flow-report-and-echo"
       ],
