@@ -162,8 +162,8 @@ let getLabel = function(reactId: ReactIdType): string {
 let getReactIdLabel = function(entry: LogEntryHasReactId) {
   return getLabel(entry.reactId);
 };
-let pre = function(txt: string | number) {
-  return `<span class="monospaced-pre">${txt}</span>`;
+let monospaced = function(txt: string | number) {
+  return `<span class="monospaced">${txt}</span>`;
 };
 let statusForEntry = function(entry: LogEntryAnyType): string {
   switch (entry.action) {
@@ -175,63 +175,67 @@ let statusForEntry = function(entry: LogEntryAnyType): string {
     }
     case LogStates.define: {
       let defineEntry = ((entry: Object): LogEntryDefineType);
-      return `Defined ${pre(getReactIdLabel(defineEntry))}`;
+      return `Defined ${monospaced(getReactIdLabel(defineEntry))}`;
     }
     case LogStates.dependsOn: {
       let dependsOnEntry = ((entry: Object): LogEntryDependsOnType);
-      return `${pre(getReactIdLabel(dependsOnEntry))} depends on ${pre(
-        getLabel(dependsOnEntry.depOnReactId)
-      )}`;
+      return `${monospaced(
+        getReactIdLabel(dependsOnEntry)
+      )} depends on ${monospaced(getLabel(dependsOnEntry.depOnReactId))}`;
     }
     case LogStates.dependsOnRemove: {
       let dependsOnRemoveEntry = ((entry: Object): LogEntryDependsOnRemoveType);
-      return `${pre(
+      return `${monospaced(
         getReactIdLabel(dependsOnRemoveEntry)
-      )} removes dependency on ${pre(
+      )} removes dependency on ${monospaced(
         getLabel(dependsOnRemoveEntry.depOnReactId)
       )}`;
     }
     case LogStates.enter: {
       let enterEntry = ((entry: Object): LogEntryEnterType);
-      return `${pre(getReactIdLabel(enterEntry))} started calculating`;
+      return `${monospaced(getReactIdLabel(enterEntry))} started calculating`;
     }
     case LogStates.exit: {
       let exitEntry = ((entry: Object): LogEntryExitType);
-      return `${pre(getReactIdLabel(exitEntry))} stopped calculating`;
+      return `${monospaced(getReactIdLabel(exitEntry))} stopped calculating`;
     }
     case LogStates.freeze: {
       let frozenEntry = ((entry: Object): LogEntryFreezeType);
-      return `${pre(getReactIdLabel(frozenEntry))} froze`;
+      return `${monospaced(getReactIdLabel(frozenEntry))} froze`;
     }
     case LogStates.invalidateEnd: {
       let invalidateEndEntry = ((entry: Object): LogEntryInvalidateEndType);
-      return `${pre(getReactIdLabel(invalidateEndEntry))} has invalidated`;
+      return `${monospaced(
+        getReactIdLabel(invalidateEndEntry)
+      )} has invalidated`;
     }
     case LogStates.invalidateStart: {
       let invalidateStartEntry = ((entry: Object): LogEntryInvalidateStartType);
-      return `${pre(getReactIdLabel(invalidateStartEntry))} is invalidating`;
+      return `${monospaced(
+        getReactIdLabel(invalidateStartEntry)
+      )} is invalidating`;
     }
     case LogStates.isolateEnter: {
       let isolateEnterEntry = ((entry: Object): LogEntryIsolateEnterType);
-      return `${pre(
+      return `${monospaced(
         getReactIdLabel(isolateEnterEntry)
       )} is isolating future dependencies`;
     }
     case LogStates.isolateExit: {
       let isolateExitEntry = ((entry: Object): LogEntryIsolateExitType);
-      return `${pre(
+      return `${monospaced(
         getReactIdLabel(isolateExitEntry)
       )} stopped isolating future dependencies`;
     }
     case LogStates.isolateInvalidateEnd: {
       let isolateInvalidateEndEntry = ((entry: Object): LogEntryIsolateInvalidateEndType);
-      return `${pre(
+      return `${monospaced(
         getReactIdLabel(isolateInvalidateEndEntry)
       )} invalidated during an isolate call`;
     }
     case LogStates.isolateInvalidateStart: {
       let isolateInvalidateStartEntry = ((entry: Object): LogEntryIsolateInvalidateStartType);
-      return `${pre(
+      return `${monospaced(
         getReactIdLabel(isolateInvalidateStartEntry)
       )} is invalidating during an isolate call`;
     }
@@ -243,18 +247,20 @@ let statusForEntry = function(entry: LogEntryAnyType): string {
     }
     case LogStates.thaw: {
       let thawEntry = ((entry: Object): LogEntryThawType);
-      return `${pre(getReactIdLabel(thawEntry))} has thawed`;
+      return `${monospaced(getReactIdLabel(thawEntry))} has thawed`;
     }
     case LogStates.updateNodeLabel: {
       let updateNodeLabelEntry = ((entry: Object): LogEntryUpdateNodeLabelType);
-      return `Set label to ${pre(getReactIdLabel(updateNodeLabelEntry))}`;
+      return `Set label to ${monospaced(
+        getReactIdLabel(updateNodeLabelEntry)
+      )}`;
     }
     case LogStates.valueChange: {
       let valueChangeEntry = ((entry: Object): LogEntryValueChangeType);
-      return `${pre(getReactIdLabel(valueChangeEntry))} has a new value`;
+      return `${monospaced(getReactIdLabel(valueChangeEntry))} has a new value`;
     }
     default:
-      throw `state: ${pre(entry.action)} not implemented for log status`;
+      throw `state: ${monospaced(entry.action)} not implemented for log status`;
   }
 };
 

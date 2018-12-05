@@ -227,9 +227,11 @@ text {
 #eventStep {
   margin-left: 10px;
 }
+.monospaced, .monospaced-pre {
+  font-family: "Fira Mono", monospace;
+}
 .monospaced-pre {
   white-space: pre;
-  font-family: "Fira Mono", monospace;
   /* height: 15.5px; */
   /* padding-top: 1.5px; */
 }

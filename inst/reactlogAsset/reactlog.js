@@ -74470,8 +74470,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     return getLabel(entry.reactId);
   };
 
-  var pre = function pre(txt) {
-    return "<span class=\"monospaced-pre\">".concat(txt, "</span>");
+  var monospaced = function monospaced(txt) {
+    return "<span class=\"monospaced\">".concat(txt, "</span>");
   };
 
   var statusForEntry = function statusForEntry(entry) {
@@ -74489,73 +74489,73 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       case _logStates.LogStates.define:
         {
           var defineEntry = entry;
-          return "Defined ".concat(pre(getReactIdLabel(defineEntry)));
+          return "Defined ".concat(monospaced(getReactIdLabel(defineEntry)));
         }
 
       case _logStates.LogStates.dependsOn:
         {
           var dependsOnEntry = entry;
-          return "".concat(pre(getReactIdLabel(dependsOnEntry)), " depends on ").concat(pre(getLabel(dependsOnEntry.depOnReactId)));
+          return "".concat(monospaced(getReactIdLabel(dependsOnEntry)), " depends on ").concat(monospaced(getLabel(dependsOnEntry.depOnReactId)));
         }
 
       case _logStates.LogStates.dependsOnRemove:
         {
           var dependsOnRemoveEntry = entry;
-          return "".concat(pre(getReactIdLabel(dependsOnRemoveEntry)), " removes dependency on ").concat(pre(getLabel(dependsOnRemoveEntry.depOnReactId)));
+          return "".concat(monospaced(getReactIdLabel(dependsOnRemoveEntry)), " removes dependency on ").concat(monospaced(getLabel(dependsOnRemoveEntry.depOnReactId)));
         }
 
       case _logStates.LogStates.enter:
         {
           var enterEntry = entry;
-          return "".concat(pre(getReactIdLabel(enterEntry)), " started calculating");
+          return "".concat(monospaced(getReactIdLabel(enterEntry)), " started calculating");
         }
 
       case _logStates.LogStates.exit:
         {
           var exitEntry = entry;
-          return "".concat(pre(getReactIdLabel(exitEntry)), " stopped calculating");
+          return "".concat(monospaced(getReactIdLabel(exitEntry)), " stopped calculating");
         }
 
       case _logStates.LogStates.freeze:
         {
           var frozenEntry = entry;
-          return "".concat(pre(getReactIdLabel(frozenEntry)), " froze");
+          return "".concat(monospaced(getReactIdLabel(frozenEntry)), " froze");
         }
 
       case _logStates.LogStates.invalidateEnd:
         {
           var invalidateEndEntry = entry;
-          return "".concat(pre(getReactIdLabel(invalidateEndEntry)), " has invalidated");
+          return "".concat(monospaced(getReactIdLabel(invalidateEndEntry)), " has invalidated");
         }
 
       case _logStates.LogStates.invalidateStart:
         {
           var invalidateStartEntry = entry;
-          return "".concat(pre(getReactIdLabel(invalidateStartEntry)), " is invalidating");
+          return "".concat(monospaced(getReactIdLabel(invalidateStartEntry)), " is invalidating");
         }
 
       case _logStates.LogStates.isolateEnter:
         {
           var isolateEnterEntry = entry;
-          return "".concat(pre(getReactIdLabel(isolateEnterEntry)), " is isolating future dependencies");
+          return "".concat(monospaced(getReactIdLabel(isolateEnterEntry)), " is isolating future dependencies");
         }
 
       case _logStates.LogStates.isolateExit:
         {
           var isolateExitEntry = entry;
-          return "".concat(pre(getReactIdLabel(isolateExitEntry)), " stopped isolating future dependencies");
+          return "".concat(monospaced(getReactIdLabel(isolateExitEntry)), " stopped isolating future dependencies");
         }
 
       case _logStates.LogStates.isolateInvalidateEnd:
         {
           var isolateInvalidateEndEntry = entry;
-          return "".concat(pre(getReactIdLabel(isolateInvalidateEndEntry)), " invalidated during an isolate call");
+          return "".concat(monospaced(getReactIdLabel(isolateInvalidateEndEntry)), " invalidated during an isolate call");
         }
 
       case _logStates.LogStates.isolateInvalidateStart:
         {
           var isolateInvalidateStartEntry = entry;
-          return "".concat(pre(getReactIdLabel(isolateInvalidateStartEntry)), " is invalidating during an isolate call");
+          return "".concat(monospaced(getReactIdLabel(isolateInvalidateStartEntry)), " is invalidating during an isolate call");
         }
 
       case _logStates.LogStates.mark:
@@ -74571,23 +74571,23 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       case _logStates.LogStates.thaw:
         {
           var thawEntry = entry;
-          return "".concat(pre(getReactIdLabel(thawEntry)), " has thawed");
+          return "".concat(monospaced(getReactIdLabel(thawEntry)), " has thawed");
         }
 
       case _logStates.LogStates.updateNodeLabel:
         {
           var updateNodeLabelEntry = entry;
-          return "Set label to ".concat(pre(getReactIdLabel(updateNodeLabelEntry)));
+          return "Set label to ".concat(monospaced(getReactIdLabel(updateNodeLabelEntry)));
         }
 
       case _logStates.LogStates.valueChange:
         {
           var valueChangeEntry = entry;
-          return "".concat(pre(getReactIdLabel(valueChangeEntry)), " has a new value");
+          return "".concat(monospaced(getReactIdLabel(valueChangeEntry)), " has a new value");
         }
 
       default:
-        throw "state: ".concat(pre(entry.action), " not implemented for log status");
+        throw "state: ".concat(monospaced(entry.action), " not implemented for log status");
     }
   };
 });
