@@ -18,7 +18,7 @@ render_reactlog <- function(log, session_token = NULL, time = TRUE) {
     sub(..., fixed = TRUE)
   }
 
-  fixed_sub(
+  html <- fixed_sub(
     "__DATA__", paste(textConnectionValue(tc), collapse = "\r\n"),
     fixed_sub(
       "__TIME__", paste0("\"", time, "\""),
