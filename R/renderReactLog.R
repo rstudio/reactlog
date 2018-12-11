@@ -9,6 +9,9 @@ render_reactlog <- function(log, session_token = NULL, time = TRUE) {
   html <- paste(readLines(template_file, warn = FALSE), collapse = "\r\n")
 
   tmpfile <- file("")
+  on.exit({
+    close(tmpfile)
+  })
   write_reactlog(log, tmpfile, session_token)
 
   fixed_sub <- function(...) {
