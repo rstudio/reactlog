@@ -54,13 +54,13 @@ of the source code of your reactive expressions and observers.
 }
 \examples{
 
+\dontrun{
 library(shiny)
 library(reactlog)
 
 # tell shiny to log reactivity
 options("shiny.reactlog" = TRUE)
 
-\dontrun{
 # run a shiny app
 app <- system.file("examples/01_hello", package = "shiny")
 runApp(app)
