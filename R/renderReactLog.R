@@ -8,18 +8,18 @@ render_reactlog <- function(log, session_token = NULL, time = TRUE) {
   template_file <- system.file("reactlog.html", package = "reactlog")
   html <- paste(readLines(template_file, warn = FALSE), collapse = "\r\n")
 
-  tc <- textConnection(NULL, "w")
-  on.exit(close(tc))
-  write_reactlog(log, tc, session_token)
-  cat("\n", file = tc)
-  flush(tc)
+  tmpfile <- file("")
+  write_reactlog(log, tmpfile, session_token)
 
   fixed_sub <- function(...) {
     sub(..., fixed = TRUE)
   }
 
+  # incomplete final line warning
+  lines <- readLines(tmpfile, warn = FALSE, encoding = "UTF-8")
+
   html <- fixed_sub(
-    "__DATA__", paste(textConnectionValue(tc), collapse = "\r\n"),
+    "__DATA__", paste(lines, collapse = "\r\n"),
     fixed_sub(
       "__TIME__", paste0("\"", time, "\""),
       fixed_sub(
