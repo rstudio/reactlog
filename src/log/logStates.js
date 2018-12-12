@@ -16,8 +16,8 @@ let states = {
   isolateExit: "isolateExit",
   isolateInvalidateEnd: "isolateInvalidateEnd",
   isolateInvalidateStart: "isolateInvalidateStart",
-  mark: "markTime",
-  queueEmpty: "queueEmpty",
+  userMark: "userMark",
+  idle: "idle",
   thaw: "thaw",
   updateNodeLabel: "updateNodeLabel",
   valueChange: "valueChange",
@@ -199,15 +199,15 @@ type LogEntryIsolateInvalidateEndType = {
   ctxId: CtxIdType,
 };
 
-type LogEntryMark = {
-  action: "markTime",
+type LogEntryUserMark = {
+  action: "userMark",
   session: ?string,
   time: number,
   step: number,
 };
 
-type LogEntryQueueEmptyType = {
-  action: "queueEmpty",
+type LogEntryIdleType = {
+  action: "idle",
   session: ?string,
   time: number,
   step: number,
@@ -265,8 +265,8 @@ type LogEntryAnyType =
   | LogEntryIsolateExitType
   | LogEntryIsolateInvalidateStartType
   | LogEntryIsolateInvalidateEndType
-  | LogEntryMark
-  | LogEntryQueueEmptyType
+  | LogEntryUserMark
+  | LogEntryIdleType
   | LogEntryUpdateNodeLabelType
   | LogEntryValueChangeType;
 
@@ -295,8 +295,8 @@ export type {
   LogEntryIsolateExitType,
   LogEntryIsolateInvalidateStartType,
   LogEntryIsolateInvalidateEndType,
-  LogEntryMark,
-  LogEntryQueueEmptyType,
+  LogEntryUserMark,
+  LogEntryIdleType,
   LogEntryUpdateNodeLabelType,
   LogEntryValueChangeType,
 };

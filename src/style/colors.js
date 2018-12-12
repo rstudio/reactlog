@@ -5,7 +5,7 @@ let colors = {
   progressBar: {
     background: "#f0f0f0",
     progress: "#8e8e8e",
-    mark: "#666666", // matches right/left stop buttons
+    userMark: "#666666", // matches right/left stop buttons
     idle: "#a3c586",
   },
   nodes: {

@@ -95,11 +95,11 @@ $(function() {
     rlog.getGraph.stepsIdle,
     0
   );
-  if (rlog.getGraph.marks.length > 0) {
+  if (rlog.getGraph.stepsUserMark.length > 0) {
     progressBar.addTimelineTicks(
       timelineBackground,
-      colors.progressBar.mark,
-      rlog.getGraph.marks,
+      colors.progressBar.userMark,
+      rlog.getGraph.stepsUserMark,
       0
     );
   }

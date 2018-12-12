@@ -71896,8 +71896,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   var Graph =
   /*#__PURE__*/
   function () {
-    // asyncStart: number;
-    // queueEmpty: number;
     function Graph(log) {
       _classCallCheck(this, Graph);
 
@@ -71916,10 +71914,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       this.log = log;
       this.nodes = new Map();
       this.edges = new Map();
-      this.edgesUnique = new Map(); // this.asyncStart = -1;
-      // this.asyncStop = -1;
-      // this.queueEmpty = -1;
-
+      this.edgesUnique = new Map();
       this.activeNodeEnter = [];
       this.activeInvalidateEnter = [];
     }
@@ -72494,10 +72489,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             }
 
           case _logStates.LogStates.createContext:
-          case _logStates.LogStates.queueEmpty:
+          case _logStates.LogStates.idle:
           case _logStates.LogStates.asyncStart:
           case _logStates.LogStates.asyncStop:
-          case _logStates.LogStates.mark:
+          case _logStates.LogStates.userMark:
             // do nothing
             // this[data.action] = data.step;
             break;
@@ -72644,7 +72639,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
       _defineProperty(this, "stepsOutputCalc", void 0);
 
-      _defineProperty(this, "marks", void 0);
+      _defineProperty(this, "stepsUserMark", void 0);
 
       _defineProperty(this, "minStep", void 0);
 
@@ -72686,14 +72681,14 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         this.stepsAsyncStop = [];
         this.stepsIdle = [];
         this.stepsOutputCalc = [];
-        this.marks = [];
+        this.stepsUserMark = [];
         this.minStep = log.length > 0 ? log[0].step : -1;
         this.maxStep = log.length > 0 ? log[log.length - 1].step : -1;
         var logItem, i;
         var idleArr = [];
         var startI = 0;
 
-        while (log.length > startI + 2 && log[startI].action === _logStates.LogStates.asyncStart && log[startI].session === null && log[startI + 1].action === _logStates.LogStates.asyncStop && log[startI + 1].session === null && log[startI + 2].action === _logStates.LogStates.queueEmpty && log[startI + 2].session === null) {
+        while (log.length > startI + 2 && log[startI].action === _logStates.LogStates.asyncStart && log[startI].session === null && log[startI + 1].action === _logStates.LogStates.asyncStop && log[startI + 1].session === null && log[startI + 2].action === _logStates.LogStates.idle && log[startI + 2].session === null) {
           startI = startI + 3;
         }
 
@@ -72722,12 +72717,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
               this.stepsAsyncStop.push(logItem.step);
               break;
 
-            case _logStates.LogStates.queueEmpty:
+            case _logStates.LogStates.idle:
               this.stepsIdle.push(logItem.step);
               break;
 
-            case _logStates.LogStates.mark:
-              this.marks.push(logItem.step);
+            case _logStates.LogStates.userMark:
+              this.stepsUserMark.push(logItem.step);
               break;
           }
 
@@ -72771,8 +72766,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             case _logStates.LogStates.createContext:
             case _logStates.LogStates.asyncStart:
             case _logStates.LogStates.asyncStop:
-            case _logStates.LogStates.queueEmpty:
-            case _logStates.LogStates.mark:
+            case _logStates.LogStates.idle:
+            case _logStates.LogStates.userMark:
               break;
 
             default:
@@ -72781,7 +72776,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           }
         }
 
-        this.stepsVisible = [].concat(this.steps).concat(this.marks).concat(this.stepsIdle).sort(function (a, b) {
+        this.stepsVisible = [].concat(this.steps).concat(this.stepsUserMark).concat(this.stepsIdle).sort(function (a, b) {
           return a - b;
         }); // this.graphCache = {};
         // this.cacheStep = 250;
@@ -72887,8 +72882,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
               break;
 
-            case _logStates.LogStates.queueEmpty:
-            case _logStates.LogStates.mark:
+            case _logStates.LogStates.idle:
+            case _logStates.LogStates.userMark:
               return ret;
 
             case _logStates.LogStates.createContext:
@@ -72968,8 +72963,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
               break;
 
-            case _logStates.LogStates.queueEmpty:
-            case _logStates.LogStates.mark:
+            case _logStates.LogStates.idle:
+            case _logStates.LogStates.userMark:
               return ret;
 
             case _logStates.LogStates.createContext:
@@ -73199,10 +73194,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       //       case LogStates.isolateInvalidateEnd:
       //         // check for reactId
       //         return nodeMap.has(logItem.reactId);
-      //       case LogStates.queueEmpty:
+      //       case LogStates.idle:
       //       case LogStates.asyncStart:
       //       case LogStates.asyncStop:
-      //       case LogStates.mark:
+      //       case LogStates.userMark:
       //         // always add
       //         return true;
       //       default:
@@ -73244,7 +73239,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       //         // check for reactId
       //         return _has(nodeMap, logEntry.reactId);
       //         break;
-      //       case "queueEmpty":
+      //       case "idle":
       //       case "asyncStart":
       //       case "asyncStop":
       //         // always add
@@ -74080,8 +74075,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     progressBar.addTimelineTicks(timelineBackground, _colors.default.nodes.ready, _rlog.rlog.getGraph.stepsOutputCalc, progressBar.timelinePadding * 2);
     progressBar.addTimelineTicks(timelineBackground, _colors.default.progressBar.idle, _rlog.rlog.getGraph.stepsIdle, 0);
 
-    if (_rlog.rlog.getGraph.marks.length > 0) {
-      progressBar.addTimelineTicks(timelineBackground, _colors.default.progressBar.mark, _rlog.rlog.getGraph.marks, 0);
+    if (_rlog.rlog.getGraph.stepsUserMark.length > 0) {
+      progressBar.addTimelineTicks(timelineBackground, _colors.default.progressBar.userMark, _rlog.rlog.getGraph.stepsUserMark, 0);
     }
 
     logEntry.setContainers((0, _jquery.default)("#eventTimeNum"), (0, _jquery.default)("#eventSessionNum"), (0, _jquery.default)("#eventStepNum"), (0, _jquery.default)("#eventStatus"), (0, _jquery.default)("#logEntry"), _rlog.rlog.log, _rlog.rlog.getGraph.stepsVisible.length);
@@ -74558,12 +74553,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           return "".concat(monospaced(getReactIdLabel(isolateInvalidateStartEntry)), " is invalidating during an isolate call");
         }
 
-      case _logStates.LogStates.mark:
+      case _logStates.LogStates.userMark:
         {
           return "User marked step";
         }
 
-      case _logStates.LogStates.queueEmpty:
+      case _logStates.LogStates.idle:
         {
           return "Shiny App idle";
         }
@@ -74775,8 +74770,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     isolateExit: "isolateExit",
     isolateInvalidateEnd: "isolateInvalidateEnd",
     isolateInvalidateStart: "isolateInvalidateStart",
-    mark: "markTime",
-    queueEmpty: "queueEmpty",
+    userMark: "userMark",
+    idle: "idle",
     thaw: "thaw",
     updateNodeLabel: "updateNodeLabel",
     valueChange: "valueChange"
@@ -74857,7 +74852,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     progressBar: {
       background: "#f0f0f0",
       progress: "#8e8e8e",
-      mark: "#666666",
+      userMark: "#666666",
       // matches right/left stop buttons
       idle: "#a3c586"
     },
@@ -75729,7 +75724,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     var nextTick;
 
-    if ((0, _sortedIndexOf2.default)(_rlog.rlog.getGraph.marks, _rlog.rlog.curTick) !== -1) {
+    if ((0, _sortedIndexOf2.default)(_rlog.rlog.getGraph.stepsUserMark, _rlog.rlog.curTick) !== -1) {
       // not at a user mark
       if ((0, _GraphAtStep.hasLength)(_rlog.rlog.getGraph.filterDatas)) {
         // if filtered, will go to previous step, then next step location
@@ -75746,8 +75741,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
     var val, i; // move to user mark
 
-    for (i = 0; i < _rlog.rlog.getGraph.marks.length; i++) {
-      val = _rlog.rlog.getGraph.marks[i];
+    for (i = 0; i < _rlog.rlog.getGraph.stepsUserMark.length; i++) {
+      val = _rlog.rlog.getGraph.stepsUserMark[i];
 
       if (nextTick < val) {
         (0, _updateGraph.updateGraph)(val, cytoOptions);
@@ -75764,7 +75759,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     var prevTick;
 
-    if ((0, _sortedIndexOf2.default)(_rlog.rlog.getGraph.marks, _rlog.rlog.curTick) !== -1) {
+    if ((0, _sortedIndexOf2.default)(_rlog.rlog.getGraph.stepsUserMark, _rlog.rlog.curTick) !== -1) {
       // not at a marked point
       if ((0, _GraphAtStep.hasLength)(_rlog.rlog.getGraph.filterDatas)) {
         // if filtered, will go to next step, then prev step location
@@ -75781,8 +75776,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
     var val, i; // move to user mark
 
-    for (i = _rlog.rlog.getGraph.marks.length - 1; i >= 0; i--) {
-      val = _rlog.rlog.getGraph.marks[i];
+    for (i = _rlog.rlog.getGraph.stepsUserMark.length - 1; i >= 0; i--) {
+      val = _rlog.rlog.getGraph.stepsUserMark[i];
 
       if (prevTick > val) {
         return (0, _updateGraph.updateGraph)(val, cytoOptions);
@@ -75796,16 +75791,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
   var lastUserMark = function lastUserMark() {
     var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    if (_rlog.rlog.getGraph.marks.length === 0) return false;
-    return (0, _updateGraph.updateGraph)(_rlog.rlog.getGraph.marks[_rlog.rlog.getGraph.marks.length - 1], cytoOptions);
+    if (_rlog.rlog.getGraph.stepsUserMark.length === 0) return false;
+    return (0, _updateGraph.updateGraph)(_rlog.rlog.getGraph.stepsUserMark[_rlog.rlog.getGraph.stepsUserMark.length - 1], cytoOptions);
   };
 
   _exports.lastUserMark = lastUserMark;
 
   var firstUserMark = function firstUserMark() {
     var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    if (_rlog.rlog.getGraph.marks.length === 0) return false;
-    return (0, _updateGraph.updateGraph)(_rlog.rlog.getGraph.marks[0], cytoOptions);
+    if (_rlog.rlog.getGraph.stepsUserMark.length === 0) return false;
+    return (0, _updateGraph.updateGraph)(_rlog.rlog.getGraph.stepsUserMark[0], cytoOptions);
   };
 
   _exports.firstUserMark = firstUserMark;

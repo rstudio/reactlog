@@ -45,8 +45,6 @@ class Graph {
   nodes: Map<NodeIdType, Node>;
   edges: Map<EdgeIdType, Edge>;
   edgesUnique: Map<EdgeIdType, GhostEdge>;
-  // asyncStart: number;
-  // queueEmpty: number;
   activeNodeEnter: Array<ReactIdType>;
   activeInvalidateEnter: Array<ReactIdType>;
 
@@ -55,9 +53,6 @@ class Graph {
     this.nodes = new Map();
     this.edges = new Map();
     this.edgesUnique = new Map();
-    // this.asyncStart = -1;
-    // this.asyncStop = -1;
-    // this.queueEmpty = -1;
     this.activeNodeEnter = [];
     this.activeInvalidateEnter = [];
   }
@@ -567,10 +562,10 @@ class Graph {
       }
 
       case LogStates.createContext:
-      case LogStates.queueEmpty:
+      case LogStates.idle:
       case LogStates.asyncStart:
       case LogStates.asyncStop:
-      case LogStates.mark:
+      case LogStates.userMark:
         // do nothing
         // this[data.action] = data.step;
         break;

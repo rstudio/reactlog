@@ -10,7 +10,7 @@ import type { CytoscapeOptions } from "../cyto/cytoFlowType";
 
 let nextUserMark = function(cytoOptions?: CytoscapeOptions = {}) {
   let nextTick;
-  if (_sortedIndexOf(rlog.getGraph.marks, rlog.curTick) !== -1) {
+  if (_sortedIndexOf(rlog.getGraph.stepsUserMark, rlog.curTick) !== -1) {
     // not at a user mark
     if (hasLength(rlog.getGraph.filterDatas)) {
       // if filtered, will go to previous step, then next step location
@@ -26,8 +26,8 @@ let nextUserMark = function(cytoOptions?: CytoscapeOptions = {}) {
   }
   let val, i;
   // move to user mark
-  for (i = 0; i < rlog.getGraph.marks.length; i++) {
-    val = rlog.getGraph.marks[i];
+  for (i = 0; i < rlog.getGraph.stepsUserMark.length; i++) {
+    val = rlog.getGraph.stepsUserMark[i];
     if (nextTick < val) {
       updateGraph(val, cytoOptions);
       return true;
@@ -38,7 +38,7 @@ let nextUserMark = function(cytoOptions?: CytoscapeOptions = {}) {
 
 let prevUserMark = function(cytoOptions?: CytoscapeOptions = {}) {
   let prevTick;
-  if (_sortedIndexOf(rlog.getGraph.marks, rlog.curTick) !== -1) {
+  if (_sortedIndexOf(rlog.getGraph.stepsUserMark, rlog.curTick) !== -1) {
     // not at a marked point
     if (hasLength(rlog.getGraph.filterDatas)) {
       // if filtered, will go to next step, then prev step location
@@ -54,8 +54,8 @@ let prevUserMark = function(cytoOptions?: CytoscapeOptions = {}) {
   }
   let val, i;
   // move to user mark
-  for (i = rlog.getGraph.marks.length - 1; i >= 0; i--) {
-    val = rlog.getGraph.marks[i];
+  for (i = rlog.getGraph.stepsUserMark.length - 1; i >= 0; i--) {
+    val = rlog.getGraph.stepsUserMark[i];
     if (prevTick > val) {
       return updateGraph(val, cytoOptions);
     }
@@ -64,15 +64,15 @@ let prevUserMark = function(cytoOptions?: CytoscapeOptions = {}) {
 };
 
 let lastUserMark = function(cytoOptions?: CytoscapeOptions = {}) {
-  if (rlog.getGraph.marks.length === 0) return false;
+  if (rlog.getGraph.stepsUserMark.length === 0) return false;
   return updateGraph(
-    rlog.getGraph.marks[rlog.getGraph.marks.length - 1],
+    rlog.getGraph.stepsUserMark[rlog.getGraph.stepsUserMark.length - 1],
     cytoOptions
   );
 };
 let firstUserMark = function(cytoOptions?: CytoscapeOptions = {}) {
-  if (rlog.getGraph.marks.length === 0) return false;
-  return updateGraph(rlog.getGraph.marks[0], cytoOptions);
+  if (rlog.getGraph.stepsUserMark.length === 0) return false;
+  return updateGraph(rlog.getGraph.stepsUserMark[0], cytoOptions);
 };
 
 export { nextUserMark, prevUserMark, firstUserMark, lastUserMark };

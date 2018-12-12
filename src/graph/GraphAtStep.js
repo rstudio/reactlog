@@ -56,7 +56,7 @@ class GraphAtStep {
   stepsAsyncStop: Array<number>;
   stepsIdle: Array<number>;
   stepsOutputCalc: Array<number>;
-  marks: Array<number>;
+  stepsUserMark: Array<number>;
   minStep: number;
   maxStep: number;
 
@@ -103,7 +103,7 @@ class GraphAtStep {
     this.stepsAsyncStop = [];
     this.stepsIdle = [];
     this.stepsOutputCalc = [];
-    this.marks = [];
+    this.stepsUserMark = [];
     this.minStep = log.length > 0 ? log[0].step : -1;
     this.maxStep = log.length > 0 ? log[log.length - 1].step : -1;
 
@@ -116,7 +116,7 @@ class GraphAtStep {
       log[startI].session === null &&
       log[startI + 1].action === LogStates.asyncStop &&
       log[startI + 1].session === null &&
-      log[startI + 2].action === LogStates.queueEmpty &&
+      log[startI + 2].action === LogStates.idle &&
       log[startI + 2].session === null
     ) {
       startI = startI + 3;
@@ -139,11 +139,11 @@ class GraphAtStep {
         case LogStates.asyncStop:
           this.stepsAsyncStop.push(logItem.step);
           break;
-        case LogStates.queueEmpty:
+        case LogStates.idle:
           this.stepsIdle.push(logItem.step);
           break;
-        case LogStates.mark:
-          this.marks.push(logItem.step);
+        case LogStates.userMark:
+          this.stepsUserMark.push(logItem.step);
           break;
       }
 
@@ -188,8 +188,8 @@ class GraphAtStep {
         case LogStates.createContext:
         case LogStates.asyncStart:
         case LogStates.asyncStop:
-        case LogStates.queueEmpty:
-        case LogStates.mark:
+        case LogStates.idle:
+        case LogStates.userMark:
           break;
         default:
           this.steps.push(logItem.step);
@@ -199,7 +199,7 @@ class GraphAtStep {
 
     this.stepsVisible = []
       .concat(this.steps)
-      .concat(this.marks)
+      .concat(this.stepsUserMark)
       .concat(this.stepsIdle)
       .sort((a, b) => a - b);
 
@@ -305,8 +305,8 @@ class GraphAtStep {
           }
           break;
 
-        case LogStates.queueEmpty:
-        case LogStates.mark:
+        case LogStates.idle:
+        case LogStates.userMark:
           return ret;
 
         case LogStates.createContext:
@@ -383,8 +383,8 @@ class GraphAtStep {
           }
           break;
 
-        case LogStates.queueEmpty:
-        case LogStates.mark:
+        case LogStates.idle:
+        case LogStates.userMark:
           return ret;
 
         case LogStates.createContext:
@@ -611,10 +611,10 @@ class GraphAtStep {
   //       case LogStates.isolateInvalidateEnd:
   //         // check for reactId
   //         return nodeMap.has(logItem.reactId);
-  //       case LogStates.queueEmpty:
+  //       case LogStates.idle:
   //       case LogStates.asyncStart:
   //       case LogStates.asyncStop:
-  //       case LogStates.mark:
+  //       case LogStates.userMark:
   //         // always add
   //         return true;
   //       default:
@@ -657,7 +657,7 @@ class GraphAtStep {
   //         // check for reactId
   //         return _has(nodeMap, logEntry.reactId);
   //         break;
-  //       case "queueEmpty":
+  //       case "idle":
   //       case "asyncStart":
   //       case "asyncStop":
   //         // always add

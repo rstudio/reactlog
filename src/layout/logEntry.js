@@ -239,10 +239,10 @@ let statusForEntry = function(entry: LogEntryAnyType): string {
         getReactIdLabel(isolateInvalidateStartEntry)
       )} is invalidating during an isolate call`;
     }
-    case LogStates.mark: {
+    case LogStates.userMark: {
       return `User marked step`;
     }
-    case LogStates.queueEmpty: {
+    case LogStates.idle: {
       return `Shiny App idle`;
     }
     case LogStates.thaw: {
