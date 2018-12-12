@@ -2,7 +2,7 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^LICENSE\.md$
-^src/
+^srcjs/
 ^src_old/
 ^\.babelrc$
 ^\.eslintrc\.js$
