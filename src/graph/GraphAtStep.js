@@ -45,7 +45,7 @@ class GraphAtStep {
   hoverData: ?SomeGraphData;
   stickyDatas: Array<SomeGraphData>;
 
-  finalGraph: any;
+  finalGraph: Graph;
   finalCyto: any;
 
   cytoLayout: any;
