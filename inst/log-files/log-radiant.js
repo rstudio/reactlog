@@ -26398,7 +26398,7 @@ window.log = [
     "time": 1525285777.75502
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525285777.7564
   },
@@ -26510,7 +26510,7 @@ window.log = [
     "time": 1525285777.79496
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525285777.79594
   },
@@ -30320,7 +30320,7 @@ window.log = [
     "time": 1525285778.20005
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525285778.20092
   },
@@ -30351,7 +30351,7 @@ window.log = [
     "time": 1525285778.31085
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525285778.31179
   },
@@ -31628,7 +31628,7 @@ window.log = [
     "time": 1525285778.69097
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525285778.69198
   },
@@ -31799,7 +31799,7 @@ window.log = [
     "time": 1525285779.01972
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525285779.02086
   },
@@ -31899,7 +31899,7 @@ window.log = [
     "time": 1525285779.07503
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525285779.07638
   },
@@ -32134,7 +32134,7 @@ window.log = [
     "time": 1525285780.64245
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525285780.6434
   },
@@ -32497,7 +32497,7 @@ window.log = [
     "time": 1525285780.83922
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525285780.84024
   },
@@ -33986,7 +33986,7 @@ window.log = [
     "time": 1525285781.38076
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525285781.38211
   },
@@ -35401,7 +35401,7 @@ window.log = [
     "time": 1525285781.96744
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525285781.9685
   },
@@ -35540,7 +35540,7 @@ window.log = [
     "time": 1525285782.0439
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525285782.04598
   },
@@ -36454,7 +36454,7 @@ window.log = [
     "time": 1525285782.33195
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525285782.33357
   },
@@ -36954,7 +36954,7 @@ window.log = [
     "time": 1525285782.40982
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525285782.41133
   },
@@ -37461,7 +37461,7 @@ window.log = [
     "time": 1525285782.54461
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525285782.54555
   },
@@ -38273,7 +38273,7 @@ window.log = [
     "time": 1525285782.76873
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525285782.77018
   },
@@ -38396,7 +38396,7 @@ window.log = [
     "time": 1525285782.83251
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525285782.83349
   },
@@ -39365,7 +39365,7 @@ window.log = [
     "time": 1525285783.15471
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525285783.15573
   },
@@ -39609,7 +39609,7 @@ window.log = [
     "time": 1525285783.22388
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525285783.22502
   },
@@ -39732,7 +39732,7 @@ window.log = [
     "time": 1525285784.50471
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525285784.50597
   },
@@ -39831,7 +39831,7 @@ window.log = [
     "time": 1525285784.56286
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525285784.56401
   },
@@ -40521,7 +40521,7 @@ window.log = [
     "time": 1525285784.76387
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525285784.76535
   },
@@ -41237,7 +41237,7 @@ window.log = [
     "time": 1525285785.02339
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525285785.02441
   },
@@ -41448,7 +41448,7 @@ window.log = [
     "time": 1525285786.22618
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525285786.22726
   },
@@ -41539,7 +41539,7 @@ window.log = [
     "time": 1525285786.34592
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525285786.34713
   },
@@ -42405,7 +42405,7 @@ window.log = [
     "time": 1525285787.26433
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525285787.28854
   },
@@ -42771,7 +42771,7 @@ window.log = [
     "time": 1525285787.39965
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525285787.4009
   },
@@ -42922,7 +42922,7 @@ window.log = [
     "time": 1525285788.26645
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525285788.26756
   },
@@ -43021,7 +43021,7 @@ window.log = [
     "time": 1525285788.31085
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525285788.33251
   },
@@ -43567,7 +43567,7 @@ window.log = [
     "time": 1525285788.50625
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525285788.50724
   },
@@ -44156,7 +44156,7 @@ window.log = [
     "time": 1525285788.67112
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525285788.67216
   },
@@ -44368,7 +44368,7 @@ window.log = [
     "time": 1525285788.75275
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525285788.75399
   },
@@ -44546,7 +44546,7 @@ window.log = [
     "time": 1525285795.83254
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525285795.83353
   },
@@ -44785,7 +44785,7 @@ window.log = [
     "time": 1525285795.92715
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525285795.92815
   },
@@ -44995,7 +44995,7 @@ window.log = [
     "time": 1525285796.02724
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525285796.02813
   },
@@ -45151,7 +45151,7 @@ window.log = [
     "time": 1525285796.09852
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525285796.1
   },
@@ -45333,7 +45333,7 @@ window.log = [
     "time": 1525285801.3861
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525285801.38752
   },
@@ -45515,7 +45515,7 @@ window.log = [
     "time": 1525285811.92233
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525285811.92371
   },
@@ -45697,7 +45697,7 @@ window.log = [
     "time": 1525285812.66639
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525285812.66739
   },
@@ -45879,7 +45879,7 @@ window.log = [
     "time": 1525285813.20329
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525285813.20435
   },

@@ -906,7 +906,7 @@ window.log = [
     "time": 1525286557.25489
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525286557.25554
   },
@@ -1409,7 +1409,7 @@ window.log = [
     "time": 1525286557.70993
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525286557.71067
   },
@@ -1527,7 +1527,7 @@ window.log = [
     "time": 1525286559.67335
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525286559.6743
   },
@@ -1614,7 +1614,7 @@ window.log = [
     "time": 1525286562.01099
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525286562.01174
   },
@@ -1956,7 +1956,7 @@ window.log = [
     "time": 1525286564.95836
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525286564.959
   },
@@ -2214,7 +2214,7 @@ window.log = [
     "time": 1525286566.4751
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525286566.47594
   },
@@ -2364,7 +2364,7 @@ window.log = [
     "time": 1525286568.31135
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525286568.31232
   },
@@ -2482,7 +2482,7 @@ window.log = [
     "time": 1525286575.42222
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525286575.42312
   },
@@ -2600,7 +2600,7 @@ window.log = [
     "time": 1525286576.45328
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525286576.45389
   },
@@ -2718,7 +2718,7 @@ window.log = [
     "time": 1525286577.17503
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525286577.17586
   },
@@ -2836,7 +2836,7 @@ window.log = [
     "time": 1525286577.94937
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525286577.95008
   },
@@ -2954,7 +2954,7 @@ window.log = [
     "time": 1525286578.57885
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525286578.57961
   },
@@ -3072,7 +3072,7 @@ window.log = [
     "time": 1525286579.54857
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525286579.54933
   },
@@ -3190,7 +3190,7 @@ window.log = [
     "time": 1525286580.17853
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525286580.17925
   },

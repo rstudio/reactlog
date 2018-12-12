@@ -852,7 +852,7 @@ var log = [
     "time": 1528310727.74657
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1528310727.74731
   },
@@ -1029,7 +1029,7 @@ var log = [
     "time": 1528310729.5379
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1528310729.53856
   },
@@ -1232,17 +1232,17 @@ var log = [
     "time": 1528310733.29842
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1528310733.29906
   },
   {
-    "action": "markTime",
+    "action": "userMark",
     "session": "f0dc00bf84bd35afb9c670b66c2d862e",
     "time": 1528310748.29359
   },
   {
-    "action": "markTime",
+    "action": "userMark",
     "session": "f0dc00bf84bd35afb9c670b66c2d862e",
     "time": 1528310749.01726
   },
@@ -1894,7 +1894,7 @@ var log = [
     "time": 1528310760.47697
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1528310760.47778
   },

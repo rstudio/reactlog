@@ -666,7 +666,7 @@ window.log = [
     "time": 1525194292.56734
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525194292.56821
   },
@@ -1387,7 +1387,7 @@ window.log = [
     "time": 1525194294.0316
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525194294.03249
   },
@@ -2108,7 +2108,7 @@ window.log = [
     "time": 1525194294.69922
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525194294.70012
   },
@@ -2829,7 +2829,7 @@ window.log = [
     "time": 1525194295.65977
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525194295.66119
   },
@@ -3550,7 +3550,7 @@ window.log = [
     "time": 1525194296.67795
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525194296.67883
   },
@@ -4271,7 +4271,7 @@ window.log = [
     "time": 1525194297.69368
   },
   {
-    "action": "queueEmpty",
+    "action": "idle",
     "session": null,
     "time": 1525194297.69464
   }
@@ -4993,7 +4993,7 @@ window.log = [
   //   "time": 1525194298.72401
   // },
   // {
-  //   "action": "queueEmpty",
+  //   "action": "idle",
   //   "session": null,
   //   "time": 1525194298.72495
   // },
@@ -5714,7 +5714,7 @@ window.log = [
   //   "time": 1525194299.75816
   // },
   // {
-  //   "action": "queueEmpty",
+  //   "action": "idle",
   //   "session": null,
   //   "time": 1525194299.75918
   // },
@@ -6435,7 +6435,7 @@ window.log = [
   //   "time": 1525194300.77402
   // },
   // {
-  //   "action": "queueEmpty",
+  //   "action": "idle",
   //   "session": null,
   //   "time": 1525194300.77502
   // },
@@ -7156,7 +7156,7 @@ window.log = [
   //   "time": 1525194301.79984
   // },
   // {
-  //   "action": "queueEmpty",
+  //   "action": "idle",
   //   "session": null,
   //   "time": 1525194301.80082
   // },
@@ -7878,7 +7878,7 @@ window.log = [
   //   "time": 1525194302.82378
   // },
   // {
-  //   "action": "queueEmpty",
+  //   "action": "idle",
   //   "session": null,
   //   "time": 1525194302.82476
   // },
@@ -8599,7 +8599,7 @@ window.log = [
   //   "time": 1525194303.81452
   // },
   // {
-  //   "action": "queueEmpty",
+  //   "action": "idle",
   //   "session": null,
   //   "time": 1525194303.81546
   // },
@@ -9320,7 +9320,7 @@ window.log = [
   //   "time": 1525194304.85535
   // },
   // {
-  //   "action": "queueEmpty",
+  //   "action": "idle",
   //   "session": null,
   //   "time": 1525194304.85633
   // },
@@ -10041,7 +10041,7 @@ window.log = [
   //   "time": 1525194305.88155
   // },
   // {
-  //   "action": "queueEmpty",
+  //   "action": "idle",
   //   "session": null,
   //   "time": 1525194305.88234
   // },
@@ -10762,7 +10762,7 @@ window.log = [
   //   "time": 1525194306.90251
   // },
   // {
-  //   "action": "queueEmpty",
+  //   "action": "idle",
   //   "session": null,
   //   "time": 1525194306.90342
   // },
@@ -11483,7 +11483,7 @@ window.log = [
   //   "time": 1525194307.92427
   // },
   // {
-  //   "action": "queueEmpty",
+  //   "action": "idle",
   //   "session": null,
   //   "time": 1525194307.92512
   // },
@@ -12204,7 +12204,7 @@ window.log = [
   //   "time": 1525194308.94188
   // },
   // {
-  //   "action": "queueEmpty",
+  //   "action": "idle",
   //   "session": null,
   //   "time": 1525194308.94276
   // },
@@ -12925,7 +12925,7 @@ window.log = [
   //   "time": 1525194309.95613
   // },
   // {
-  //   "action": "queueEmpty",
+  //   "action": "idle",
   //   "session": null,
   //   "time": 1525194309.95717
   // },
@@ -13646,7 +13646,7 @@ window.log = [
   //   "time": 1525194310.99042
   // },
   // {
-  //   "action": "queueEmpty",
+  //   "action": "idle",
   //   "session": null,
   //   "time": 1525194310.99129
   // },
@@ -14368,7 +14368,7 @@ window.log = [
   //   "time": 1525194312.00189
   // },
   // {
-  //   "action": "queueEmpty",
+  //   "action": "idle",
   //   "session": null,
   //   "time": 1525194312.00297
   // },
@@ -15089,7 +15089,7 @@ window.log = [
   //   "time": 1525194313.03673
   // },
   // {
-  //   "action": "queueEmpty",
+  //   "action": "idle",
   //   "session": null,
   //   "time": 1525194313.03757
   // },
@@ -15810,7 +15810,7 @@ window.log = [
   //   "time": 1525194314.05516
   // },
   // {
-  //   "action": "queueEmpty",
+  //   "action": "idle",
   //   "session": null,
   //   "time": 1525194314.056
   // },
@@ -16531,7 +16531,7 @@ window.log = [
   //   "time": 1525194315.07584
   // },
   // {
-  //   "action": "queueEmpty",
+  //   "action": "idle",
   //   "session": null,
   //   "time": 1525194315.07677
   // },
@@ -17252,7 +17252,7 @@ window.log = [
   //   "time": 1525194316.09476
   // },
   // {
-  //   "action": "queueEmpty",
+  //   "action": "idle",
   //   "session": null,
   //   "time": 1525194316.09564
   // },
@@ -17973,7 +17973,7 @@ window.log = [
   //   "time": 1525194317.1186
   // },
   // {
-  //   "action": "queueEmpty",
+  //   "action": "idle",
   //   "session": null,
   //   "time": 1525194317.11998
   // },
@@ -18694,7 +18694,7 @@ window.log = [
   //   "time": 1525194318.14929
   // },
   // {
-  //   "action": "queueEmpty",
+  //   "action": "idle",
   //   "session": null,
   //   "time": 1525194318.15016
   // },
@@ -19415,7 +19415,7 @@ window.log = [
   //   "time": 1525194319.16873
   // },
   // {
-  //   "action": "queueEmpty",
+  //   "action": "idle",
   //   "session": null,
   //   "time": 1525194319.16957
   // },
@@ -20136,7 +20136,7 @@ window.log = [
   //   "time": 1525194320.18314
   // },
   // {
-  //   "action": "queueEmpty",
+  //   "action": "idle",
   //   "session": null,
   //   "time": 1525194320.18389
   // },
@@ -20238,7 +20238,7 @@ window.log = [
   //   "time": 1525194320.78841
   // },
   // {
-  //   "action": "queueEmpty",
+  //   "action": "idle",
   //   "session": null,
   //   "time": 1525194320.78936
   // },
@@ -20959,7 +20959,7 @@ window.log = [
   //   "time": 1525194321.21975
   // },
   // {
-  //   "action": "queueEmpty",
+  //   "action": "idle",
   //   "session": null,
   //   "time": 1525194321.22065
   // },
@@ -21061,7 +21061,7 @@ window.log = [
   //   "time": 1525194321.67654
   // },
   // {
-  //   "action": "queueEmpty",
+  //   "action": "idle",
   //   "session": null,
   //   "time": 1525194321.67742
   // },
@@ -21782,7 +21782,7 @@ window.log = [
   //   "time": 1525194322.24142
   // },
   // {
-  //   "action": "queueEmpty",
+  //   "action": "idle",
   //   "session": null,
   //   "time": 1525194322.24265
   // },
@@ -21884,7 +21884,7 @@ window.log = [
   //   "time": 1525194322.44365
   // },
   // {
-  //   "action": "queueEmpty",
+  //   "action": "idle",
   //   "session": null,
   //   "time": 1525194322.44457
   // },
@@ -22605,7 +22605,7 @@ window.log = [
   //   "time": 1525194323.26591
   // },
   // {
-  //   "action": "queueEmpty",
+  //   "action": "idle",
   //   "session": null,
   //   "time": 1525194323.26689
   // },
@@ -22707,7 +22707,7 @@ window.log = [
   //   "time": 1525194323.47769
   // },
   // {
-  //   "action": "queueEmpty",
+  //   "action": "idle",
   //   "session": null,
   //   "time": 1525194323.47861
   // },
@@ -22809,7 +22809,7 @@ window.log = [
   //   "time": 1525194324.02697
   // },
   // {
-  //   "action": "queueEmpty",
+  //   "action": "idle",
   //   "session": null,
   //   "time": 1525194324.0279
   // },
@@ -23530,7 +23530,7 @@ window.log = [
   //   "time": 1525194324.29491
   // },
   // {
-  //   "action": "queueEmpty",
+  //   "action": "idle",
   //   "session": null,
   //   "time": 1525194324.29578
   // },
@@ -24251,7 +24251,7 @@ window.log = [
   //   "time": 1525194325.31368
   // },
   // {
-  //   "action": "queueEmpty",
+  //   "action": "idle",
   //   "session": null,
   //   "time": 1525194325.31484
   // },
@@ -24353,7 +24353,7 @@ window.log = [
   //   "time": 1525194325.86901
   // },
   // {
-  //   "action": "queueEmpty",
+  //   "action": "idle",
   //   "session": null,
   //   "time": 1525194325.87054
   // },
@@ -25074,7 +25074,7 @@ window.log = [
   //   "time": 1525194326.33276
   // },
   // {
-  //   "action": "queueEmpty",
+  //   "action": "idle",
   //   "session": null,
   //   "time": 1525194326.33377
   // },
@@ -25795,7 +25795,7 @@ window.log = [
   //   "time": 1525194327.34656
   // },
   // {
-  //   "action": "queueEmpty",
+  //   "action": "idle",
   //   "session": null,
   //   "time": 1525194327.34749
   // },
@@ -25897,7 +25897,7 @@ window.log = [
   //   "time": 1525194327.5393
   // },
   // {
-  //   "action": "queueEmpty",
+  //   "action": "idle",
   //   "session": null,
   //   "time": 1525194327.5404
   // },
@@ -25999,7 +25999,7 @@ window.log = [
   //   "time": 1525194327.95584
   // },
   // {
-  //   "action": "queueEmpty",
+  //   "action": "idle",
   //   "session": null,
   //   "time": 1525194327.95705
   // },
@@ -26720,7 +26720,7 @@ window.log = [
   //   "time": 1525194328.36513
   // },
   // {
-  //   "action": "queueEmpty",
+  //   "action": "idle",
   //   "session": null,
   //   "time": 1525194328.36618
   // },
@@ -26822,7 +26822,7 @@ window.log = [
   //   "time": 1525194328.39046
   // },
   // {
-  //   "action": "queueEmpty",
+  //   "action": "idle",
   //   "session": null,
   //   "time": 1525194328.39142
   // },
@@ -27543,7 +27543,7 @@ window.log = [
   //   "time": 1525194329.38557
   // },
   // {
-  //   "action": "queueEmpty",
+  //   "action": "idle",
   //   "session": null,
   //   "time": 1525194329.38647
   // },
@@ -28264,7 +28264,7 @@ window.log = [
   //   "time": 1525194330.40628
   // },
   // {
-  //   "action": "queueEmpty",
+  //   "action": "idle",
   //   "session": null,
   //   "time": 1525194330.40713
   // },
@@ -28985,7 +28985,7 @@ window.log = [
   //   "time": 1525194331.42997
   // },
   // {
-  //   "action": "queueEmpty",
+  //   "action": "idle",
   //   "session": null,
   //   "time": 1525194331.4308
   // },
