@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./src/index.js");
+/******/ 	return __webpack_require__(__webpack_require__.s = "./srcjs/index.js");
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -70811,10 +70811,10 @@ module.exports = function(module) {
 
 /***/ }),
 
-/***/ "./src/cyto/cytoClasses.js":
-/*!*********************************!*\
-  !*** ./src/cyto/cytoClasses.js ***!
-  \*********************************/
+/***/ "./srcjs/cyto/cytoClasses.js":
+/*!***********************************!*\
+  !*** ./srcjs/cyto/cytoClasses.js ***!
+  \***********************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -70873,16 +70873,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
-/***/ "./src/cyto/cytoOn.js":
-/*!****************************!*\
-  !*** ./src/cyto/cytoOn.js ***!
-  \****************************/
+/***/ "./srcjs/cyto/cytoOn.js":
+/*!******************************!*\
+  !*** ./srcjs/cyto/cytoOn.js ***!
+  \******************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js"), __webpack_require__(/*! lodash/debounce */ "./node_modules/lodash/debounce.js"), __webpack_require__(/*! ../rlog */ "./src/rlog.js"), __webpack_require__(/*! ../updateGraph */ "./src/updateGraph/index.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js"), __webpack_require__(/*! lodash/debounce */ "./node_modules/lodash/debounce.js"), __webpack_require__(/*! ../rlog */ "./srcjs/rlog.js"), __webpack_require__(/*! ../updateGraph */ "./srcjs/updateGraph/index.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -71052,16 +71052,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
-/***/ "./src/cyto/cytoStyle.js":
-/*!*******************************!*\
-  !*** ./src/cyto/cytoStyle.js ***!
-  \*******************************/
+/***/ "./srcjs/cyto/cytoStyle.js":
+/*!*********************************!*\
+  !*** ./srcjs/cyto/cytoStyle.js ***!
+  \*********************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ../style/colors */ "./src/style/colors.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ../style/colors */ "./srcjs/style/colors.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -71310,16 +71310,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
-/***/ "./src/cyto/cytoscapeInit.js":
-/*!***********************************!*\
-  !*** ./src/cyto/cytoscapeInit.js ***!
-  \***********************************/
+/***/ "./srcjs/cyto/cytoscapeInit.js":
+/*!*************************************!*\
+  !*** ./srcjs/cyto/cytoscapeInit.js ***!
+  \*************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! cytoscape */ "./node_modules/cytoscape/dist/cytoscape.cjs.js"), __webpack_require__(/*! ./cytoOn */ "./src/cyto/cytoOn.js"), __webpack_require__(/*! ./cytoStyle */ "./src/cyto/cytoStyle.js"), __webpack_require__(/*! ./layoutOptions */ "./src/cyto/layoutOptions.js"), __webpack_require__(/*! ./cytoClasses */ "./src/cyto/cytoClasses.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! cytoscape */ "./node_modules/cytoscape/dist/cytoscape.cjs.js"), __webpack_require__(/*! ./cytoOn */ "./srcjs/cyto/cytoOn.js"), __webpack_require__(/*! ./cytoStyle */ "./srcjs/cyto/cytoStyle.js"), __webpack_require__(/*! ./layoutOptions */ "./srcjs/cyto/layoutOptions.js"), __webpack_require__(/*! ./cytoClasses */ "./srcjs/cyto/cytoClasses.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -71366,10 +71366,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
-/***/ "./src/cyto/layoutOptions.js":
-/*!***********************************!*\
-  !*** ./src/cyto/layoutOptions.js ***!
-  \***********************************/
+/***/ "./srcjs/cyto/layoutOptions.js":
+/*!*************************************!*\
+  !*** ./srcjs/cyto/layoutOptions.js ***!
+  \*************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -71429,10 +71429,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
-/***/ "./src/graph/ActiveStateStatus.js":
-/*!****************************************!*\
-  !*** ./src/graph/ActiveStateStatus.js ***!
-  \****************************************/
+/***/ "./srcjs/graph/ActiveStateStatus.js":
+/*!******************************************!*\
+  !*** ./srcjs/graph/ActiveStateStatus.js ***!
+  \******************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -71555,16 +71555,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
-/***/ "./src/graph/Edge.js":
-/*!***************************!*\
-  !*** ./src/graph/Edge.js ***!
-  \***************************/
+/***/ "./srcjs/graph/Edge.js":
+/*!*****************************!*\
+  !*** ./srcjs/graph/Edge.js ***!
+  \*****************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ./HoverStatus */ "./src/graph/HoverStatus.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ./HoverStatus */ "./srcjs/graph/HoverStatus.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -71719,16 +71719,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
-/***/ "./src/graph/GhostEdge.js":
-/*!********************************!*\
-  !*** ./src/graph/GhostEdge.js ***!
-  \********************************/
+/***/ "./srcjs/graph/GhostEdge.js":
+/*!**********************************!*\
+  !*** ./srcjs/graph/GhostEdge.js ***!
+  \**********************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ./HoverStatus */ "./src/graph/HoverStatus.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ./HoverStatus */ "./srcjs/graph/HoverStatus.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -71853,16 +71853,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
-/***/ "./src/graph/Graph.js":
-/*!****************************!*\
-  !*** ./src/graph/Graph.js ***!
-  \****************************/
+/***/ "./srcjs/graph/Graph.js":
+/*!******************************!*\
+  !*** ./srcjs/graph/Graph.js ***!
+  \******************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! lodash/some */ "./node_modules/lodash/some.js"), __webpack_require__(/*! lodash/filter */ "./node_modules/lodash/filter.js"), __webpack_require__(/*! lodash/union */ "./node_modules/lodash/union.js"), __webpack_require__(/*! lodash/last */ "./node_modules/lodash/last.js"), __webpack_require__(/*! cytoscape */ "./node_modules/cytoscape/dist/cytoscape.cjs.js"), __webpack_require__(/*! ../utils/MapHelper */ "./src/utils/MapHelper.js"), __webpack_require__(/*! ../log/logStates */ "./src/log/logStates.js"), __webpack_require__(/*! ./Node */ "./src/graph/Node.js"), __webpack_require__(/*! ./Edge */ "./src/graph/Edge.js"), __webpack_require__(/*! ./GhostEdge */ "./src/graph/GhostEdge.js"), __webpack_require__(/*! ./HoverStatus */ "./src/graph/HoverStatus.js"), __webpack_require__(/*! ./StatusArr */ "./src/graph/StatusArr.js"), __webpack_require__(/*! ../utils/ArrayHelper */ "./src/utils/ArrayHelper.js"), __webpack_require__(/*! ../utils/console */ "./src/utils/console.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! lodash/some */ "./node_modules/lodash/some.js"), __webpack_require__(/*! lodash/filter */ "./node_modules/lodash/filter.js"), __webpack_require__(/*! lodash/union */ "./node_modules/lodash/union.js"), __webpack_require__(/*! lodash/last */ "./node_modules/lodash/last.js"), __webpack_require__(/*! cytoscape */ "./node_modules/cytoscape/dist/cytoscape.cjs.js"), __webpack_require__(/*! ../utils/MapHelper */ "./srcjs/utils/MapHelper.js"), __webpack_require__(/*! ../log/logStates */ "./srcjs/log/logStates.js"), __webpack_require__(/*! ./Node */ "./srcjs/graph/Node.js"), __webpack_require__(/*! ./Edge */ "./srcjs/graph/Edge.js"), __webpack_require__(/*! ./GhostEdge */ "./srcjs/graph/GhostEdge.js"), __webpack_require__(/*! ./HoverStatus */ "./srcjs/graph/HoverStatus.js"), __webpack_require__(/*! ./StatusArr */ "./srcjs/graph/StatusArr.js"), __webpack_require__(/*! ../utils/ArrayHelper */ "./srcjs/utils/ArrayHelper.js"), __webpack_require__(/*! ../utils/console */ "./srcjs/utils/console.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -72559,16 +72559,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
-/***/ "./src/graph/GraphAtStep.js":
-/*!**********************************!*\
-  !*** ./src/graph/GraphAtStep.js ***!
-  \**********************************/
+/***/ "./srcjs/graph/GraphAtStep.js":
+/*!************************************!*\
+  !*** ./srcjs/graph/GraphAtStep.js ***!
+  \************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! lodash/sortedIndex */ "./node_modules/lodash/sortedIndex.js"), __webpack_require__(/*! lodash/sortedIndexOf */ "./node_modules/lodash/sortedIndexOf.js"), __webpack_require__(/*! lodash/isNil */ "./node_modules/lodash/isNil.js"), __webpack_require__(/*! lodash/union */ "./node_modules/lodash/union.js"), __webpack_require__(/*! lodash/indexOf */ "./node_modules/lodash/indexOf.js"), __webpack_require__(/*! lodash/some */ "./node_modules/lodash/some.js"), __webpack_require__(/*! lodash/filter */ "./node_modules/lodash/filter.js"), __webpack_require__(/*! lodash/assign */ "./node_modules/lodash/assign.js"), __webpack_require__(/*! ../utils/console */ "./src/utils/console.js"), __webpack_require__(/*! ../utils/MapHelper */ "./src/utils/MapHelper.js"), __webpack_require__(/*! ../log/logStates */ "./src/log/logStates.js"), __webpack_require__(/*! ./Graph */ "./src/graph/Graph.js"), __webpack_require__(/*! ../cyto/layoutOptions */ "./src/cyto/layoutOptions.js"), __webpack_require__(/*! ./Node */ "./src/graph/Node.js"), __webpack_require__(/*! ./Edge */ "./src/graph/Edge.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! lodash/sortedIndex */ "./node_modules/lodash/sortedIndex.js"), __webpack_require__(/*! lodash/sortedIndexOf */ "./node_modules/lodash/sortedIndexOf.js"), __webpack_require__(/*! lodash/isNil */ "./node_modules/lodash/isNil.js"), __webpack_require__(/*! lodash/union */ "./node_modules/lodash/union.js"), __webpack_require__(/*! lodash/indexOf */ "./node_modules/lodash/indexOf.js"), __webpack_require__(/*! lodash/some */ "./node_modules/lodash/some.js"), __webpack_require__(/*! lodash/filter */ "./node_modules/lodash/filter.js"), __webpack_require__(/*! lodash/assign */ "./node_modules/lodash/assign.js"), __webpack_require__(/*! ../utils/console */ "./srcjs/utils/console.js"), __webpack_require__(/*! ../utils/MapHelper */ "./srcjs/utils/MapHelper.js"), __webpack_require__(/*! ../log/logStates */ "./srcjs/log/logStates.js"), __webpack_require__(/*! ./Graph */ "./srcjs/graph/Graph.js"), __webpack_require__(/*! ../cyto/layoutOptions */ "./srcjs/cyto/layoutOptions.js"), __webpack_require__(/*! ./Node */ "./srcjs/graph/Node.js"), __webpack_require__(/*! ./Edge */ "./srcjs/graph/Edge.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -73426,10 +73426,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
-/***/ "./src/graph/HoverStatus.js":
-/*!**********************************!*\
-  !*** ./src/graph/HoverStatus.js ***!
-  \**********************************/
+/***/ "./srcjs/graph/HoverStatus.js":
+/*!************************************!*\
+  !*** ./srcjs/graph/HoverStatus.js ***!
+  \************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -73620,16 +73620,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
-/***/ "./src/graph/Node.js":
-/*!***************************!*\
-  !*** ./src/graph/Node.js ***!
-  \***************************/
+/***/ "./srcjs/graph/Node.js":
+/*!*****************************!*\
+  !*** ./srcjs/graph/Node.js ***!
+  \*****************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ../log/logStates */ "./src/log/logStates.js"), __webpack_require__(/*! ./HoverStatus */ "./src/graph/HoverStatus.js"), __webpack_require__(/*! ./ActiveStateStatus */ "./src/graph/ActiveStateStatus.js"), __webpack_require__(/*! ./StatusArr */ "./src/graph/StatusArr.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ../log/logStates */ "./srcjs/log/logStates.js"), __webpack_require__(/*! ./HoverStatus */ "./srcjs/graph/HoverStatus.js"), __webpack_require__(/*! ./ActiveStateStatus */ "./srcjs/graph/ActiveStateStatus.js"), __webpack_require__(/*! ./StatusArr */ "./srcjs/graph/StatusArr.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -73877,16 +73877,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
-/***/ "./src/graph/StatusArr.js":
-/*!********************************!*\
-  !*** ./src/graph/StatusArr.js ***!
-  \********************************/
+/***/ "./srcjs/graph/StatusArr.js":
+/*!**********************************!*\
+  !*** ./srcjs/graph/StatusArr.js ***!
+  \**********************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! lodash/cloneDeep */ "./node_modules/lodash/cloneDeep.js"), __webpack_require__(/*! lodash/last */ "./node_modules/lodash/last.js"), __webpack_require__(/*! ../utils/console */ "./src/utils/console.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! lodash/cloneDeep */ "./node_modules/lodash/cloneDeep.js"), __webpack_require__(/*! lodash/last */ "./node_modules/lodash/last.js"), __webpack_require__(/*! ../utils/console */ "./srcjs/utils/console.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -73988,16 +73988,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
-/***/ "./src/index.js":
-/*!**********************!*\
-  !*** ./src/index.js ***!
-  \**********************/
+/***/ "./srcjs/index.js":
+/*!************************!*\
+  !*** ./srcjs/index.js ***!
+  \************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js"), __webpack_require__(/*! ./rlog */ "./src/rlog.js"), __webpack_require__(/*! ./log/logStates */ "./src/log/logStates.js"), __webpack_require__(/*! ./graph/GraphAtStep */ "./src/graph/GraphAtStep.js"), __webpack_require__(/*! ./style/colors */ "./src/style/colors.js"), __webpack_require__(/*! ./cyto/cytoscapeInit */ "./src/cyto/cytoscapeInit.js"), __webpack_require__(/*! ./layout/keydown */ "./src/layout/keydown.js"), __webpack_require__(/*! ./updateGraph */ "./src/updateGraph/index.js"), __webpack_require__(/*! ./layout/logEntry */ "./src/layout/logEntry.js"), __webpack_require__(/*! ./layout/progressBar */ "./src/layout/progressBar.js"), __webpack_require__(/*! ./log/initStep */ "./src/log/initStep.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js"), __webpack_require__(/*! ./rlog */ "./srcjs/rlog.js"), __webpack_require__(/*! ./log/logStates */ "./srcjs/log/logStates.js"), __webpack_require__(/*! ./graph/GraphAtStep */ "./srcjs/graph/GraphAtStep.js"), __webpack_require__(/*! ./style/colors */ "./srcjs/style/colors.js"), __webpack_require__(/*! ./cyto/cytoscapeInit */ "./srcjs/cyto/cytoscapeInit.js"), __webpack_require__(/*! ./layout/keydown */ "./srcjs/layout/keydown.js"), __webpack_require__(/*! ./updateGraph */ "./srcjs/updateGraph/index.js"), __webpack_require__(/*! ./layout/logEntry */ "./srcjs/layout/logEntry.js"), __webpack_require__(/*! ./layout/progressBar */ "./srcjs/layout/progressBar.js"), __webpack_require__(/*! ./log/initStep */ "./srcjs/log/initStep.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -74111,16 +74111,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
-/***/ "./src/layout/keydown.js":
-/*!*******************************!*\
-  !*** ./src/layout/keydown.js ***!
-  \*******************************/
+/***/ "./srcjs/layout/keydown.js":
+/*!*********************************!*\
+  !*** ./srcjs/layout/keydown.js ***!
+  \*********************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js"), __webpack_require__(/*! lodash/defer */ "./node_modules/lodash/defer.js"), __webpack_require__(/*! ../updateGraph */ "./src/updateGraph/index.js"), __webpack_require__(/*! ../graph/GraphAtStep */ "./src/graph/GraphAtStep.js"), __webpack_require__(/*! ../rlog */ "./src/rlog.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js"), __webpack_require__(/*! lodash/defer */ "./node_modules/lodash/defer.js"), __webpack_require__(/*! ../updateGraph */ "./srcjs/updateGraph/index.js"), __webpack_require__(/*! ../graph/GraphAtStep */ "./srcjs/graph/GraphAtStep.js"), __webpack_require__(/*! ../rlog */ "./srcjs/rlog.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -74334,16 +74334,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
-/***/ "./src/layout/logEntry.js":
-/*!********************************!*\
-  !*** ./src/layout/logEntry.js ***!
-  \********************************/
+/***/ "./srcjs/layout/logEntry.js":
+/*!**********************************!*\
+  !*** ./srcjs/layout/logEntry.js ***!
+  \**********************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! lodash/sortedIndex */ "./node_modules/lodash/sortedIndex.js"), __webpack_require__(/*! lodash/sortedIndexOf */ "./node_modules/lodash/sortedIndexOf.js"), __webpack_require__(/*! ../rlog */ "./src/rlog.js"), __webpack_require__(/*! ../utils/numbers */ "./src/utils/numbers.js"), __webpack_require__(/*! ../log/logStates */ "./src/log/logStates.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! lodash/sortedIndex */ "./node_modules/lodash/sortedIndex.js"), __webpack_require__(/*! lodash/sortedIndexOf */ "./node_modules/lodash/sortedIndexOf.js"), __webpack_require__(/*! ../rlog */ "./srcjs/rlog.js"), __webpack_require__(/*! ../utils/numbers */ "./srcjs/utils/numbers.js"), __webpack_require__(/*! ../log/logStates */ "./srcjs/log/logStates.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -74589,16 +74589,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
-/***/ "./src/layout/progressBar.js":
-/*!***********************************!*\
-  !*** ./src/layout/progressBar.js ***!
-  \***********************************/
+/***/ "./srcjs/layout/progressBar.js":
+/*!*************************************!*\
+  !*** ./srcjs/layout/progressBar.js ***!
+  \*************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! lodash/has */ "./node_modules/lodash/has.js"), __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js"), __webpack_require__(/*! lodash/sortedIndex */ "./node_modules/lodash/sortedIndex.js"), __webpack_require__(/*! lodash/sortedIndexOf */ "./node_modules/lodash/sortedIndexOf.js"), __webpack_require__(/*! ../rlog */ "./src/rlog.js"), __webpack_require__(/*! ../updateGraph */ "./src/updateGraph/index.js"), __webpack_require__(/*! ../style/colors */ "./src/style/colors.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! lodash/has */ "./node_modules/lodash/has.js"), __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js"), __webpack_require__(/*! lodash/sortedIndex */ "./node_modules/lodash/sortedIndex.js"), __webpack_require__(/*! lodash/sortedIndexOf */ "./node_modules/lodash/sortedIndexOf.js"), __webpack_require__(/*! ../rlog */ "./srcjs/rlog.js"), __webpack_require__(/*! ../updateGraph */ "./srcjs/updateGraph/index.js"), __webpack_require__(/*! ../style/colors */ "./srcjs/style/colors.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -74700,10 +74700,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
-/***/ "./src/log/initStep.js":
-/*!*****************************!*\
-  !*** ./src/log/initStep.js ***!
-  \*****************************/
+/***/ "./srcjs/log/initStep.js":
+/*!*******************************!*\
+  !*** ./srcjs/log/initStep.js ***!
+  \*******************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -74733,10 +74733,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
-/***/ "./src/log/logStates.js":
-/*!******************************!*\
-  !*** ./src/log/logStates.js ***!
-  \******************************/
+/***/ "./srcjs/log/logStates.js":
+/*!********************************!*\
+  !*** ./srcjs/log/logStates.js ***!
+  \********************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -74783,16 +74783,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
-/***/ "./src/rlog.js":
-/*!*********************!*\
-  !*** ./src/rlog.js ***!
-  \*********************/
+/***/ "./srcjs/rlog.js":
+/*!***********************!*\
+  !*** ./srcjs/rlog.js ***!
+  \***********************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! cytoscape */ "./node_modules/cytoscape/dist/cytoscape.cjs.js"), __webpack_require__(/*! ./graph/Graph */ "./src/graph/Graph.js"), __webpack_require__(/*! ./graph/GraphAtStep */ "./src/graph/GraphAtStep.js"), __webpack_require__(/*! ./updateGraph */ "./src/updateGraph/index.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! cytoscape */ "./node_modules/cytoscape/dist/cytoscape.cjs.js"), __webpack_require__(/*! ./graph/Graph */ "./srcjs/graph/Graph.js"), __webpack_require__(/*! ./graph/GraphAtStep */ "./srcjs/graph/GraphAtStep.js"), __webpack_require__(/*! ./updateGraph */ "./srcjs/updateGraph/index.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -74827,10 +74827,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
-/***/ "./src/style/colors.js":
-/*!*****************************!*\
-  !*** ./src/style/colors.js ***!
-  \*****************************/
+/***/ "./srcjs/style/colors.js":
+/*!*******************************!*\
+  !*** ./srcjs/style/colors.js ***!
+  \*******************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -74954,16 +74954,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
-/***/ "./src/updateGraph/atTick.js":
-/*!***********************************!*\
-  !*** ./src/updateGraph/atTick.js ***!
-  \***********************************/
+/***/ "./srcjs/updateGraph/atTick.js":
+/*!*************************************!*\
+  !*** ./srcjs/updateGraph/atTick.js ***!
+  \*************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ../rlog */ "./src/rlog.js"), __webpack_require__(/*! ../layout/logEntry */ "./src/layout/logEntry.js"), __webpack_require__(/*! ../layout/progressBar */ "./src/layout/progressBar.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ../rlog */ "./srcjs/rlog.js"), __webpack_require__(/*! ../layout/logEntry */ "./srcjs/layout/logEntry.js"), __webpack_require__(/*! ../layout/progressBar */ "./srcjs/layout/progressBar.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -74997,16 +74997,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
-/***/ "./src/updateGraph/buttons.js":
-/*!************************************!*\
-  !*** ./src/updateGraph/buttons.js ***!
-  \************************************/
+/***/ "./srcjs/updateGraph/buttons.js":
+/*!**************************************!*\
+  !*** ./srcjs/updateGraph/buttons.js ***!
+  \**************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ./outputCalc */ "./src/updateGraph/outputCalc.js"), __webpack_require__(/*! ./step */ "./src/updateGraph/step.js"), __webpack_require__(/*! ./userMarks */ "./src/updateGraph/userMarks.js"), __webpack_require__(/*! ./idle */ "./src/updateGraph/idle.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ./outputCalc */ "./srcjs/updateGraph/outputCalc.js"), __webpack_require__(/*! ./step */ "./srcjs/updateGraph/step.js"), __webpack_require__(/*! ./userMarks */ "./srcjs/updateGraph/userMarks.js"), __webpack_require__(/*! ./idle */ "./srcjs/updateGraph/idle.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -75084,16 +75084,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
-/***/ "./src/updateGraph/hoverStickyFilterSearch.js":
-/*!****************************************************!*\
-  !*** ./src/updateGraph/hoverStickyFilterSearch.js ***!
-  \****************************************************/
+/***/ "./srcjs/updateGraph/hoverStickyFilterSearch.js":
+/*!******************************************************!*\
+  !*** ./srcjs/updateGraph/hoverStickyFilterSearch.js ***!
+  \******************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js"), __webpack_require__(/*! lodash/assign */ "./node_modules/lodash/assign.js"), __webpack_require__(/*! ../rlog */ "./src/rlog.js"), __webpack_require__(/*! ../updateGraph */ "./src/updateGraph/index.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js"), __webpack_require__(/*! lodash/assign */ "./node_modules/lodash/assign.js"), __webpack_require__(/*! ../rlog */ "./srcjs/rlog.js"), __webpack_require__(/*! ../updateGraph */ "./srcjs/updateGraph/index.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -75220,16 +75220,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
-/***/ "./src/updateGraph/idle.js":
-/*!*********************************!*\
-  !*** ./src/updateGraph/idle.js ***!
-  \*********************************/
+/***/ "./srcjs/updateGraph/idle.js":
+/*!***********************************!*\
+  !*** ./srcjs/updateGraph/idle.js ***!
+  \***********************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ../rlog */ "./src/rlog.js"), __webpack_require__(/*! ../updateGraph */ "./src/updateGraph/index.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ../rlog */ "./srcjs/rlog.js"), __webpack_require__(/*! ../updateGraph */ "./srcjs/updateGraph/index.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -75303,16 +75303,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
-/***/ "./src/updateGraph/index.js":
-/*!**********************************!*\
-  !*** ./src/updateGraph/index.js ***!
-  \**********************************/
+/***/ "./srcjs/updateGraph/index.js":
+/*!************************************!*\
+  !*** ./srcjs/updateGraph/index.js ***!
+  \************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ./atTick */ "./src/updateGraph/atTick.js"), __webpack_require__(/*! ./outputCalc */ "./src/updateGraph/outputCalc.js"), __webpack_require__(/*! ./idle */ "./src/updateGraph/idle.js"), __webpack_require__(/*! ./step */ "./src/updateGraph/step.js"), __webpack_require__(/*! ./tick */ "./src/updateGraph/tick.js"), __webpack_require__(/*! ./searchString */ "./src/updateGraph/searchString.js"), __webpack_require__(/*! ./hoverStickyFilterSearch */ "./src/updateGraph/hoverStickyFilterSearch.js"), __webpack_require__(/*! ./userMarks */ "./src/updateGraph/userMarks.js"), __webpack_require__(/*! ./buttons */ "./src/updateGraph/buttons.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ./atTick */ "./srcjs/updateGraph/atTick.js"), __webpack_require__(/*! ./outputCalc */ "./srcjs/updateGraph/outputCalc.js"), __webpack_require__(/*! ./idle */ "./srcjs/updateGraph/idle.js"), __webpack_require__(/*! ./step */ "./srcjs/updateGraph/step.js"), __webpack_require__(/*! ./tick */ "./srcjs/updateGraph/tick.js"), __webpack_require__(/*! ./searchString */ "./srcjs/updateGraph/searchString.js"), __webpack_require__(/*! ./hoverStickyFilterSearch */ "./srcjs/updateGraph/hoverStickyFilterSearch.js"), __webpack_require__(/*! ./userMarks */ "./srcjs/updateGraph/userMarks.js"), __webpack_require__(/*! ./buttons */ "./srcjs/updateGraph/buttons.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -75423,16 +75423,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
-/***/ "./src/updateGraph/outputCalc.js":
-/*!***************************************!*\
-  !*** ./src/updateGraph/outputCalc.js ***!
-  \***************************************/
+/***/ "./srcjs/updateGraph/outputCalc.js":
+/*!*****************************************!*\
+  !*** ./srcjs/updateGraph/outputCalc.js ***!
+  \*****************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! lodash/sortedIndexOf */ "./node_modules/lodash/sortedIndexOf.js"), __webpack_require__(/*! ../rlog */ "./src/rlog.js"), __webpack_require__(/*! ../updateGraph */ "./src/updateGraph/index.js"), __webpack_require__(/*! ../graph/GraphAtStep */ "./src/graph/GraphAtStep.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! lodash/sortedIndexOf */ "./node_modules/lodash/sortedIndexOf.js"), __webpack_require__(/*! ../rlog */ "./srcjs/rlog.js"), __webpack_require__(/*! ../updateGraph */ "./srcjs/updateGraph/index.js"), __webpack_require__(/*! ../graph/GraphAtStep */ "./srcjs/graph/GraphAtStep.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -75536,16 +75536,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
-/***/ "./src/updateGraph/searchString.js":
-/*!*****************************************!*\
-  !*** ./src/updateGraph/searchString.js ***!
-  \*****************************************/
+/***/ "./srcjs/updateGraph/searchString.js":
+/*!*******************************************!*\
+  !*** ./srcjs/updateGraph/searchString.js ***!
+  \*******************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ./hoverStickyFilterSearch */ "./src/updateGraph/hoverStickyFilterSearch.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ./hoverStickyFilterSearch */ "./srcjs/updateGraph/hoverStickyFilterSearch.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -75594,16 +75594,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
-/***/ "./src/updateGraph/step.js":
-/*!*********************************!*\
-  !*** ./src/updateGraph/step.js ***!
-  \*********************************/
+/***/ "./srcjs/updateGraph/step.js":
+/*!***********************************!*\
+  !*** ./srcjs/updateGraph/step.js ***!
+  \***********************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ../rlog */ "./src/rlog.js"), __webpack_require__(/*! ../updateGraph */ "./src/updateGraph/index.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ../rlog */ "./srcjs/rlog.js"), __webpack_require__(/*! ../updateGraph */ "./srcjs/updateGraph/index.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -75657,16 +75657,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
-/***/ "./src/updateGraph/tick.js":
-/*!*********************************!*\
-  !*** ./src/updateGraph/tick.js ***!
-  \*********************************/
+/***/ "./srcjs/updateGraph/tick.js":
+/*!***********************************!*\
+  !*** ./srcjs/updateGraph/tick.js ***!
+  \***********************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ../rlog */ "./src/rlog.js"), __webpack_require__(/*! ../updateGraph */ "./src/updateGraph/index.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ../rlog */ "./srcjs/rlog.js"), __webpack_require__(/*! ../updateGraph */ "./srcjs/updateGraph/index.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -75696,16 +75696,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
-/***/ "./src/updateGraph/userMarks.js":
-/*!**************************************!*\
-  !*** ./src/updateGraph/userMarks.js ***!
-  \**************************************/
+/***/ "./srcjs/updateGraph/userMarks.js":
+/*!****************************************!*\
+  !*** ./srcjs/updateGraph/userMarks.js ***!
+  \****************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! lodash/sortedIndexOf */ "./node_modules/lodash/sortedIndexOf.js"), __webpack_require__(/*! ../rlog */ "./src/rlog.js"), __webpack_require__(/*! ../updateGraph */ "./src/updateGraph/index.js"), __webpack_require__(/*! ../graph/GraphAtStep */ "./src/graph/GraphAtStep.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! lodash/sortedIndexOf */ "./node_modules/lodash/sortedIndexOf.js"), __webpack_require__(/*! ../rlog */ "./srcjs/rlog.js"), __webpack_require__(/*! ../updateGraph */ "./srcjs/updateGraph/index.js"), __webpack_require__(/*! ../graph/GraphAtStep */ "./srcjs/graph/GraphAtStep.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -75809,10 +75809,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
-/***/ "./src/utils/ArrayHelper.js":
-/*!**********************************!*\
-  !*** ./src/utils/ArrayHelper.js ***!
-  \**********************************/
+/***/ "./srcjs/utils/ArrayHelper.js":
+/*!************************************!*\
+  !*** ./srcjs/utils/ArrayHelper.js ***!
+  \************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -75856,10 +75856,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
-/***/ "./src/utils/MapHelper.js":
-/*!********************************!*\
-  !*** ./src/utils/MapHelper.js ***!
-  \********************************/
+/***/ "./srcjs/utils/MapHelper.js":
+/*!**********************************!*\
+  !*** ./srcjs/utils/MapHelper.js ***!
+  \**********************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -75890,10 +75890,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
-/***/ "./src/utils/console.js":
-/*!******************************!*\
-  !*** ./src/utils/console.js ***!
-  \******************************/
+/***/ "./srcjs/utils/console.js":
+/*!********************************!*\
+  !*** ./srcjs/utils/console.js ***!
+  \********************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -75922,10 +75922,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
-/***/ "./src/utils/numbers.js":
-/*!******************************!*\
-  !*** ./src/utils/numbers.js ***!
-  \******************************/
+/***/ "./srcjs/utils/numbers.js":
+/*!********************************!*\
+  !*** ./srcjs/utils/numbers.js ***!
+  \********************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 

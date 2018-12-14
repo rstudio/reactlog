@@ -9,7 +9,7 @@ module.exports = function(grunt) {
   var rootDir = __dirname;
 
   var instdir = rootDir + '/inst/';
-  var jsSrcdir = rootDir + '/src/';
+  var jsSrcdir = rootDir + '/srcjs/';
 
   gruntConfig = {
 
