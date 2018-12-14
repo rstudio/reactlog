@@ -74766,6 +74766,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     freeze: "freeze",
     invalidateEnd: "invalidateEnd",
     invalidateStart: "invalidateStart",
+    invalidateLater: "invalidateLater",
     isolateEnter: "isolateEnter",
     isolateExit: "isolateExit",
     isolateInvalidateEnd: "isolateInvalidateEnd",

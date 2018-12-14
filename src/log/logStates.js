@@ -12,6 +12,7 @@ let states = {
   freeze: "freeze",
   invalidateEnd: "invalidateEnd",
   invalidateStart: "invalidateStart",
+  invalidateLater: "invalidateLater",
   isolateEnter: "isolateEnter",
   isolateExit: "isolateExit",
   isolateInvalidateEnd: "isolateInvalidateEnd",
@@ -93,6 +94,7 @@ type LogEntryDefineType = {
   reactId: ReactIdType,
   type: string, // TypeType,
   label: string,
+  value: string,
 };
 
 type LogEntryDependsOnType = {
@@ -163,6 +165,16 @@ type LogEntryInvalidateEndType = {
   reactId: ReactIdType,
   ctxId: CtxIdType,
   type: string,
+};
+
+type LogEntryInvalidateLater = {
+  action: "invalidateLater",
+  session: ?string,
+  time: number,
+  step: number,
+  reactId: ReactIdType,
+  ctxId: CtxIdType,
+  millis: number,
 };
 
 type LogEntryIsolateEnterType = {
@@ -241,6 +253,7 @@ type LogEntryHasReactId =
   | LogEntryThawType
   | LogEntryInvalidateStartType
   | LogEntryInvalidateEndType
+  | LogEntryInvalidateLaterType
   | LogEntryIsolateEnterType
   | LogEntryIsolateExitType
   | LogEntryIsolateInvalidateStartType
@@ -261,6 +274,7 @@ type LogEntryAnyType =
   | LogEntryThawType
   | LogEntryInvalidateStartType
   | LogEntryInvalidateEndType
+  | LogEntryInvalidateLaterType
   | LogEntryIsolateEnterType
   | LogEntryIsolateExitType
   | LogEntryIsolateInvalidateStartType
@@ -291,6 +305,7 @@ export type {
   LogEntryThawType,
   LogEntryInvalidateStartType,
   LogEntryInvalidateEndType,
+  LogEntryInvalidateLaterType,
   LogEntryIsolateEnterType,
   LogEntryIsolateExitType,
   LogEntryIsolateInvalidateStartType,
