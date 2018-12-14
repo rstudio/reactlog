@@ -121,6 +121,9 @@ class GraphAtStep {
     ) {
       startI = startI + 3;
     }
+    while (log.length > startI && log[startI].action === LogStates.idle) {
+      startI = startI + 1;
+    }
     for (i = startI; i < log.length; i++) {
       logItem = log[i];
       switch (logItem.action) {
@@ -294,6 +297,7 @@ class GraphAtStep {
         case LogStates.valueChange:
         case LogStates.enter:
         case LogStates.exit:
+        case LogStates.invalidateLater:
         case LogStates.invalidateStart:
         case LogStates.invalidateEnd:
         case LogStates.isolateEnter:
@@ -360,6 +364,7 @@ class GraphAtStep {
         case LogStates.valueChange:
         case LogStates.enter:
         case LogStates.exit:
+        case LogStates.invalidateLater:
         case LogStates.invalidateStart:
         case LogStates.invalidateEnd:
         case LogStates.isolateEnter:

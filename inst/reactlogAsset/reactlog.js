@@ -72692,6 +72692,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           startI = startI + 3;
         }
 
+        while (log.length > startI && log[startI].action === _logStates.LogStates.idle) {
+          startI = startI + 1;
+        }
+
         for (i = startI; i < log.length; i++) {
           logItem = log[i];
 
@@ -72870,6 +72874,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             case _logStates.LogStates.valueChange:
             case _logStates.LogStates.enter:
             case _logStates.LogStates.exit:
+            case _logStates.LogStates.invalidateLater:
             case _logStates.LogStates.invalidateStart:
             case _logStates.LogStates.invalidateEnd:
             case _logStates.LogStates.isolateEnter:
@@ -72939,6 +72944,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             case _logStates.LogStates.valueChange:
             case _logStates.LogStates.enter:
             case _logStates.LogStates.exit:
+            case _logStates.LogStates.invalidateLater:
             case _logStates.LogStates.invalidateStart:
             case _logStates.LogStates.invalidateEnd:
             case _logStates.LogStates.isolateEnter:
@@ -74436,9 +74442,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
     logInfo = {
       logLength: maxVisibleStep,
-      firstTime: log[0].time,
+      firstTime: log[_rlog.rlog.getGraph.stepsVisible[0]].time,
       maxSessionCharLength: maxSessionCharLength,
-      lastTimeCharLength: (log[logInfoLength - 1].time - log[0].time).toFixed(timeDecimalDigits).length
+      lastTimeCharLength: (log[logInfoLength - 1].time - log[_rlog.rlog.getGraph.stepsVisible[0]].time).toFixed(timeDecimalDigits).length
     };
     containers = {
       time: time,
@@ -74515,6 +74521,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         {
           var frozenEntry = entry;
           return "".concat(monospaced(getReactIdLabel(frozenEntry)), " froze");
+        }
+
+      case _logStates.LogStates.invalidateLater:
+        {
+          var invalidateLaterEntry = entry;
+          return "".concat(monospaced(getReactIdLabel(invalidateLaterEntry)), " will invalidate in ").concat(monospaced(invalidateLaterEntry.millis), "ms");
         }
 
       case _logStates.LogStates.invalidateEnd:

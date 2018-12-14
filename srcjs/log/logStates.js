@@ -167,7 +167,7 @@ type LogEntryInvalidateEndType = {
   type: string,
 };
 
-type LogEntryInvalidateLater = {
+type LogEntryInvalidateLaterType = {
   action: "invalidateLater",
   session: ?string,
   time: number,

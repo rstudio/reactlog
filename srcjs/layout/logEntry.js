@@ -20,6 +20,7 @@ import type {
   LogEntryExitType,
   LogEntryFreezeType,
   LogEntryThawType,
+  LogEntryInvalidateLaterType,
   LogEntryInvalidateStartType,
   LogEntryInvalidateEndType,
   LogEntryIsolateEnterType,
@@ -136,11 +137,11 @@ let setContainers = function(
 
   logInfo = {
     logLength: maxVisibleStep,
-    firstTime: log[0].time,
+    firstTime: log[rlog.getGraph.stepsVisible[0]].time,
     maxSessionCharLength: maxSessionCharLength,
-    lastTimeCharLength: (log[logInfoLength - 1].time - log[0].time).toFixed(
-      timeDecimalDigits
-    ).length,
+    lastTimeCharLength: (
+      log[logInfoLength - 1].time - log[rlog.getGraph.stepsVisible[0]].time
+    ).toFixed(timeDecimalDigits).length,
   };
   containers = {
     time: time,
@@ -202,6 +203,12 @@ let statusForEntry = function(entry: LogEntryAnyType): string {
     case LogStates.freeze: {
       let frozenEntry = ((entry: Object): LogEntryFreezeType);
       return `${monospaced(getReactIdLabel(frozenEntry))} froze`;
+    }
+    case LogStates.invalidateLater: {
+      let invalidateLaterEntry = ((entry: Object): LogEntryInvalidateLaterType);
+      return `${monospaced(
+        getReactIdLabel(invalidateLaterEntry)
+      )} will invalidate in ${monospaced(invalidateLaterEntry.millis)}ms`;
     }
     case LogStates.invalidateEnd: {
       let invalidateEndEntry = ((entry: Object): LogEntryInvalidateEndType);
