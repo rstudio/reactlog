@@ -1,7 +1,8 @@
+^appveyor\.yml$
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^LICENSE\.md$
-^src/
+^srcjs/
 ^src_old/
 ^\.babelrc$
 ^\.eslintrc\.js$
@@ -21,4 +22,3 @@
 ^\.github/
 ^index\.html$
 ^\.lintr$
-^src/

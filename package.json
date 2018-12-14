@@ -7,8 +7,8 @@
     "flow-stop": "flow stop",
     "lint": "./bin/lint_file.sh",
     "fix": "./bin/clean_rlog_file.sh",
-    "fix-all": "yarn fix src/*.js src/**/*.js",
-    "lint-all": "yarn lint src/*.js src/**/*.js",
+    "fix-all": "yarn fix srcjs/*.js srcjs/**/*.js",
+    "lint-all": "yarn lint srcjs/*.js srcjs/**/*.js",
     "build": "yarn lint-all && yarn build-only",
     "build-only": "grunt",
     "watch": "yarn lint-all && grunt webpackSetWatch default",
@@ -31,7 +31,7 @@
       ".flowconfig": [
         "yarn flow-report-and-echo"
       ],
-      "src/**/*.js": [
+      "srcjs/**/*.js": [
         "yarn fix",
         "yarn git_add_map",
         "yarn flow-report-and-echo"
@@ -40,13 +40,13 @@
   },
   "flow-coverage-report": {
     "globIncludePatterns": [
-      "src/**/*.js"
+      "srcjs/**/*.js"
     ],
     "globExcludeGlob": [
-      "src/utils/Console.js",
-      "src/cyto/layoutOptions.js",
-      "src/log/initStep.js",
-      "src/rlog.js"
+      "srcjs/utils/Console.js",
+      "srcjs/cyto/layoutOptions.js",
+      "srcjs/log/initStep.js",
+      "srcjs/rlog.js"
     ],
     "threshold": 95,
     "reportType": "text"
