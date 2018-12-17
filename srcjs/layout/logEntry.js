@@ -163,6 +163,15 @@ let getLabel = function(reactId: ReactIdType): string {
 let getReactIdLabel = function(entry: LogEntryHasReactId) {
   return getLabel(entry.reactId);
 };
+let getReactIdValue = function(entry: LogEntryHasReactId) {
+  let node = rlog.graph.nodes.get(entry.reactId);
+  if (node.value) {
+    return node.value;
+  } else {
+    return "<unknown>";
+  }
+};
+
 let monospaced = function(txt: string | number) {
   return `<span class="monospaced">${txt}</span>`;
 };
@@ -264,7 +273,9 @@ let statusForEntry = function(entry: LogEntryAnyType): string {
     }
     case LogStates.valueChange: {
       let valueChangeEntry = ((entry: Object): LogEntryValueChangeType);
-      return `${monospaced(getReactIdLabel(valueChangeEntry))} has a new value`;
+      return `${monospaced(
+        getReactIdLabel(valueChangeEntry)
+      )} has a new value: ${monospaced(getReactIdValue(valueChangeEntry))}`;
     }
     default:
       throw `state: ${monospaced(entry.action)} not implemented for log status`;

@@ -93,7 +93,9 @@ class Node {
   get inIsolate(): boolean {
     return this.statusArr.containsStatus(LogStates.isolateEnter);
   }
-  // get inInvalidate() {return this.statusArr.containsStatus("invalidateStart");}
+  get inInvalidate(): boolean {
+    return this.statusArr.containsStatus("invalidateStart");
+  }
   get inIsolateInvalidate(): boolean {
     return this.statusArr.containsStatus(LogStates.isolateInvalidateStart);
   }
@@ -101,7 +103,22 @@ class Node {
     return {};
   }
   get cytoLabel(): string {
-    return this.label;
+    let label = `${this.label}`;
+    if (this.type === "observer" || this.type === "observable") {
+      return label;
+    }
+
+    // not a middle or end node...
+    let value = `${this.value}`;
+    if (value.length > 0) {
+      // only if there are no new lines...
+      if (!value.includes("\\n")) {
+        // trim beginning of string
+        value = value.replace(/^\s+/, "");
+      }
+      return `${label} - '${value}'`;
+    }
+    return label;
   }
   get cytoClasses(): string {
     let classes = [];

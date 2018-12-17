@@ -71295,7 +71295,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     hidden: {
       node: {
         // visibility: "hidden",
-        opacity: 0.5
+        opacity: 0.5,
+        label: "data(label)" // do not display a value and only the raw label
+
       },
       edge: {
         // visibility: "hidden",
@@ -73294,7 +73296,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         var graphNodes = graphCyto.nodes();
         var nodesLRB = cyNodes.diff(graphNodes); // .removeStyle()
 
-        var onLayoutReady = []; // enter visible nodes
+        var onLayoutReady = [];
+        var someNodeHasNewLabel = false; // enter visible nodes
 
         nodesLRB.right.map(function (graphNode) {
           var graphNodeData = graphNode.data();
@@ -73309,8 +73312,23 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           var graphNode = graphNodes.$id(cytoNode.id());
           var graphNodeData = graphNode.data();
           var graphClasses = graphNodeData.cytoClasses;
+
+          switch (cyNode.data("type")) {
+            case "observer":
+            case "observable":
+              break;
+
+            default:
+              if (cyNode.data("value") !== graphNodeData.value) {
+                someNodeHasNewLabel = true;
+              }
+
+              break;
+          }
+
           cyNode // update to latest data
-          .data(graphNodeData).classes(graphClasses).removeStyle().style(graphNodeData.cytoStyle); // .animate({
+          .data(graphNodeData) // prolly due to how accessor methods are done, this data value must be placed manually
+          .data("value", graphNodeData.value).classes(graphClasses).removeStyle().style(graphNodeData.cytoStyle); // .animate({
           //   // style: graphNodeData.cytoStyle,
           //   duration: cytoDur
           // });
@@ -73376,13 +73394,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         }); // if no new edges appeared or disappeared
         // or no nodes entered or exited
 
-        if (edgesLRB.right.length === edgesLRB.left.length && nodesLRB.right.length === 0 && nodesLRB.left.length === 0) {
+        if (edgesLRB.right.length === edgesLRB.left.length && nodesLRB.right.length === 0 && nodesLRB.left.length === 0 && !someNodeHasNewLabel) {
           // do not re-render layout... just call onLayoutReady
           onLayoutReady.map(function (fn) {
             fn();
           });
         } else {
-          // TODO-barret move this method to layout
           // calculate a new layout
           // time expensive!!!
           // stop previous layout
@@ -73764,8 +73781,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       key: "inIsolate",
       get: function get() {
         return this.statusArr.containsStatus(_logStates.LogStates.isolateEnter);
-      } // get inInvalidate() {return this.statusArr.containsStatus("invalidateStart");}
-
+      }
+    }, {
+      key: "inInvalidate",
+      get: function get() {
+        return this.statusArr.containsStatus("invalidateStart");
+      }
     }, {
       key: "inIsolateInvalidate",
       get: function get() {
@@ -73779,7 +73800,26 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     }, {
       key: "cytoLabel",
       get: function get() {
-        return this.label;
+        var label = "".concat(this.label);
+
+        if (this.type === "observer" || this.type === "observable") {
+          return label;
+        } // not a middle or end node...
+
+
+        var value = "".concat(this.value);
+
+        if (value.length > 0) {
+          // only if there are no new lines...
+          if (!value.includes("\\n")) {
+            // trim beginning of string
+            value = value.replace(/^\s+/, "");
+          }
+
+          return "".concat(label, " - '").concat(value, "'");
+        }
+
+        return label;
       }
     }, {
       key: "cytoClasses",
@@ -74471,6 +74511,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     return getLabel(entry.reactId);
   };
 
+  var getReactIdValue = function getReactIdValue(entry) {
+    var node = _rlog.rlog.graph.nodes.get(entry.reactId);
+
+    if (node.value) {
+      return node.value;
+    } else {
+      return "<unknown>";
+    }
+  };
+
   var monospaced = function monospaced(txt) {
     return "<span class=\"monospaced\">".concat(txt, "</span>");
   };
@@ -74590,7 +74640,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       case _logStates.LogStates.valueChange:
         {
           var valueChangeEntry = entry;
-          return "".concat(monospaced(getReactIdLabel(valueChangeEntry)), " has a new value");
+          return "".concat(monospaced(getReactIdLabel(valueChangeEntry)), " has a new value: ").concat(monospaced(getReactIdValue(valueChangeEntry)));
         }
 
       default:

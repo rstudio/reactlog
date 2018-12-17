@@ -717,6 +717,7 @@ class GraphAtStep {
     // .removeStyle()
 
     let onLayoutReady = [];
+    let someNodeHasNewLabel = false;
 
     // enter visible nodes
     nodesLRB.right.map(function(graphNode: CytoscapeNode) {
@@ -737,9 +738,22 @@ class GraphAtStep {
       let graphNodeData = (graphNode.data(): Node);
       let graphClasses = graphNodeData.cytoClasses;
 
+      switch (cyNode.data("type")) {
+        case "observer":
+        case "observable":
+          break;
+        default:
+          if (cyNode.data("value") !== graphNodeData.value) {
+            someNodeHasNewLabel = true;
+          }
+          break;
+      }
+
       cyNode
         // update to latest data
         .data(graphNodeData)
+        // prolly due to how accessor methods are done, this data value must be placed manually
+        .data("value", graphNodeData.value)
         .classes(graphClasses)
         .removeStyle()
         .style(graphNodeData.cytoStyle);
@@ -828,14 +842,14 @@ class GraphAtStep {
     if (
       edgesLRB.right.length === edgesLRB.left.length &&
       nodesLRB.right.length === 0 &&
-      nodesLRB.left.length === 0
+      nodesLRB.left.length === 0 &&
+      !someNodeHasNewLabel
     ) {
       // do not re-render layout... just call onLayoutReady
       onLayoutReady.map(function(fn) {
         fn();
       });
     } else {
-      // TODO-barret move this method to layout
       // calculate a new layout
       // time expensive!!!
 
