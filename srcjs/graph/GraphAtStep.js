@@ -752,6 +752,8 @@ class GraphAtStep {
       cyNode
         // update to latest data
         .data(graphNodeData)
+        // prolly due to how accessor methods are done, this data value must be placed manually
+        .data("value", graphNodeData.value)
         .classes(graphClasses)
         .removeStyle()
         .style(graphNodeData.cytoStyle);
