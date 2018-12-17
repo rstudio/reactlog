@@ -71295,7 +71295,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     hidden: {
       node: {
         // visibility: "hidden",
-        opacity: 0.5
+        opacity: 0.5,
+        label: "data(label)" // do not display a value and only the raw label
+
       },
       edge: {
         // visibility: "hidden",
@@ -73325,7 +73327,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           }
 
           cyNode // update to latest data
-          .data(graphNodeData).classes(graphClasses).removeStyle().style(graphNodeData.cytoStyle); // .animate({
+          .data(graphNodeData) // prolly due to how accessor methods are done, this data value must be placed manually
+          .data("value", graphNodeData.value).classes(graphClasses).removeStyle().style(graphNodeData.cytoStyle); // .animate({
           //   // style: graphNodeData.cytoStyle,
           //   duration: cytoDur
           // });
@@ -73778,8 +73781,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       key: "inIsolate",
       get: function get() {
         return this.statusArr.containsStatus(_logStates.LogStates.isolateEnter);
-      } // get inInvalidate() {return this.statusArr.containsStatus("invalidateStart");}
-
+      }
+    }, {
+      key: "inInvalidate",
+      get: function get() {
+        return this.statusArr.containsStatus("invalidateStart");
+      }
     }, {
       key: "inIsolateInvalidate",
       get: function get() {
@@ -73793,7 +73800,26 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     }, {
       key: "cytoLabel",
       get: function get() {
-        return this.label;
+        var label = "".concat(this.label);
+
+        if (this.type === "observer" || this.type === "observable") {
+          return label;
+        } // not a middle or end node...
+
+
+        var value = "".concat(this.value);
+
+        if (value.length > 0) {
+          // only if there are no new lines...
+          if (!value.includes("\\n")) {
+            // trim beginning of string
+            value = value.replace(/^\s+/, "");
+          }
+
+          return "".concat(label, " - '").concat(value, "'");
+        }
+
+        return label;
       }
     }, {
       key: "cytoClasses",
@@ -74485,6 +74511,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     return getLabel(entry.reactId);
   };
 
+  var getReactIdValue = function getReactIdValue(entry) {
+    var node = _rlog.rlog.graph.nodes.get(entry.reactId);
+
+    if (node.value) {
+      return node.value;
+    } else {
+      return "<unknown>";
+    }
+  };
+
   var monospaced = function monospaced(txt) {
     return "<span class=\"monospaced\">".concat(txt, "</span>");
   };
@@ -74604,7 +74640,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       case _logStates.LogStates.valueChange:
         {
           var valueChangeEntry = entry;
-          return "".concat(monospaced(getReactIdLabel(valueChangeEntry)), " has a new value");
+          return "".concat(monospaced(getReactIdLabel(valueChangeEntry)), " has a new value: ").concat(monospaced(getReactIdValue(valueChangeEntry)));
         }
 
       default:
