@@ -73294,7 +73294,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         var graphNodes = graphCyto.nodes();
         var nodesLRB = cyNodes.diff(graphNodes); // .removeStyle()
 
-        var onLayoutReady = []; // enter visible nodes
+        var onLayoutReady = [];
+        var someNodeHasNewLabel = false; // enter visible nodes
 
         nodesLRB.right.map(function (graphNode) {
           var graphNodeData = graphNode.data();
@@ -73309,6 +73310,20 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           var graphNode = graphNodes.$id(cytoNode.id());
           var graphNodeData = graphNode.data();
           var graphClasses = graphNodeData.cytoClasses;
+
+          switch (cyNode.data("type")) {
+            case "observer":
+            case "observable":
+              break;
+
+            default:
+              if (cyNode.data("value") !== graphNodeData.value) {
+                someNodeHasNewLabel = true;
+              }
+
+              break;
+          }
+
           cyNode // update to latest data
           .data(graphNodeData).classes(graphClasses).removeStyle().style(graphNodeData.cytoStyle); // .animate({
           //   // style: graphNodeData.cytoStyle,
@@ -73376,13 +73391,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         }); // if no new edges appeared or disappeared
         // or no nodes entered or exited
 
-        if (edgesLRB.right.length === edgesLRB.left.length && nodesLRB.right.length === 0 && nodesLRB.left.length === 0) {
+        if (edgesLRB.right.length === edgesLRB.left.length && nodesLRB.right.length === 0 && nodesLRB.left.length === 0 && !someNodeHasNewLabel) {
           // do not re-render layout... just call onLayoutReady
           onLayoutReady.map(function (fn) {
             fn();
           });
         } else {
-          // TODO-barret move this method to layout
           // calculate a new layout
           // time expensive!!!
           // stop previous layout

@@ -717,6 +717,7 @@ class GraphAtStep {
     // .removeStyle()
 
     let onLayoutReady = [];
+    let someNodeHasNewLabel = false;
 
     // enter visible nodes
     nodesLRB.right.map(function(graphNode: CytoscapeNode) {
@@ -736,6 +737,17 @@ class GraphAtStep {
       let graphNode = (graphNodes.$id(cytoNode.id()): CytoscapeNode);
       let graphNodeData = (graphNode.data(): Node);
       let graphClasses = graphNodeData.cytoClasses;
+
+      switch (cyNode.data("type")) {
+        case "observer":
+        case "observable":
+          break;
+        default:
+          if (cyNode.data("value") !== graphNodeData.value) {
+            someNodeHasNewLabel = true;
+          }
+          break;
+      }
 
       cyNode
         // update to latest data
@@ -828,14 +840,14 @@ class GraphAtStep {
     if (
       edgesLRB.right.length === edgesLRB.left.length &&
       nodesLRB.right.length === 0 &&
-      nodesLRB.left.length === 0
+      nodesLRB.left.length === 0 &&
+      !someNodeHasNewLabel
     ) {
       // do not re-render layout... just call onLayoutReady
       onLayoutReady.map(function(fn) {
         fn();
       });
     } else {
-      // TODO-barret move this method to layout
       // calculate a new layout
       // time expensive!!!
 
