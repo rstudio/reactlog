@@ -1651,6 +1651,13 @@ cytoscape-dagre@2.x:
   dependencies:
     dagre "^0.8.2"
 
+cytoscape-klay@^3.1.2:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/cytoscape-klay/-/cytoscape-klay-3.1.2.tgz#02d1c699d03ee23ae7f57c1b9c2358cf1f847b0b"
+  integrity sha512-CrHwBxQohyAi5FxpwGio36zlGfKYbM7tUe1CxSkQKoYy5Cv2SmjORCPihl46sCCgttyp1b8ohprCI0r934yDqQ==
+  dependencies:
+    klayjs "^0.4.1"
+
 cytoscape@3.x:
   version "3.2.20"
   resolved "https://registry.yarnpkg.com/cytoscape/-/cytoscape-3.2.20.tgz#d1519f2f6d6b48446f3ac736d8a64c3e56e9c366"
@@ -3506,6 +3513,11 @@ kind-of@^5.0.0:
 kind-of@^6.0.0, kind-of@^6.0.2:
   version "6.0.2"
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.2.tgz#01146b36a6218e64e58f3a8d66de5d7fc6f6d051"
+
+klayjs@^0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/klayjs/-/klayjs-0.4.1.tgz#5bf9fadc7a3e44b94082bba501e7d803076dcfc2"
+  integrity sha1-W/n63Ho+RLlAgrulAefYAwdtz8I=
 
 lcid@^1.0.0:
   version "1.0.0"

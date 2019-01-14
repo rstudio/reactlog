@@ -2,17 +2,25 @@
 
 import cytoscape from "cytoscape"; // flowlint-line untyped-import:off
 import dagre from "cytoscape-dagre"; // flowlint-line untyped-import:off
+import klay from "cytoscape-klay"; // flowlint-line untyped-import:off
 
 import type { CytoscapeElement, CytoscapeLibrary } from "./cytoFlowType";
 
-(cytoscape: CytoscapeLibrary).use(dagre);
+(cytoscape: CytoscapeLibrary).use(klay);
 
 let layoutOptions = {
   // whether to fit to viewport
   //   do not want to fit to viewport as user may have zoomed/panned
   fit: false,
 
-  name: "dagre",
+  klay: {
+    // nodeLayering: "LONGEST_PATH",
+    nodeLayering: "NETWORK_SIMPLEX",
+    edgeRouting: "SPLINES",
+    direction: "RIGHT",
+  },
+
+  name: "klay",
   rankDir: "LR", // 'TB' for top to bottom flow, 'LR' for left to right,
   rankSep: 150, // the separation between node columns
   nodeSep: 10, // the separation within a node column
