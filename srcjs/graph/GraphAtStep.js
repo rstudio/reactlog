@@ -2,6 +2,8 @@
 
 import _sortedIndex from "lodash/sortedIndex";
 import _sortedIndexOf from "lodash/sortedIndexOf";
+import _sortedUniq from "lodash/sortedUniq";
+import _sortBy from "lodash/sortBy";
 import _isNil from "lodash/isNil";
 import _union from "lodash/union";
 import _indexOf from "lodash/indexOf";
@@ -200,11 +202,15 @@ class GraphAtStep {
       }
     }
 
-    this.stepsVisible = []
-      .concat(this.steps)
-      .concat(this.stepsUserMark)
-      .concat(this.stepsIdle)
-      .sort((a, b) => a - b);
+    this.stepsVisible =
+      // get unique elements of sorted list (guarantee it!)
+      _sortedUniq(
+        // sort integer list
+        _sortBy(
+          // get union of all visible locations
+          _union(this.steps, this.stepsUserMark, this.stepsIdle)
+        )
+      );
 
     // this.graphCache = {};
     // this.cacheStep = 250;
