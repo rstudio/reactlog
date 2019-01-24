@@ -843,7 +843,8 @@ class GraphAtStep {
       edgesLRB.right.length === edgesLRB.left.length &&
       nodesLRB.right.length === 0 &&
       nodesLRB.left.length === 0 &&
-      !someNodeHasNewLabel
+      !someNodeHasNewLabel &&
+      cytoOptions.forceRedraw !== true
     ) {
       // do not re-render layout... just call onLayoutReady
       onLayoutReady.map(function(fn) {

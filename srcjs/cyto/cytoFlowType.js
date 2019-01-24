@@ -108,6 +108,7 @@ type CytoscapeOptions = {
     position: { x: number, y: number }
   ) => { x: number, y: number }, // transform a given node position. Useful for changing flow direction in discrete layouts
   zoom?: number, // zoom level as a positive number to set after animation
+  forceRedraw?: boolean,
 };
 
 export type {

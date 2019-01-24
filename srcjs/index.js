@@ -1,6 +1,7 @@
 // @flow
 
 import $ from "jquery";
+import _debounce from "lodash/debounce";
 
 import { rlog } from "./rlog";
 
@@ -111,6 +112,20 @@ $(function() {
     $("#logEntry"),
     rlog.log,
     rlog.getGraph.stepsVisible.length
+  );
+
+  window.addEventListener(
+    "resize",
+    _debounce(
+      function(e) {
+        // tell cytoscape to update it's layout bounds
+        rlog.cyto.resize();
+        // force a redraw
+        updateGraph.atTick(rlog.curTick, { fit: true, forceRedraw: true });
+      },
+      250,
+      { maxWait: 1000 }
+    )
   );
 
   $("#search").on("input", function(e) {

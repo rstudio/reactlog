@@ -73394,7 +73394,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         }); // if no new edges appeared or disappeared
         // or no nodes entered or exited
 
-        if (edgesLRB.right.length === edgesLRB.left.length && nodesLRB.right.length === 0 && nodesLRB.left.length === 0 && !someNodeHasNewLabel) {
+        if (edgesLRB.right.length === edgesLRB.left.length && nodesLRB.right.length === 0 && nodesLRB.left.length === 0 && !someNodeHasNewLabel && cytoOptions.forceRedraw !== true) {
           // do not re-render layout... just call onLayoutReady
           onLayoutReady.map(function (fn) {
             fn();
@@ -74043,15 +74043,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js"), __webpack_require__(/*! ./rlog */ "./srcjs/rlog.js"), __webpack_require__(/*! ./log/logStates */ "./srcjs/log/logStates.js"), __webpack_require__(/*! ./graph/GraphAtStep */ "./srcjs/graph/GraphAtStep.js"), __webpack_require__(/*! ./style/colors */ "./srcjs/style/colors.js"), __webpack_require__(/*! ./cyto/cytoscapeInit */ "./srcjs/cyto/cytoscapeInit.js"), __webpack_require__(/*! ./layout/keydown */ "./srcjs/layout/keydown.js"), __webpack_require__(/*! ./updateGraph */ "./srcjs/updateGraph/index.js"), __webpack_require__(/*! ./layout/logEntry */ "./srcjs/layout/logEntry.js"), __webpack_require__(/*! ./layout/progressBar */ "./srcjs/layout/progressBar.js"), __webpack_require__(/*! ./log/initStep */ "./srcjs/log/initStep.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js"), __webpack_require__(/*! lodash/debounce */ "./node_modules/lodash/debounce.js"), __webpack_require__(/*! ./rlog */ "./srcjs/rlog.js"), __webpack_require__(/*! ./log/logStates */ "./srcjs/log/logStates.js"), __webpack_require__(/*! ./graph/GraphAtStep */ "./srcjs/graph/GraphAtStep.js"), __webpack_require__(/*! ./style/colors */ "./srcjs/style/colors.js"), __webpack_require__(/*! ./cyto/cytoscapeInit */ "./srcjs/cyto/cytoscapeInit.js"), __webpack_require__(/*! ./layout/keydown */ "./srcjs/layout/keydown.js"), __webpack_require__(/*! ./updateGraph */ "./srcjs/updateGraph/index.js"), __webpack_require__(/*! ./layout/logEntry */ "./srcjs/layout/logEntry.js"), __webpack_require__(/*! ./layout/progressBar */ "./srcjs/layout/progressBar.js"), __webpack_require__(/*! ./log/initStep */ "./srcjs/log/initStep.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
-})(this, function (_jquery, _rlog, _logStates, _GraphAtStep, _colors, cytoscapeInit, layoutKeydown, updateGraph, logEntry, progressBar, _initStep) {
+})(this, function (_jquery, _debounce2, _rlog, _logStates, _GraphAtStep, _colors, cytoscapeInit, layoutKeydown, updateGraph, logEntry, progressBar, _initStep) {
   "use strict";
 
   _jquery = _interopRequireDefault(_jquery);
+  _debounce2 = _interopRequireDefault(_debounce2);
   _colors = _interopRequireDefault(_colors);
   cytoscapeInit = _interopRequireWildcard(cytoscapeInit);
   layoutKeydown = _interopRequireWildcard(layoutKeydown);
@@ -74126,6 +74127,18 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     }
 
     logEntry.setContainers((0, _jquery.default)("#eventTimeNum"), (0, _jquery.default)("#eventSessionNum"), (0, _jquery.default)("#eventStepNum"), (0, _jquery.default)("#eventStatus"), (0, _jquery.default)("#logEntry"), _rlog.rlog.log, _rlog.rlog.getGraph.stepsVisible.length);
+    window.addEventListener("resize", (0, _debounce2.default)(function (e) {
+      // tell cytoscape to update it's layout bounds
+      _rlog.rlog.cyto.resize(); // force a redraw
+
+
+      updateGraph.atTick(_rlog.rlog.curTick, {
+        fit: true,
+        forceRedraw: true
+      });
+    }, 250, {
+      maxWait: 1000
+    }));
     (0, _jquery.default)("#search").on("input", function (e) {
       updateGraph.withSearchString((0, _jquery.default)(e.target).val());
     });
