@@ -11,7 +11,7 @@ let nextIdle = function(cytoOptions?: CytoscapeOptions = {}): boolean {
   //   skipping the very close queue empties (which would be skipped on next step)
   let nextTick = rlog.getGraph.nextStep(rlog.curTick);
   // move to queue empty
-  for (i = 0; i < rlog.getGraph.stepsOutputCalc.length; i++) {
+  for (i = 0; i < rlog.getGraph.stepsIdle.length; i++) {
     val = rlog.getGraph.stepsIdle[i];
     if (nextTick < val) {
       updateGraph(val, cytoOptions);
