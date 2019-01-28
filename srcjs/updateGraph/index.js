@@ -16,3 +16,4 @@ export * from "./searchString";
 export * from "./hoverStickyFilterSearch";
 export * from "./userMarks";
 export * from "./buttons";
+export * from "./resize";

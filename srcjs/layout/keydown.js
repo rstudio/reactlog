@@ -166,6 +166,11 @@ let onKeydown = function(e: JQueryInputEventObject): void {
       $("#logEntry").css("display", "inline");
     }
   }
+
+  if (e.which === 70) {
+    // f // for fit graph
+    updateGraph.resize();
+  }
 };
 
 let addKeydown = function(jqueryContainer: JQuery) {

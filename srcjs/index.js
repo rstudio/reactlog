@@ -118,10 +118,7 @@ $(function() {
     "resize",
     _debounce(
       function(e) {
-        // tell cytoscape to update it's layout bounds
-        rlog.cyto.resize();
-        // force a redraw
-        updateGraph.atTick(rlog.curTick, { fit: true, forceRedraw: true });
+        updateGraph.resize();
       },
       250,
       { maxWait: 1000 }
