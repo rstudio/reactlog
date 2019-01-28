@@ -73075,7 +73075,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
         var filteredStepsVisible = [];
         var graphAtEnd = this.graphAtStep(this.log.length);
-        var visibleStep, logEntry, ii, i;
+        var visibleStep, logEntry, i;
         var filterReactIds = this.filterDatas.map(function (node) {
           return node.reactId;
         }); // todo must be actual log. not visible steps
@@ -74246,14 +74246,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
     logEntry.setContainers((0, _jquery.default)("#eventTimeNum"), (0, _jquery.default)("#eventSessionNum"), (0, _jquery.default)("#eventStepNum"), (0, _jquery.default)("#eventStatus"), (0, _jquery.default)("#logEntry"), _rlog.rlog.log, _rlog.rlog.getGraph.stepsVisible.length);
     window.addEventListener("resize", (0, _debounce2.default)(function (e) {
-      // tell cytoscape to update it's layout bounds
-      _rlog.rlog.cyto.resize(); // force a redraw
-
-
-      updateGraph.atTick(_rlog.rlog.curTick, {
-        fit: true,
-        forceRedraw: true
-      });
+      updateGraph.resize();
     }, 250, {
       maxWait: 1000
     }));
@@ -74497,6 +74490,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       } else {
         (0, _jquery.default)("#logEntry").css("display", "inline");
       }
+    }
+
+    if (e.which === 70) {
+      // f // for fit graph
+      updateGraph.resize();
     }
   };
 
@@ -75485,12 +75483,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ./atTick */ "./srcjs/updateGraph/atTick.js"), __webpack_require__(/*! ./outputCalc */ "./srcjs/updateGraph/outputCalc.js"), __webpack_require__(/*! ./idle */ "./srcjs/updateGraph/idle.js"), __webpack_require__(/*! ./step */ "./srcjs/updateGraph/step.js"), __webpack_require__(/*! ./tick */ "./srcjs/updateGraph/tick.js"), __webpack_require__(/*! ./searchString */ "./srcjs/updateGraph/searchString.js"), __webpack_require__(/*! ./hoverStickyFilterSearch */ "./srcjs/updateGraph/hoverStickyFilterSearch.js"), __webpack_require__(/*! ./userMarks */ "./srcjs/updateGraph/userMarks.js"), __webpack_require__(/*! ./buttons */ "./srcjs/updateGraph/buttons.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ./atTick */ "./srcjs/updateGraph/atTick.js"), __webpack_require__(/*! ./outputCalc */ "./srcjs/updateGraph/outputCalc.js"), __webpack_require__(/*! ./idle */ "./srcjs/updateGraph/idle.js"), __webpack_require__(/*! ./step */ "./srcjs/updateGraph/step.js"), __webpack_require__(/*! ./tick */ "./srcjs/updateGraph/tick.js"), __webpack_require__(/*! ./searchString */ "./srcjs/updateGraph/searchString.js"), __webpack_require__(/*! ./hoverStickyFilterSearch */ "./srcjs/updateGraph/hoverStickyFilterSearch.js"), __webpack_require__(/*! ./userMarks */ "./srcjs/updateGraph/userMarks.js"), __webpack_require__(/*! ./buttons */ "./srcjs/updateGraph/buttons.js"), __webpack_require__(/*! ./resize */ "./srcjs/updateGraph/resize.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
-})(this, function (_exports, _atTick, _outputCalc, _idle, _step, _tick, _searchString, _hoverStickyFilterSearch, _userMarks, _buttons) {
+})(this, function (_exports, _atTick, _outputCalc, _idle, _step, _tick, _searchString, _hoverStickyFilterSearch, _userMarks, _buttons, _resize) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
@@ -75607,6 +75605,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       enumerable: true,
       get: function get() {
         return _buttons[key];
+      }
+    });
+  });
+  Object.keys(_resize).forEach(function (key) {
+    if (key === "default" || key === "__esModule") return;
+    if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+    Object.defineProperty(_exports, key, {
+      enumerable: true,
+      get: function get() {
+        return _resize[key];
       }
     });
   });
@@ -75730,6 +75738,44 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   };
 
   _exports.firstOutputCalc = firstOutputCalc;
+});
+
+/***/ }),
+
+/***/ "./srcjs/updateGraph/resize.js":
+/*!*************************************!*\
+  !*** ./srcjs/updateGraph/resize.js ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
+  if (true) {
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ../rlog */ "./srcjs/rlog.js"), __webpack_require__(/*! ../updateGraph */ "./srcjs/updateGraph/index.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+  } else { var mod; }
+})(this, function (_exports, _rlog, _updateGraph) {
+  "use strict";
+
+  Object.defineProperty(_exports, "__esModule", {
+    value: true
+  });
+  _exports.resize = void 0;
+
+  var resize = function resize() {
+    // tell cytoscape to update it's layout bounds
+    _rlog.rlog.cyto.resize(); // force a redraw
+
+
+    _updateGraph.updateGraph.atTick(_rlog.rlog.curTick, {
+      fit: true,
+      forceRedraw: true
+    });
+  };
+
+  _exports.resize = resize;
 });
 
 /***/ }),

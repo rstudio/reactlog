@@ -235,7 +235,7 @@ class GraphAtStep {
 
     let filteredStepsVisible = [];
     let graphAtEnd = this.graphAtStep(this.log.length);
-    let visibleStep, logEntry, ii, i;
+    let visibleStep, logEntry, i;
 
     let filterReactIds = this.filterDatas.map(function(node) {
       return node.reactId;
