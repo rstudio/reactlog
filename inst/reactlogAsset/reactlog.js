@@ -73214,201 +73214,14 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
         if (idx >= this.filteredStepsVisible.length || idx < 0) return -1;
-        return this.filteredStepsVisible[idx]; //
-        //
-        // // if no filtering... get next step from step array
-        // if (!hasLength(this.filterDatas)) {
-        //   let nextStepPos = _sortedIndex(this.stepsVisible, k);
-        //   if (_sortedIndexOf(this.stepsVisible, k) >= 0) {
-        //     // go to the next step location
-        //     nextStepPos += 1;
-        //   }
-        //   // else, does not exist, so it is directly there
-        //   nextStepPos = Math.min(this.stepsVisible.length - 1, nextStepPos);
-        //   return this.stepsVisible[nextStepPos];
-        // }
-        //
-        // let graphAtK = this.graphAtStep(k);
-        //
-        // let logEntry, i, ret;
-        //
-        // for (i = k + 1; i < this.log.length - 1; i++) {
-        //   logEntry = this.log[i];
-        //
-        //   // skip if if it's not a valid step anyways...
-        //   if (_sortedIndexOf(this.stepsVisible, logEntry.step) === -1) {
-        //     continue;
-        //   }
-        //   // console.log(logEntry);
-        //   ret = logEntry.step;
-        //   switch (logEntry.action) {
-        //     case LogStates.dependsOn: {
-        //       if (!hasLength(this.filterDatas)) {
-        //         return ret;
-        //       }
-        //
-        //       // lazy eval decendents and ancestors
-        //       let decendents = undefined,
-        //         ancestors = undefined;
-        //       let filterReactIds = this.filterDatas.map(function(node) {
-        //         return node.reactId;
-        //       });
-        //       let graph = this.graphAtStep(i);
-        //       decendents = _union(
-        //         filterReactIds,
-        //         graph.decendentNodeIdsForDatas(this.filterDatas)
-        //       );
-        //       ancestors = _union(
-        //         filterReactIds,
-        //         graph.ancestorNodeIdsForDatas(this.filterDatas)
-        //       );
-        //       // reactId is target (ends at ancestors)
-        //       if (_indexOf(ancestors, logEntry.reactId) !== -1) {
-        //         return ret;
-        //       }
-        //       // depOnReactId is source (starts from children)
-        //       if (_indexOf(decendents, logEntry.depOnReactId) !== -1) {
-        //         return ret;
-        //       }
-        //       break;
-        //     }
-        //     case LogStates.dependsOnRemove:
-        //       // check for both to and from (since it must exist beforehand)
-        //       if (
-        //         graphAtK.nodes.has(logEntry.reactId) &&
-        //         graphAtK.nodes.has(logEntry.depOnReactId)
-        //       ) {
-        //         return ret;
-        //       }
-        //       break;
-        //
-        //     case LogStates.define:
-        //     case LogStates.updateNodeLabel:
-        //       if (this.searchRegex) {
-        //         if (this.searchRegex.test(logEntry.label)) {
-        //           // if there is a search regex and the value is defined
-        //           return ret;
-        //         }
-        //       }
-        //       break;
-        //     case LogStates.freeze:
-        //     case LogStates.thaw:
-        //     case LogStates.valueChange:
-        //     case LogStates.enter:
-        //     case LogStates.exit:
-        //     case LogStates.invalidateLater:
-        //     case LogStates.invalidateStart:
-        //     case LogStates.invalidateEnd:
-        //     case LogStates.isolateEnter:
-        //     case LogStates.isolateExit:
-        //     case LogStates.isolateInvalidateStart:
-        //     case LogStates.isolateInvalidateEnd:
-        //       if (graphAtK.nodes.has(logEntry.reactId)) {
-        //         return ret;
-        //       }
-        //       break;
-        //
-        //     case LogStates.idle:
-        //     case LogStates.userMark:
-        //       return ret;
-        //
-        //     case LogStates.createContext:
-        //     case LogStates.asyncStart:
-        //     case LogStates.asyncStop:
-        //       break;
-        //
-        //     default:
-        //       console.error(logEntry);
-        //       throw "unknown logEntry action in 'next'";
-        //   }
-        // }
-        //
-        // // return the max step possible
-        // return -1;
+        return this.filteredStepsVisible[idx];
       }
     }, {
       key: "prevStep",
       value: function prevStep(k) {
         var idx = (0, _sortedIndex2.default)(this.filteredStepsVisible, k) - 1;
         if (idx < 0 || idx >= this.filteredStepsVisible.length) return -1;
-        return this.filteredStepsVisible[idx]; // // if no filtering... get next step from step array
-        // if (!hasLength(this.filterDatas)) {
-        //   let prevStepPos = Math.max(_sortedIndex(this.stepsVisible, k) - 1, 0);
-        //   return this.stepsVisible[prevStepPos];
-        // }
-        //
-        // let graph = this.graphAtStep(k);
-        // let logEntry, logItem, i, ret;
-        //
-        // for (i = k - 1; i >= 0; i--) {
-        //   logItem = this.log[i];
-        //
-        //   // skip if if it's not a valid step anyways...
-        //   if (_sortedIndexOf(this.stepsVisible, logItem.step) === -1) {
-        //     continue;
-        //   }
-        //   ret = logItem.step;
-        //   // calculate a new graph every time
-        //   graph = this.graphAtStep(i);
-        //   switch (logItem.action) {
-        //     case LogStates.dependsOn:
-        //     case LogStates.dependsOnRemove:
-        //       // check for both to and from (since it must exist beforehand)
-        //       if (
-        //         graph.nodes.has(logItem.reactId) &&
-        //         graph.nodes.has(logItem.depOnReactId)
-        //       ) {
-        //         // TODO-barret with filtered data, the depOnReactId could be the bridge between existing graph and new subgraph.  This edge should not be included
-        //         return ret;
-        //       }
-        //       break;
-        //
-        //     case LogStates.freeze:
-        //     case LogStates.thaw:
-        //     case LogStates.updateNodeLabel:
-        //     case LogStates.valueChange:
-        //     case LogStates.enter:
-        //     case LogStates.exit:
-        //     case LogStates.invalidateLater:
-        //     case LogStates.invalidateStart:
-        //     case LogStates.invalidateEnd:
-        //     case LogStates.isolateEnter:
-        //     case LogStates.isolateExit:
-        //     case LogStates.isolateInvalidateStart:
-        //     case LogStates.isolateInvalidateEnd:
-        //       if (graph.nodes.has(logItem.reactId)) {
-        //         return ret;
-        //       }
-        //       break;
-        //
-        //     case LogStates.define:
-        //       logEntry = (logItem: LogEntryDefineType);
-        //       if (
-        //         _some(this.filterDatas, function(filterData) {
-        //           return filterData.reactId === logEntry.reactId;
-        //         })
-        //       ) {
-        //         // some filterdata is defined... so it must be a next step
-        //         return ret;
-        //       }
-        //       break;
-        //
-        //     case LogStates.idle:
-        //     case LogStates.userMark:
-        //       return ret;
-        //
-        //     case LogStates.createContext:
-        //     case LogStates.asyncStart:
-        //     case LogStates.asyncStop:
-        //       break;
-        //
-        //     default:
-        //       console.error(logItem);
-        //       throw "unknown logItem action in 'prev'";
-        //   }
-        // }
-        //
-        // return -1;
+        return this.filteredStepsVisible[idx];
       }
     }, {
       key: "atStep",
@@ -73565,129 +73378,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         var callUpdateFinal = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
         this.updateFilterDatasReset(false);
         this.updateSearchRegex(null, callUpdateFinal);
-      } // // set the value outright
-      // updateHoverData(hoverData) {
-      //   this.hoverData = hoverData;
-      //   // var hoverInfo = this.hoverInfo;
-      //   // focusedDatas.map(function(data) {
-      //   //   hoverInfo[data.hoverKey].toFocused()
-      //   // })
-      //   // notFocusedDatas.map(function(data) {
-      //   //   hoverInfo[data.hoverKey].toNotFocused()
-      //   // })
-      // }
-      //
-      // resetStickyInfo() {
-      //   this.stickyData = null;
-      //   // var anySticky = _some(this.hoverInfo, ["sticky", true])
-      //   // if (anySticky) {
-      //   //   _mapValues(this.hoverInfo, function(hoverStatus, key) {
-      //   //     hoverStatus.toNotSticky()
-      //   //     hoverStatus.toFocused()
-      //   //   })
-      //   // }
-      //   // this.hoverDefault = "focused";
-      //   return true;
-      // }
-      // updateStickyInfo(stickyData) {
-      //   this.stickyData = stickyData;
-      //   // var hoverInfo = this.hoverInfo;
-      //   // stickyDatas.map(function(data) {
-      //   //   hoverInfo[data.hoverKey].toSticky()
-      //   // })
-      //   // notStickyDatas.map(function(data) {
-      //   //   hoverInfo[data.hoverKey].toNotSticky()
-      //   // })
-      // }
-      // filterLogOnDatas(datas: Array<SomeGraphData>) {
-      //   let nodeMap: Map<ReactIdType, Node> = new Map();
-      //   datas.map(function(data) {
-      //     if (data instanceof Node) {
-      //       nodeMap.set(data.reactId, data);
-      //     }
-      //   });
-      //   let newLog = _filter(this.originalLog, function(logItem) {
-      //     switch (logItem.action) {
-      //       case LogStates.dependsOn:
-      //       case LogStates.dependsOnRemove:
-      //         // check for both to and from
-      //         return (
-      //           nodeMap.has(logItem.reactId) && nodeMap.has(logItem.depOnReactId)
-      //         );
-      //       case LogStates.freeze:
-      //       case LogStates.thaw:
-      //       case LogStates.define:
-      //       case LogStates.updateNodeLabel:
-      //       case LogStates.valueChange:
-      //       case LogStates.invalidateStart:
-      //       case LogStates.enter:
-      //       case LogStates.isolateInvalidateStart:
-      //       case LogStates.isolateEnter:
-      //       case LogStates.invalidateEnd:
-      //       case LogStates.exit:
-      //       case LogStates.isolateExit:
-      //       case LogStates.isolateInvalidateEnd:
-      //         // check for reactId
-      //         return nodeMap.has(logItem.reactId);
-      //       case LogStates.idle:
-      //       case LogStates.asyncStart:
-      //       case LogStates.asyncStop:
-      //       case LogStates.userMark:
-      //         // always add
-      //         return true;
-      //       default:
-      //         console.error("logItem.action: ", logItem.action, logItem);
-      //         throw logItem;
-      //     }
-      //   });
-      //   console.log("new Log: ", newLog);
-      //   return newLog;
-      // }
-      // filterDatasLog() {
-      //   var nodeMap = {};
-      //   datas.map(function(data) {
-      //     if (data instanceof Node) {
-      //       nodeMap[data.reactId] = data;
-      //     }
-      //   });
-      //   var newLog = _filter(this.originalLog, function(logEntry) {
-      //     switch (logEntry.action) {
-      //       case "dependsOn":
-      //       case "dependsOnRemove":
-      //         // check for both to and from
-      //         return (
-      //           _has(nodeMap, logEntry.reactId) &&
-      //           _has(nodeMap, logEntry.depOnReactId)
-      //         );
-      //         break;
-      //       case "define":
-      //       case "updateNodeLabel":
-      //       case "valueChange":
-      //       case "invalidateStart":
-      //       case "enter":
-      //       case "isolateInvalidateStart":
-      //       case "isolateEnter":
-      //       case "invalidateEnd":
-      //       case "exit":
-      //       case "isolateExit":
-      //       case "isolateInvalidateEnd":
-      //         // check for reactId
-      //         return _has(nodeMap, logEntry.reactId);
-      //         break;
-      //       case "idle":
-      //       case "asyncStart":
-      //       case "asyncStop":
-      //         // always add
-      //         return _has(nodeMap, logEntry.reactId);
-      //       default:
-      //         console.error("logEntry.action: ", logEntry.action, data);
-      //         throw data;
-      //     }
-      //   });
-      //   console.log("new Log: ", newLog);
-      //   return newLog;
-      // }
-      // computes a graph containing all points and edges possible,
+      } // computes a graph containing all points and edges possible,
       //   extending the original graph at step k
 
     }, {
@@ -75756,39 +75447,14 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
   var nextIdle = function nextIdle() {
     var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    return (0, _outputCalc.nextStepInArr)(_rlog.rlog.getGraph.stepsIdle, cytoOptions); //
-    // let i, val;
-    // // traverse to the next valid step,
-    // //   skipping the very close queue empties (which would be skipped on next step)
-    // let nextTick = rlog.getGraph.nextStep(rlog.curTick);
-    // // move to queue empty
-    // for (i = 0; i < rlog.getGraph.stepsIdle.length; i++) {
-    //   val = rlog.getGraph.stepsIdle[i];
-    //   if (nextTick < val) {
-    //     updateGraph(val, cytoOptions);
-    //     return true;
-    //   }
-    // }
-    // return false;
+    return (0, _outputCalc.nextStepInArr)(_rlog.rlog.getGraph.stepsIdle, cytoOptions);
   };
 
   _exports.nextIdle = nextIdle;
 
   var prevIdle = function prevIdle() {
     var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    return (0, _outputCalc.prevStepInArr)(_rlog.rlog.getGraph.stepsIdle, cytoOptions); // let i, val;
-    // // traverse to the previous valid step,
-    // //   skipping the very close queue empties (which would be skipped on prev step)
-    // let prevTick = rlog.getGraph.prevStep(rlog.curTick);
-    // // move to queue empty
-    // for (i = rlog.getGraph.stepsIdle.length - 1; i >= 0; i--) {
-    //   val = rlog.getGraph.stepsIdle[i];
-    //   if (prevTick > val) {
-    //     updateGraph(val, cytoOptions);
-    //     return true;
-    //   }
-    // }
-    // return false;
+    return (0, _outputCalc.prevStepInArr)(_rlog.rlog.getGraph.stepsIdle, cytoOptions);
   };
 
   _exports.prevIdle = prevIdle;
@@ -76037,124 +75703,14 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
   var nextOutputCalc = function nextOutputCalc() {
     var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    return nextStepInArr(_rlog.rlog.getGraph.stepsOutputCalc, cytoOptions); //
-    // if (hasLength(rlog.getGraph.filterDatas)) {
-    //   // is filtered
-    //
-    //   let i, step, graph, decendentIds, logItem;
-    //
-    //   // for every output finished calculating step
-    //   for (i = nextTickIdx; i < rlog.getGraph.stepsOutputCalc.length; i++) {
-    //     step = rlog.getGraph.stepsOutputCalc[i];
-    //     logItem = (rlog.log[step]: LogEntryExitType);
-    //     // get the graph at the location (using the internal filtered data values)
-    //     graph = rlog.getGraph.graphAtStep(step);
-    //     // get that graph's decendents of the filtered data
-    //     decendentIds = graph.decendentNodeIdsForDatas(rlog.getGraph.filterDatas);
-    //     // if any of those decendents were the output that finished calculating, update the graph
-    //     if (_indexOf(decendentIds, logItem.reactId) >= 0) {
-    //       updateGraph(step, cytoOptions);
-    //       return true;
-    //     }
-    //   }
-    // } else {
-    //   // no filter
-    //
-    //   // if in a "normal" position....
-    //   if (
-    //     nextTickIdx < rlog.getGraph.stepsOutputCalc.length &&
-    //     nextTickIdx >= 0
-    //   ) {
-    //     updateGraph(rlog.getGraph.stepsOutputCalc[nextTickIdx], cytoOptions);
-    //     return true;
-    //   }
-    // }
-    //
-    // return false;
+    return nextStepInArr(_rlog.rlog.getGraph.stepsOutputCalc, cytoOptions);
   };
 
   _exports.nextOutputCalc = nextOutputCalc;
 
   var prevOutputCalc = function prevOutputCalc() {
     var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    return prevStepInArr(_rlog.rlog.getGraph.stepsOutputCalc, cytoOptions); // let prevTick = rlog.curTick;
-    // while (
-    //   // if on an outputCalc point
-    //   _sortedIndexOf(rlog.getGraph.stepsOutputCalc, prevTick) !== -1 ||
-    //   // if on a idle time point,
-    //   _sortedIndexOf(rlog.getGraph.stepsIdle, prevTick) !== -1
-    // ) {
-    //   // at cycle point, move the tick one ahead
-    //   prevTick = rlog.getGraph.prevStep(prevTick);
-    // }
-    //
-    // // get outputCalc position from stepsOutputCalc array
-    // // subtract 1 to move it to the "previous" outputCalc step
-    // let prevTickIdx = _sortedIndex(rlog.getGraph.stepsOutputCalc, prevTick) - 1;
-    //
-    // if (hasLength(rlog.getGraph.filterDatas)) {
-    //   // is filtered
-    //
-    //   let i, step, graph, decendentIds, logItem;
-    //   // TODO!!
-    //   // for every output finished calculating step
-    //   for (i = prevTickIdx; i >= 0; i--) {
-    //     step = rlog.getGraph.stepsOutputCalc[i];
-    //     logItem = (rlog.log[step]: LogEntryExitType);
-    //     // get the graph at the location (using the internal filtered data values)
-    //     graph = rlog.getGraph.graphAtStep(step);
-    //     // get that graph's decendents of the filtered data
-    //     decendentIds = graph.decendentNodeIdsForDatas(rlog.getGraph.filterDatas);
-    //     // if any of those decendents were the output that finished calculating, update the graph
-    //     if (_indexOf(decendentIds, logItem.reactId) >= 0) {
-    //       updateGraph(step, cytoOptions);
-    //       return true;
-    //     }
-    //   }
-    // } else {
-    //   // no filter
-    //
-    //   // if in a "normal" position....
-    //   if (
-    //     prevTickIdx < rlog.getGraph.stepsOutputCalc.length &&
-    //     prevTickIdx >= 0
-    //   ) {
-    //     updateGraph(rlog.getGraph.stepsOutputCalc[prevTickIdx], cytoOptions);
-    //     return true;
-    //   }
-    // }
-    //
-    // return false;
-    //
-    //
-    //
-    // return null;
-    //
-    //
-    // let prevTick;
-    // if (_sortedIndexOf(rlog.getGraph.stepsOutputCalc, rlog.curTick) !== -1) {
-    //   // not at a cycle point
-    //   if (hasLength(rlog.getGraph.filterDatas)) {
-    //     // if filtered, will go to next step, then prev step location
-    //     prevTick = rlog.getGraph.prevStep(rlog.getGraph.nextStep(rlog.curTick));
-    //   } else {
-    //     // if not filtered
-    //     prevTick = rlog.curTick;
-    //   }
-    // } else {
-    //   // at cycle point
-    //   // first move one step backward... then find prev enter/exit empty
-    //   prevTick = rlog.getGraph.prevStep(rlog.curTick);
-    // }
-    // let val, i;
-    // // move to queue empty
-    // for (i = rlog.getGraph.stepsOutputCalc.length - 1; i >= 0; i--) {
-    //   val = rlog.getGraph.stepsOutputCalc[i];
-    //   if (prevTick > val) {
-    //     return updateGraph(val, cytoOptions);
-    //   }
-    // }
-    // return false;
+    return prevStepInArr(_rlog.rlog.getGraph.stepsOutputCalc, cytoOptions);
   };
 
   _exports.prevOutputCalc = prevOutputCalc;
@@ -76260,24 +75816,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
   var nextStep = function nextStep() {
     var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    var nextTick = _rlog.rlog.curTick; // if (hasLength(rlog.getGraph.filterDatas)) {
-    //   let maybeNextTick = rlog.getGraph.nextStep(
-    //     rlog.getGraph.prevStep(nextTick)
-    //   );
-    //   if (nextTick !== maybeNextTick && maybeNextTick !== -1) {
-    //     nextTick = maybeNextTick;
-    //   }
-    // }
-    // // if currently at an idle step, do not go to another idle step
-    // if (rlog.log[rlog.curTick].action === LogStates.idle) {
-    //   // currently at an idle step
-    //   do {
-    //     nextTick = rlog.getGraph.nextStep(nextTick);
-    //   } while (rlog.log[nextTick].action === LogStates.idle);
-    // } else {
-    // }
 
-    nextTick = _rlog.rlog.getGraph.nextStep(nextTick);
+    var nextTick = _rlog.rlog.getGraph.nextStep(_rlog.rlog.curTick);
+
     if (nextTick === -1) return false;
     return (0, _updateGraph.updateGraph)(nextTick, cytoOptions);
   };
@@ -76287,27 +75828,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   var prevStep = function prevStep() {
     var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    var prevTick = _rlog.rlog.getGraph.prevStep(_rlog.rlog.curTick); // if (hasLength(rlog.getGraph.filterDatas)) {
-    //   let maybePrevTick = rlog.getGraph.prevStep(
-    //     rlog.getGraph.nextStep(prevTick)
-    //   );
-    //   if (prevTick !== maybePrevTick && maybePrevTick !== -1) {
-    //     prevTick = maybePrevTick;
-    //   }
-    // }
-    // let prevPrevTick = rlog.getGraph.prevStep(prevTick);
-    // // if the prev step is an idle step, continue going backwards until the "prev" prev step is not an idle
-    // while (
-    //   prevPrevTick >= 0 &&
-    //   prevTick >= 0 &&
-    //   rlog.log[prevTick].action === LogStates.idle &&
-    //   rlog.log[prevPrevTick].action === LogStates.idle
-    // ) {
-    //   prevTick = prevPrevTick;
-    //   prevPrevTick = rlog.getGraph.prevStep(prevTick);
-    // }
-    // Move one step back
-
+    var prevTick = _rlog.rlog.getGraph.prevStep(_rlog.rlog.curTick);
 
     if (prevTick === -1) return false;
     return (0, _updateGraph.updateGraph)(prevTick, cytoOptions);
