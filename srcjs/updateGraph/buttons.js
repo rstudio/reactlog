@@ -29,10 +29,10 @@ let buttonNextOutputCalc = function(cytoOptions?: CytoscapeOptions = {}) {
 };
 
 let buttonPrevStep = function(cytoOptions?: CytoscapeOptions = {}) {
-  return step.prevStep(cytoOptions);
+  return step.prevStep(cytoOptions) || step.firstStep();
 };
 let buttonNextStep = function(cytoOptions?: CytoscapeOptions = {}) {
-  return step.nextStep(cytoOptions);
+  return step.nextStep(cytoOptions) || step.lastStep();
 };
 
 export {
