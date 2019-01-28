@@ -73074,8 +73074,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
         var filteredStepsVisible = [];
-        var graphAtI = this.graphAtStep(this.stepsVisible[0]);
-        var visibleStep, logEntry, i;
+        var graphAtEnd = this.graphAtStep(this.log.length);
+        var visibleStep, logEntry, ii, i;
         var filterReactIds = this.filterDatas.map(function (node) {
           return node.reactId;
         }); // todo must be actual log. not visible steps
@@ -73088,9 +73088,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             case _logStates.LogStates.dependsOn:
               {
                 // since we are adding an edge in the graph, update the graph
-                graphAtI = this.graphAtStep(visibleStep);
-                var decendents = (0, _union2.default)(filterReactIds, graphAtI.decendentNodeIdsForDatas(this.filterDatas));
-                var ancestors = (0, _union2.default)(filterReactIds, graphAtI.ancestorNodeIdsForDatas(this.filterDatas)); // reactId is target (ends at ancestors)
+                // graphAtI = this.graphAtStep(visibleStep);
+                var decendents = (0, _union2.default)(filterReactIds, graphAtEnd.decendentNodeIdsForDatas(this.filterDatas));
+                var ancestors = (0, _union2.default)(filterReactIds, graphAtEnd.ancestorNodeIdsForDatas(this.filterDatas)); // reactId is target (ends at ancestors)
 
                 if ((0, _indexOf2.default)(ancestors, logEntry.reactId) !== -1) {
                   filteredStepsVisible.push(visibleStep);
@@ -73109,9 +73109,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
             case _logStates.LogStates.dependsOnRemove:
               // check for both to and from (since it must exist beforehand)
-              graphAtI = this.graphAtStep(visibleStep);
-
-              if (graphAtI.nodes.has(logEntry.reactId) && graphAtI.nodes.has(logEntry.depOnReactId)) {
+              // graphAtI = this.graphAtStep(visibleStep);
+              if (graphAtEnd.nodes.has(logEntry.reactId) && graphAtEnd.nodes.has(logEntry.depOnReactId)) {
                 filteredStepsVisible.push(visibleStep);
                 break;
               } // not found
@@ -73121,9 +73120,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
             case _logStates.LogStates.define:
             case _logStates.LogStates.updateNodeLabel:
-              graphAtI = this.graphAtStep(visibleStep);
-
-              if (!graphAtI.hasNodeReactId(logEntry.reactId)) {
+              // graphAtI = this.graphAtStep(visibleStep);
+              if (!graphAtEnd.hasNodeReactId(logEntry.reactId)) {
                 // no node found
                 break;
               }
@@ -73152,7 +73150,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             case _logStates.LogStates.isolateExit:
             case _logStates.LogStates.isolateInvalidateStart:
             case _logStates.LogStates.isolateInvalidateEnd:
-              if (!graphAtI.hasNodeReactId(logEntry.reactId)) {
+              if (!graphAtEnd.hasNodeReactId(logEntry.reactId)) {
                 // no node found in filtered graph
                 break;
               }
@@ -73471,12 +73469,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             }
           } else {
             if (!graphOnly) {
-              // for some reason, an array of node does not work with an array of (node, edge, or ghostedge)
-              this.updateFilterDatas(matchedNodes, !graphOnly);
+              this.updateFilterDatas( // for some reason, an array of node does not work with an array of (node, edge, or ghostedge)
+              matchedNodes, !graphOnly);
             } // filter on regex
 
 
-            graph.filterGraphOnNodeIds(graph.familyTreeNodeIdsForDatas(this.filterDatas));
+            graph.filterGraphOnNodeIds(this.finalGraph.familyTreeNodeIdsForDatas(this.filterDatas));
             matchedNodes.map(function (data) {
               graph.highlightSelected(data, "filtered");
             }); // graph.hoverStatusOnNodeIds(matchedNodes.map((x) => x.reactId), "filtered");
@@ -73484,7 +73482,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         } else {
           // if any filtering...
           if (hasLength(this.filterDatas)) {
-            graph.filterGraphOnNodeIds(graph.familyTreeNodeIdsForDatas(this.filterDatas)); // graph.hoverStatusOnNodeIds(this.filterDatas.map((x) => x.reactId), "filtered");
+            graph.filterGraphOnNodeIds( // graph.familyTreeNodeIdsForDatas(this.filterDatas)
+            this.finalGraph.familyTreeNodeIdsForDatas(this.filterDatas)); // graph.hoverStatusOnNodeIds(this.filterDatas.map((x) => x.reactId), "filtered");
 
             this.filterDatas.map(function (data) {
               graph.highlightSelected(data, "filtered");

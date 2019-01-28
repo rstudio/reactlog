@@ -234,8 +234,8 @@ class GraphAtStep {
     // must have filtered data
 
     let filteredStepsVisible = [];
-    let graphAtI = this.graphAtStep(this.stepsVisible[0]);
-    let visibleStep, logEntry, i;
+    let graphAtEnd = this.graphAtStep(this.log.length);
+    let visibleStep, logEntry, ii, i;
 
     let filterReactIds = this.filterDatas.map(function(node) {
       return node.reactId;
@@ -248,14 +248,14 @@ class GraphAtStep {
       switch (logEntry.action) {
         case LogStates.dependsOn: {
           // since we are adding an edge in the graph, update the graph
-          graphAtI = this.graphAtStep(visibleStep);
+          // graphAtI = this.graphAtStep(visibleStep);
           let decendents = _union(
             filterReactIds,
-            graphAtI.decendentNodeIdsForDatas(this.filterDatas)
+            graphAtEnd.decendentNodeIdsForDatas(this.filterDatas)
           );
           let ancestors = _union(
             filterReactIds,
-            graphAtI.ancestorNodeIdsForDatas(this.filterDatas)
+            graphAtEnd.ancestorNodeIdsForDatas(this.filterDatas)
           );
           // reactId is target (ends at ancestors)
           if (_indexOf(ancestors, logEntry.reactId) !== -1) {
@@ -272,10 +272,10 @@ class GraphAtStep {
         }
         case LogStates.dependsOnRemove:
           // check for both to and from (since it must exist beforehand)
-          graphAtI = this.graphAtStep(visibleStep);
+          // graphAtI = this.graphAtStep(visibleStep);
           if (
-            graphAtI.nodes.has(logEntry.reactId) &&
-            graphAtI.nodes.has(logEntry.depOnReactId)
+            graphAtEnd.nodes.has(logEntry.reactId) &&
+            graphAtEnd.nodes.has(logEntry.depOnReactId)
           ) {
             filteredStepsVisible.push(visibleStep);
             break;
@@ -285,9 +285,9 @@ class GraphAtStep {
 
         case LogStates.define:
         case LogStates.updateNodeLabel:
-          graphAtI = this.graphAtStep(visibleStep);
+          // graphAtI = this.graphAtStep(visibleStep);
 
-          if (!graphAtI.hasNodeReactId(logEntry.reactId)) {
+          if (!graphAtEnd.hasNodeReactId(logEntry.reactId)) {
             // no node found
             break;
           }
@@ -314,7 +314,7 @@ class GraphAtStep {
         case LogStates.isolateExit:
         case LogStates.isolateInvalidateStart:
         case LogStates.isolateInvalidateEnd:
-          if (!graphAtI.hasNodeReactId(logEntry.reactId)) {
+          if (!graphAtEnd.hasNodeReactId(logEntry.reactId)) {
             // no node found in filtered graph
             break;
           }
@@ -636,15 +636,15 @@ class GraphAtStep {
         }
       } else {
         if (!graphOnly) {
-          // for some reason, an array of node does not work with an array of (node, edge, or ghostedge)
           this.updateFilterDatas(
+            // for some reason, an array of node does not work with an array of (node, edge, or ghostedge)
             ((matchedNodes: Array<Object>): Array<SomeGraphData>),
             !graphOnly
           );
         }
         // filter on regex
         graph.filterGraphOnNodeIds(
-          graph.familyTreeNodeIdsForDatas(this.filterDatas)
+          this.finalGraph.familyTreeNodeIdsForDatas(this.filterDatas)
         );
         matchedNodes.map(function(data) {
           graph.highlightSelected(data, "filtered");
@@ -655,7 +655,8 @@ class GraphAtStep {
       // if any filtering...
       if (hasLength(this.filterDatas)) {
         graph.filterGraphOnNodeIds(
-          graph.familyTreeNodeIdsForDatas(this.filterDatas)
+          // graph.familyTreeNodeIdsForDatas(this.filterDatas)
+          this.finalGraph.familyTreeNodeIdsForDatas(this.filterDatas)
         );
         // graph.hoverStatusOnNodeIds(this.filterDatas.map((x) => x.reactId), "filtered");
         this.filterDatas.map(function(data) {
