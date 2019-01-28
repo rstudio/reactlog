@@ -73078,7 +73078,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         var visibleStep, logEntry, i;
         var filterReactIds = this.filterDatas.map(function (node) {
           return node.reactId;
-        });
+        }); // todo must be actual log. not visible steps
 
         for (i = 0; i < this.stepsVisible.length; i++) {
           visibleStep = this.stepsVisible[i];
@@ -73087,7 +73087,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           switch (logEntry.action) {
             case _logStates.LogStates.dependsOn:
               {
-                // lazy eval decendents and ancestors
+                // since we are adding an edge in the graph, update the graph
                 graphAtI = this.graphAtStep(visibleStep);
                 var decendents = (0, _union2.default)(filterReactIds, graphAtI.decendentNodeIdsForDatas(this.filterDatas));
                 var ancestors = (0, _union2.default)(filterReactIds, graphAtI.ancestorNodeIdsForDatas(this.filterDatas)); // reactId is target (ends at ancestors)
@@ -73215,7 +73215,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         } // else, does not exist, so it is directly there
 
 
-        if (idx >= this.filteredStepsVisible.length) return -1;
+        if (idx >= this.filteredStepsVisible.length || idx < 0) return -1;
         return this.filteredStepsVisible[idx]; //
         //
         // // if no filtering... get next step from step array
@@ -73333,7 +73333,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       value: function prevStep(k) {
         var idx = (0, _sortedIndex2.default)(this.filteredStepsVisible, k) - 1;
         if (idx < 0 || idx >= this.filteredStepsVisible.length) return -1;
-        window.console.log(this.filteredStepsVisible, idx, this.filteredStepsVisible[idx]);
         return this.filteredStepsVisible[idx]; // // if no filtering... get next step from step array
         // if (!hasLength(this.filterDatas)) {
         //   let prevStepPos = Math.max(_sortedIndex(this.stepsVisible, k) - 1, 0);
@@ -75743,12 +75742,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ../rlog */ "./srcjs/rlog.js"), __webpack_require__(/*! ../updateGraph */ "./srcjs/updateGraph/index.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ../rlog */ "./srcjs/rlog.js"), __webpack_require__(/*! ../updateGraph */ "./srcjs/updateGraph/index.js"), __webpack_require__(/*! ./outputCalc */ "./srcjs/updateGraph/outputCalc.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
-})(this, function (_exports, _rlog, _updateGraph) {
+})(this, function (_exports, _rlog, _updateGraph, _outputCalc) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
@@ -75758,44 +75757,39 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
   var nextIdle = function nextIdle() {
     var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    var i, val; // traverse to the next valid step,
-    //   skipping the very close queue empties (which would be skipped on next step)
-
-    var nextTick = _rlog.rlog.getGraph.nextStep(_rlog.rlog.curTick); // move to queue empty
-
-
-    for (i = 0; i < _rlog.rlog.getGraph.stepsIdle.length; i++) {
-      val = _rlog.rlog.getGraph.stepsIdle[i];
-
-      if (nextTick < val) {
-        (0, _updateGraph.updateGraph)(val, cytoOptions);
-        return true;
-      }
-    }
-
-    return false;
+    return (0, _outputCalc.nextStepInArr)(_rlog.rlog.getGraph.stepsIdle, cytoOptions); //
+    // let i, val;
+    // // traverse to the next valid step,
+    // //   skipping the very close queue empties (which would be skipped on next step)
+    // let nextTick = rlog.getGraph.nextStep(rlog.curTick);
+    // // move to queue empty
+    // for (i = 0; i < rlog.getGraph.stepsIdle.length; i++) {
+    //   val = rlog.getGraph.stepsIdle[i];
+    //   if (nextTick < val) {
+    //     updateGraph(val, cytoOptions);
+    //     return true;
+    //   }
+    // }
+    // return false;
   };
 
   _exports.nextIdle = nextIdle;
 
   var prevIdle = function prevIdle() {
     var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    var i, val; // traverse to the previous valid step,
-    //   skipping the very close queue empties (which would be skipped on prev step)
-
-    var prevTick = _rlog.rlog.getGraph.prevStep(_rlog.rlog.curTick); // move to queue empty
-
-
-    for (i = _rlog.rlog.getGraph.stepsIdle.length - 1; i >= 0; i--) {
-      val = _rlog.rlog.getGraph.stepsIdle[i];
-
-      if (prevTick > val) {
-        (0, _updateGraph.updateGraph)(val, cytoOptions);
-        return true;
-      }
-    }
-
-    return false;
+    return (0, _outputCalc.prevStepInArr)(_rlog.rlog.getGraph.stepsIdle, cytoOptions); // let i, val;
+    // // traverse to the previous valid step,
+    // //   skipping the very close queue empties (which would be skipped on prev step)
+    // let prevTick = rlog.getGraph.prevStep(rlog.curTick);
+    // // move to queue empty
+    // for (i = rlog.getGraph.stepsIdle.length - 1; i >= 0; i--) {
+    //   val = rlog.getGraph.stepsIdle[i];
+    //   if (prevTick > val) {
+    //     updateGraph(val, cytoOptions);
+    //     return true;
+    //   }
+    // }
+    // return false;
   };
 
   _exports.prevIdle = prevIdle;
@@ -75839,7 +75833,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   });
   var _exportNames = {
     atTick: true,
-    updateGraph: true
+    updateGraph: true,
+    nextOutputCalc: true,
+    prevOutputCalc: true,
+    firstOutputCalc: true,
+    lastOutputCalc: true
   };
   Object.defineProperty(_exports, "atTick", {
     enumerable: true,
@@ -75853,15 +75851,29 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       return _atTick.atTick;
     }
   });
-  Object.keys(_outputCalc).forEach(function (key) {
-    if (key === "default" || key === "__esModule") return;
-    if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
-    Object.defineProperty(_exports, key, {
-      enumerable: true,
-      get: function get() {
-        return _outputCalc[key];
-      }
-    });
+  Object.defineProperty(_exports, "nextOutputCalc", {
+    enumerable: true,
+    get: function get() {
+      return _outputCalc.nextOutputCalc;
+    }
+  });
+  Object.defineProperty(_exports, "prevOutputCalc", {
+    enumerable: true,
+    get: function get() {
+      return _outputCalc.prevOutputCalc;
+    }
+  });
+  Object.defineProperty(_exports, "firstOutputCalc", {
+    enumerable: true,
+    get: function get() {
+      return _outputCalc.firstOutputCalc;
+    }
+  });
+  Object.defineProperty(_exports, "lastOutputCalc", {
+    enumerable: true,
+    get: function get() {
+      return _outputCalc.lastOutputCalc;
+    }
   });
   Object.keys(_idle).forEach(function (key) {
     if (key === "default" || key === "__esModule") return;
@@ -75946,61 +75958,44 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! lodash/sortedIndexOf */ "./node_modules/lodash/sortedIndexOf.js"), __webpack_require__(/*! lodash/sortedIndex */ "./node_modules/lodash/sortedIndex.js"), __webpack_require__(/*! lodash/indexOf */ "./node_modules/lodash/indexOf.js"), __webpack_require__(/*! ../rlog */ "./srcjs/rlog.js"), __webpack_require__(/*! ../updateGraph */ "./srcjs/updateGraph/index.js"), __webpack_require__(/*! ../graph/GraphAtStep */ "./srcjs/graph/GraphAtStep.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! lodash/sortedIndexOf */ "./node_modules/lodash/sortedIndexOf.js"), __webpack_require__(/*! lodash/sortedIndex */ "./node_modules/lodash/sortedIndex.js"), __webpack_require__(/*! ../rlog */ "./srcjs/rlog.js"), __webpack_require__(/*! ../updateGraph */ "./srcjs/updateGraph/index.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
-})(this, function (_exports, _sortedIndexOf2, _sortedIndex2, _indexOf2, _rlog, _updateGraph, _GraphAtStep) {
+})(this, function (_exports, _sortedIndexOf2, _sortedIndex2, _rlog, _updateGraph) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
     value: true
   });
-  _exports.lastOutputCalc = _exports.firstOutputCalc = _exports.prevOutputCalc = _exports.nextOutputCalc = void 0;
+  _exports.prevStepInArr = _exports.nextStepInArr = _exports.lastOutputCalc = _exports.firstOutputCalc = _exports.prevOutputCalc = _exports.nextOutputCalc = void 0;
   _sortedIndexOf2 = _interopRequireDefault(_sortedIndexOf2);
   _sortedIndex2 = _interopRequireDefault(_sortedIndex2);
-  _indexOf2 = _interopRequireDefault(_indexOf2);
 
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-  var nextOutputCalc = function nextOutputCalc() {
-    var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  var nextStepInArr = function nextStepInArr(arr) {
+    var cytoOptions = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
     var nextTick;
 
-    if ((0, _sortedIndexOf2.default)(_rlog.rlog.getGraph.stepsOutputCalc, _rlog.rlog.curTick) !== -1) {
-      // at cycle point, move the tick one ahead
+    if ((0, _sortedIndexOf2.default)(arr, _rlog.rlog.curTick) !== -1) {
+      // at arr point, move the tick one ahead
       nextTick = _rlog.rlog.getGraph.nextStep(_rlog.rlog.curTick);
     } else {
-      // not at cycle point,
+      // not at arr point,
       nextTick = _rlog.rlog.curTick;
-    } // get outputCalc position
+    } // get next tick idx
 
 
-    var nextTickIdx = (0, _sortedIndex2.default)(_rlog.rlog.getGraph.stepsOutputCalc, nextTick);
+    var nextTickIdx = (0, _sortedIndex2.default)(arr, nextTick);
+    var i, arrStep;
 
-    if ((0, _GraphAtStep.hasLength)(_rlog.rlog.getGraph.filterDatas)) {
-      // is filtered
-      var i, step, graph, decendentIds, logItem; // for every output finished calculating step
+    for (i = nextTickIdx; i < arr.length; i++) {
+      arrStep = arr[i];
 
-      for (i = nextTickIdx; i < _rlog.rlog.getGraph.stepsOutputCalc.length; i++) {
-        step = _rlog.rlog.getGraph.stepsOutputCalc[i];
-        logItem = _rlog.rlog.log[step]; // get the graph at the location (using the internal filtered data values)
-
-        graph = _rlog.rlog.getGraph.graphAtStep(step); // get that graph's decendents of the filtered data
-
-        decendentIds = graph.decendentNodeIdsForDatas(_rlog.rlog.getGraph.filterDatas); // if any of those decendents were the output that finished calculating, update the graph
-
-        if ((0, _indexOf2.default)(decendentIds, logItem.reactId) >= 0) {
-          (0, _updateGraph.updateGraph)(step, cytoOptions);
-          return true;
-        }
-      }
-    } else {
-      // no filter
-      // if in a "normal" position....
-      if (nextTickIdx < _rlog.rlog.getGraph.stepsOutputCalc.length && nextTickIdx >= 0) {
-        (0, _updateGraph.updateGraph)(_rlog.rlog.getGraph.stepsOutputCalc[nextTickIdx], cytoOptions);
+      if ((0, _sortedIndexOf2.default)(_rlog.rlog.getGraph.filteredStepsVisible, arrStep) >= 0) {
+        (0, _updateGraph.updateGraph)(arrStep, cytoOptions);
         return true;
       }
     }
@@ -76008,51 +76003,131 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     return false;
   };
 
-  _exports.nextOutputCalc = nextOutputCalc;
+  _exports.nextStepInArr = nextStepInArr;
 
-  var prevOutputCalc = function prevOutputCalc() {
-    var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    var prevTick = _rlog.rlog.curTick;
+  var prevStepInArr = function prevStepInArr(arr) {
+    var cytoOptions = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    var prevTick;
 
-    while ( // if on an outputCalc point
-    (0, _sortedIndexOf2.default)(_rlog.rlog.getGraph.stepsOutputCalc, prevTick) !== -1 || // if on a idle time point,
-    (0, _sortedIndexOf2.default)(_rlog.rlog.getGraph.stepsIdle, prevTick) !== -1) {
-      // at cycle point, move the tick one ahead
-      prevTick = _rlog.rlog.getGraph.prevStep(prevTick);
-    } // get outputCalc position from stepsOutputCalc array
-    // subtract 1 to move it to the "previous" outputCalc step
-
-
-    var prevTickIdx = (0, _sortedIndex2.default)(_rlog.rlog.getGraph.stepsOutputCalc, prevTick) - 1;
-
-    if ((0, _GraphAtStep.hasLength)(_rlog.rlog.getGraph.filterDatas)) {
-      // is filtered
-      var i, step, graph, decendentIds, logItem; // TODO!!
-      // for every output finished calculating step
-
-      for (i = prevTickIdx; i >= 0; i--) {
-        step = _rlog.rlog.getGraph.stepsOutputCalc[i];
-        logItem = _rlog.rlog.log[step]; // get the graph at the location (using the internal filtered data values)
-
-        graph = _rlog.rlog.getGraph.graphAtStep(step); // get that graph's decendents of the filtered data
-
-        decendentIds = graph.decendentNodeIdsForDatas(_rlog.rlog.getGraph.filterDatas); // if any of those decendents were the output that finished calculating, update the graph
-
-        if ((0, _indexOf2.default)(decendentIds, logItem.reactId) >= 0) {
-          (0, _updateGraph.updateGraph)(step, cytoOptions);
-          return true;
-        }
-      }
+    if ((0, _sortedIndexOf2.default)(arr, _rlog.rlog.curTick) !== -1) {
+      // at arr point, move the tick one back
+      prevTick = _rlog.rlog.getGraph.prevStep(_rlog.rlog.curTick);
     } else {
-      // no filter
-      // if in a "normal" position....
-      if (prevTickIdx < _rlog.rlog.getGraph.stepsOutputCalc.length && prevTickIdx >= 0) {
-        (0, _updateGraph.updateGraph)(_rlog.rlog.getGraph.stepsOutputCalc[prevTickIdx], cytoOptions);
+      // not at arr point,
+      prevTick = _rlog.rlog.curTick;
+    } // get next tick idx
+
+
+    var prevTickIdx = (0, _sortedIndex2.default)(arr, prevTick) - 1;
+    if (prevTickIdx < 0) return false;
+    var i, arrStep;
+
+    for (i = prevTickIdx; i >= 0; i--) {
+      arrStep = arr[i];
+
+      if ((0, _sortedIndexOf2.default)(_rlog.rlog.getGraph.filteredStepsVisible, arrStep) >= 0) {
+        (0, _updateGraph.updateGraph)(arrStep, cytoOptions);
         return true;
       }
     }
 
-    return false; //
+    return false;
+  };
+
+  _exports.prevStepInArr = prevStepInArr;
+
+  var nextOutputCalc = function nextOutputCalc() {
+    var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    return nextStepInArr(_rlog.rlog.getGraph.stepsOutputCalc, cytoOptions); //
+    // if (hasLength(rlog.getGraph.filterDatas)) {
+    //   // is filtered
+    //
+    //   let i, step, graph, decendentIds, logItem;
+    //
+    //   // for every output finished calculating step
+    //   for (i = nextTickIdx; i < rlog.getGraph.stepsOutputCalc.length; i++) {
+    //     step = rlog.getGraph.stepsOutputCalc[i];
+    //     logItem = (rlog.log[step]: LogEntryExitType);
+    //     // get the graph at the location (using the internal filtered data values)
+    //     graph = rlog.getGraph.graphAtStep(step);
+    //     // get that graph's decendents of the filtered data
+    //     decendentIds = graph.decendentNodeIdsForDatas(rlog.getGraph.filterDatas);
+    //     // if any of those decendents were the output that finished calculating, update the graph
+    //     if (_indexOf(decendentIds, logItem.reactId) >= 0) {
+    //       updateGraph(step, cytoOptions);
+    //       return true;
+    //     }
+    //   }
+    // } else {
+    //   // no filter
+    //
+    //   // if in a "normal" position....
+    //   if (
+    //     nextTickIdx < rlog.getGraph.stepsOutputCalc.length &&
+    //     nextTickIdx >= 0
+    //   ) {
+    //     updateGraph(rlog.getGraph.stepsOutputCalc[nextTickIdx], cytoOptions);
+    //     return true;
+    //   }
+    // }
+    //
+    // return false;
+  };
+
+  _exports.nextOutputCalc = nextOutputCalc;
+
+  var prevOutputCalc = function prevOutputCalc() {
+    var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    return prevStepInArr(_rlog.rlog.getGraph.stepsOutputCalc, cytoOptions); // let prevTick = rlog.curTick;
+    // while (
+    //   // if on an outputCalc point
+    //   _sortedIndexOf(rlog.getGraph.stepsOutputCalc, prevTick) !== -1 ||
+    //   // if on a idle time point,
+    //   _sortedIndexOf(rlog.getGraph.stepsIdle, prevTick) !== -1
+    // ) {
+    //   // at cycle point, move the tick one ahead
+    //   prevTick = rlog.getGraph.prevStep(prevTick);
+    // }
+    //
+    // // get outputCalc position from stepsOutputCalc array
+    // // subtract 1 to move it to the "previous" outputCalc step
+    // let prevTickIdx = _sortedIndex(rlog.getGraph.stepsOutputCalc, prevTick) - 1;
+    //
+    // if (hasLength(rlog.getGraph.filterDatas)) {
+    //   // is filtered
+    //
+    //   let i, step, graph, decendentIds, logItem;
+    //   // TODO!!
+    //   // for every output finished calculating step
+    //   for (i = prevTickIdx; i >= 0; i--) {
+    //     step = rlog.getGraph.stepsOutputCalc[i];
+    //     logItem = (rlog.log[step]: LogEntryExitType);
+    //     // get the graph at the location (using the internal filtered data values)
+    //     graph = rlog.getGraph.graphAtStep(step);
+    //     // get that graph's decendents of the filtered data
+    //     decendentIds = graph.decendentNodeIdsForDatas(rlog.getGraph.filterDatas);
+    //     // if any of those decendents were the output that finished calculating, update the graph
+    //     if (_indexOf(decendentIds, logItem.reactId) >= 0) {
+    //       updateGraph(step, cytoOptions);
+    //       return true;
+    //     }
+    //   }
+    // } else {
+    //   // no filter
+    //
+    //   // if in a "normal" position....
+    //   if (
+    //     prevTickIdx < rlog.getGraph.stepsOutputCalc.length &&
+    //     prevTickIdx >= 0
+    //   ) {
+    //     updateGraph(rlog.getGraph.stepsOutputCalc[prevTickIdx], cytoOptions);
+    //     return true;
+    //   }
+    // }
+    //
+    // return false;
+    //
+    //
     //
     // return null;
     //

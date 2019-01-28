@@ -13,6 +13,7 @@ import type {
   ReactIdType,
   LogEntryHasReactId,
   LogEntryAnyType,
+  LogEntryCreateContextType,
   LogEntryDefineType,
   LogEntryDependsOnType,
   LogEntryDependsOnRemoveType,
@@ -171,12 +172,19 @@ let getReactIdValue = function(entry: LogEntryHasReactId) {
     return "<unknown>";
   }
 };
+let getContextId = function(entry: LogEntryCreateContextType) {
+  return entry.ctxId;
+};
 
 let monospaced = function(txt: string | number) {
   return `<span class="monospaced">${txt}</span>`;
 };
 let statusForEntry = function(entry: LogEntryAnyType): string {
   switch (entry.action) {
+    case LogStates.createContext: {
+      let contextEntry = ((entry: Object): LogEntryCreateContextType);
+      return `Create Context: ${monospaced(getContextId(contextEntry))}`;
+    }
     case LogStates.asyncStart: {
       return "Start asynchronous calculations";
     }

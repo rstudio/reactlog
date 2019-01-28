@@ -78,6 +78,10 @@ class Graph {
     return cyto;
   }
 
+  hasNodeReactId(reactId: ReactIdType): boolean {
+    return this.nodes.has(reactId);
+  }
+
   hasSomeData(data: SomeGraphData): boolean {
     if (data instanceof Node) {
       return this.nodes.has(data.key);

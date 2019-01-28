@@ -54,7 +54,7 @@ $(function() {
   rlog.cyto = cytoscapeInit.withContainer($("#cyto"));
 
   rlog.getGraph = new GraphAtStep(rlog.log);
-  rlog.graph = rlog.getGraph.atStep(rlog.getGraph.maxStep);
+  rlog.graph = rlog.getGraph.graphAtStep(rlog.getGraph.maxStep);
 
   $("#prevUserMarkButton").click(updateGraph.buttonPrevMark);
   $("#nextUserMarkButton").click(updateGraph.buttonNextMark);

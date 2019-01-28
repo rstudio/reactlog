@@ -3,7 +3,12 @@
 import { atTick } from "./atTick";
 export { atTick, atTick as updateGraph };
 
-export * from "./outputCalc";
+export {
+  nextOutputCalc,
+  prevOutputCalc,
+  firstOutputCalc,
+  lastOutputCalc,
+} from "./outputCalc";
 export * from "./idle";
 export * from "./step";
 export * from "./tick";
