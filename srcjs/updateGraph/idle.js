@@ -17,7 +17,7 @@ let lastIdle = function() {
   let nextTick =
     rlog.getGraph.stepsIdle.length > 0
       ? rlog.getGraph.stepsIdle[rlog.getGraph.stepsIdle.length - 1]
-      : 0;
+      : rlog.log.length - 1;
   return updateGraph(nextTick);
 };
 let firstIdle = function() {

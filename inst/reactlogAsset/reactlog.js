@@ -75460,7 +75460,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   _exports.prevIdle = prevIdle;
 
   var lastIdle = function lastIdle() {
-    var nextTick = _rlog.rlog.getGraph.stepsIdle.length > 0 ? _rlog.rlog.getGraph.stepsIdle[_rlog.rlog.getGraph.stepsIdle.length - 1] : 0;
+    var nextTick = _rlog.rlog.getGraph.stepsIdle.length > 0 ? _rlog.rlog.getGraph.stepsIdle[_rlog.rlog.getGraph.stepsIdle.length - 1] : _rlog.rlog.log.length - 1;
     return (0, _updateGraph.updateGraph)(nextTick);
   };
 
