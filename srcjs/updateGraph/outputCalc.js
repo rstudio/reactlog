@@ -7,7 +7,6 @@ import { rlog } from "../rlog";
 import { updateGraph } from "../updateGraph";
 
 import type { CytoscapeOptions } from "../cyto/cytoFlowType";
-import type { LogType } from "../log/logStates";
 
 let nextStepInArr = function(
   arr: Array<number>,

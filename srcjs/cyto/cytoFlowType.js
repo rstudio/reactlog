@@ -62,7 +62,7 @@ type CytoscapeLayoutObject = {
 type CytoscapeType = {
   $: (identifier?: string | CytoscapeElement) => CytoscapeElements,
   $id: (id: string) => CytoscapeElement,
-  add: (x: Array<CytoData> | CytoData | CytoscapeElement) => CytoscapeElement,
+  add: (x: Array<CytoData> | CytoData | CytoscapeElement) => any,
   on: CytoOnEvent, // | CytoOnDblClick
   startBatch: () => void,
   endBatch: () => void,

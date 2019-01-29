@@ -71398,7 +71398,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   var graphStyles = {
     node: {
       default: {
-        label: "data(cytoLabel)",
+        label: "data(cytoLabel_)",
         color: _colors.default.nodes.label_text_color,
         "text-opacity": _colors.default.nodes.label_text_opacity,
         "text-valign": "bottom",
@@ -72752,7 +72752,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 if (expectedAction) {
                   var _logEntry4 = data;
                   (0, _StatusArr.expectPrevStatus)(_logEntry4, prevData, expectedAction);
-                  node.statusRemove();
+                  node.statusRemove(_logEntry4);
                 }
               }
 
@@ -73485,7 +73485,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
         nodesLRB.right.map(function (graphNode) {
           var graphNodeData = graphNode.data();
-          cy.add(graphNode).classes(graphNodeData.cytoClasses).style(graphNodeData.cytoStyle); // .animate({
+          cy.add(graphNode).data("cytoLabel_", graphNodeData.cytoLabel).classes(graphNodeData.cytoClasses).style(graphNodeData.cytoStyle); // .animate({
           //   // style: ,
           //   duration: cytoDur
           // });
@@ -73512,7 +73512,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
           cyNode // update to latest data
           .data(graphNodeData) // prolly due to how accessor methods are done, this data value must be placed manually
-          .data("value", graphNodeData.value).classes(graphClasses).removeStyle().style(graphNodeData.cytoStyle); // .animate({
+          .data("value", graphNodeData.value).data("cytoLabel_", graphNodeData.cytoLabel).classes(graphClasses).removeStyle().style(graphNodeData.cytoStyle); // .animate({
           //   // style: graphNodeData.cytoStyle,
           //   duration: cytoDur
           // });
@@ -73894,6 +73894,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
       _defineProperty(this, "isDisplayed", void 0);
 
+      _defineProperty(this, "calculationTime", void 0);
+
+      _defineProperty(this, "calculationStartMap", void 0);
+
       if (typeof data.reactId === "undefined") throw "data.reactId not provided in new Node";
       if (typeof data.label === "undefined") throw "data.label not provided in new Node";
       if (typeof data.type === "undefined") throw "data.type not provided in new Node";
@@ -73909,6 +73913,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       this.value = (0, _isNil2.default)(data.value) ? null : data.value;
       this.hoverStatus = data.hoverStatus || new _HoverStatus.HoverStatus();
       this.isDisplayed = (0, _isNil2.default)(data.isDisplayed) ? true : data.isDisplayed;
+      this.calculationTime = (0, _isNil2.default)(data.calculationTime) ? null : data.calculationTime;
+      this.calculationStartMap = (0, _isNil2.default)(data.calculationStartMap) ? new Map() : data.calculationStartMap;
       this.valueChangedStatus = data.valueChangedStatus || new _ActiveStateStatus.ActiveStateStatus(); // this.inInvalidate = data.inInvalidate || false;
       // this.activeInvalidate = data.activeInvalidate || false;
 
@@ -73930,13 +73936,35 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
     _createClass(Node, [{
       key: "statusAdd",
-      value: function statusAdd(obj) {
-        this.statusArr.add(obj);
+      value: function statusAdd(logEntry) {
+        if (logEntry.action === _logStates.LogStates.enter) {
+          this.calculationStartMap.set(logEntry.ctxId, logEntry.time);
+        }
+
+        switch (logEntry.action) {
+          case _logStates.LogStates.enter:
+          case _logStates.LogStates.isolateInvalidateStart:
+          case _logStates.LogStates.invalidateStart:
+            this.calculationTime = null;
+            break;
+        }
+
+        this.statusArr.add(logEntry);
         return this.statusArr;
       }
     }, {
       key: "statusRemove",
-      value: function statusRemove() {
+      value: function statusRemove(logEntry) {
+        if (logEntry.action === _logStates.LogStates.exit) {
+          var startEntryTime = this.calculationStartMap.get(logEntry.ctxId);
+
+          if (!(0, _isNil2.default)(startEntryTime)) {
+            this.calculationTime = (logEntry.time - startEntryTime) * 1000;
+          }
+
+          this.calculationStartMap.delete(logEntry.ctxId);
+        }
+
         return this.statusArr.remove();
       }
     }, {
@@ -73972,7 +74000,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     }, {
       key: "inInvalidate",
       get: function get() {
-        return this.statusArr.containsStatus("invalidateStart");
+        return this.statusArr.containsStatus(_logStates.LogStates.invalidateStart);
       }
     }, {
       key: "inIsolateInvalidate",
@@ -73990,7 +74018,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         var label = "".concat(this.label);
 
         if (this.type === "observer" || this.type === "observable") {
-          return label;
+          if ((0, _isNil2.default)(this.calculationTime)) {
+            // is calculating or something... so return regular label
+            return label;
+          } // is just chillin... so I'm assuming it's calculated and I want to know how long it took.
+
+
+          return "".concat(label, "; ").concat(this.calculationTime.toFixed(0), "ms");
         } // not a middle or end node...
 
 
@@ -75048,8 +75082,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     thaw: "thaw",
     updateNodeLabel: "updateNodeLabel",
     valueChange: "valueChange"
-  }; // type ActionsType = $Values<typeof states>;
-
+  };
   _exports.LogStates = states;
 });
 

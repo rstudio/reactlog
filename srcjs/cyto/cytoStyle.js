@@ -35,7 +35,7 @@ let edgePixelWidth = 4;
 let graphStyles = {
   node: {
     default: {
-      label: "data(cytoLabel)",
+      label: "data(cytoLabel_)",
       color: colors.nodes.label_text_color,
       "text-opacity": colors.nodes.label_text_opacity,
       "text-valign": "bottom",

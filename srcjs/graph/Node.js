@@ -6,6 +6,7 @@ import { LogStates } from "../log/logStates";
 import { HoverStatus } from "./HoverStatus";
 import { ActiveStateStatus } from "./ActiveStateStatus";
 import { StatusArr } from "./StatusArr";
+import type { LogEntryAnyType, CtxIdType } from "../log/logStates";
 import type { StatusEntry } from "./StatusArr";
 import type { CytoData } from "../cyto/cytoFlowType";
 
@@ -26,6 +27,8 @@ class Node {
   enterStatus: ActiveStateStatus;
   invalidateStatus: ActiveStateStatus;
   isDisplayed: boolean;
+  calculationTime: ?number;
+  calculationStartMap: Map<CtxIdType, number>;
 
   constructor(data: NodeInputType) {
     if (typeof data.reactId === "undefined")
@@ -48,6 +51,13 @@ class Node {
     this.value = _isNil(data.value) ? null : data.value;
     this.hoverStatus = data.hoverStatus || new HoverStatus();
     this.isDisplayed = _isNil(data.isDisplayed) ? true : data.isDisplayed;
+
+    this.calculationTime = _isNil(data.calculationTime)
+      ? null
+      : data.calculationTime;
+    this.calculationStartMap = _isNil(data.calculationStartMap)
+      ? new Map()
+      : data.calculationStartMap;
 
     this.valueChangedStatus =
       data.valueChangedStatus || new ActiveStateStatus();
@@ -79,11 +89,28 @@ class Node {
   get hoverKey(): NodeHoverKeyType {
     return this.key;
   }
-  statusAdd(obj: StatusEntry): StatusArr {
-    this.statusArr.add(obj);
+  statusAdd(logEntry: LogEntryAnyType): StatusArr {
+    if (logEntry.action === LogStates.enter) {
+      this.calculationStartMap.set(logEntry.ctxId, logEntry.time);
+    }
+    switch (logEntry.action) {
+      case LogStates.enter:
+      case LogStates.isolateInvalidateStart:
+      case LogStates.invalidateStart:
+        this.calculationTime = null;
+        break;
+    }
+    this.statusArr.add(((logEntry: Object): StatusEntry));
     return this.statusArr;
   }
-  statusRemove(): StatusEntry {
+  statusRemove(logEntry: LogEntryAnyType): StatusEntry {
+    if (logEntry.action === LogStates.exit) {
+      let startEntryTime = this.calculationStartMap.get(logEntry.ctxId);
+      if (!_isNil(startEntryTime)) {
+        this.calculationTime = (logEntry.time - startEntryTime) * 1000;
+      }
+      this.calculationStartMap.delete(logEntry.ctxId);
+    }
     return this.statusArr.remove();
   }
   statusLast(): StatusEntry {
@@ -96,7 +123,7 @@ class Node {
     return this.statusArr.containsStatus(LogStates.isolateEnter);
   }
   get inInvalidate(): boolean {
-    return this.statusArr.containsStatus("invalidateStart");
+    return this.statusArr.containsStatus(LogStates.invalidateStart);
   }
   get inIsolateInvalidate(): boolean {
     return this.statusArr.containsStatus(LogStates.isolateInvalidateStart);
@@ -107,7 +134,12 @@ class Node {
   get cytoLabel(): string {
     let label = `${this.label}`;
     if (this.type === "observer" || this.type === "observable") {
-      return label;
+      if (_isNil(this.calculationTime)) {
+        // is calculating or something... so return regular label
+        return label;
+      }
+      // is just chillin... so I'm assuming it's calculated and I want to know how long it took.
+      return `${label}; ${this.calculationTime.toFixed(0)}ms`;
     }
 
     // not a middle or end node...
@@ -220,6 +252,8 @@ type NodeInputType = {
   enterStatus?: ActiveStateStatus,
   invalidateStatus?: ActiveStateStatus,
   isDisplayed?: boolean,
+  calculationTime?: number,
+  calculationStartMap?: number,
 };
 
 export { Node };

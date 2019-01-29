@@ -23,7 +23,6 @@ import type { CytoscapeType } from "../cyto/cytoFlowType";
 import type {
   LogType,
   LogEntryHasReactId,
-  LogEntryAnyType,
   ReactIdType,
   LogEntryDefineType,
   LogEntryInvalidateStartType,
@@ -528,7 +527,7 @@ class Graph {
               | LogEntryInvalidateEndType
               | LogEntryIsolateInvalidateEndType);
             expectPrevStatus((logEntry: Object), prevData, expectedAction);
-            node.statusRemove();
+            node.statusRemove((logEntry: Object));
           }
         }
         break;

@@ -5,6 +5,8 @@ import _last from "lodash/last";
 
 import console from "../utils/console";
 
+import type { ActionsType } from "../log/logStates";
+
 class StatusArr {
   statusArr: Array<StatusEntry>;
 
@@ -37,16 +39,12 @@ class StatusArr {
 }
 
 type StatusEntry = {
-  action: string,
-  ctxId: string,
-};
-type CurrentStatusEntry = {
-  action: string,
+  action: ActionsType,
   ctxId: string,
 };
 
 let expectPrevStatus = function(
-  curStatus: CurrentStatusEntry,
+  curStatus: StatusEntry,
   prevStatus: StatusEntry,
   expectedAction: string
 ) {
@@ -64,4 +62,4 @@ let expectPrevStatus = function(
 };
 
 export { StatusArr, expectPrevStatus };
-export type { CurrentStatusEntry, StatusEntry };
+export type { StatusEntry };
