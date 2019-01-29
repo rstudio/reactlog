@@ -47,7 +47,7 @@ let graphStyles = {
       "border-width": 1,
       "background-color": colors.nodes.ready,
       "text-wrap": "ellipsis",
-      "text-max-width": "400px",
+      "text-max-width": "350px",
       "text-background-color": colors.nodes.label_background_color,
       "text-background-opacity": colors.nodes.label_background_opacity,
       "font-family": '"Fira Mono", monospace',
@@ -191,6 +191,8 @@ let graphStyles = {
   selected: {
     node: {
       "border-width": 4,
+      // if you hover / selected, show all the label
+      "text-max-width": "10000px",
     },
     edge: {
       width: edgePixelWidth * 2,
@@ -221,6 +223,7 @@ let graphStyles = {
   hidden: {
     node: {
       // visibility: "hidden",
+      "background-color": "white",
       opacity: 0.5,
       label: "data(label)", // do not display a value and only the raw label
     },
