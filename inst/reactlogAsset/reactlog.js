@@ -71410,7 +71410,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         "border-width": 1,
         "background-color": _colors.default.nodes.ready,
         "text-wrap": "ellipsis",
-        "text-max-width": "400px",
+        "text-max-width": "350px",
         "text-background-color": _colors.default.nodes.label_background_color,
         "text-background-opacity": _colors.default.nodes.label_background_opacity,
         "font-family": '"Fira Mono", monospace' // "font-family": "monospace",
@@ -71554,7 +71554,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     },
     selected: {
       node: {
-        "border-width": 4
+        "border-width": 4,
+        // if you hover / selected, show all the label
+        "text-max-width": "10000px"
       },
       edge: {
         width: edgePixelWidth * 2
@@ -71585,6 +71587,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     hidden: {
       node: {
         // visibility: "hidden",
+        "background-color": "white",
         opacity: 0.5,
         label: "data(label)" // do not display a value and only the raw label
 
@@ -71694,15 +71697,19 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     name: "dagre",
     rankDir: "LR",
     // 'TB' for top to bottom flow, 'LR' for left to right,
-    rankSep: 150,
+    rankSep: 400,
     // the separation between node columns
     nodeSep: 10,
-    // the separation within a node column
+    // vertical separation of nodes
     edgeSep: 50,
     // the separation between adjacent edges in the same rank
     ranker: "longest-path",
     // Type of algorithm to assign a rank to each node in the input graph. Possible values: "network-simplex", "tight-tree" or "longest-path"
-    nodeDimensionsIncludeLabels: true,
+    padding: 30,
+    // fit padding
+    spacingFactor: 1,
+    // Applies a multiplicative factor (>0) to expand or compress the overall area that the nodes take up
+    nodeDimensionsIncludeLabels: false,
     // whether labels should be included in determining the space used by a node
     animate: true,
     // whether to transition the node positions
@@ -72980,7 +72987,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       // }
       // return graph at step k
       value: function graphAtStep(k) {
-        return this.atStep(k, true);
+        return this.atStep(k, false);
       }
     }, {
       key: "updateFinalGraph",
@@ -73266,26 +73273,35 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         var idx = (0, _sortedIndex2.default)(this.filteredStepsVisible, k) - 1;
         if (idx < 0 || idx >= this.filteredStepsVisible.length) return -1;
         return this.filteredStepsVisible[idx];
-      }
+      } // full graph at step without filtering
+
     }, {
-      key: "atStep",
-      value: function atStep(k) {
-        var graphOnly = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
-        var kVal = Math.max(1, Math.min(k, this.log.length));
-        var i, graph; // if (kVal >= this.cacheStep) {
+      key: "rawGraphAtStep",
+      value: function rawGraphAtStep(k) {
+        var kVal = Math.max(0, Math.min(k, this.log.length)); // if (kVal >= this.cacheStep) {
         //   iStart = Math.floor((kVal - 1) / this.cacheStep) * this.cacheStep;
         //   graph = _cloneDeep(this.graphCache[iStart])
         // }
 
-        graph = new _Graph.Graph(this.log);
+        var i,
+            graph = new _Graph.Graph(this.log);
 
         for (i = 0; i < this.log.length && this.log[i].step <= kVal; i++) {
           graph.addEntry(this.log[i]);
-        } // if any hover...
+        }
 
+        return graph;
+      } // graph at step with filtering
+      //  boolean on whether or not to update this.finalGraph on matching regex
+
+    }, {
+      key: "atStep",
+      value: function atStep(k) {
+        var updateFinalGraph = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+        var graph = this.rawGraphAtStep(k); // if any hover...
 
         if (this.hoverData && graph.hasSomeData(this.hoverData)) {
-          graph.hoverStatusOnNodeIds(graph.familyTreeNodeIds(this.hoverData), "state");
+          graph.hoverStatusOnNodeIds(this.finalGraph.familyTreeNodeIds(this.hoverData), "state");
           graph.highlightSelected(this.hoverData, "selected");
         } // if any sticky...
 
@@ -73295,7 +73311,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             return graph.hasSomeData(data);
           }))) {
             // at least some sticky data is visible
-            var stickyTree = graph.familyTreeNodeIdsForDatas(this.stickyDatas);
+            var stickyTree = this.finalGraph.familyTreeNodeIdsForDatas(this.stickyDatas);
             graph.hoverStatusOnNodeIds(stickyTree, "sticky");
             this.stickyDatas.map(function (data) {
               graph.highlightSelected(data, "selected");
@@ -73321,13 +73337,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             // console.log("no matches!");
             graph.hoverStatusOnNodeIds([], "filtered");
 
-            if (!graphOnly) {
-              this.updateFilterDatasReset(!graphOnly);
+            if (updateFinalGraph) {
+              this.updateFilterDatasReset(updateFinalGraph);
             }
           } else {
-            if (!graphOnly) {
+            if (updateFinalGraph) {
               this.updateFilterDatas( // for some reason, an array of node does not work with an array of (node, edge, or ghostedge)
-              matchedNodes, !graphOnly);
+              matchedNodes, updateFinalGraph);
             } // filter on regex
 
 
@@ -73428,20 +73444,24 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     }, {
       key: "completeGraphAtStep",
       value: function completeGraphAtStep(k) {
-        var graph = this.atStep(k, false);
-        var finalGraph = this.finalGraph;
-        (0, _MapHelper.mapValues)(finalGraph.nodes).map(function (finalNode) {
-          if (!graph.nodes.has(finalNode.key)) {
+        // get graph at step k and update the final graph obect
+        var graph = this.atStep(k, true);
+        var finalGraph = this.finalGraph; // add any points and edges that have not be defined yet
+        // do not include regular edges, only unique edges
+        // append all missing nodes
+
+        (0, _MapHelper.mapValues)(finalGraph.nodes).map(function (fullNode) {
+          if (!graph.nodes.has(fullNode.key)) {
             // stomps finalGraph node value, but currently not a consequence to worry about
-            finalNode.isDisplayed = false;
-            graph.nodes.set(finalNode.key, finalNode);
+            fullNode.isDisplayed = false;
+            graph.nodes.set(fullNode.key, fullNode);
           }
         });
-        (0, _MapHelper.mapValues)(finalGraph.edgesUnique).map(function (finalEdge) {
-          if (!graph.edgesUnique.has(finalEdge.key)) {
+        (0, _MapHelper.mapValues)(finalGraph.edgesUnique).map(function (fullEdge) {
+          if (!graph.edgesUnique.has(fullEdge.key)) {
             // stomps finalGraph edge value, but currently not a consequence to worry about
-            finalEdge.isDisplayed = false;
-            graph.edgesUnique.set(finalEdge.key, finalEdge);
+            fullEdge.isDisplayed = false;
+            graph.edgesUnique.set(fullEdge.key, fullEdge);
           }
         });
         return graph;

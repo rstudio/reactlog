@@ -29,6 +29,7 @@ import type {
 } from "../log/logStates";
 import type { SomeGraphData } from "./Graph";
 import type {
+  CytoscapeElement,
   CytoscapeType,
   CytoscapeNode,
   CytoscapeEdge,
@@ -96,7 +97,7 @@ class GraphAtStep {
 
   // return graph at step k
   graphAtStep(k: number): Graph {
-    return this.atStep(k, true);
+    return this.atStep(k, false);
   }
   updateFinalGraph() {
     this.finalGraph = this.graphAtStep(this.log.length);
@@ -383,22 +384,29 @@ class GraphAtStep {
     return this.filteredStepsVisible[idx];
   }
 
-  atStep(k: number, graphOnly: boolean = true): Graph {
-    let kVal = Math.max(1, Math.min(k, this.log.length));
-    let i, graph;
+  // full graph at step without filtering
+  rawGraphAtStep(k: number): Graph {
+    let kVal = Math.max(0, Math.min(k, this.log.length));
     // if (kVal >= this.cacheStep) {
     //   iStart = Math.floor((kVal - 1) / this.cacheStep) * this.cacheStep;
     //   graph = _cloneDeep(this.graphCache[iStart])
     // }
-    graph = new Graph(this.log);
+    let i,
+      graph = new Graph(this.log);
     for (i = 0; i < this.log.length && this.log[i].step <= kVal; i++) {
       graph.addEntry(this.log[i]);
     }
+    return graph;
+  }
+  // graph at step with filtering
+  //  boolean on whether or not to update this.finalGraph on matching regex
+  atStep(k: number, updateFinalGraph: boolean = false): Graph {
+    let graph = this.rawGraphAtStep(k);
 
     // if any hover...
     if (this.hoverData && graph.hasSomeData(this.hoverData)) {
       graph.hoverStatusOnNodeIds(
-        graph.familyTreeNodeIds(this.hoverData),
+        this.finalGraph.familyTreeNodeIds(this.hoverData),
         "state"
       );
       graph.highlightSelected(this.hoverData, "selected");
@@ -413,7 +421,9 @@ class GraphAtStep {
         )
       ) {
         // at least some sticky data is visible
-        let stickyTree = graph.familyTreeNodeIdsForDatas(this.stickyDatas);
+        let stickyTree = this.finalGraph.familyTreeNodeIdsForDatas(
+          this.stickyDatas
+        );
         graph.hoverStatusOnNodeIds(stickyTree, "sticky");
         this.stickyDatas.map(function(data) {
           graph.highlightSelected(data, "selected");
@@ -441,15 +451,15 @@ class GraphAtStep {
         // console.log("no matches!");
         graph.hoverStatusOnNodeIds([], "filtered");
 
-        if (!graphOnly) {
-          this.updateFilterDatasReset(!graphOnly);
+        if (updateFinalGraph) {
+          this.updateFilterDatasReset(updateFinalGraph);
         }
       } else {
-        if (!graphOnly) {
+        if (updateFinalGraph) {
           this.updateFilterDatas(
             // for some reason, an array of node does not work with an array of (node, edge, or ghostedge)
             ((matchedNodes: Array<Object>): Array<SomeGraphData>),
-            !graphOnly
+            updateFinalGraph
           );
         }
         // filter on regex
@@ -537,21 +547,25 @@ class GraphAtStep {
   // computes a graph containing all points and edges possible,
   //   extending the original graph at step k
   completeGraphAtStep(k: number) {
-    let graph = this.atStep(k, false);
+    // get graph at step k and update the final graph obect
+    let graph = this.atStep(k, true);
     let finalGraph = this.finalGraph;
 
-    mapValues(finalGraph.nodes).map(function(finalNode) {
-      if (!graph.nodes.has(finalNode.key)) {
+    // add any points and edges that have not be defined yet
+    // do not include regular edges, only unique edges
+    // append all missing nodes
+    mapValues(finalGraph.nodes).map(function(fullNode) {
+      if (!graph.nodes.has(fullNode.key)) {
         // stomps finalGraph node value, but currently not a consequence to worry about
-        finalNode.isDisplayed = false;
-        graph.nodes.set(finalNode.key, finalNode);
+        fullNode.isDisplayed = false;
+        graph.nodes.set(fullNode.key, fullNode);
       }
     });
-    mapValues(finalGraph.edgesUnique).map(function(finalEdge) {
-      if (!graph.edgesUnique.has(finalEdge.key)) {
+    mapValues(finalGraph.edgesUnique).map(function(fullEdge) {
+      if (!graph.edgesUnique.has(fullEdge.key)) {
         // stomps finalGraph edge value, but currently not a consequence to worry about
-        finalEdge.isDisplayed = false;
-        graph.edgesUnique.set(finalEdge.key, finalEdge);
+        fullEdge.isDisplayed = false;
+        graph.edgesUnique.set(fullEdge.key, fullEdge);
       }
     });
 
