@@ -73836,12 +73836,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! lodash/isNil */ "./node_modules/lodash/isNil.js"), __webpack_require__(/*! ../log/logStates */ "./srcjs/log/logStates.js"), __webpack_require__(/*! ./HoverStatus */ "./srcjs/graph/HoverStatus.js"), __webpack_require__(/*! ./ActiveStateStatus */ "./srcjs/graph/ActiveStateStatus.js"), __webpack_require__(/*! ./StatusArr */ "./srcjs/graph/StatusArr.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! lodash/isNil */ "./node_modules/lodash/isNil.js"), __webpack_require__(/*! ../rlog */ "./srcjs/rlog.js"), __webpack_require__(/*! ../log/logStates */ "./srcjs/log/logStates.js"), __webpack_require__(/*! ./HoverStatus */ "./srcjs/graph/HoverStatus.js"), __webpack_require__(/*! ./ActiveStateStatus */ "./srcjs/graph/ActiveStateStatus.js"), __webpack_require__(/*! ./StatusArr */ "./srcjs/graph/StatusArr.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
-})(this, function (_exports, _isNil2, _logStates, _HoverStatus, _ActiveStateStatus, _StatusArr) {
+})(this, function (_exports, _isNil2, _rlog, _logStates, _HoverStatus, _ActiveStateStatus, _StatusArr) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
@@ -74018,13 +74018,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         var label = "".concat(this.label);
 
         if (this.type === "observer" || this.type === "observable") {
-          if ((0, _isNil2.default)(this.calculationTime)) {
-            // is calculating or something... so return regular label
-            return label;
-          } // is just chillin... so I'm assuming it's calculated and I want to know how long it took.
+          var time = this.calculationTime;
 
+          if (_rlog.rlog.displayTimeOnNodes) {
+            if (!(0, _isNil2.default)(time)) {
+              // is just chillin... so I'm assuming it's calculated and I want to know how long it took.
+              return "".concat(label, "; ").concat(time.toFixed(0), "ms");
+            }
+          }
 
-          return "".concat(label, "; ").concat(this.calculationTime.toFixed(0), "ms");
+          return label;
         } // not a middle or end node...
 
 
@@ -75097,12 +75100,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! cytoscape */ "./node_modules/cytoscape/dist/cytoscape.cjs.js"), __webpack_require__(/*! ./graph/Graph */ "./srcjs/graph/Graph.js"), __webpack_require__(/*! ./graph/GraphAtStep */ "./srcjs/graph/GraphAtStep.js"), __webpack_require__(/*! ./updateGraph */ "./srcjs/updateGraph/index.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! cytoscape */ "./node_modules/cytoscape/dist/cytoscape.cjs.js"), __webpack_require__(/*! lodash/isNil */ "./node_modules/lodash/isNil.js"), __webpack_require__(/*! ./graph/Graph */ "./srcjs/graph/Graph.js"), __webpack_require__(/*! ./graph/GraphAtStep */ "./srcjs/graph/GraphAtStep.js"), __webpack_require__(/*! ./updateGraph */ "./srcjs/updateGraph/index.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
-})(this, function (_exports, _cytoscape, _Graph, _GraphAtStep, updateGraph) {
+})(this, function (_exports, _cytoscape, _isNil2, _Graph, _GraphAtStep, updateGraph) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
@@ -75110,6 +75113,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   });
   _exports.rlog = void 0;
   _cytoscape = _interopRequireDefault(_cytoscape);
+  _isNil2 = _interopRequireDefault(_isNil2);
   updateGraph = _interopRequireWildcard(updateGraph);
 
   function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
@@ -75125,7 +75129,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     graph: new _Graph.Graph([]),
     curTick: 1,
     updateGraph: updateGraph,
-    barret: null
+    barret: null,
+    displayTimeOnNodes: // is not `false`
+    window.__APP_TIME__ === true || (0, _isNil2.default)(window.__APP_TIME__)
   };
   _exports.rlog = ret;
 });

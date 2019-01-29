@@ -2,6 +2,8 @@
 
 import _isNil from "lodash/isNil";
 
+import { rlog } from "../rlog";
+
 import { LogStates } from "../log/logStates";
 import { HoverStatus } from "./HoverStatus";
 import { ActiveStateStatus } from "./ActiveStateStatus";
@@ -134,12 +136,14 @@ class Node {
   get cytoLabel(): string {
     let label = `${this.label}`;
     if (this.type === "observer" || this.type === "observable") {
-      if (_isNil(this.calculationTime)) {
-        // is calculating or something... so return regular label
-        return label;
+      let time = this.calculationTime;
+      if (rlog.displayTimeOnNodes) {
+        if (!_isNil(time)) {
+          // is just chillin... so I'm assuming it's calculated and I want to know how long it took.
+          return `${label}; ${time.toFixed(0)}ms`;
+        }
       }
-      // is just chillin... so I'm assuming it's calculated and I want to know how long it took.
-      return `${label}; ${this.calculationTime.toFixed(0)}ms`;
+      return label;
     }
 
     // not a middle or end node...

@@ -2,6 +2,8 @@
 
 import cytoscape from "cytoscape"; // flowlint-line untyped-import:off
 
+import _isNil from "lodash/isNil";
+
 import { Graph } from "./graph/Graph";
 import { GraphAtStep } from "./graph/GraphAtStep";
 import * as updateGraph from "./updateGraph";
@@ -18,6 +20,9 @@ let ret = {
   curTick: (1: number),
   updateGraph: updateGraph,
   barret: (null: any),
+  displayTimeOnNodes:
+    // is not `false`
+    window.__APP_TIME__ === true || _isNil(window.__APP_TIME__),
 };
 
 export { ret as rlog };
