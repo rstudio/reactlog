@@ -347,8 +347,8 @@ class GraphAtStep {
 
     let log = this.log;
     this.filteredStepsVisible = _filter(filteredStepsVisible, function(
-      visibleStep,
-      idx
+      visibleStep: number,
+      idx: number
     ) {
       if (idx === 0) return true;
 
@@ -564,7 +564,6 @@ class GraphAtStep {
     cytoOptions?: CytoscapeOptions = {}
   ) {
     let graph = this.completeGraphAtStep(k);
-
     cy.startBatch();
 
     // let cytoDur = 0;
@@ -578,7 +577,7 @@ class GraphAtStep {
     let someNodeHasNewLabel = false;
 
     // enter visible nodes
-    nodesLRB.right.map(function(graphNode: CytoscapeNode) {
+    nodesLRB.right.map(function(graphNode: CytoscapeElement) {
       let graphNodeData = (graphNode.data(): Node);
       cy.add(graphNode)
         .classes(graphNodeData.cytoClasses)
@@ -589,7 +588,7 @@ class GraphAtStep {
       // });
     });
     // update visible nodes
-    nodesLRB.both.map(function(cytoNode: CytoscapeNode) {
+    nodesLRB.both.map(function(cytoNode: CytoscapeElement) {
       let cyNode = (cy.$id(cytoNode.id()): CytoscapeNode);
 
       let graphNode = (graphNodes.$id(cytoNode.id()): CytoscapeNode);

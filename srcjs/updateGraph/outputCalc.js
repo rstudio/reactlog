@@ -7,8 +7,12 @@ import { rlog } from "../rlog";
 import { updateGraph } from "../updateGraph";
 
 import type { CytoscapeOptions } from "../cyto/cytoFlowType";
+import type { LogType } from "../log/logStates";
 
-let nextStepInArr = function(arr, cytoOptions?: CytoscapeOptions = {}) {
+let nextStepInArr = function(
+  arr: Array<number>,
+  cytoOptions?: CytoscapeOptions = {}
+) {
   let nextTick;
   if (_sortedIndexOf(arr, rlog.curTick) !== -1) {
     // at arr point, move the tick one ahead
@@ -32,7 +36,10 @@ let nextStepInArr = function(arr, cytoOptions?: CytoscapeOptions = {}) {
   return false;
 };
 
-let prevStepInArr = function(arr, cytoOptions?: CytoscapeOptions = {}) {
+let prevStepInArr = function(
+  arr: Array<number>,
+  cytoOptions?: CytoscapeOptions = {}
+) {
   let prevTick;
   if (_sortedIndexOf(arr, rlog.curTick) !== -1) {
     // at arr point, move the tick one back

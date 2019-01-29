@@ -1,5 +1,7 @@
 // @flow
 
+import _isNil from "lodash/isNil";
+
 import { LogStates } from "../log/logStates";
 import { HoverStatus } from "./HoverStatus";
 import { ActiveStateStatus } from "./ActiveStateStatus";
@@ -39,13 +41,13 @@ class Node {
     this.reactId = data.reactId;
     this.label = data.label;
     this.type = data.type;
-    this.session = data.session || "Global";
+    this.session = _isNil(data.session) ? "Global" : data.session;
     this.time = data.time;
     this.isFrozen = data.isFrozen || false;
     this.statusArr = new StatusArr(data.statusArr || []);
-    this.value = data.value || null;
+    this.value = _isNil(data.value) ? null : data.value;
     this.hoverStatus = data.hoverStatus || new HoverStatus();
-    this.isDisplayed = data.isDisplayed || true;
+    this.isDisplayed = _isNil(data.isDisplayed) ? true : data.isDisplayed;
 
     this.valueChangedStatus =
       data.valueChangedStatus || new ActiveStateStatus();
@@ -109,8 +111,8 @@ class Node {
     }
 
     // not a middle or end node...
-    let value = `${this.value}`;
-    if (value.length > 0) {
+    if (!_isNil(this.value)) {
+      let value = `${this.value}`;
       // only if there are no new lines...
       if (!value.includes("\\n")) {
         // trim beginning of string

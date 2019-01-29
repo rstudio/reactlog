@@ -1,5 +1,7 @@
 // @flow
 
+import _isNil from "lodash/isNil";
+
 import type {
   EdgeLikeType,
   EdgeIdType,
@@ -27,11 +29,11 @@ class GhostEdge {
       throw "data.time not provided to new GhostEdge()";
     this.reactId = data.reactId;
     this.depOnReactId = data.depOnReactId;
-    this.session = data.session || "Global";
+    this.session = _isNil(data.session) ? "Global" : data.session;
     this.time = data.time;
     this.isGhost = true;
     this.hoverStatus = data.hoverStatus || new HoverStatus();
-    this.isDisplayed = data.isDisplayed || true;
+    this.isDisplayed = _isNil(data.isDisplayed) ? true : data.isDisplayed;
   }
   get id(): EdgeIdType {
     return `${this.reactId}_${this.depOnReactId}`.replace(/\$/g, "_");

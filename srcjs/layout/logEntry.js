@@ -2,6 +2,7 @@
 
 import _sortedIndex from "lodash/sortedIndex";
 import _sortedIndexOf from "lodash/sortedIndexOf";
+import _isNil from "lodash/isNil";
 
 import { rlog } from "../rlog";
 
@@ -64,7 +65,7 @@ let updateLogEntry = function(): void {
     .padStart(logInfo.lastTimeCharLength, " ");
 
   containers.time.text(`${timeDiff}s`);
-  if (curEntry.session) {
+  if (!_isNil(curEntry.session)) {
     containers.session.text(
       `${curEntry.session}`.padEnd(logInfo.maxSessionCharLength, " ")
     );
@@ -128,7 +129,7 @@ let setContainers = function(
   // find largest session name length
   for (let i = 0; i < logInfoLength; i++) {
     logEntry = log[i];
-    if (logEntry.session) {
+    if (!_isNil(logEntry.session)) {
       sessionCharLength = logEntry.session.length;
       if (sessionCharLength > maxSessionCharLength) {
         maxSessionCharLength = sessionCharLength;
@@ -166,11 +167,12 @@ let getReactIdLabel = function(entry: LogEntryHasReactId) {
 };
 let getReactIdValue = function(entry: LogEntryHasReactId) {
   let node = rlog.graph.nodes.get(entry.reactId);
-  if (node.value) {
-    return node.value;
-  } else {
-    return "<unknown>";
+  if (node) {
+    if (!_isNil(node.value)) {
+      return node.value;
+    }
   }
+  return "<unknown>";
 };
 let getContextId = function(entry: LogEntryCreateContextType) {
   return entry.ctxId;

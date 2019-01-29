@@ -19,7 +19,7 @@ type CytoscapeLRB = {
 type CytoscapeEdge = {
   id: () => string,
   // data: () => SomeGraphData,
-  data: (info?: SomeGraphData) => any,
+  data: (info?: SomeGraphData | string) => any,
   flashClass: (className: string, timeout: number) => void,
   once: (string, (CytoEvent) => any) => any,
   trigger: (string, CytoEvent) => any,
@@ -33,7 +33,7 @@ type CytoscapeEdge = {
 type CytoscapeNode = {
   id: () => string,
   // data: (info: SomeGraphData) => CytoscapeElements,
-  data: (info?: SomeGraphData) => any,
+  data: (info?: SomeGraphData | string) => any,
   flashClass: (className: string, timeout: number) => void,
   once: (string, (CytoEvent) => any) => any,
   trigger: (string, CytoEvent) => any,
@@ -46,7 +46,7 @@ type CytoscapeElements = {
   $: (identifier?: string | CytoscapeElement) => CytoscapeElements,
   $id: (id: string) => CytoscapeElement,
   length: number,
-  data: (info?: SomeGraphData) => any,
+  data: (info?: SomeGraphData | string) => any,
   map: ((element: CytoscapeElement) => void) => void,
   diff: (other: CytoscapeElements) => CytoscapeLRB,
   style: Object => CytoscapeElements,
@@ -74,6 +74,7 @@ type CytoscapeType = {
   zoom: (zoomLevel?: number) => number,
   minZoom: (zoomLevel?: number) => number,
   maxZoom: (zoomLevel?: number) => number,
+  resize: () => void,
 };
 
 type CytoEvent = {
