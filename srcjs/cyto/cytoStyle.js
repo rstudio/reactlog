@@ -224,7 +224,9 @@ let graphStyles = {
     node: {
       // visibility: "hidden",
       "background-color": "white",
-      opacity: 0.5,
+      "background-opacity": 1,
+      "border-opacity": 0.5,
+      "text-opacity": 0.5,
       label: "data(label)", // do not display a value and only the raw label
     },
     edge: {
