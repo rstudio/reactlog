@@ -53,11 +53,11 @@
 #' runApp(app)
 #'
 #' # once app has closed, display reactlog
-#' show_reactlog()
+#' reactlog_show()
 #' }
 
-show_reactlog <- function(log, time = TRUE, ...) {
-  file <- render_reactlog(log, time = as.logical(time), ...)
+reactlog_show <- function(log, time = TRUE, ...) {
+  file <- reactlog_render(log, time = as.logical(time), ...)
   utils::browseURL(file)
 }
 
@@ -68,7 +68,7 @@ show_reactlog <- function(log, time = TRUE, ...) {
 #' @param file location to \code{cat} the file to
 #' @param session_token Session token identifier to be used when subsetting the complete reactlog
 #' @export
-write_reactlog <- function(log, file=stdout(), session_token = NULL) {
+reactlog_write <- function(log, file=stdout(), session_token = NULL) {
   if (!is.null(session_token)) {
     log <- Filter(
       function(x) {
