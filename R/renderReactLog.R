@@ -1,9 +1,9 @@
 
 #' @export
-#' @rdname show_reactlog
+#' @rdname reactlog_show
 #' @param session_token token to be used to subset which session is displayed.  Defaults to all sessions.
-render_reactlog <- function(log, session_token = NULL, time = TRUE) {
-  log <- upgrade_reactlog(log)
+reactlog_render <- function(log, session_token = NULL, time = TRUE) {
+  log <- reactlog_upgrade(log)
 
   template_file <- system.file("reactlog.html", package = "reactlog")
   html <- paste(readLines(template_file, warn = FALSE), collapse = "\r\n")
@@ -12,7 +12,7 @@ render_reactlog <- function(log, session_token = NULL, time = TRUE) {
   on.exit({
     close(tmpfile)
   })
-  write_reactlog(log, tmpfile, session_token)
+  reactlog_write(log, tmpfile, session_token)
 
   fixed_sub <- function(...) {
     sub(..., fixed = TRUE)

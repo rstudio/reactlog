@@ -1,5 +1,5 @@
 
-upgrade_reactlog <- function(log) {
+reactlog_upgrade <- function(log) {
   version <- attr(log, "version")
   if (is.null(version)) {
     stop("'log' is missing a 'version' attribute.  This is required.")

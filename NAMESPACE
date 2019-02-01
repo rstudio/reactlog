@@ -2,6 +2,6 @@
 
 export(reactlog_add_shiny_resource_paths)
 export(reactlog_asset_paths)
-export(render_reactlog)
-export(show_reactlog)
-export(write_reactlog)
+export(reactlog_render)
+export(reactlog_show)
+export(reactlog_write)
