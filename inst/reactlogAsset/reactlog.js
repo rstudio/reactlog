@@ -72865,16 +72865,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       // get hasHoverData() {
       //   return this.hoverData ? true : false;
       // }
-      // return graph at step k
-
-    }, {
-      key: "graphAtStep",
-      value: function graphAtStep(k) {
-        return this.atStep(k, false);
-      } // updateFinalGraph() {
-      //   this.finalFilteredGraph = this.atStep(this.log.length, true);
-      //   // this.finalCyto = this.finalGraph.cytoGraph;
-      // }
 
     }, {
       key: "initStepInfo",
@@ -73009,7 +72999,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             case _logStates.LogStates.dependsOn:
             case _logStates.LogStates.dependsOnRemove:
               // check for both to and from (since it must exist beforehand)
-              // graphAtI = this.graphAtStep(visibleStep);
               if (finalFilteredGraph.hasNodeReactId(logEntry.reactId) && finalFilteredGraph.hasNodeReactId(logEntry.depOnReactId)) {
                 filteredStepsVisible.push(visibleStep);
                 break;
@@ -73097,6 +73086,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         if (idx < 0 || idx >= this.filteredStepsVisible.length) return -1;
         return this.filteredStepsVisible[idx];
       } // full graph at step without filtering
+      //  no cometic changes
 
     }, {
       key: "rawGraphAtStep",
@@ -73128,12 +73118,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       key: "updateFinalFilteredGraph",
       value: function updateFinalFilteredGraph() {
         // copy final graph
-        var finalGraph = new _Graph.Graph(this.finalCompleteGraph); // set filter datas from regex or global filter datas
-        // if any hover... // do nothing
-        // if any sticky... // do nothing
-        // if any search regex...
-        // handled elsewhere
-        // if any filtering...
+        var finalGraph = new _Graph.Graph(this.finalCompleteGraph); // if any filtering...
 
         if (hasLength(this.filterDatas)) {
           finalGraph.filterGraphOnNodeIds( // graph.familyTreeNodeIdsForDatas(this.filterDatas)
@@ -73141,15 +73126,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         }
 
         this.finalFilteredGraph = finalGraph;
-        window.console.log("Final Filtered Graph: ", this.finalFilteredGraph);
         return;
       } // graph at step with filtering
-      //  boolean on whether or not to update this.finalGraph on matching regex
+      // include all cosmetic information
 
     }, {
-      key: "atStep",
-      value: function atStep(k) {
-        var updateFinalGraph = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+      key: "filteredGraphAtStep",
+      value: function filteredGraphAtStep(k) {
         // get unfiltered graph at step k
         var graph = this.rawGraphAtStep(k); // if any hover...
 
@@ -73238,7 +73221,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       key: "updateFilterDatas",
       value: function updateFilterDatas(dataArr) {
         this.filterDatas = dataArr;
-        window.console.log("update filterDatas: ", dataArr);
         this.updateFinalFilteredGraphAndStepsVisible();
       }
     }, {
@@ -73292,10 +73274,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       //   extending the original graph at step k
 
     }, {
-      key: "completeGraphAtStep",
-      value: function completeGraphAtStep(k) {
+      key: "fullFilteredGraphAtStep",
+      value: function fullFilteredGraphAtStep(k) {
         // get graph at step k and update the final graph obect
-        var graph = this.atStep(k, true);
+        var graph = this.filteredGraphAtStep(k);
         var finalGraph = this.finalFilteredGraph; // add any points and edges that have not be defined yet
         // do not include regular edges, only unique edges
         // append all missing nodes
@@ -73320,7 +73302,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       key: "displayAtStep",
       value: function displayAtStep(k, cy) {
         var cytoOptions = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-        var graph = this.completeGraphAtStep(k);
+        var graph = this.fullFilteredGraphAtStep(k);
         cy.startBatch(); // let cytoDur = 0;
 
         var cyNodes = cy.nodes();
@@ -74167,7 +74149,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     _rlog.rlog.log = window.log;
     _rlog.rlog.cyto = cytoscapeInit.withContainer((0, _jquery.default)("#cyto"));
     _rlog.rlog.getGraph = new _GraphAtStep.GraphAtStep(_rlog.rlog.log);
-    _rlog.rlog.graph = _rlog.rlog.getGraph.graphAtStep(_rlog.rlog.getGraph.maxStep);
+    _rlog.rlog.graph = _rlog.rlog.getGraph.finalCompleteGraph;
     (0, _jquery.default)("#prevUserMarkButton").click(updateGraph.buttonPrevMark);
     (0, _jquery.default)("#nextUserMarkButton").click(updateGraph.buttonNextMark);
     (0, _jquery.default)("#prevOutputCalcButton").click(updateGraph.buttonPrevOutputCalc);

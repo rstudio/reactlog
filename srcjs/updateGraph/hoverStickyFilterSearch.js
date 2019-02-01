@@ -56,10 +56,7 @@ let searchRegexReset = function(cytoOptions?: CytoscapeOptions = {}) {
   return updateGraph(rlog.curTick, _assign({ fit: true }, cytoOptions));
 };
 let resetHoverStickyFilterData = function(cytoOptions?: CytoscapeOptions = {}) {
-  rlog.getGraph.updateHoverDataReset();
-  rlog.getGraph.updateStickyDatasReset();
-  rlog.getGraph.updateFilterDatasReset();
-  rlog.getGraph.updateSearchRegexReset();
+  rlog.getGraph.resetHoverStickyFilterSearch();
   return updateGraph(rlog.curTick, _assign({ fit: true }, cytoOptions));
 };
 

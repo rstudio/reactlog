@@ -3,7 +3,6 @@
 import _assign from "lodash/assign";
 import _clone from "lodash/clone";
 import _filter from "lodash/filter";
-import _indexOf from "lodash/indexOf";
 import _some from "lodash/some";
 import _sortBy from "lodash/sortBy";
 import _sortedIndex from "lodash/sortedIndex";
@@ -20,6 +19,7 @@ import layoutOptions from "../cyto/layoutOptions";
 
 import { Node } from "./Node";
 import { Edge } from "./Edge";
+import { GhostEdge } from "./GhostEdge";
 
 import type {
   LogType,
@@ -42,12 +42,13 @@ import type { CytoscapeOptions } from "../cyto/cytoFlowType";
 class GraphAtStep {
   log: LogType;
   originalLog: LogType;
-  searchRegex: ?RegExp;
+
   filterDatas: Array<SomeGraphData>;
   hoverData: ?SomeGraphData;
   stickyDatas: Array<SomeGraphData>;
 
-  finalGraph: Graph;
+  finalFilteredGraph: Graph;
+  finalCompleteGraph: Graph;
   finalCyto: any;
 
   cytoLayout: any;
@@ -67,7 +68,6 @@ class GraphAtStep {
     this.originalLog = log;
 
     // hoverInfo[key] = `HoverStatus`
-    this.searchRegex = null;
     this.filterDatas = [];
     this.hoverData = null;
     this.stickyDatas = [];
@@ -77,14 +77,20 @@ class GraphAtStep {
     // this.filterMap = {};
 
     this.log = log;
-    this.updateSteps(log);
+    this.initStepInfo(log);
 
-    this.updateFinalGraph();
+    // make a graph with no filtering that is completly made
+    this.finalCompleteGraph = this.rawGraphAtStep(log.length);
+
+    this.updateFinalFilteredGraphAndStepsVisible();
   }
 
-  get hasSearchRegex() {
-    return this.searchRegex ? true : false;
+  updateFinalFilteredGraphAndStepsVisible(): void {
+    this.updateFinalFilteredGraph();
+    this.updateFilteredStepsVisible();
+    return;
   }
+
   // function hasFilterDatas(): boolean %checks {
   //   return this.filterDatas ? this.filterDatas.length > 0 : false;
   // }
@@ -95,16 +101,7 @@ class GraphAtStep {
   //   return this.hoverData ? true : false;
   // }
 
-  // return graph at step k
-  graphAtStep(k: number): Graph {
-    return this.atStep(k, false);
-  }
-  updateFinalGraph() {
-    this.finalGraph = this.graphAtStep(this.log.length);
-    // this.finalCyto = this.finalGraph.cytoGraph;
-  }
-
-  updateSteps(log: LogType) {
+  initStepInfo(log: LogType) {
     this.steps = [];
     this.stepsAsyncStart = [];
     this.stepsAsyncStop = [];
@@ -213,17 +210,6 @@ class GraphAtStep {
         // get union (unique values) of all visible locations
         _union(this.steps, this.stepsUserMark, this.stepsIdle)
       );
-    this.updateFilteredStepsVisible();
-
-    // this.graphCache = {};
-    // this.cacheStep = 250;
-    // var tmpGraph = new Graph(log);
-    // for (i = 0; i < log.length; i++) {
-    //   tmpGraph.addEntry(log[i])
-    //   if ((i % this.cacheStep) == 0) {
-    //     this.graphCache[i] = _cloneDeep(tmpGraph)
-    //   }
-    // }
   }
 
   updateFilteredStepsVisible(): void {
@@ -235,48 +221,21 @@ class GraphAtStep {
     // must have filtered data
 
     let filteredStepsVisible = [];
-    let graphAtEnd = this.graphAtStep(this.log.length);
+    let finalFilteredGraph = this.finalFilteredGraph;
     let visibleStep, logEntry, i;
 
-    let filterReactIds = this.filterDatas.map(function(node) {
-      return node.reactId;
-    });
     // todo must be actual log. not visible steps
     for (i = 0; i < this.stepsVisible.length; i++) {
       visibleStep = this.stepsVisible[i];
       logEntry = this.log[visibleStep];
 
       switch (logEntry.action) {
-        case LogStates.dependsOn: {
-          // since we are adding an edge in the graph, update the graph
-          // graphAtI = this.graphAtStep(visibleStep);
-          let decendents = _union(
-            filterReactIds,
-            graphAtEnd.decendentNodeIdsForDatas(this.filterDatas)
-          );
-          let ancestors = _union(
-            filterReactIds,
-            graphAtEnd.ancestorNodeIdsForDatas(this.filterDatas)
-          );
-          // reactId is target (ends at ancestors)
-          if (_indexOf(ancestors, logEntry.reactId) !== -1) {
-            filteredStepsVisible.push(visibleStep);
-            break;
-          }
-          // depOnReactId is source (starts from children)
-          if (_indexOf(decendents, logEntry.depOnReactId) !== -1) {
-            filteredStepsVisible.push(visibleStep);
-            break;
-          }
-          // not found
-          break;
-        }
+        case LogStates.dependsOn:
         case LogStates.dependsOnRemove:
           // check for both to and from (since it must exist beforehand)
-          // graphAtI = this.graphAtStep(visibleStep);
           if (
-            graphAtEnd.nodes.has(logEntry.reactId) &&
-            graphAtEnd.nodes.has(logEntry.depOnReactId)
+            finalFilteredGraph.hasNodeReactId(logEntry.reactId) &&
+            finalFilteredGraph.hasNodeReactId(logEntry.depOnReactId)
           ) {
             filteredStepsVisible.push(visibleStep);
             break;
@@ -286,23 +245,6 @@ class GraphAtStep {
 
         case LogStates.define:
         case LogStates.updateNodeLabel:
-          // graphAtI = this.graphAtStep(visibleStep);
-
-          if (!graphAtEnd.hasNodeReactId(logEntry.reactId)) {
-            // no node found
-            break;
-          }
-          if (this.searchRegex) {
-            if (logEntry.label) {
-              if (!this.searchRegex.test(logEntry.label)) {
-                // regex doesn't match node
-                break;
-              }
-            }
-          }
-          filteredStepsVisible.push(visibleStep);
-          break;
-
         case LogStates.freeze:
         case LogStates.thaw:
         case LogStates.valueChange:
@@ -315,7 +257,7 @@ class GraphAtStep {
         case LogStates.isolateExit:
         case LogStates.isolateInvalidateStart:
         case LogStates.isolateInvalidateEnd:
-          if (!graphAtEnd.hasNodeReactId(logEntry.reactId)) {
+          if (!finalFilteredGraph.hasNodeReactId(logEntry.reactId)) {
             // no node found in filtered graph
             break;
           }
@@ -323,8 +265,17 @@ class GraphAtStep {
           break;
 
         case LogStates.idle:
+          if (filteredStepsVisible.length > 0) {
+            let priorFilteredStepVisible =
+              filteredStepsVisible[filteredStepsVisible.length - 1];
+            if (this.log[priorFilteredStepVisible].action !== LogStates.idle) {
+              // if the visible state is not an idle state, add it
+              filteredStepsVisible.push(visibleStep);
+            }
+          }
+          break;
         case LogStates.userMark:
-          // always include (for now)
+          // always include (for now, multiple idle steps are removed later)
           filteredStepsVisible.push(visibleStep);
           break;
 
@@ -340,28 +291,7 @@ class GraphAtStep {
       }
     }
 
-    // return early if nothing is found. I hope this is never called
-    if (filteredStepsVisible.length === 0) {
-      this.filteredStepsVisible = filteredStepsVisible;
-      return;
-    }
-
-    let log = this.log;
-    this.filteredStepsVisible = _filter(filteredStepsVisible, function(
-      visibleStep: number,
-      idx: number
-    ) {
-      if (idx === 0) return true;
-
-      if (log[visibleStep].action === LogStates.idle) {
-        let priorVisibleStep = filteredStepsVisible[idx - 1];
-        if (log[priorVisibleStep].action === LogStates.idle) {
-          return false;
-        }
-      }
-      return true;
-    });
-
+    this.filteredStepsVisible = filteredStepsVisible;
     return;
   }
 
@@ -385,6 +315,7 @@ class GraphAtStep {
   }
 
   // full graph at step without filtering
+  //  no cometic changes
   rawGraphAtStep(k: number): Graph {
     let kVal = Math.max(0, Math.min(k, this.log.length));
     // if (kVal >= this.cacheStep) {
@@ -397,16 +328,43 @@ class GraphAtStep {
       graph.addEntry(this.log[i]);
     }
     return graph;
+    // this.graphCache = {};
+    // this.cacheStep = 250;
+    // var tmpGraph = new Graph(log);
+    // for (i = 0; i < log.length; i++) {
+    //   tmpGraph.addEntry(log[i])
+    //   if ((i % this.cacheStep) == 0) {
+    //     this.graphCache[i] = _cloneDeep(tmpGraph)
+    //   }
+    // }
+  }
+
+  // update the filtering for the final graph. No cosmetics
+  updateFinalFilteredGraph(): void {
+    // copy final graph
+    let finalGraph = new Graph(this.finalCompleteGraph);
+
+    // if any filtering...
+    if (hasLength(this.filterDatas)) {
+      finalGraph.filterGraphOnNodeIds(
+        // graph.familyTreeNodeIdsForDatas(this.filterDatas)
+        this.finalCompleteGraph.familyTreeNodeIdsForDatas(this.filterDatas)
+      );
+    }
+
+    this.finalFilteredGraph = finalGraph;
+    return;
   }
   // graph at step with filtering
-  //  boolean on whether or not to update this.finalGraph on matching regex
-  atStep(k: number, updateFinalGraph: boolean = false): Graph {
+  // include all cosmetic information
+  filteredGraphAtStep(k: number): Graph {
+    // get unfiltered graph at step k
     let graph = this.rawGraphAtStep(k);
 
     // if any hover...
     if (this.hoverData && graph.hasSomeData(this.hoverData)) {
       graph.hoverStatusOnNodeIds(
-        this.finalGraph.familyTreeNodeIds(this.hoverData),
+        this.finalFilteredGraph.familyTreeNodeIds(this.hoverData),
         "state"
       );
       graph.highlightSelected(this.hoverData, "selected");
@@ -421,7 +379,7 @@ class GraphAtStep {
         )
       ) {
         // at least some sticky data is visible
-        let stickyTree = this.finalGraph.familyTreeNodeIdsForDatas(
+        let stickyTree = this.finalFilteredGraph.familyTreeNodeIdsForDatas(
           this.stickyDatas
         );
         graph.hoverStatusOnNodeIds(stickyTree, "sticky");
@@ -435,54 +393,16 @@ class GraphAtStep {
       }
     }
 
-    // if any searching
-    if (this.searchRegex) {
-      let searchRegex = this.searchRegex;
-      let matchedNodes = _filter(
-        // (mapValues(graph.nodes): ArraySomeGraphData),
-        mapValues(graph.nodes),
-        function(node: Node) {
-          return searchRegex.test(node.label);
-        }
+    // if any filtering...
+    if (hasLength(this.filterDatas)) {
+      graph.filterGraphOnNodeIds(
+        // graph.familyTreeNodeIdsForDatas(this.filterDatas)
+        this.finalFilteredGraph.familyTreeNodeIdsForDatas(this.filterDatas)
       );
-
-      if (matchedNodes.length === 0) {
-        // TODO-barret warn of no matches
-        // console.log("no matches!");
-        graph.hoverStatusOnNodeIds([], "filtered");
-
-        if (updateFinalGraph) {
-          this.updateFilterDatasReset(updateFinalGraph);
-        }
-      } else {
-        if (updateFinalGraph) {
-          this.updateFilterDatas(
-            // for some reason, an array of node does not work with an array of (node, edge, or ghostedge)
-            ((matchedNodes: Array<Object>): Array<SomeGraphData>),
-            updateFinalGraph
-          );
-        }
-        // filter on regex
-        graph.filterGraphOnNodeIds(
-          this.finalGraph.familyTreeNodeIdsForDatas(this.filterDatas)
-        );
-        matchedNodes.map(function(data) {
-          graph.highlightSelected(data, "filtered");
-        });
-        // graph.hoverStatusOnNodeIds(matchedNodes.map((x) => x.reactId), "filtered");
-      }
-    } else {
-      // if any filtering...
-      if (hasLength(this.filterDatas)) {
-        graph.filterGraphOnNodeIds(
-          // graph.familyTreeNodeIdsForDatas(this.filterDatas)
-          this.finalGraph.familyTreeNodeIdsForDatas(this.filterDatas)
-        );
-        // graph.hoverStatusOnNodeIds(this.filterDatas.map((x) => x.reactId), "filtered");
-        this.filterDatas.map(function(data) {
-          graph.highlightSelected(data, "filtered");
-        });
-      }
+      // graph.hoverStatusOnNodeIds(this.filterDatas.map((x) => x.reactId), "filtered");
+      this.filterDatas.map(function(data) {
+        graph.highlightSelected(data, "filtered");
+      });
     }
 
     return graph;
@@ -524,32 +444,67 @@ class GraphAtStep {
   updateStickyDatasReset() {
     this.stickyDatas = [];
   }
-  updateFilterDatas(
-    dataArr: Array<SomeGraphData>,
-    callUpdateFinal?: boolean = true
-  ) {
+  updateFilterDatas(dataArr: Array<SomeGraphData>) {
     this.filterDatas = dataArr;
-    if (callUpdateFinal) this.updateFinalGraph();
-    this.updateFilteredStepsVisible();
+    this.updateFinalFilteredGraphAndStepsVisible();
   }
-  updateFilterDatasReset(callUpdateFinal?: boolean = true) {
-    this.updateFilterDatas([], callUpdateFinal);
+  updateFilterDatasReset() {
+    this.updateFilterDatas([]);
   }
-  updateSearchRegex(regex: ?RegExp, callUpdateFinal?: boolean = true) {
-    this.searchRegex = regex;
-    if (callUpdateFinal) this.updateFinalGraph();
+  updateSearchRegex(regex: RegExp) {
+    // update filterDatas below
+
+    let matchedElements = _filter(
+      // (mapValues(graph.nodes): ArraySomeGraphData),
+      mapValues(this.finalCompleteGraph.nodes),
+      function(node: Node) {
+        return regex.test(node.label) || regex.test(node.reactId);
+      }
+    );
+    if (matchedElements.length === 0) {
+      matchedElements = _filter(
+        mapValues(this.finalCompleteGraph.edges),
+        function(edge: Edge) {
+          return regex.test(edge.reactId);
+        }
+      );
+    }
+    if (matchedElements.length === 0) {
+      matchedElements = _filter(
+        mapValues(this.finalCompleteGraph.edgesUnique),
+        function(edge: GhostEdge) {
+          return regex.test(edge.reactId);
+        }
+      );
+    }
+
+    if (matchedElements.length === 0) {
+      // no matches found
+      this.updateFilterDatasReset();
+    } else {
+      this.updateFilterDatas(
+        // for some reason, an array of node does not work with an array of (node, edge, or ghostedge)
+        (matchedElements: Array<Object>)
+      );
+    }
   }
-  updateSearchRegexReset(callUpdateFinal?: boolean = true) {
-    this.updateFilterDatasReset(false);
-    this.updateSearchRegex(null, callUpdateFinal);
+  updateSearchRegexReset() {
+    this.filterDatas = [];
+    this.updateFinalFilteredGraphAndStepsVisible();
+  }
+  resetHoverStickyFilterSearch() {
+    this.hoverData = null;
+    this.stickyDatas = [];
+    this.filterDatas = [];
+    this.updateFinalFilteredGraphAndStepsVisible();
   }
 
   // computes a graph containing all points and edges possible,
   //   extending the original graph at step k
-  completeGraphAtStep(k: number) {
+  fullFilteredGraphAtStep(k: number) {
     // get graph at step k and update the final graph obect
-    let graph = this.atStep(k, true);
-    let finalGraph = this.finalGraph;
+    let graph = this.filteredGraphAtStep(k);
+    let finalGraph = this.finalFilteredGraph;
 
     // add any points and edges that have not be defined yet
     // do not include regular edges, only unique edges
@@ -577,7 +532,7 @@ class GraphAtStep {
     cy: CytoscapeType,
     cytoOptions?: CytoscapeOptions = {}
   ) {
-    let graph = this.completeGraphAtStep(k);
+    let graph = this.fullFilteredGraphAtStep(k);
     cy.startBatch();
 
     // let cytoDur = 0;
