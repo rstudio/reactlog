@@ -1,5 +1,7 @@
 // @flow
 
+import $ from "jquery";
+
 import _assign from "lodash/assign";
 import _clone from "lodash/clone";
 import _filter from "lodash/filter";
@@ -458,14 +460,14 @@ class GraphAtStep {
       // (mapValues(graph.nodes): ArraySomeGraphData),
       mapValues(this.finalCompleteGraph.nodes),
       function(node: Node) {
-        return regex.test(node.label) || regex.test(node.reactId);
+        return regex.test(node.label) || regex.test(node.key);
       }
     );
     if (matchedElements.length === 0) {
       matchedElements = _filter(
         mapValues(this.finalCompleteGraph.edges),
         function(edge: Edge) {
-          return regex.test(edge.reactId);
+          return regex.test(edge.ghostKey);
         }
       );
     }
@@ -473,15 +475,17 @@ class GraphAtStep {
       matchedElements = _filter(
         mapValues(this.finalCompleteGraph.edgesUnique),
         function(edge: GhostEdge) {
-          return regex.test(edge.reactId);
+          return regex.test(edge.key);
         }
       );
     }
 
     if (matchedElements.length === 0) {
       // no matches found
+      this.updateStickyDatasReset();
       this.updateFilterDatasReset();
     } else {
+      this.updateStickyDatas((matchedElements: Array<Object>));
       this.updateFilterDatas(
         // for some reason, an array of node does not work with an array of (node, edge, or ghostedge)
         (matchedElements: Array<Object>)
@@ -489,13 +493,13 @@ class GraphAtStep {
     }
   }
   updateSearchRegexReset() {
-    this.filterDatas = [];
-    this.updateFinalFilteredGraphAndStepsVisible();
+    this.resetHoverStickyFilterSearch();
   }
   resetHoverStickyFilterSearch() {
     this.hoverData = null;
     this.stickyDatas = [];
     this.filterDatas = [];
+    $("#search").val("");
     this.updateFinalFilteredGraphAndStepsVisible();
   }
 

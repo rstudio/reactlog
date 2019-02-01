@@ -71170,7 +71170,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
       updateGraph.searchRegexReset();
-      updateGraph.filterDatas([target.data()]);
+      updateGraph.searchStringWithData(target.data()); // updateGraph.filterDatas([target.data()]);
     };
   };
 
@@ -72756,12 +72756,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! lodash/assign */ "./node_modules/lodash/assign.js"), __webpack_require__(/*! lodash/clone */ "./node_modules/lodash/clone.js"), __webpack_require__(/*! lodash/filter */ "./node_modules/lodash/filter.js"), __webpack_require__(/*! lodash/some */ "./node_modules/lodash/some.js"), __webpack_require__(/*! lodash/sortBy */ "./node_modules/lodash/sortBy.js"), __webpack_require__(/*! lodash/sortedIndex */ "./node_modules/lodash/sortedIndex.js"), __webpack_require__(/*! lodash/sortedIndexOf */ "./node_modules/lodash/sortedIndexOf.js"), __webpack_require__(/*! lodash/union */ "./node_modules/lodash/union.js"), __webpack_require__(/*! ../utils/console */ "./srcjs/utils/console.js"), __webpack_require__(/*! ../utils/MapHelper */ "./srcjs/utils/MapHelper.js"), __webpack_require__(/*! ../log/logStates */ "./srcjs/log/logStates.js"), __webpack_require__(/*! ./Graph */ "./srcjs/graph/Graph.js"), __webpack_require__(/*! ../cyto/layoutOptions */ "./srcjs/cyto/layoutOptions.js"), __webpack_require__(/*! ./Node */ "./srcjs/graph/Node.js"), __webpack_require__(/*! ./Edge */ "./srcjs/graph/Edge.js"), __webpack_require__(/*! ./GhostEdge */ "./srcjs/graph/GhostEdge.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js"), __webpack_require__(/*! lodash/assign */ "./node_modules/lodash/assign.js"), __webpack_require__(/*! lodash/clone */ "./node_modules/lodash/clone.js"), __webpack_require__(/*! lodash/filter */ "./node_modules/lodash/filter.js"), __webpack_require__(/*! lodash/some */ "./node_modules/lodash/some.js"), __webpack_require__(/*! lodash/sortBy */ "./node_modules/lodash/sortBy.js"), __webpack_require__(/*! lodash/sortedIndex */ "./node_modules/lodash/sortedIndex.js"), __webpack_require__(/*! lodash/sortedIndexOf */ "./node_modules/lodash/sortedIndexOf.js"), __webpack_require__(/*! lodash/union */ "./node_modules/lodash/union.js"), __webpack_require__(/*! ../utils/console */ "./srcjs/utils/console.js"), __webpack_require__(/*! ../utils/MapHelper */ "./srcjs/utils/MapHelper.js"), __webpack_require__(/*! ../log/logStates */ "./srcjs/log/logStates.js"), __webpack_require__(/*! ./Graph */ "./srcjs/graph/Graph.js"), __webpack_require__(/*! ../cyto/layoutOptions */ "./srcjs/cyto/layoutOptions.js"), __webpack_require__(/*! ./Node */ "./srcjs/graph/Node.js"), __webpack_require__(/*! ./Edge */ "./srcjs/graph/Edge.js"), __webpack_require__(/*! ./GhostEdge */ "./srcjs/graph/GhostEdge.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
-})(this, function (_exports, _assign2, _clone2, _filter2, _some2, _sortBy2, _sortedIndex2, _sortedIndexOf2, _union2, _console, _MapHelper, _logStates, _Graph, _layoutOptions, _Node, _Edge, _GhostEdge) {
+})(this, function (_exports, _jquery, _assign2, _clone2, _filter2, _some2, _sortBy2, _sortedIndex2, _sortedIndexOf2, _union2, _console, _MapHelper, _logStates, _Graph, _layoutOptions, _Node, _Edge, _GhostEdge) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
@@ -72769,6 +72769,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   });
   _exports.hasLength = hasLength;
   _exports.GraphAtStep = void 0;
+  _jquery = _interopRequireDefault(_jquery);
   _assign2 = _interopRequireDefault(_assign2);
   _clone2 = _interopRequireDefault(_clone2);
   _filter2 = _interopRequireDefault(_filter2);
@@ -73234,25 +73235,27 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         // update filterDatas below
         var matchedElements = (0, _filter2.default)( // (mapValues(graph.nodes): ArraySomeGraphData),
         (0, _MapHelper.mapValues)(this.finalCompleteGraph.nodes), function (node) {
-          return regex.test(node.label) || regex.test(node.reactId);
+          return regex.test(node.label) || regex.test(node.key);
         });
 
         if (matchedElements.length === 0) {
           matchedElements = (0, _filter2.default)((0, _MapHelper.mapValues)(this.finalCompleteGraph.edges), function (edge) {
-            return regex.test(edge.reactId);
+            return regex.test(edge.ghostKey);
           });
         }
 
         if (matchedElements.length === 0) {
           matchedElements = (0, _filter2.default)((0, _MapHelper.mapValues)(this.finalCompleteGraph.edgesUnique), function (edge) {
-            return regex.test(edge.reactId);
+            return regex.test(edge.key);
           });
         }
 
         if (matchedElements.length === 0) {
           // no matches found
+          this.updateStickyDatasReset();
           this.updateFilterDatasReset();
         } else {
+          this.updateStickyDatas(matchedElements);
           this.updateFilterDatas( // for some reason, an array of node does not work with an array of (node, edge, or ghostedge)
           matchedElements);
         }
@@ -73260,8 +73263,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     }, {
       key: "updateSearchRegexReset",
       value: function updateSearchRegexReset() {
-        this.filterDatas = [];
-        this.updateFinalFilteredGraphAndStepsVisible();
+        this.resetHoverStickyFilterSearch();
       }
     }, {
       key: "resetHoverStickyFilterSearch",
@@ -73269,6 +73271,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         this.hoverData = null;
         this.stickyDatas = [];
         this.filterDatas = [];
+        (0, _jquery.default)("#search").val("");
         this.updateFinalFilteredGraphAndStepsVisible();
       } // computes a graph containing all points and edges possible,
       //   extending the original graph at step k
@@ -74192,9 +74195,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     }, 250, {
       maxWait: 1000
     }));
-    (0, _jquery.default)("#search").on("input", function (e) {
-      updateGraph.withSearchString((0, _jquery.default)(e.target).val());
-    });
+    updateGraph.searchStringContainer((0, _jquery.default)("#search"));
     {
       var docBody = document.body;
 
@@ -74372,17 +74373,20 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             if (sdReactIdStr === fdReactIdStr) {
               // the filter data is the same as the sticky data
               // remove both
-              _rlog.rlog.getGraph.updateStickyDatasReset();
-
-              _rlog.rlog.getGraph.updateFilterDatasReset();
+              _rlog.rlog.getGraph.resetHoverStickyFilterSearch();
 
               updateGraph.updateGraph(_rlog.rlog.curTick, {
                 fit: true
               });
               return;
             }
-          }
-        }
+          } // reset to original filter data information
+
+
+          updateGraph.stickyDatas(_rlog.rlog.getGraph.filterDatas);
+          return;
+        } // reset sticky data
+
 
         updateGraph.stickyDatasReset();
         return;
@@ -75730,27 +75734,31 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ./hoverStickyFilterSearch */ "./srcjs/updateGraph/hoverStickyFilterSearch.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js"), __webpack_require__(/*! ./hoverStickyFilterSearch */ "./srcjs/updateGraph/hoverStickyFilterSearch.js"), __webpack_require__(/*! ../graph/Node */ "./srcjs/graph/Node.js"), __webpack_require__(/*! ../graph/Edge */ "./srcjs/graph/Edge.js"), __webpack_require__(/*! ../graph/GhostEdge */ "./srcjs/graph/GhostEdge.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
-})(this, function (_exports, updateGraph) {
+})(this, function (_exports, _jquery, updateGraph, _Node, _Edge, _GhostEdge) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
     value: true
   });
-  _exports.withSearchString = void 0;
+  _exports.searchStringWithData = _exports.searchStringContainer = _exports.searchStringClearNoUpdate = _exports.searchStringClear = _exports.searchStringSet = _exports.searchStringWith = void 0;
+  _jquery = _interopRequireDefault(_jquery);
   updateGraph = _interopRequireWildcard(updateGraph);
 
   function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
   // import console from "../utils/console";
-  // when str length < 3 do not search
+  var searchElement; // when str length < 3 do not search
   // when str length = 0, reset filter
   // when str length >= 3, set filter to all elements that match
-  var withSearchString = function withSearchString(str) {
+
+  var searchStringWith = function searchStringWith(str) {
     // if less than three chars...
     if (str.length < 3) {
       if (str.length === 0) {
@@ -75774,7 +75782,46 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     return updateGraph.searchRegex(searchRegex);
   };
 
-  _exports.withSearchString = withSearchString;
+  _exports.searchStringWith = searchStringWith;
+
+  var searchStringSet = function searchStringSet(str) {
+    searchElement.val(str);
+    return searchStringWith(str);
+  };
+
+  _exports.searchStringSet = searchStringSet;
+
+  var searchStringClear = function searchStringClear() {
+    return searchStringSet("");
+  };
+
+  _exports.searchStringClear = searchStringClear;
+
+  var searchStringClearNoUpdate = function searchStringClearNoUpdate() {
+    searchElement.val("");
+  };
+
+  _exports.searchStringClearNoUpdate = searchStringClearNoUpdate;
+
+  var searchStringWithData = function searchStringWithData(obj) {
+    // update the graph by searching for the key
+    if (obj instanceof _Edge.Edge) {
+      return searchStringSet(obj.ghostKey);
+    }
+
+    return searchStringSet(obj.key);
+  };
+
+  _exports.searchStringWithData = searchStringWithData;
+
+  var searchStringContainer = function searchStringContainer(searchElement_) {
+    searchElement = searchElement_;
+    searchElement.on("input", function (e) {
+      searchStringWith((0, _jquery.default)(e.target).val());
+    });
+  };
+
+  _exports.searchStringContainer = searchStringContainer;
 });
 
 /***/ }),

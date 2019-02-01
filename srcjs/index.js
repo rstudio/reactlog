@@ -125,9 +125,7 @@ $(function() {
     )
   );
 
-  $("#search").on("input", function(e) {
-    updateGraph.withSearchString($(e.target).val());
-  });
+  updateGraph.searchStringContainer($("#search"));
 
   {
     let docBody = document.body;

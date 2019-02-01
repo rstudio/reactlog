@@ -142,7 +142,8 @@ let onDblClick = function(cyto: CytoscapeType) {
     // var familyDatas = elesData(familyEles)
 
     updateGraph.searchRegexReset();
-    updateGraph.filterDatas([target.data()]);
+    updateGraph.searchStringWithData(target.data());
+    // updateGraph.filterDatas([target.data()]);
   };
 };
 

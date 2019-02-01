@@ -114,13 +114,16 @@ let onKeydown = function(e: JQueryInputEventObject): void {
           if (sdReactIdStr === fdReactIdStr) {
             // the filter data is the same as the sticky data
             // remove both
-            rlog.getGraph.updateStickyDatasReset();
-            rlog.getGraph.updateFilterDatasReset();
+            rlog.getGraph.resetHoverStickyFilterSearch();
             updateGraph.updateGraph(rlog.curTick, { fit: true });
             return;
           }
         }
+        // reset to original filter data information
+        updateGraph.stickyDatas(rlog.getGraph.filterDatas);
+        return;
       }
+      // reset sticky data
       updateGraph.stickyDatasReset();
       return;
     } else if (hasLength(rlog.getGraph.filterDatas)) {
