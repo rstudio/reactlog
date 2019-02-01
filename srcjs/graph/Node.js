@@ -141,7 +141,7 @@ class Node {
       if (rlog.displayTimeOnNodes) {
         if (!_isNil(time)) {
           // is just chillin... so I'm assuming it's calculated and I want to know how long it took.
-          return `${label}; ${time.toFixed(0)}ms`;
+          return `${label} (${time.toFixed(0)}ms)`;
         }
       }
       return label;
