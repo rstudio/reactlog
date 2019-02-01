@@ -15,9 +15,14 @@ class ActiveStateStatus {
   state: stateEnum;
   activeStep: number;
 
-  constructor() {
-    this.state = stateOff; // "on", "finished", "off"
-    this.activeStep = -1;
+  constructor(data: ActiveStateStatus | null = null) {
+    if (data instanceof ActiveStateStatus) {
+      this.state = data.state;
+      this.activeStep = data.activeStep;
+    } else {
+      this.state = stateOff; // "on", "finished", "off"
+      this.activeStep = -1;
+    }
   }
   setState(state: stateEnum) {
     this.state = state;

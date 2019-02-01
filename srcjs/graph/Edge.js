@@ -28,7 +28,7 @@ class Edge {
   hoverStatus: HoverStatus;
   isDisplayed: boolean;
 
-  constructor(data: EdgeInputType) {
+  constructor(data: Edge | EdgeInputType) {
     if (typeof data.reactId === "undefined")
       throw "data.reactId not provided to new Edge()";
     if (typeof data.depOnReactId === "undefined")
@@ -42,9 +42,9 @@ class Edge {
     this.ctxId = data.ctxId;
     this.session = _isNil(data.session) ? "Global" : data.session;
     this.time = data.time;
-    this.status = "normal";
-    this.isGhost = false;
-    this.hoverStatus = data.hoverStatus || new HoverStatus();
+    this.status = _isNil(data.status) ? "normal" : data.status;
+    this.isGhost = _isNil(data.isGhost) ? false : data.isGhost;
+    this.hoverStatus = new HoverStatus(data.hoverStatus);
     this.isDisplayed = _isNil(data.isDisplayed) ? true : data.isDisplayed;
   }
   get id(): EdgeIdType {
@@ -118,6 +118,8 @@ type EdgeLikeType = {
   time: number,
   hoverStatus?: ?HoverStatus,
   isDisplayed?: boolean,
+  status?: string,
+  isGhost?: boolean,
 };
 
 export { Edge, edgeKey, ghostKey };

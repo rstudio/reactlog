@@ -51928,6 +51928,59 @@ module.exports = identity;
 
 /***/ }),
 
+/***/ "./node_modules/lodash/indexOf.js":
+/*!****************************************!*\
+  !*** ./node_modules/lodash/indexOf.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var baseIndexOf = __webpack_require__(/*! ./_baseIndexOf */ "./node_modules/lodash/_baseIndexOf.js"),
+    toInteger = __webpack_require__(/*! ./toInteger */ "./node_modules/lodash/toInteger.js");
+
+/* Built-in method references for those with the same name as other `lodash` methods. */
+var nativeMax = Math.max;
+
+/**
+ * Gets the index at which the first occurrence of `value` is found in `array`
+ * using [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
+ * for equality comparisons. If `fromIndex` is negative, it's used as the
+ * offset from the end of `array`.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Array
+ * @param {Array} array The array to inspect.
+ * @param {*} value The value to search for.
+ * @param {number} [fromIndex=0] The index to search from.
+ * @returns {number} Returns the index of the matched value, else `-1`.
+ * @example
+ *
+ * _.indexOf([1, 2, 1, 2], 2);
+ * // => 1
+ *
+ * // Search from the `fromIndex`.
+ * _.indexOf([1, 2, 1, 2], 2, 2);
+ * // => 3
+ */
+function indexOf(array, value, fromIndex) {
+  var length = array == null ? 0 : array.length;
+  if (!length) {
+    return -1;
+  }
+  var index = fromIndex == null ? 0 : toInteger(fromIndex);
+  if (index < 0) {
+    index = nativeMax(length + index, 0);
+  }
+  return baseIndexOf(array, value, index);
+}
+
+module.exports = indexOf;
+
+
+/***/ }),
+
 /***/ "./node_modules/lodash/isArguments.js":
 /*!********************************************!*\
   !*** ./node_modules/lodash/isArguments.js ***!
@@ -70263,6 +70316,106 @@ module.exports = stubFalse;
 
 /***/ }),
 
+/***/ "./node_modules/lodash/toFinite.js":
+/*!*****************************************!*\
+  !*** ./node_modules/lodash/toFinite.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var toNumber = __webpack_require__(/*! ./toNumber */ "./node_modules/lodash/toNumber.js");
+
+/** Used as references for various `Number` constants. */
+var INFINITY = 1 / 0,
+    MAX_INTEGER = 1.7976931348623157e+308;
+
+/**
+ * Converts `value` to a finite number.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.12.0
+ * @category Lang
+ * @param {*} value The value to convert.
+ * @returns {number} Returns the converted number.
+ * @example
+ *
+ * _.toFinite(3.2);
+ * // => 3.2
+ *
+ * _.toFinite(Number.MIN_VALUE);
+ * // => 5e-324
+ *
+ * _.toFinite(Infinity);
+ * // => 1.7976931348623157e+308
+ *
+ * _.toFinite('3.2');
+ * // => 3.2
+ */
+function toFinite(value) {
+  if (!value) {
+    return value === 0 ? value : 0;
+  }
+  value = toNumber(value);
+  if (value === INFINITY || value === -INFINITY) {
+    var sign = (value < 0 ? -1 : 1);
+    return sign * MAX_INTEGER;
+  }
+  return value === value ? value : 0;
+}
+
+module.exports = toFinite;
+
+
+/***/ }),
+
+/***/ "./node_modules/lodash/toInteger.js":
+/*!******************************************!*\
+  !*** ./node_modules/lodash/toInteger.js ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var toFinite = __webpack_require__(/*! ./toFinite */ "./node_modules/lodash/toFinite.js");
+
+/**
+ * Converts `value` to an integer.
+ *
+ * **Note:** This method is loosely based on
+ * [`ToInteger`](http://www.ecma-international.org/ecma-262/7.0/#sec-tointeger).
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to convert.
+ * @returns {number} Returns the converted integer.
+ * @example
+ *
+ * _.toInteger(3.2);
+ * // => 3
+ *
+ * _.toInteger(Number.MIN_VALUE);
+ * // => 0
+ *
+ * _.toInteger(Infinity);
+ * // => 1.7976931348623157e+308
+ *
+ * _.toInteger('3.2');
+ * // => 3
+ */
+function toInteger(value) {
+  var result = toFinite(value),
+      remainder = result % 1;
+
+  return result === result ? (remainder ? result - remainder : result) : 0;
+}
+
+module.exports = toInteger;
+
+
+/***/ }),
+
 /***/ "./node_modules/lodash/toNumber.js":
 /*!*****************************************!*\
   !*** ./node_modules/lodash/toNumber.js ***!
@@ -71781,13 +71934,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
       _defineProperty(this, "isDisplayed", void 0);
 
-      if (!(data instanceof Edge)) {
-        if (typeof data.reactId === "undefined") throw "data.reactId not provided to new Edge()";
-        if (typeof data.depOnReactId === "undefined") throw "data.depOnReactId not provided to new Edge()";
-        if (typeof data.ctxId === "undefined") throw "data.ctxId not provided to new Edge()";
-        if (typeof data.time === "undefined") throw "data.time not provided to new Edge()";
-      }
-
+      if (typeof data.reactId === "undefined") throw "data.reactId not provided to new Edge()";
+      if (typeof data.depOnReactId === "undefined") throw "data.depOnReactId not provided to new Edge()";
+      if (typeof data.ctxId === "undefined") throw "data.ctxId not provided to new Edge()";
+      if (typeof data.time === "undefined") throw "data.time not provided to new Edge()";
       this.reactId = data.reactId;
       this.depOnReactId = data.depOnReactId;
       this.ctxId = data.ctxId;
@@ -71935,12 +72085,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
       _defineProperty(this, "isDisplayed", void 0);
 
-      if (data instanceof GhostEdge) {
-        if (typeof data.reactId === "undefined") throw "data.reactId not provided to new GhostEdge()";
-        if (typeof data.depOnReactId === "undefined") throw "data.depOnReactId not provided to new GhostEdge()";
-        if (typeof data.time === "undefined") throw "data.time not provided to new GhostEdge()";
-      }
-
+      if (typeof data.reactId === "undefined") throw "data.reactId not provided to new GhostEdge()";
+      if (typeof data.depOnReactId === "undefined") throw "data.depOnReactId not provided to new GhostEdge()";
+      if (typeof data.time === "undefined") throw "data.time not provided to new GhostEdge()";
       this.reactId = data.reactId;
       this.depOnReactId = data.depOnReactId;
       this.session = (0, _isNil2.default)(data.session) ? "Global" : data.session;
@@ -72762,12 +72909,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! lodash/assign */ "./node_modules/lodash/assign.js"), __webpack_require__(/*! lodash/clone */ "./node_modules/lodash/clone.js"), __webpack_require__(/*! lodash/filter */ "./node_modules/lodash/filter.js"), __webpack_require__(/*! lodash/some */ "./node_modules/lodash/some.js"), __webpack_require__(/*! lodash/sortBy */ "./node_modules/lodash/sortBy.js"), __webpack_require__(/*! lodash/sortedIndex */ "./node_modules/lodash/sortedIndex.js"), __webpack_require__(/*! lodash/sortedIndexOf */ "./node_modules/lodash/sortedIndexOf.js"), __webpack_require__(/*! lodash/union */ "./node_modules/lodash/union.js"), __webpack_require__(/*! ../utils/console */ "./srcjs/utils/console.js"), __webpack_require__(/*! ../utils/MapHelper */ "./srcjs/utils/MapHelper.js"), __webpack_require__(/*! ../log/logStates */ "./srcjs/log/logStates.js"), __webpack_require__(/*! ./Graph */ "./srcjs/graph/Graph.js"), __webpack_require__(/*! ../cyto/layoutOptions */ "./srcjs/cyto/layoutOptions.js"), __webpack_require__(/*! ./Node */ "./srcjs/graph/Node.js"), __webpack_require__(/*! ./Edge */ "./srcjs/graph/Edge.js"), __webpack_require__(/*! ./GhostEdge */ "./srcjs/graph/GhostEdge.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! lodash/assign */ "./node_modules/lodash/assign.js"), __webpack_require__(/*! lodash/clone */ "./node_modules/lodash/clone.js"), __webpack_require__(/*! lodash/filter */ "./node_modules/lodash/filter.js"), __webpack_require__(/*! lodash/indexOf */ "./node_modules/lodash/indexOf.js"), __webpack_require__(/*! lodash/some */ "./node_modules/lodash/some.js"), __webpack_require__(/*! lodash/sortBy */ "./node_modules/lodash/sortBy.js"), __webpack_require__(/*! lodash/sortedIndex */ "./node_modules/lodash/sortedIndex.js"), __webpack_require__(/*! lodash/sortedIndexOf */ "./node_modules/lodash/sortedIndexOf.js"), __webpack_require__(/*! lodash/union */ "./node_modules/lodash/union.js"), __webpack_require__(/*! ../utils/console */ "./srcjs/utils/console.js"), __webpack_require__(/*! ../utils/MapHelper */ "./srcjs/utils/MapHelper.js"), __webpack_require__(/*! ../log/logStates */ "./srcjs/log/logStates.js"), __webpack_require__(/*! ./Graph */ "./srcjs/graph/Graph.js"), __webpack_require__(/*! ../cyto/layoutOptions */ "./srcjs/cyto/layoutOptions.js"), __webpack_require__(/*! ./Node */ "./srcjs/graph/Node.js"), __webpack_require__(/*! ./Edge */ "./srcjs/graph/Edge.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
-})(this, function (_exports, _assign2, _clone2, _filter2, _some2, _sortBy2, _sortedIndex2, _sortedIndexOf2, _union2, _console, _MapHelper, _logStates, _Graph, _layoutOptions, _Node, _Edge, _GhostEdge) {
+})(this, function (_exports, _assign2, _clone2, _filter2, _indexOf2, _some2, _sortBy2, _sortedIndex2, _sortedIndexOf2, _union2, _console, _MapHelper, _logStates, _Graph, _layoutOptions, _Node, _Edge) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
@@ -72778,6 +72925,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   _assign2 = _interopRequireDefault(_assign2);
   _clone2 = _interopRequireDefault(_clone2);
   _filter2 = _interopRequireDefault(_filter2);
+  _indexOf2 = _interopRequireDefault(_indexOf2);
   _some2 = _interopRequireDefault(_some2);
   _sortBy2 = _interopRequireDefault(_sortBy2);
   _sortedIndex2 = _interopRequireDefault(_sortedIndex2);
@@ -72807,15 +72955,15 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
       _defineProperty(this, "originalLog", void 0);
 
+      _defineProperty(this, "searchRegex", void 0);
+
       _defineProperty(this, "filterDatas", void 0);
 
       _defineProperty(this, "hoverData", void 0);
 
       _defineProperty(this, "stickyDatas", void 0);
 
-      _defineProperty(this, "finalFilteredGraph", void 0);
-
-      _defineProperty(this, "finalCompleteGraph", void 0);
+      _defineProperty(this, "finalGraph", void 0);
 
       _defineProperty(this, "finalCyto", void 0);
 
@@ -72843,6 +72991,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
       this.originalLog = log; // hoverInfo[key] = `HoverStatus`
 
+      this.searchRegex = null;
       this.filterDatas = [];
       this.hoverData = null;
       this.stickyDatas = []; // this.hoverDefault = "focused"
@@ -72850,19 +72999,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       // this.filterMap = {};
 
       this.log = log;
-      this.initStepInfo(log); // make a graph with no filtering that is completly made
-
-      this.finalCompleteGraph = this.rawGraphAtStep(log.length);
-      this.updateFinalFilteredGraphAndStepsVisible();
+      this.updateSteps(log);
+      this.updateFinalGraph();
     }
 
     _createClass(GraphAtStep, [{
-      key: "updateFinalFilteredGraphAndStepsVisible",
-      value: function updateFinalFilteredGraphAndStepsVisible() {
-        this.updateFinalFilteredGraph();
-        this.updateFilteredStepsVisible();
-        return;
-      } // function hasFilterDatas(): boolean %checks {
+      key: "graphAtStep",
+      // function hasFilterDatas(): boolean %checks {
       //   return this.filterDatas ? this.filterDatas.length > 0 : false;
       // }
       // get hasStickyDatas() {
@@ -72872,19 +73015,17 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       //   return this.hoverData ? true : false;
       // }
       // return graph at step k
-
-    }, {
-      key: "graphAtStep",
       value: function graphAtStep(k) {
         return this.atStep(k, false);
-      } // updateFinalGraph() {
-      //   this.finalFilteredGraph = this.atStep(this.log.length, true);
-      //   // this.finalCyto = this.finalGraph.cytoGraph;
-      // }
-
+      }
     }, {
-      key: "initStepInfo",
-      value: function initStepInfo(log) {
+      key: "updateFinalGraph",
+      value: function updateFinalGraph() {
+        this.finalGraph = this.graphAtStep(this.log.length); // this.finalCyto = this.finalGraph.cytoGraph;
+      }
+    }, {
+      key: "updateSteps",
+      value: function updateSteps(log) {
         this.steps = [];
         this.stepsAsyncStart = [];
         this.stepsAsyncStop = [];
@@ -72992,6 +73133,15 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         this.stepsVisible = // sort integer list
         (0, _sortBy2.default)( // get union (unique values) of all visible locations
         (0, _union2.default)(this.steps, this.stepsUserMark, this.stepsIdle));
+        this.updateFilteredStepsVisible(); // this.graphCache = {};
+        // this.cacheStep = 250;
+        // var tmpGraph = new Graph(log);
+        // for (i = 0; i < log.length; i++) {
+        //   tmpGraph.addEntry(log[i])
+        //   if ((i % this.cacheStep) == 0) {
+        //     this.graphCache[i] = _cloneDeep(tmpGraph)
+        //   }
+        // }
       }
     }, {
       key: "updateFilteredStepsVisible",
@@ -73004,8 +73154,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
         var filteredStepsVisible = [];
-        var finalFilteredGraph = this.finalFilteredGraph;
-        var visibleStep, logEntry, i; // todo must be actual log. not visible steps
+        var graphAtEnd = this.graphAtStep(this.log.length);
+        var visibleStep, logEntry, i;
+        var filterReactIds = this.filterDatas.map(function (node) {
+          return node.reactId;
+        }); // todo must be actual log. not visible steps
 
         for (i = 0; i < this.stepsVisible.length; i++) {
           visibleStep = this.stepsVisible[i];
@@ -73013,10 +73166,31 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
           switch (logEntry.action) {
             case _logStates.LogStates.dependsOn:
+              {
+                // since we are adding an edge in the graph, update the graph
+                // graphAtI = this.graphAtStep(visibleStep);
+                var decendents = (0, _union2.default)(filterReactIds, graphAtEnd.decendentNodeIdsForDatas(this.filterDatas));
+                var ancestors = (0, _union2.default)(filterReactIds, graphAtEnd.ancestorNodeIdsForDatas(this.filterDatas)); // reactId is target (ends at ancestors)
+
+                if ((0, _indexOf2.default)(ancestors, logEntry.reactId) !== -1) {
+                  filteredStepsVisible.push(visibleStep);
+                  break;
+                } // depOnReactId is source (starts from children)
+
+
+                if ((0, _indexOf2.default)(decendents, logEntry.depOnReactId) !== -1) {
+                  filteredStepsVisible.push(visibleStep);
+                  break;
+                } // not found
+
+
+                break;
+              }
+
             case _logStates.LogStates.dependsOnRemove:
               // check for both to and from (since it must exist beforehand)
               // graphAtI = this.graphAtStep(visibleStep);
-              if (finalFilteredGraph.hasNodeReactId(logEntry.reactId) && finalFilteredGraph.hasNodeReactId(logEntry.depOnReactId)) {
+              if (graphAtEnd.nodes.has(logEntry.reactId) && graphAtEnd.nodes.has(logEntry.depOnReactId)) {
                 filteredStepsVisible.push(visibleStep);
                 break;
               } // not found
@@ -73026,6 +73200,24 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
             case _logStates.LogStates.define:
             case _logStates.LogStates.updateNodeLabel:
+              // graphAtI = this.graphAtStep(visibleStep);
+              if (!graphAtEnd.hasNodeReactId(logEntry.reactId)) {
+                // no node found
+                break;
+              }
+
+              if (this.searchRegex) {
+                if (logEntry.label) {
+                  if (!this.searchRegex.test(logEntry.label)) {
+                    // regex doesn't match node
+                    break;
+                  }
+                }
+              }
+
+              filteredStepsVisible.push(visibleStep);
+              break;
+
             case _logStates.LogStates.freeze:
             case _logStates.LogStates.thaw:
             case _logStates.LogStates.valueChange:
@@ -73038,7 +73230,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             case _logStates.LogStates.isolateExit:
             case _logStates.LogStates.isolateInvalidateStart:
             case _logStates.LogStates.isolateInvalidateEnd:
-              if (!finalFilteredGraph.hasNodeReactId(logEntry.reactId)) {
+              if (!graphAtEnd.hasNodeReactId(logEntry.reactId)) {
                 // no node found in filtered graph
                 break;
               }
@@ -73047,19 +73239,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
               break;
 
             case _logStates.LogStates.idle:
-              if (filteredStepsVisible.length > 0) {
-                var priorFilteredStepVisible = filteredStepsVisible[filteredStepsVisible.length - 1];
-
-                if (this.log[priorFilteredStepVisible].action !== _logStates.LogStates.idle) {
-                  // if the visible state is not an idle state, add it
-                  filteredStepsVisible.push(visibleStep);
-                }
-              }
-
-              break;
-
             case _logStates.LogStates.userMark:
-              // always include (for now, multiple idle steps are removed later)
+              // always include (for now)
               filteredStepsVisible.push(visibleStep);
               break;
 
@@ -73074,9 +73255,28 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
               throw "unknown logEntry action in 'next'";
           }
+        } // return early if nothing is found. I hope this is never called
+
+
+        if (filteredStepsVisible.length === 0) {
+          this.filteredStepsVisible = filteredStepsVisible;
+          return;
         }
 
-        this.filteredStepsVisible = filteredStepsVisible;
+        var log = this.log;
+        this.filteredStepsVisible = (0, _filter2.default)(filteredStepsVisible, function (visibleStep, idx) {
+          if (idx === 0) return true;
+
+          if (log[visibleStep].action === _logStates.LogStates.idle) {
+            var priorVisibleStep = filteredStepsVisible[idx - 1];
+
+            if (log[priorVisibleStep].action === _logStates.LogStates.idle) {
+              return false;
+            }
+          }
+
+          return true;
+        });
         return;
       }
     }, {
@@ -73119,36 +73319,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           graph.addEntry(this.log[i]);
         }
 
-        return graph; // this.graphCache = {};
-        // this.cacheStep = 250;
-        // var tmpGraph = new Graph(log);
-        // for (i = 0; i < log.length; i++) {
-        //   tmpGraph.addEntry(log[i])
-        //   if ((i % this.cacheStep) == 0) {
-        //     this.graphCache[i] = _cloneDeep(tmpGraph)
-        //   }
-        // }
-      } // update the filtering for the final graph. No cosmetics
-
-    }, {
-      key: "updateFinalFilteredGraph",
-      value: function updateFinalFilteredGraph() {
-        // copy final graph
-        var finalGraph = new _Graph.Graph(this.finalCompleteGraph); // set filter datas from regex or global filter datas
-        // if any hover... // do nothing
-        // if any sticky... // do nothing
-        // if any search regex...
-        // handled elsewhere
-        // if any filtering...
-
-        if (hasLength(this.filterDatas)) {
-          finalGraph.filterGraphOnNodeIds( // graph.familyTreeNodeIdsForDatas(this.filterDatas)
-          this.finalCompleteGraph.familyTreeNodeIdsForDatas(this.filterDatas));
-        }
-
-        this.finalFilteredGraph = finalGraph;
-        window.console.log("Final Filtered Graph: ", this.finalFilteredGraph);
-        return;
+        return graph;
       } // graph at step with filtering
       //  boolean on whether or not to update this.finalGraph on matching regex
 
@@ -73156,11 +73327,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       key: "atStep",
       value: function atStep(k) {
         var updateFinalGraph = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-        // get unfiltered graph at step k
         var graph = this.rawGraphAtStep(k); // if any hover...
 
         if (this.hoverData && graph.hasSomeData(this.hoverData)) {
-          graph.hoverStatusOnNodeIds(this.finalFilteredGraph.familyTreeNodeIds(this.hoverData), "state");
+          graph.hoverStatusOnNodeIds(this.finalGraph.familyTreeNodeIds(this.hoverData), "state");
           graph.highlightSelected(this.hoverData, "selected");
         } // if any sticky...
 
@@ -73170,7 +73340,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             return graph.hasSomeData(data);
           }))) {
             // at least some sticky data is visible
-            var stickyTree = this.finalFilteredGraph.familyTreeNodeIdsForDatas(this.stickyDatas);
+            var stickyTree = this.finalGraph.familyTreeNodeIdsForDatas(this.stickyDatas);
             graph.hoverStatusOnNodeIds(stickyTree, "sticky");
             this.stickyDatas.map(function (data) {
               graph.highlightSelected(data, "selected");
@@ -73181,16 +73351,46 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
               graph.hoverStatusOnNodeIds(stickyTree, "state");
             }
           }
-        } // if any filtering...
+        } // if any searching
 
 
-        if (hasLength(this.filterDatas)) {
-          graph.filterGraphOnNodeIds( // graph.familyTreeNodeIdsForDatas(this.filterDatas)
-          this.finalFilteredGraph.familyTreeNodeIdsForDatas(this.filterDatas)); // graph.hoverStatusOnNodeIds(this.filterDatas.map((x) => x.reactId), "filtered");
-
-          this.filterDatas.map(function (data) {
-            graph.highlightSelected(data, "filtered");
+        if (this.searchRegex) {
+          var searchRegex = this.searchRegex;
+          var matchedNodes = (0, _filter2.default)( // (mapValues(graph.nodes): ArraySomeGraphData),
+          (0, _MapHelper.mapValues)(graph.nodes), function (node) {
+            return searchRegex.test(node.label);
           });
+
+          if (matchedNodes.length === 0) {
+            // TODO-barret warn of no matches
+            // console.log("no matches!");
+            graph.hoverStatusOnNodeIds([], "filtered");
+
+            if (updateFinalGraph) {
+              this.updateFilterDatasReset(updateFinalGraph);
+            }
+          } else {
+            if (updateFinalGraph) {
+              this.updateFilterDatas( // for some reason, an array of node does not work with an array of (node, edge, or ghostedge)
+              matchedNodes, updateFinalGraph);
+            } // filter on regex
+
+
+            graph.filterGraphOnNodeIds(this.finalGraph.familyTreeNodeIdsForDatas(this.filterDatas));
+            matchedNodes.map(function (data) {
+              graph.highlightSelected(data, "filtered");
+            }); // graph.hoverStatusOnNodeIds(matchedNodes.map((x) => x.reactId), "filtered");
+          }
+        } else {
+          // if any filtering...
+          if (hasLength(this.filterDatas)) {
+            graph.filterGraphOnNodeIds( // graph.familyTreeNodeIdsForDatas(this.filterDatas)
+            this.finalGraph.familyTreeNodeIdsForDatas(this.filterDatas)); // graph.hoverStatusOnNodeIds(this.filterDatas.map((x) => x.reactId), "filtered");
+
+            this.filterDatas.map(function (data) {
+              graph.highlightSelected(data, "filtered");
+            });
+          }
         }
 
         return graph;
@@ -73243,57 +73443,30 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     }, {
       key: "updateFilterDatas",
       value: function updateFilterDatas(dataArr) {
+        var callUpdateFinal = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
         this.filterDatas = dataArr;
-        window.console.log("update filterDatas: ", dataArr);
-        this.updateFinalFilteredGraphAndStepsVisible();
+        if (callUpdateFinal) this.updateFinalGraph();
+        this.updateFilteredStepsVisible();
       }
     }, {
       key: "updateFilterDatasReset",
       value: function updateFilterDatasReset() {
-        this.updateFilterDatas([]);
+        var callUpdateFinal = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+        this.updateFilterDatas([], callUpdateFinal);
       }
     }, {
       key: "updateSearchRegex",
       value: function updateSearchRegex(regex) {
-        // update filterDatas below
-        var matchedElements = (0, _filter2.default)( // (mapValues(graph.nodes): ArraySomeGraphData),
-        (0, _MapHelper.mapValues)(this.finalCompleteGraph.nodes), function (node) {
-          return regex.test(node.label) || regex.test(node.reactId);
-        });
-
-        if (matchedElements.length === 0) {
-          matchedElements = (0, _filter2.default)((0, _MapHelper.mapValues)(this.finalCompleteGraph.edges), function (edge) {
-            return regex.test(edge.reactId);
-          });
-        }
-
-        if (matchedElements.length === 0) {
-          matchedElements = (0, _filter2.default)((0, _MapHelper.mapValues)(this.finalCompleteGraph.edgesUnique), function (edge) {
-            return regex.test(edge.reactId);
-          });
-        }
-
-        if (matchedElements.length === 0) {
-          // no matches found
-          this.updateFilterDatasReset();
-        } else {
-          this.updateFilterDatas( // for some reason, an array of node does not work with an array of (node, edge, or ghostedge)
-          matchedElements);
-        }
+        var callUpdateFinal = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+        this.searchRegex = regex;
+        if (callUpdateFinal) this.updateFinalGraph();
       }
     }, {
       key: "updateSearchRegexReset",
       value: function updateSearchRegexReset() {
-        this.filterDatas = [];
-        this.updateFinalFilteredGraphAndStepsVisible();
-      }
-    }, {
-      key: "resetHoverStickyFilterSearch",
-      value: function resetHoverStickyFilterSearch() {
-        this.hoverData = null;
-        this.stickyDatas = [];
-        this.filterDatas = [];
-        this.updateFinalFilteredGraphAndStepsVisible();
+        var callUpdateFinal = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+        this.updateFilterDatasReset(false);
+        this.updateSearchRegex(null, callUpdateFinal);
       } // computes a graph containing all points and edges possible,
       //   extending the original graph at step k
 
@@ -73302,7 +73475,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       value: function completeGraphAtStep(k) {
         // get graph at step k and update the final graph obect
         var graph = this.atStep(k, true);
-        var finalGraph = this.finalFilteredGraph; // add any points and edges that have not be defined yet
+        var finalGraph = this.finalGraph; // add any points and edges that have not be defined yet
         // do not include regular edges, only unique edges
         // append all missing nodes
 
@@ -73467,6 +73640,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           });
           this.cytoLayout.run();
         }
+      }
+    }, {
+      key: "hasSearchRegex",
+      get: function get() {
+        return this.searchRegex ? true : false;
       }
     }]);
 
@@ -73754,14 +73932,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
       _defineProperty(this, "calculationStartMap", void 0);
 
-      if (!(data instanceof Node)) {
-        if (typeof data.reactId === "undefined") throw "data.reactId not provided in new Node";
-        if (typeof data.label === "undefined") throw "data.label not provided in new Node";
-        if (typeof data.type === "undefined") throw "data.type not provided in new Node";
-        if (typeof data.session === "undefined") throw "data.session not provided in new Node";
-        if (typeof data.time === "undefined") throw "data.time not provided in new Node";
-      }
-
+      if (typeof data.reactId === "undefined") throw "data.reactId not provided in new Node";
+      if (typeof data.label === "undefined") throw "data.label not provided in new Node";
+      if (typeof data.type === "undefined") throw "data.type not provided in new Node";
+      if (typeof data.session === "undefined") throw "data.session not provided in new Node";
+      if (typeof data.time === "undefined") throw "data.time not provided in new Node";
       this.reactId = data.reactId;
       this.label = data.label;
       this.type = data.type;
@@ -73882,7 +74057,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           if (_rlog.rlog.displayTimeOnNodes) {
             if (!(0, _isNil2.default)(time)) {
               // is just chillin... so I'm assuming it's calculated and I want to know how long it took.
-              return "".concat(label, " (").concat(time.toFixed(0), "ms)");
+              return "".concat(label, "; ").concat(time.toFixed(0), "ms");
             }
           }
 
@@ -75377,7 +75552,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   var resetHoverStickyFilterData = function resetHoverStickyFilterData() {
     var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    _rlog.rlog.getGraph.resetHoverStickyFilterSearch();
+    _rlog.rlog.getGraph.updateHoverDataReset();
+
+    _rlog.rlog.getGraph.updateStickyDatasReset();
+
+    _rlog.rlog.getGraph.updateFilterDatasReset();
+
+    _rlog.rlog.getGraph.updateSearchRegexReset();
 
     return (0, _updateGraph.updateGraph)(_rlog.rlog.curTick, (0, _assign2.default)({
       fit: true

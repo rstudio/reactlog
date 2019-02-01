@@ -20,7 +20,7 @@ class GhostEdge {
   session: string;
   isDisplayed: boolean;
 
-  constructor(data: EdgeLikeType) {
+  constructor(data: GhostEdge | EdgeLikeType) {
     if (typeof data.reactId === "undefined")
       throw "data.reactId not provided to new GhostEdge()";
     if (typeof data.depOnReactId === "undefined")
@@ -31,8 +31,8 @@ class GhostEdge {
     this.depOnReactId = data.depOnReactId;
     this.session = _isNil(data.session) ? "Global" : data.session;
     this.time = data.time;
-    this.isGhost = true;
-    this.hoverStatus = data.hoverStatus || new HoverStatus();
+    this.isGhost = _isNil(data.isGhost) ? true : data.isGhost;
+    this.hoverStatus = new HoverStatus(data.hoverStatus);
     this.isDisplayed = _isNil(data.isDisplayed) ? true : data.isDisplayed;
   }
   get id(): EdgeIdType {

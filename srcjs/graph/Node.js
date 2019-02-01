@@ -32,7 +32,7 @@ class Node {
   calculationTime: ?number;
   calculationStartMap: Map<CtxIdType, number>;
 
-  constructor(data: NodeInputType) {
+  constructor(data: Node | NodeInputType) {
     if (typeof data.reactId === "undefined")
       throw "data.reactId not provided in new Node";
     if (typeof data.label === "undefined")
@@ -51,7 +51,7 @@ class Node {
     this.isFrozen = data.isFrozen || false;
     this.statusArr = new StatusArr(data.statusArr || []);
     this.value = _isNil(data.value) ? null : data.value;
-    this.hoverStatus = data.hoverStatus || new HoverStatus();
+    this.hoverStatus = new HoverStatus(data.hoverStatus);
     this.isDisplayed = _isNil(data.isDisplayed) ? true : data.isDisplayed;
 
     this.calculationTime = _isNil(data.calculationTime)
@@ -59,7 +59,7 @@ class Node {
       : data.calculationTime;
     this.calculationStartMap = _isNil(data.calculationStartMap)
       ? new Map()
-      : data.calculationStartMap;
+      : new Map(data.calculationStartMap);
 
     this.valueChangedStatus =
       data.valueChangedStatus || new ActiveStateStatus();
@@ -82,6 +82,7 @@ class Node {
       }
     }
   }
+
   get id(): NodeIdType {
     return this.reactId.replace(/\$/g, "_");
   }

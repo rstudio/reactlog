@@ -10,12 +10,15 @@ import type { ActionsType } from "../log/logStates";
 class StatusArr {
   statusArr: Array<StatusEntry>;
 
-  constructor(statusArr_: StatusArr | Array<StatusEntry> = []) {
-    if (statusArr_ instanceof StatusArr) {
-      this.statusArr = _cloneDeep(statusArr_.statusArr);
-    } else if (Array.isArray(statusArr_)) {
-      this.statusArr = statusArr_;
+  constructor(statusArr: StatusArr | Array<StatusEntry> = []) {
+    if (statusArr instanceof StatusArr) {
+      this.statusArr = _cloneDeep(statusArr.statusArr);
+    } else if (Array.isArray(statusArr)) {
+      this.statusArr = statusArr;
     }
+  }
+  clone(): StatusArr {
+    return new StatusArr(this);
   }
   add(obj: StatusEntry) {
     return this.statusArr.push(obj);
