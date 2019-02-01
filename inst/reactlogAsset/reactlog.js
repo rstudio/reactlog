@@ -51928,59 +51928,6 @@ module.exports = identity;
 
 /***/ }),
 
-/***/ "./node_modules/lodash/indexOf.js":
-/*!****************************************!*\
-  !*** ./node_modules/lodash/indexOf.js ***!
-  \****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-var baseIndexOf = __webpack_require__(/*! ./_baseIndexOf */ "./node_modules/lodash/_baseIndexOf.js"),
-    toInteger = __webpack_require__(/*! ./toInteger */ "./node_modules/lodash/toInteger.js");
-
-/* Built-in method references for those with the same name as other `lodash` methods. */
-var nativeMax = Math.max;
-
-/**
- * Gets the index at which the first occurrence of `value` is found in `array`
- * using [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
- * for equality comparisons. If `fromIndex` is negative, it's used as the
- * offset from the end of `array`.
- *
- * @static
- * @memberOf _
- * @since 0.1.0
- * @category Array
- * @param {Array} array The array to inspect.
- * @param {*} value The value to search for.
- * @param {number} [fromIndex=0] The index to search from.
- * @returns {number} Returns the index of the matched value, else `-1`.
- * @example
- *
- * _.indexOf([1, 2, 1, 2], 2);
- * // => 1
- *
- * // Search from the `fromIndex`.
- * _.indexOf([1, 2, 1, 2], 2, 2);
- * // => 3
- */
-function indexOf(array, value, fromIndex) {
-  var length = array == null ? 0 : array.length;
-  if (!length) {
-    return -1;
-  }
-  var index = fromIndex == null ? 0 : toInteger(fromIndex);
-  if (index < 0) {
-    index = nativeMax(length + index, 0);
-  }
-  return baseIndexOf(array, value, index);
-}
-
-module.exports = indexOf;
-
-
-/***/ }),
-
 /***/ "./node_modules/lodash/isArguments.js":
 /*!********************************************!*\
   !*** ./node_modules/lodash/isArguments.js ***!
@@ -70316,106 +70263,6 @@ module.exports = stubFalse;
 
 /***/ }),
 
-/***/ "./node_modules/lodash/toFinite.js":
-/*!*****************************************!*\
-  !*** ./node_modules/lodash/toFinite.js ***!
-  \*****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-var toNumber = __webpack_require__(/*! ./toNumber */ "./node_modules/lodash/toNumber.js");
-
-/** Used as references for various `Number` constants. */
-var INFINITY = 1 / 0,
-    MAX_INTEGER = 1.7976931348623157e+308;
-
-/**
- * Converts `value` to a finite number.
- *
- * @static
- * @memberOf _
- * @since 4.12.0
- * @category Lang
- * @param {*} value The value to convert.
- * @returns {number} Returns the converted number.
- * @example
- *
- * _.toFinite(3.2);
- * // => 3.2
- *
- * _.toFinite(Number.MIN_VALUE);
- * // => 5e-324
- *
- * _.toFinite(Infinity);
- * // => 1.7976931348623157e+308
- *
- * _.toFinite('3.2');
- * // => 3.2
- */
-function toFinite(value) {
-  if (!value) {
-    return value === 0 ? value : 0;
-  }
-  value = toNumber(value);
-  if (value === INFINITY || value === -INFINITY) {
-    var sign = (value < 0 ? -1 : 1);
-    return sign * MAX_INTEGER;
-  }
-  return value === value ? value : 0;
-}
-
-module.exports = toFinite;
-
-
-/***/ }),
-
-/***/ "./node_modules/lodash/toInteger.js":
-/*!******************************************!*\
-  !*** ./node_modules/lodash/toInteger.js ***!
-  \******************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-var toFinite = __webpack_require__(/*! ./toFinite */ "./node_modules/lodash/toFinite.js");
-
-/**
- * Converts `value` to an integer.
- *
- * **Note:** This method is loosely based on
- * [`ToInteger`](http://www.ecma-international.org/ecma-262/7.0/#sec-tointeger).
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @category Lang
- * @param {*} value The value to convert.
- * @returns {number} Returns the converted integer.
- * @example
- *
- * _.toInteger(3.2);
- * // => 3
- *
- * _.toInteger(Number.MIN_VALUE);
- * // => 0
- *
- * _.toInteger(Infinity);
- * // => 1.7976931348623157e+308
- *
- * _.toInteger('3.2');
- * // => 3
- */
-function toInteger(value) {
-  var result = toFinite(value),
-      remainder = result % 1;
-
-  return result === result ? (remainder ? result - remainder : result) : 0;
-}
-
-module.exports = toInteger;
-
-
-/***/ }),
-
 /***/ "./node_modules/lodash/toNumber.js":
 /*!*****************************************!*\
   !*** ./node_modules/lodash/toNumber.js ***!
@@ -71395,6 +71242,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   var pulseScale = 1 + 1 / 16;
   var selectedScale = 2;
   var edgePixelWidth = 4;
+  var maxTextWidth = "10000px";
   var graphStyles = {
     node: {
       default: {
@@ -71442,7 +71290,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         shape: "polygon",
         "shape-polygon-points": nodeShapes.end.shape,
         width: nodeShapes.end.width,
-        height: nodeShapes.end.height
+        height: nodeShapes.end.height,
+        "text-max-width": maxTextWidth
       },
       endBig: {
         "border-width": 2,
@@ -71556,7 +71405,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       node: {
         "border-width": 4,
         // if you hover / selected, show all the label
-        "text-max-width": "10000px"
+        "text-max-width": maxTextWidth
       },
       edge: {
         width: edgePixelWidth * 2
@@ -71773,15 +71622,22 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   /*#__PURE__*/
   function () {
     function ActiveStateStatus() {
+      var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
       _classCallCheck(this, ActiveStateStatus);
 
       _defineProperty(this, "state", void 0);
 
       _defineProperty(this, "activeStep", void 0);
 
-      this.state = stateOff; // "on", "finished", "off"
+      if (data instanceof ActiveStateStatus) {
+        this.state = data.state;
+        this.activeStep = data.activeStep;
+      } else {
+        this.state = stateOff; // "on", "finished", "off"
 
-      this.activeStep = -1;
+        this.activeStep = -1;
+      }
     }
 
     _createClass(ActiveStateStatus, [{
@@ -71925,18 +71781,21 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
       _defineProperty(this, "isDisplayed", void 0);
 
-      if (typeof data.reactId === "undefined") throw "data.reactId not provided to new Edge()";
-      if (typeof data.depOnReactId === "undefined") throw "data.depOnReactId not provided to new Edge()";
-      if (typeof data.ctxId === "undefined") throw "data.ctxId not provided to new Edge()";
-      if (typeof data.time === "undefined") throw "data.time not provided to new Edge()";
+      if (!(data instanceof Edge)) {
+        if (typeof data.reactId === "undefined") throw "data.reactId not provided to new Edge()";
+        if (typeof data.depOnReactId === "undefined") throw "data.depOnReactId not provided to new Edge()";
+        if (typeof data.ctxId === "undefined") throw "data.ctxId not provided to new Edge()";
+        if (typeof data.time === "undefined") throw "data.time not provided to new Edge()";
+      }
+
       this.reactId = data.reactId;
       this.depOnReactId = data.depOnReactId;
       this.ctxId = data.ctxId;
       this.session = (0, _isNil2.default)(data.session) ? "Global" : data.session;
       this.time = data.time;
-      this.status = "normal";
-      this.isGhost = false;
-      this.hoverStatus = data.hoverStatus || new _HoverStatus.HoverStatus();
+      this.status = (0, _isNil2.default)(data.status) ? "normal" : data.status;
+      this.isGhost = (0, _isNil2.default)(data.isGhost) ? false : data.isGhost;
+      this.hoverStatus = new _HoverStatus.HoverStatus(data.hoverStatus);
       this.isDisplayed = (0, _isNil2.default)(data.isDisplayed) ? true : data.isDisplayed;
     }
 
@@ -72076,15 +71935,18 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
       _defineProperty(this, "isDisplayed", void 0);
 
-      if (typeof data.reactId === "undefined") throw "data.reactId not provided to new GhostEdge()";
-      if (typeof data.depOnReactId === "undefined") throw "data.depOnReactId not provided to new GhostEdge()";
-      if (typeof data.time === "undefined") throw "data.time not provided to new GhostEdge()";
+      if (data instanceof GhostEdge) {
+        if (typeof data.reactId === "undefined") throw "data.reactId not provided to new GhostEdge()";
+        if (typeof data.depOnReactId === "undefined") throw "data.depOnReactId not provided to new GhostEdge()";
+        if (typeof data.time === "undefined") throw "data.time not provided to new GhostEdge()";
+      }
+
       this.reactId = data.reactId;
       this.depOnReactId = data.depOnReactId;
       this.session = (0, _isNil2.default)(data.session) ? "Global" : data.session;
       this.time = data.time;
-      this.isGhost = true;
-      this.hoverStatus = data.hoverStatus || new _HoverStatus.HoverStatus();
+      this.isGhost = (0, _isNil2.default)(data.isGhost) ? true : data.isGhost;
+      this.hoverStatus = new _HoverStatus.HoverStatus(data.hoverStatus);
       this.isDisplayed = (0, _isNil2.default)(data.isDisplayed) ? true : data.isDisplayed;
     }
 
@@ -72169,18 +72031,19 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! lodash/some */ "./node_modules/lodash/some.js"), __webpack_require__(/*! lodash/filter */ "./node_modules/lodash/filter.js"), __webpack_require__(/*! lodash/isNil */ "./node_modules/lodash/isNil.js"), __webpack_require__(/*! lodash/union */ "./node_modules/lodash/union.js"), __webpack_require__(/*! lodash/last */ "./node_modules/lodash/last.js"), __webpack_require__(/*! cytoscape */ "./node_modules/cytoscape/dist/cytoscape.cjs.js"), __webpack_require__(/*! ../utils/MapHelper */ "./srcjs/utils/MapHelper.js"), __webpack_require__(/*! ../log/logStates */ "./srcjs/log/logStates.js"), __webpack_require__(/*! ./Node */ "./srcjs/graph/Node.js"), __webpack_require__(/*! ./Edge */ "./srcjs/graph/Edge.js"), __webpack_require__(/*! ./GhostEdge */ "./srcjs/graph/GhostEdge.js"), __webpack_require__(/*! ./HoverStatus */ "./srcjs/graph/HoverStatus.js"), __webpack_require__(/*! ./StatusArr */ "./srcjs/graph/StatusArr.js"), __webpack_require__(/*! ../utils/ArrayHelper */ "./srcjs/utils/ArrayHelper.js"), __webpack_require__(/*! ../utils/console */ "./srcjs/utils/console.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! lodash/clone */ "./node_modules/lodash/clone.js"), __webpack_require__(/*! lodash/some */ "./node_modules/lodash/some.js"), __webpack_require__(/*! lodash/filter */ "./node_modules/lodash/filter.js"), __webpack_require__(/*! lodash/isNil */ "./node_modules/lodash/isNil.js"), __webpack_require__(/*! lodash/union */ "./node_modules/lodash/union.js"), __webpack_require__(/*! lodash/last */ "./node_modules/lodash/last.js"), __webpack_require__(/*! cytoscape */ "./node_modules/cytoscape/dist/cytoscape.cjs.js"), __webpack_require__(/*! ../utils/MapHelper */ "./srcjs/utils/MapHelper.js"), __webpack_require__(/*! ../log/logStates */ "./srcjs/log/logStates.js"), __webpack_require__(/*! ./Node */ "./srcjs/graph/Node.js"), __webpack_require__(/*! ./Edge */ "./srcjs/graph/Edge.js"), __webpack_require__(/*! ./GhostEdge */ "./srcjs/graph/GhostEdge.js"), __webpack_require__(/*! ./HoverStatus */ "./srcjs/graph/HoverStatus.js"), __webpack_require__(/*! ./StatusArr */ "./srcjs/graph/StatusArr.js"), __webpack_require__(/*! ../utils/ArrayHelper */ "./srcjs/utils/ArrayHelper.js"), __webpack_require__(/*! ../utils/console */ "./srcjs/utils/console.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
-})(this, function (_exports, _some2, _filter2, _isNil2, _union2, _last2, _cytoscape, _MapHelper, _logStates, _Node, _Edge, _GhostEdge, _HoverStatus, _StatusArr, _ArrayHelper, _console) {
+})(this, function (_exports, _clone2, _some2, _filter2, _isNil2, _union2, _last2, _cytoscape, _MapHelper, _logStates, _Node, _Edge, _GhostEdge, _HoverStatus, _StatusArr, _ArrayHelper, _console) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
     value: true
   });
   _exports.Graph = void 0;
+  _clone2 = _interopRequireDefault(_clone2);
   _some2 = _interopRequireDefault(_some2);
   _filter2 = _interopRequireDefault(_filter2);
   _isNil2 = _interopRequireDefault(_isNil2);
@@ -72204,7 +72067,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   var Graph =
   /*#__PURE__*/
   function () {
-    function Graph(log) {
+    function Graph(data) {
+      var _this = this;
+
       _classCallCheck(this, Graph);
 
       _defineProperty(this, "log", void 0);
@@ -72219,12 +72084,27 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
       _defineProperty(this, "activeInvalidateEnter", void 0);
 
-      this.log = log;
+      this.log = data instanceof Graph ? data.log : data;
       this.nodes = new Map();
       this.edges = new Map();
       this.edgesUnique = new Map();
       this.activeNodeEnter = [];
       this.activeInvalidateEnter = [];
+
+      if (data instanceof Graph) {
+        var priorGraph = data;
+        priorGraph.nodes.forEach(function (node, key) {
+          return _this.nodes.set(key, new _Node.Node(node));
+        });
+        priorGraph.edges.forEach(function (edge, key) {
+          return _this.edges.set(key, new _Edge.Edge(edge));
+        });
+        priorGraph.edgesUnique.forEach(function (edge, key) {
+          return _this.edgesUnique.set(key, new _GhostEdge.GhostEdge(edge));
+        });
+        this.activeNodeEnter = (0, _clone2.default)(priorGraph.activeNodeEnter);
+        this.activeInvalidateEnter = (0, _clone2.default)(priorGraph.activeInvalidateEnter);
+      }
     }
 
     _createClass(Graph, [{
@@ -72381,7 +72261,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     }, {
       key: "ancestorNodeIds",
       value: function ancestorNodeIds(data) {
-        var _this = this;
+        var _this2 = this;
 
         var reactId = this.reactIdFromData(data, true);
 
@@ -72397,7 +72277,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
               reactId = reactIdArr.pop();
 
               if (!seenMap.has(reactId)) {
-                _this.parentNodeIds(reactId).forEach(function (parentReactId) {
+                _this2.parentNodeIds(reactId).forEach(function (parentReactId) {
                   if (parentReactId) {
                     reactIdArr.push(parentReactId);
                   }
@@ -72518,25 +72398,25 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     }, {
       key: "filterGraphOnNodeIds",
       value: function filterGraphOnNodeIds(nodeIds) {
-        var _this2 = this;
+        var _this3 = this;
 
         var nodeSet = new Set(nodeIds); // prune nodes
 
         this.nodes.forEach(function (node, key) {
           if (!nodeSet.has(node.reactId)) {
-            _this2.nodes.delete(key);
+            _this3.nodes.delete(key);
           }
         }); // prune edges
 
         this.edges.forEach(function (edge, key) {
           if (!(nodeSet.has(edge.reactId) && nodeSet.has(edge.depOnReactId))) {
-            _this2.edges.delete(key);
+            _this3.edges.delete(key);
           }
         }); // prune unique edges
 
         this.edgesUnique.forEach(function (edge, key) {
           if (!(nodeSet.has(edge.reactId) && nodeSet.has(edge.depOnReactId))) {
-            _this2.edgesUnique.delete(key);
+            _this3.edgesUnique.delete(key);
           }
         });
         return this;
@@ -72882,12 +72762,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! lodash/assign */ "./node_modules/lodash/assign.js"), __webpack_require__(/*! lodash/clone */ "./node_modules/lodash/clone.js"), __webpack_require__(/*! lodash/filter */ "./node_modules/lodash/filter.js"), __webpack_require__(/*! lodash/indexOf */ "./node_modules/lodash/indexOf.js"), __webpack_require__(/*! lodash/some */ "./node_modules/lodash/some.js"), __webpack_require__(/*! lodash/sortBy */ "./node_modules/lodash/sortBy.js"), __webpack_require__(/*! lodash/sortedIndex */ "./node_modules/lodash/sortedIndex.js"), __webpack_require__(/*! lodash/sortedIndexOf */ "./node_modules/lodash/sortedIndexOf.js"), __webpack_require__(/*! lodash/union */ "./node_modules/lodash/union.js"), __webpack_require__(/*! ../utils/console */ "./srcjs/utils/console.js"), __webpack_require__(/*! ../utils/MapHelper */ "./srcjs/utils/MapHelper.js"), __webpack_require__(/*! ../log/logStates */ "./srcjs/log/logStates.js"), __webpack_require__(/*! ./Graph */ "./srcjs/graph/Graph.js"), __webpack_require__(/*! ../cyto/layoutOptions */ "./srcjs/cyto/layoutOptions.js"), __webpack_require__(/*! ./Node */ "./srcjs/graph/Node.js"), __webpack_require__(/*! ./Edge */ "./srcjs/graph/Edge.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! lodash/assign */ "./node_modules/lodash/assign.js"), __webpack_require__(/*! lodash/clone */ "./node_modules/lodash/clone.js"), __webpack_require__(/*! lodash/filter */ "./node_modules/lodash/filter.js"), __webpack_require__(/*! lodash/some */ "./node_modules/lodash/some.js"), __webpack_require__(/*! lodash/sortBy */ "./node_modules/lodash/sortBy.js"), __webpack_require__(/*! lodash/sortedIndex */ "./node_modules/lodash/sortedIndex.js"), __webpack_require__(/*! lodash/sortedIndexOf */ "./node_modules/lodash/sortedIndexOf.js"), __webpack_require__(/*! lodash/union */ "./node_modules/lodash/union.js"), __webpack_require__(/*! ../utils/console */ "./srcjs/utils/console.js"), __webpack_require__(/*! ../utils/MapHelper */ "./srcjs/utils/MapHelper.js"), __webpack_require__(/*! ../log/logStates */ "./srcjs/log/logStates.js"), __webpack_require__(/*! ./Graph */ "./srcjs/graph/Graph.js"), __webpack_require__(/*! ../cyto/layoutOptions */ "./srcjs/cyto/layoutOptions.js"), __webpack_require__(/*! ./Node */ "./srcjs/graph/Node.js"), __webpack_require__(/*! ./Edge */ "./srcjs/graph/Edge.js"), __webpack_require__(/*! ./GhostEdge */ "./srcjs/graph/GhostEdge.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
-})(this, function (_exports, _assign2, _clone2, _filter2, _indexOf2, _some2, _sortBy2, _sortedIndex2, _sortedIndexOf2, _union2, _console, _MapHelper, _logStates, _Graph, _layoutOptions, _Node, _Edge) {
+})(this, function (_exports, _assign2, _clone2, _filter2, _some2, _sortBy2, _sortedIndex2, _sortedIndexOf2, _union2, _console, _MapHelper, _logStates, _Graph, _layoutOptions, _Node, _Edge, _GhostEdge) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
@@ -72898,7 +72778,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   _assign2 = _interopRequireDefault(_assign2);
   _clone2 = _interopRequireDefault(_clone2);
   _filter2 = _interopRequireDefault(_filter2);
-  _indexOf2 = _interopRequireDefault(_indexOf2);
   _some2 = _interopRequireDefault(_some2);
   _sortBy2 = _interopRequireDefault(_sortBy2);
   _sortedIndex2 = _interopRequireDefault(_sortedIndex2);
@@ -72928,15 +72807,15 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
       _defineProperty(this, "originalLog", void 0);
 
-      _defineProperty(this, "searchRegex", void 0);
-
       _defineProperty(this, "filterDatas", void 0);
 
       _defineProperty(this, "hoverData", void 0);
 
       _defineProperty(this, "stickyDatas", void 0);
 
-      _defineProperty(this, "finalGraph", void 0);
+      _defineProperty(this, "finalFilteredGraph", void 0);
+
+      _defineProperty(this, "finalCompleteGraph", void 0);
 
       _defineProperty(this, "finalCyto", void 0);
 
@@ -72964,7 +72843,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
       this.originalLog = log; // hoverInfo[key] = `HoverStatus`
 
-      this.searchRegex = null;
       this.filterDatas = [];
       this.hoverData = null;
       this.stickyDatas = []; // this.hoverDefault = "focused"
@@ -72972,13 +72850,19 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       // this.filterMap = {};
 
       this.log = log;
-      this.updateSteps(log);
-      this.updateFinalGraph();
+      this.initStepInfo(log); // make a graph with no filtering that is completly made
+
+      this.finalCompleteGraph = this.rawGraphAtStep(log.length);
+      this.updateFinalFilteredGraphAndStepsVisible();
     }
 
     _createClass(GraphAtStep, [{
-      key: "graphAtStep",
-      // function hasFilterDatas(): boolean %checks {
+      key: "updateFinalFilteredGraphAndStepsVisible",
+      value: function updateFinalFilteredGraphAndStepsVisible() {
+        this.updateFinalFilteredGraph();
+        this.updateFilteredStepsVisible();
+        return;
+      } // function hasFilterDatas(): boolean %checks {
       //   return this.filterDatas ? this.filterDatas.length > 0 : false;
       // }
       // get hasStickyDatas() {
@@ -72988,17 +72872,19 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       //   return this.hoverData ? true : false;
       // }
       // return graph at step k
+
+    }, {
+      key: "graphAtStep",
       value: function graphAtStep(k) {
         return this.atStep(k, false);
-      }
+      } // updateFinalGraph() {
+      //   this.finalFilteredGraph = this.atStep(this.log.length, true);
+      //   // this.finalCyto = this.finalGraph.cytoGraph;
+      // }
+
     }, {
-      key: "updateFinalGraph",
-      value: function updateFinalGraph() {
-        this.finalGraph = this.graphAtStep(this.log.length); // this.finalCyto = this.finalGraph.cytoGraph;
-      }
-    }, {
-      key: "updateSteps",
-      value: function updateSteps(log) {
+      key: "initStepInfo",
+      value: function initStepInfo(log) {
         this.steps = [];
         this.stepsAsyncStart = [];
         this.stepsAsyncStop = [];
@@ -73106,15 +72992,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         this.stepsVisible = // sort integer list
         (0, _sortBy2.default)( // get union (unique values) of all visible locations
         (0, _union2.default)(this.steps, this.stepsUserMark, this.stepsIdle));
-        this.updateFilteredStepsVisible(); // this.graphCache = {};
-        // this.cacheStep = 250;
-        // var tmpGraph = new Graph(log);
-        // for (i = 0; i < log.length; i++) {
-        //   tmpGraph.addEntry(log[i])
-        //   if ((i % this.cacheStep) == 0) {
-        //     this.graphCache[i] = _cloneDeep(tmpGraph)
-        //   }
-        // }
       }
     }, {
       key: "updateFilteredStepsVisible",
@@ -73127,11 +73004,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
         var filteredStepsVisible = [];
-        var graphAtEnd = this.graphAtStep(this.log.length);
-        var visibleStep, logEntry, i;
-        var filterReactIds = this.filterDatas.map(function (node) {
-          return node.reactId;
-        }); // todo must be actual log. not visible steps
+        var finalFilteredGraph = this.finalFilteredGraph;
+        var visibleStep, logEntry, i; // todo must be actual log. not visible steps
 
         for (i = 0; i < this.stepsVisible.length; i++) {
           visibleStep = this.stepsVisible[i];
@@ -73139,31 +73013,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
           switch (logEntry.action) {
             case _logStates.LogStates.dependsOn:
-              {
-                // since we are adding an edge in the graph, update the graph
-                // graphAtI = this.graphAtStep(visibleStep);
-                var decendents = (0, _union2.default)(filterReactIds, graphAtEnd.decendentNodeIdsForDatas(this.filterDatas));
-                var ancestors = (0, _union2.default)(filterReactIds, graphAtEnd.ancestorNodeIdsForDatas(this.filterDatas)); // reactId is target (ends at ancestors)
-
-                if ((0, _indexOf2.default)(ancestors, logEntry.reactId) !== -1) {
-                  filteredStepsVisible.push(visibleStep);
-                  break;
-                } // depOnReactId is source (starts from children)
-
-
-                if ((0, _indexOf2.default)(decendents, logEntry.depOnReactId) !== -1) {
-                  filteredStepsVisible.push(visibleStep);
-                  break;
-                } // not found
-
-
-                break;
-              }
-
             case _logStates.LogStates.dependsOnRemove:
               // check for both to and from (since it must exist beforehand)
               // graphAtI = this.graphAtStep(visibleStep);
-              if (graphAtEnd.nodes.has(logEntry.reactId) && graphAtEnd.nodes.has(logEntry.depOnReactId)) {
+              if (finalFilteredGraph.hasNodeReactId(logEntry.reactId) && finalFilteredGraph.hasNodeReactId(logEntry.depOnReactId)) {
                 filteredStepsVisible.push(visibleStep);
                 break;
               } // not found
@@ -73173,24 +73026,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
             case _logStates.LogStates.define:
             case _logStates.LogStates.updateNodeLabel:
-              // graphAtI = this.graphAtStep(visibleStep);
-              if (!graphAtEnd.hasNodeReactId(logEntry.reactId)) {
-                // no node found
-                break;
-              }
-
-              if (this.searchRegex) {
-                if (logEntry.label) {
-                  if (!this.searchRegex.test(logEntry.label)) {
-                    // regex doesn't match node
-                    break;
-                  }
-                }
-              }
-
-              filteredStepsVisible.push(visibleStep);
-              break;
-
             case _logStates.LogStates.freeze:
             case _logStates.LogStates.thaw:
             case _logStates.LogStates.valueChange:
@@ -73203,7 +73038,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             case _logStates.LogStates.isolateExit:
             case _logStates.LogStates.isolateInvalidateStart:
             case _logStates.LogStates.isolateInvalidateEnd:
-              if (!graphAtEnd.hasNodeReactId(logEntry.reactId)) {
+              if (!finalFilteredGraph.hasNodeReactId(logEntry.reactId)) {
                 // no node found in filtered graph
                 break;
               }
@@ -73212,8 +73047,19 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
               break;
 
             case _logStates.LogStates.idle:
+              if (filteredStepsVisible.length > 0) {
+                var priorFilteredStepVisible = filteredStepsVisible[filteredStepsVisible.length - 1];
+
+                if (this.log[priorFilteredStepVisible].action !== _logStates.LogStates.idle) {
+                  // if the visible state is not an idle state, add it
+                  filteredStepsVisible.push(visibleStep);
+                }
+              }
+
+              break;
+
             case _logStates.LogStates.userMark:
-              // always include (for now)
+              // always include (for now, multiple idle steps are removed later)
               filteredStepsVisible.push(visibleStep);
               break;
 
@@ -73228,28 +73074,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
               throw "unknown logEntry action in 'next'";
           }
-        } // return early if nothing is found. I hope this is never called
-
-
-        if (filteredStepsVisible.length === 0) {
-          this.filteredStepsVisible = filteredStepsVisible;
-          return;
         }
 
-        var log = this.log;
-        this.filteredStepsVisible = (0, _filter2.default)(filteredStepsVisible, function (visibleStep, idx) {
-          if (idx === 0) return true;
-
-          if (log[visibleStep].action === _logStates.LogStates.idle) {
-            var priorVisibleStep = filteredStepsVisible[idx - 1];
-
-            if (log[priorVisibleStep].action === _logStates.LogStates.idle) {
-              return false;
-            }
-          }
-
-          return true;
-        });
+        this.filteredStepsVisible = filteredStepsVisible;
         return;
       }
     }, {
@@ -73292,7 +73119,36 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           graph.addEntry(this.log[i]);
         }
 
-        return graph;
+        return graph; // this.graphCache = {};
+        // this.cacheStep = 250;
+        // var tmpGraph = new Graph(log);
+        // for (i = 0; i < log.length; i++) {
+        //   tmpGraph.addEntry(log[i])
+        //   if ((i % this.cacheStep) == 0) {
+        //     this.graphCache[i] = _cloneDeep(tmpGraph)
+        //   }
+        // }
+      } // update the filtering for the final graph. No cosmetics
+
+    }, {
+      key: "updateFinalFilteredGraph",
+      value: function updateFinalFilteredGraph() {
+        // copy final graph
+        var finalGraph = new _Graph.Graph(this.finalCompleteGraph); // set filter datas from regex or global filter datas
+        // if any hover... // do nothing
+        // if any sticky... // do nothing
+        // if any search regex...
+        // handled elsewhere
+        // if any filtering...
+
+        if (hasLength(this.filterDatas)) {
+          finalGraph.filterGraphOnNodeIds( // graph.familyTreeNodeIdsForDatas(this.filterDatas)
+          this.finalCompleteGraph.familyTreeNodeIdsForDatas(this.filterDatas));
+        }
+
+        this.finalFilteredGraph = finalGraph;
+        window.console.log("Final Filtered Graph: ", this.finalFilteredGraph);
+        return;
       } // graph at step with filtering
       //  boolean on whether or not to update this.finalGraph on matching regex
 
@@ -73300,10 +73156,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       key: "atStep",
       value: function atStep(k) {
         var updateFinalGraph = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+        // get unfiltered graph at step k
         var graph = this.rawGraphAtStep(k); // if any hover...
 
         if (this.hoverData && graph.hasSomeData(this.hoverData)) {
-          graph.hoverStatusOnNodeIds(this.finalGraph.familyTreeNodeIds(this.hoverData), "state");
+          graph.hoverStatusOnNodeIds(this.finalFilteredGraph.familyTreeNodeIds(this.hoverData), "state");
           graph.highlightSelected(this.hoverData, "selected");
         } // if any sticky...
 
@@ -73313,7 +73170,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             return graph.hasSomeData(data);
           }))) {
             // at least some sticky data is visible
-            var stickyTree = this.finalGraph.familyTreeNodeIdsForDatas(this.stickyDatas);
+            var stickyTree = this.finalFilteredGraph.familyTreeNodeIdsForDatas(this.stickyDatas);
             graph.hoverStatusOnNodeIds(stickyTree, "sticky");
             this.stickyDatas.map(function (data) {
               graph.highlightSelected(data, "selected");
@@ -73324,46 +73181,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
               graph.hoverStatusOnNodeIds(stickyTree, "state");
             }
           }
-        } // if any searching
+        } // if any filtering...
 
 
-        if (this.searchRegex) {
-          var searchRegex = this.searchRegex;
-          var matchedNodes = (0, _filter2.default)( // (mapValues(graph.nodes): ArraySomeGraphData),
-          (0, _MapHelper.mapValues)(graph.nodes), function (node) {
-            return searchRegex.test(node.label);
+        if (hasLength(this.filterDatas)) {
+          graph.filterGraphOnNodeIds( // graph.familyTreeNodeIdsForDatas(this.filterDatas)
+          this.finalFilteredGraph.familyTreeNodeIdsForDatas(this.filterDatas)); // graph.hoverStatusOnNodeIds(this.filterDatas.map((x) => x.reactId), "filtered");
+
+          this.filterDatas.map(function (data) {
+            graph.highlightSelected(data, "filtered");
           });
-
-          if (matchedNodes.length === 0) {
-            // TODO-barret warn of no matches
-            // console.log("no matches!");
-            graph.hoverStatusOnNodeIds([], "filtered");
-
-            if (updateFinalGraph) {
-              this.updateFilterDatasReset(updateFinalGraph);
-            }
-          } else {
-            if (updateFinalGraph) {
-              this.updateFilterDatas( // for some reason, an array of node does not work with an array of (node, edge, or ghostedge)
-              matchedNodes, updateFinalGraph);
-            } // filter on regex
-
-
-            graph.filterGraphOnNodeIds(this.finalGraph.familyTreeNodeIdsForDatas(this.filterDatas));
-            matchedNodes.map(function (data) {
-              graph.highlightSelected(data, "filtered");
-            }); // graph.hoverStatusOnNodeIds(matchedNodes.map((x) => x.reactId), "filtered");
-          }
-        } else {
-          // if any filtering...
-          if (hasLength(this.filterDatas)) {
-            graph.filterGraphOnNodeIds( // graph.familyTreeNodeIdsForDatas(this.filterDatas)
-            this.finalGraph.familyTreeNodeIdsForDatas(this.filterDatas)); // graph.hoverStatusOnNodeIds(this.filterDatas.map((x) => x.reactId), "filtered");
-
-            this.filterDatas.map(function (data) {
-              graph.highlightSelected(data, "filtered");
-            });
-          }
         }
 
         return graph;
@@ -73416,30 +73243,57 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     }, {
       key: "updateFilterDatas",
       value: function updateFilterDatas(dataArr) {
-        var callUpdateFinal = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
         this.filterDatas = dataArr;
-        if (callUpdateFinal) this.updateFinalGraph();
-        this.updateFilteredStepsVisible();
+        window.console.log("update filterDatas: ", dataArr);
+        this.updateFinalFilteredGraphAndStepsVisible();
       }
     }, {
       key: "updateFilterDatasReset",
       value: function updateFilterDatasReset() {
-        var callUpdateFinal = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
-        this.updateFilterDatas([], callUpdateFinal);
+        this.updateFilterDatas([]);
       }
     }, {
       key: "updateSearchRegex",
       value: function updateSearchRegex(regex) {
-        var callUpdateFinal = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
-        this.searchRegex = regex;
-        if (callUpdateFinal) this.updateFinalGraph();
+        // update filterDatas below
+        var matchedElements = (0, _filter2.default)( // (mapValues(graph.nodes): ArraySomeGraphData),
+        (0, _MapHelper.mapValues)(this.finalCompleteGraph.nodes), function (node) {
+          return regex.test(node.label) || regex.test(node.reactId);
+        });
+
+        if (matchedElements.length === 0) {
+          matchedElements = (0, _filter2.default)((0, _MapHelper.mapValues)(this.finalCompleteGraph.edges), function (edge) {
+            return regex.test(edge.reactId);
+          });
+        }
+
+        if (matchedElements.length === 0) {
+          matchedElements = (0, _filter2.default)((0, _MapHelper.mapValues)(this.finalCompleteGraph.edgesUnique), function (edge) {
+            return regex.test(edge.reactId);
+          });
+        }
+
+        if (matchedElements.length === 0) {
+          // no matches found
+          this.updateFilterDatasReset();
+        } else {
+          this.updateFilterDatas( // for some reason, an array of node does not work with an array of (node, edge, or ghostedge)
+          matchedElements);
+        }
       }
     }, {
       key: "updateSearchRegexReset",
       value: function updateSearchRegexReset() {
-        var callUpdateFinal = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
-        this.updateFilterDatasReset(false);
-        this.updateSearchRegex(null, callUpdateFinal);
+        this.filterDatas = [];
+        this.updateFinalFilteredGraphAndStepsVisible();
+      }
+    }, {
+      key: "resetHoverStickyFilterSearch",
+      value: function resetHoverStickyFilterSearch() {
+        this.hoverData = null;
+        this.stickyDatas = [];
+        this.filterDatas = [];
+        this.updateFinalFilteredGraphAndStepsVisible();
       } // computes a graph containing all points and edges possible,
       //   extending the original graph at step k
 
@@ -73448,7 +73302,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       value: function completeGraphAtStep(k) {
         // get graph at step k and update the final graph obect
         var graph = this.atStep(k, true);
-        var finalGraph = this.finalGraph; // add any points and edges that have not be defined yet
+        var finalGraph = this.finalFilteredGraph; // add any points and edges that have not be defined yet
         // do not include regular edges, only unique edges
         // append all missing nodes
 
@@ -73614,11 +73468,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           this.cytoLayout.run();
         }
       }
-    }, {
-      key: "hasSearchRegex",
-      get: function get() {
-        return this.searchRegex ? true : false;
-      }
     }]);
 
     return GraphAtStep;
@@ -73667,7 +73516,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   /*#__PURE__*/
   function () {
     function HoverStatus() {
-      var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : HoverStatus.valFocused;
+      var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
 
       _classCallCheck(this, HoverStatus);
 
@@ -73679,12 +73528,19 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
       _defineProperty(this, "filtered", void 0);
 
-      this.sticky = HoverStatus.valNotSticky; // true / false
+      if (data instanceof HoverStatus) {
+        this.sticky = data.sticky;
+        this.state = data.state;
+        this.selected = data.selected;
+        this.filtered = data.filtered;
+      } else {
+        this.sticky = HoverStatus.valNotSticky; // true / false
 
-      this.state = state; // "focused", "notFocused"
+        this.state = "focused"; // "focused", "notFocused"
 
-      this.selected = false;
-      this.filtered = false;
+        this.selected = false;
+        this.filtered = false;
+      }
     }
 
     _createClass(HoverStatus, [{
@@ -73898,11 +73754,14 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
       _defineProperty(this, "calculationStartMap", void 0);
 
-      if (typeof data.reactId === "undefined") throw "data.reactId not provided in new Node";
-      if (typeof data.label === "undefined") throw "data.label not provided in new Node";
-      if (typeof data.type === "undefined") throw "data.type not provided in new Node";
-      if (typeof data.session === "undefined") throw "data.session not provided in new Node";
-      if (typeof data.time === "undefined") throw "data.time not provided in new Node";
+      if (!(data instanceof Node)) {
+        if (typeof data.reactId === "undefined") throw "data.reactId not provided in new Node";
+        if (typeof data.label === "undefined") throw "data.label not provided in new Node";
+        if (typeof data.type === "undefined") throw "data.type not provided in new Node";
+        if (typeof data.session === "undefined") throw "data.session not provided in new Node";
+        if (typeof data.time === "undefined") throw "data.time not provided in new Node";
+      }
+
       this.reactId = data.reactId;
       this.label = data.label;
       this.type = data.type;
@@ -73911,10 +73770,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       this.isFrozen = data.isFrozen || false;
       this.statusArr = new _StatusArr.StatusArr(data.statusArr || []);
       this.value = (0, _isNil2.default)(data.value) ? null : data.value;
-      this.hoverStatus = data.hoverStatus || new _HoverStatus.HoverStatus();
+      this.hoverStatus = new _HoverStatus.HoverStatus(data.hoverStatus);
       this.isDisplayed = (0, _isNil2.default)(data.isDisplayed) ? true : data.isDisplayed;
       this.calculationTime = (0, _isNil2.default)(data.calculationTime) ? null : data.calculationTime;
-      this.calculationStartMap = (0, _isNil2.default)(data.calculationStartMap) ? new Map() : data.calculationStartMap;
+      this.calculationStartMap = (0, _isNil2.default)(data.calculationStartMap) ? new Map() : new Map(data.calculationStartMap);
       this.valueChangedStatus = data.valueChangedStatus || new _ActiveStateStatus.ActiveStateStatus(); // this.inInvalidate = data.inInvalidate || false;
       // this.activeInvalidate = data.activeInvalidate || false;
 
@@ -74023,7 +73882,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           if (_rlog.rlog.displayTimeOnNodes) {
             if (!(0, _isNil2.default)(time)) {
               // is just chillin... so I'm assuming it's calculated and I want to know how long it took.
-              return "".concat(label, "; ").concat(time.toFixed(0), "ms");
+              return "".concat(label, " (").concat(time.toFixed(0), "ms)");
             }
           }
 
@@ -74185,20 +74044,25 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   /*#__PURE__*/
   function () {
     function StatusArr() {
-      var statusArr_ = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+      var statusArr = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
 
       _classCallCheck(this, StatusArr);
 
       _defineProperty(this, "statusArr", void 0);
 
-      if (statusArr_ instanceof StatusArr) {
-        this.statusArr = (0, _cloneDeep2.default)(statusArr_.statusArr);
-      } else if (Array.isArray(statusArr_)) {
-        this.statusArr = statusArr_;
+      if (statusArr instanceof StatusArr) {
+        this.statusArr = (0, _cloneDeep2.default)(statusArr.statusArr);
+      } else if (Array.isArray(statusArr)) {
+        this.statusArr = statusArr;
       }
     }
 
     _createClass(StatusArr, [{
+      key: "clone",
+      value: function clone() {
+        return new StatusArr(this);
+      }
+    }, {
       key: "add",
       value: function add(obj) {
         return this.statusArr.push(obj);
@@ -75513,13 +75377,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   var resetHoverStickyFilterData = function resetHoverStickyFilterData() {
     var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    _rlog.rlog.getGraph.updateHoverDataReset();
-
-    _rlog.rlog.getGraph.updateStickyDatasReset();
-
-    _rlog.rlog.getGraph.updateFilterDatasReset();
-
-    _rlog.rlog.getGraph.updateSearchRegexReset();
+    _rlog.rlog.getGraph.resetHoverStickyFilterSearch();
 
     return (0, _updateGraph.updateGraph)(_rlog.rlog.curTick, (0, _assign2.default)({
       fit: true

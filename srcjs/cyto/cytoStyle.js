@@ -32,6 +32,8 @@ let selectedScale = 2;
 
 let edgePixelWidth = 4;
 
+let maxTextWidth = "10000px";
+
 let graphStyles = {
   node: {
     default: {
@@ -80,6 +82,7 @@ let graphStyles = {
       "shape-polygon-points": nodeShapes.end.shape,
       width: nodeShapes.end.width,
       height: nodeShapes.end.height,
+      "text-max-width": maxTextWidth,
     },
     endBig: {
       "border-width": 2,
@@ -192,7 +195,7 @@ let graphStyles = {
     node: {
       "border-width": 4,
       // if you hover / selected, show all the label
-      "text-max-width": "10000px",
+      "text-max-width": maxTextWidth,
     },
     edge: {
       width: edgePixelWidth * 2,
