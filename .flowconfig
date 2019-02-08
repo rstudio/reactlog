@@ -1,6 +1,4 @@
 [ignore]
-src/log-files
-src/old
 .*/node_modules/.*broken.json
 
 [include]

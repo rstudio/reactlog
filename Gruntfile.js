@@ -8,8 +8,8 @@ module.exports = function(grunt) {
 
   var rootDir = __dirname;
 
-  var instdir = rootDir + '/inst/';
-  var jsSrcdir = rootDir + '/srcjs/';
+  var saveDir = rootDir + '/inst/htmlwidgets/reactlog/';
+  var readDir = rootDir + '/srcjs/';
 
   gruntConfig = {
 
@@ -29,9 +29,9 @@ module.exports = function(grunt) {
         // },
       },
       reactlog: {
-        entry: jsSrcdir + "index.js",
+        entry: readDir + "index.js",
         output: {
-          path: instdir + "reactlogAsset",
+          path: saveDir,
           filename: 'reactlog.js'
         },
         plugins: [

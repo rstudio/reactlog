@@ -9,7 +9,6 @@ import * as updateGraph from "./updateGraph";
 import type { CytoscapeType } from "./cyto/cytoFlowType";
 import type { LogType } from "./log/logStates";
 
-// TODO-barret change to individual exports
 let ret = {
   log: ([]: LogType),
   cyto: (cytoscape(): CytoscapeType),
@@ -17,7 +16,21 @@ let ret = {
   graph: new Graph([]),
   curTick: (1: number),
   updateGraph: updateGraph,
-  barret: (null: any),
 };
 
-export { ret as rlog };
+// class RLog {
+//
+//   log: ([]: LogType);
+//   cyto: (cytoscape(): CytoscapeType);
+//   getGraph: new GraphAtStep([]);
+//   graph: new Graph([]);
+//   curTick: (1: number);
+//   updateGraph: updateGraph;
+//
+//   constructor: () {
+//
+//   }
+// }
+export { ret as rlog,
+   // RLog 
+ };

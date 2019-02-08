@@ -1,0 +1,9 @@
+dependencies:
+ - name: "reactlog"
+   version: "0.0.1"
+   src: "reactlog"
+   script:
+     - "default-log.js"
+     - "reactlog.js"
+   stylesheet: "reactlog.css"
+   all_files: true # images and map files

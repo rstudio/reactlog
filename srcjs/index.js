@@ -1,5 +1,8 @@
 // @flow
 
+
+
+
 import $ from "jquery";
 
 import { rlog } from "./rlog";
@@ -46,8 +49,16 @@ import "./log/initStep";
 // should filtering be done with the full layout?
 //
 
-$(function() {
+// class Reactlog {
+//   // rlog: rlog;
+//
+//   constructor(log, time = true) {
+
+let make_reactlog = function(el: JQuery, log, time, id) {
+
   window.barret = rlog;
+
+  rlog = new RLog()
 
   rlog.log = (window.log: LogType);
   rlog.cyto = cytoscapeInit.withContainer($("#cyto"));
@@ -55,7 +66,7 @@ $(function() {
   rlog.getGraph = new GraphAtStep(rlog.log);
   rlog.graph = rlog.getGraph.atStep(rlog.getGraph.maxStep);
 
-  $("#prevUserMarkButton").click(updateGraph.buttonPrevMark);
+  $(el).find(".prevUserMarkButton").click(updateGraph.buttonPrevMark);
   $("#nextUserMarkButton").click(updateGraph.buttonNextMark);
   $("#prevOutputCalcButton").click(updateGraph.buttonPrevOutputCalc);
   $("#nextOutputCalcButton").click(updateGraph.buttonNextOutputCalc);
@@ -141,4 +152,6 @@ $(function() {
     // start at last user mark or first idle location
     updateGraph.lastUserMark(cytoOpts) || updateGraph.nextIdle(cytoOpts);
   }
-});
+// });
+  }
+}
