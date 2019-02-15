@@ -44,8 +44,8 @@ reactlog_render <- function(log, session_token = NULL, time = TRUE) {
     # add resource path to pkg files for shiny
     # (avoids warning of tmp folder moving around)
     shiny::addResourcePath(
-      prefix = "reactlogAsset",
-      path = inst_reactlog_assets()
+      "reactlogAsset", # prefix
+      inst_reactlog_assets()
     )
   }
 
