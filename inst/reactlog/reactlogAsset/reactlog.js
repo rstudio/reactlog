@@ -47531,6 +47531,51 @@ module.exports = baseMatchesProperty;
 
 /***/ }),
 
+/***/ "./node_modules/lodash/_baseOrderBy.js":
+/*!*********************************************!*\
+  !*** ./node_modules/lodash/_baseOrderBy.js ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var arrayMap = __webpack_require__(/*! ./_arrayMap */ "./node_modules/lodash/_arrayMap.js"),
+    baseIteratee = __webpack_require__(/*! ./_baseIteratee */ "./node_modules/lodash/_baseIteratee.js"),
+    baseMap = __webpack_require__(/*! ./_baseMap */ "./node_modules/lodash/_baseMap.js"),
+    baseSortBy = __webpack_require__(/*! ./_baseSortBy */ "./node_modules/lodash/_baseSortBy.js"),
+    baseUnary = __webpack_require__(/*! ./_baseUnary */ "./node_modules/lodash/_baseUnary.js"),
+    compareMultiple = __webpack_require__(/*! ./_compareMultiple */ "./node_modules/lodash/_compareMultiple.js"),
+    identity = __webpack_require__(/*! ./identity */ "./node_modules/lodash/identity.js");
+
+/**
+ * The base implementation of `_.orderBy` without param guards.
+ *
+ * @private
+ * @param {Array|Object} collection The collection to iterate over.
+ * @param {Function[]|Object[]|string[]} iteratees The iteratees to sort by.
+ * @param {string[]} orders The sort orders of `iteratees`.
+ * @returns {Array} Returns the new sorted array.
+ */
+function baseOrderBy(collection, iteratees, orders) {
+  var index = -1;
+  iteratees = arrayMap(iteratees.length ? iteratees : [identity], baseUnary(baseIteratee));
+
+  var result = baseMap(collection, function(value, key, collection) {
+    var criteria = arrayMap(iteratees, function(iteratee) {
+      return iteratee(value);
+    });
+    return { 'criteria': criteria, 'index': ++index, 'value': value };
+  });
+
+  return baseSortBy(result, function(object, other) {
+    return compareMultiple(object, other, orders);
+  });
+}
+
+module.exports = baseOrderBy;
+
+
+/***/ }),
+
 /***/ "./node_modules/lodash/_baseProperty.js":
 /*!**********************************************!*\
   !*** ./node_modules/lodash/_baseProperty.js ***!
@@ -47673,6 +47718,38 @@ function baseSome(collection, predicate) {
 }
 
 module.exports = baseSome;
+
+
+/***/ }),
+
+/***/ "./node_modules/lodash/_baseSortBy.js":
+/*!********************************************!*\
+  !*** ./node_modules/lodash/_baseSortBy.js ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/**
+ * The base implementation of `_.sortBy` which uses `comparer` to define the
+ * sort order of `array` and replaces criteria objects with their corresponding
+ * values.
+ *
+ * @private
+ * @param {Array} array The array to sort.
+ * @param {Function} comparer The function to define sort order.
+ * @returns {Array} Returns `array`.
+ */
+function baseSortBy(array, comparer) {
+  var length = array.length;
+
+  array.sort(comparer);
+  while (length--) {
+    array[length] = array[length].value;
+  }
+  return array;
+}
+
+module.exports = baseSortBy;
 
 
 /***/ }),
@@ -48229,6 +48306,113 @@ function cloneTypedArray(typedArray, isDeep) {
 }
 
 module.exports = cloneTypedArray;
+
+
+/***/ }),
+
+/***/ "./node_modules/lodash/_compareAscending.js":
+/*!**************************************************!*\
+  !*** ./node_modules/lodash/_compareAscending.js ***!
+  \**************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var isSymbol = __webpack_require__(/*! ./isSymbol */ "./node_modules/lodash/isSymbol.js");
+
+/**
+ * Compares values to sort them in ascending order.
+ *
+ * @private
+ * @param {*} value The value to compare.
+ * @param {*} other The other value to compare.
+ * @returns {number} Returns the sort order indicator for `value`.
+ */
+function compareAscending(value, other) {
+  if (value !== other) {
+    var valIsDefined = value !== undefined,
+        valIsNull = value === null,
+        valIsReflexive = value === value,
+        valIsSymbol = isSymbol(value);
+
+    var othIsDefined = other !== undefined,
+        othIsNull = other === null,
+        othIsReflexive = other === other,
+        othIsSymbol = isSymbol(other);
+
+    if ((!othIsNull && !othIsSymbol && !valIsSymbol && value > other) ||
+        (valIsSymbol && othIsDefined && othIsReflexive && !othIsNull && !othIsSymbol) ||
+        (valIsNull && othIsDefined && othIsReflexive) ||
+        (!valIsDefined && othIsReflexive) ||
+        !valIsReflexive) {
+      return 1;
+    }
+    if ((!valIsNull && !valIsSymbol && !othIsSymbol && value < other) ||
+        (othIsSymbol && valIsDefined && valIsReflexive && !valIsNull && !valIsSymbol) ||
+        (othIsNull && valIsDefined && valIsReflexive) ||
+        (!othIsDefined && valIsReflexive) ||
+        !othIsReflexive) {
+      return -1;
+    }
+  }
+  return 0;
+}
+
+module.exports = compareAscending;
+
+
+/***/ }),
+
+/***/ "./node_modules/lodash/_compareMultiple.js":
+/*!*************************************************!*\
+  !*** ./node_modules/lodash/_compareMultiple.js ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var compareAscending = __webpack_require__(/*! ./_compareAscending */ "./node_modules/lodash/_compareAscending.js");
+
+/**
+ * Used by `_.orderBy` to compare multiple properties of a value to another
+ * and stable sort them.
+ *
+ * If `orders` is unspecified, all values are sorted in ascending order. Otherwise,
+ * specify an order of "desc" for descending or "asc" for ascending sort order
+ * of corresponding values.
+ *
+ * @private
+ * @param {Object} object The object to compare.
+ * @param {Object} other The other object to compare.
+ * @param {boolean[]|string[]} orders The order to sort by for each property.
+ * @returns {number} Returns the sort order indicator for `object`.
+ */
+function compareMultiple(object, other, orders) {
+  var index = -1,
+      objCriteria = object.criteria,
+      othCriteria = other.criteria,
+      length = objCriteria.length,
+      ordersLength = orders.length;
+
+  while (++index < length) {
+    var result = compareAscending(objCriteria[index], othCriteria[index]);
+    if (result) {
+      if (index >= ordersLength) {
+        return result;
+      }
+      var order = orders[index];
+      return result * (order == 'desc' ? -1 : 1);
+    }
+  }
+  // Fixes an `Array#sort` bug in the JS engine embedded in Adobe applications
+  // that causes it, under certain circumstances, to provide the same value for
+  // `object` and `other`. See https://github.com/jashkenas/underscore/pull/1247
+  // for more details.
+  //
+  // This also ensures a stable sort in V8 and other engines.
+  // See https://bugs.chromium.org/p/v8/issues/detail?id=90 for more details.
+  return object.index - other.index;
+}
+
+module.exports = compareMultiple;
 
 
 /***/ }),
@@ -51075,6 +51259,53 @@ module.exports = assign;
 
 /***/ }),
 
+/***/ "./node_modules/lodash/clone.js":
+/*!**************************************!*\
+  !*** ./node_modules/lodash/clone.js ***!
+  \**************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var baseClone = __webpack_require__(/*! ./_baseClone */ "./node_modules/lodash/_baseClone.js");
+
+/** Used to compose bitmasks for cloning. */
+var CLONE_SYMBOLS_FLAG = 4;
+
+/**
+ * Creates a shallow clone of `value`.
+ *
+ * **Note:** This method is loosely based on the
+ * [structured clone algorithm](https://mdn.io/Structured_clone_algorithm)
+ * and supports cloning arrays, array buffers, booleans, date objects, maps,
+ * numbers, `Object` objects, regexes, sets, strings, symbols, and typed
+ * arrays. The own enumerable properties of `arguments` objects are cloned
+ * as plain objects. An empty object is returned for uncloneable values such
+ * as error objects, functions, DOM nodes, and WeakMaps.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to clone.
+ * @returns {*} Returns the cloned value.
+ * @see _.cloneDeep
+ * @example
+ *
+ * var objects = [{ 'a': 1 }, { 'b': 2 }];
+ *
+ * var shallow = _.clone(objects);
+ * console.log(shallow[0] === objects[0]);
+ * // => true
+ */
+function clone(value) {
+  return baseClone(value, CLONE_SYMBOLS_FLAG);
+}
+
+module.exports = clone;
+
+
+/***/ }),
+
 /***/ "./node_modules/lodash/cloneDeep.js":
 /*!******************************************!*\
   !*** ./node_modules/lodash/cloneDeep.js ***!
@@ -51693,59 +51924,6 @@ function identity(value) {
 }
 
 module.exports = identity;
-
-
-/***/ }),
-
-/***/ "./node_modules/lodash/indexOf.js":
-/*!****************************************!*\
-  !*** ./node_modules/lodash/indexOf.js ***!
-  \****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-var baseIndexOf = __webpack_require__(/*! ./_baseIndexOf */ "./node_modules/lodash/_baseIndexOf.js"),
-    toInteger = __webpack_require__(/*! ./toInteger */ "./node_modules/lodash/toInteger.js");
-
-/* Built-in method references for those with the same name as other `lodash` methods. */
-var nativeMax = Math.max;
-
-/**
- * Gets the index at which the first occurrence of `value` is found in `array`
- * using [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
- * for equality comparisons. If `fromIndex` is negative, it's used as the
- * offset from the end of `array`.
- *
- * @static
- * @memberOf _
- * @since 0.1.0
- * @category Array
- * @param {Array} array The array to inspect.
- * @param {*} value The value to search for.
- * @param {number} [fromIndex=0] The index to search from.
- * @returns {number} Returns the index of the matched value, else `-1`.
- * @example
- *
- * _.indexOf([1, 2, 1, 2], 2);
- * // => 1
- *
- * // Search from the `fromIndex`.
- * _.indexOf([1, 2, 1, 2], 2, 2);
- * // => 3
- */
-function indexOf(array, value, fromIndex) {
-  var length = array == null ? 0 : array.length;
-  if (!length) {
-    return -1;
-  }
-  var index = fromIndex == null ? 0 : toInteger(fromIndex);
-  if (index < 0) {
-    index = nativeMax(length + index, 0);
-  }
-  return baseIndexOf(array, value, index);
-}
-
-module.exports = indexOf;
 
 
 /***/ }),
@@ -69886,6 +70064,65 @@ module.exports = some;
 
 /***/ }),
 
+/***/ "./node_modules/lodash/sortBy.js":
+/*!***************************************!*\
+  !*** ./node_modules/lodash/sortBy.js ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var baseFlatten = __webpack_require__(/*! ./_baseFlatten */ "./node_modules/lodash/_baseFlatten.js"),
+    baseOrderBy = __webpack_require__(/*! ./_baseOrderBy */ "./node_modules/lodash/_baseOrderBy.js"),
+    baseRest = __webpack_require__(/*! ./_baseRest */ "./node_modules/lodash/_baseRest.js"),
+    isIterateeCall = __webpack_require__(/*! ./_isIterateeCall */ "./node_modules/lodash/_isIterateeCall.js");
+
+/**
+ * Creates an array of elements, sorted in ascending order by the results of
+ * running each element in a collection thru each iteratee. This method
+ * performs a stable sort, that is, it preserves the original sort order of
+ * equal elements. The iteratees are invoked with one argument: (value).
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Collection
+ * @param {Array|Object} collection The collection to iterate over.
+ * @param {...(Function|Function[])} [iteratees=[_.identity]]
+ *  The iteratees to sort by.
+ * @returns {Array} Returns the new sorted array.
+ * @example
+ *
+ * var users = [
+ *   { 'user': 'fred',   'age': 48 },
+ *   { 'user': 'barney', 'age': 36 },
+ *   { 'user': 'fred',   'age': 40 },
+ *   { 'user': 'barney', 'age': 34 }
+ * ];
+ *
+ * _.sortBy(users, [function(o) { return o.user; }]);
+ * // => objects for [['barney', 36], ['barney', 34], ['fred', 48], ['fred', 40]]
+ *
+ * _.sortBy(users, ['user', 'age']);
+ * // => objects for [['barney', 34], ['barney', 36], ['fred', 40], ['fred', 48]]
+ */
+var sortBy = baseRest(function(collection, iteratees) {
+  if (collection == null) {
+    return [];
+  }
+  var length = iteratees.length;
+  if (length > 1 && isIterateeCall(collection, iteratees[0], iteratees[1])) {
+    iteratees = [];
+  } else if (length > 2 && isIterateeCall(iteratees[0], iteratees[1], iteratees[2])) {
+    iteratees = [iteratees[0]];
+  }
+  return baseOrderBy(collection, baseFlatten(iteratees, 1), []);
+});
+
+module.exports = sortBy;
+
+
+/***/ }),
+
 /***/ "./node_modules/lodash/sortedIndex.js":
 /*!********************************************!*\
   !*** ./node_modules/lodash/sortedIndex.js ***!
@@ -70022,106 +70259,6 @@ function stubFalse() {
 }
 
 module.exports = stubFalse;
-
-
-/***/ }),
-
-/***/ "./node_modules/lodash/toFinite.js":
-/*!*****************************************!*\
-  !*** ./node_modules/lodash/toFinite.js ***!
-  \*****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-var toNumber = __webpack_require__(/*! ./toNumber */ "./node_modules/lodash/toNumber.js");
-
-/** Used as references for various `Number` constants. */
-var INFINITY = 1 / 0,
-    MAX_INTEGER = 1.7976931348623157e+308;
-
-/**
- * Converts `value` to a finite number.
- *
- * @static
- * @memberOf _
- * @since 4.12.0
- * @category Lang
- * @param {*} value The value to convert.
- * @returns {number} Returns the converted number.
- * @example
- *
- * _.toFinite(3.2);
- * // => 3.2
- *
- * _.toFinite(Number.MIN_VALUE);
- * // => 5e-324
- *
- * _.toFinite(Infinity);
- * // => 1.7976931348623157e+308
- *
- * _.toFinite('3.2');
- * // => 3.2
- */
-function toFinite(value) {
-  if (!value) {
-    return value === 0 ? value : 0;
-  }
-  value = toNumber(value);
-  if (value === INFINITY || value === -INFINITY) {
-    var sign = (value < 0 ? -1 : 1);
-    return sign * MAX_INTEGER;
-  }
-  return value === value ? value : 0;
-}
-
-module.exports = toFinite;
-
-
-/***/ }),
-
-/***/ "./node_modules/lodash/toInteger.js":
-/*!******************************************!*\
-  !*** ./node_modules/lodash/toInteger.js ***!
-  \******************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-var toFinite = __webpack_require__(/*! ./toFinite */ "./node_modules/lodash/toFinite.js");
-
-/**
- * Converts `value` to an integer.
- *
- * **Note:** This method is loosely based on
- * [`ToInteger`](http://www.ecma-international.org/ecma-262/7.0/#sec-tointeger).
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @category Lang
- * @param {*} value The value to convert.
- * @returns {number} Returns the converted integer.
- * @example
- *
- * _.toInteger(3.2);
- * // => 3
- *
- * _.toInteger(Number.MIN_VALUE);
- * // => 0
- *
- * _.toInteger(Infinity);
- * // => 1.7976931348623157e+308
- *
- * _.toInteger('3.2');
- * // => 3
- */
-function toInteger(value) {
-  var result = toFinite(value),
-      remainder = result % 1;
-
-  return result === result ? (remainder ? result - remainder : result) : 0;
-}
-
-module.exports = toInteger;
 
 
 /***/ }),
@@ -71033,7 +71170,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
       updateGraph.searchRegexReset();
-      updateGraph.filterDatas([target.data()]);
+      updateGraph.searchStringWithData(target.data()); // updateGraph.filterDatas([target.data()]);
     };
   };
 
@@ -71105,10 +71242,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   var pulseScale = 1 + 1 / 16;
   var selectedScale = 2;
   var edgePixelWidth = 4;
+  var maxTextWidth = "10000px";
   var graphStyles = {
     node: {
       default: {
-        label: "data(cytoLabel)",
+        label: "data(cytoLabel_)",
         color: _colors.default.nodes.label_text_color,
         "text-opacity": _colors.default.nodes.label_text_opacity,
         "text-valign": "bottom",
@@ -71120,7 +71258,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         "border-width": 1,
         "background-color": _colors.default.nodes.ready,
         "text-wrap": "ellipsis",
-        "text-max-width": "400px",
+        "text-max-width": "350px",
         "text-background-color": _colors.default.nodes.label_background_color,
         "text-background-opacity": _colors.default.nodes.label_background_opacity,
         "font-family": '"Fira Mono", monospace' // "font-family": "monospace",
@@ -71152,7 +71290,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         shape: "polygon",
         "shape-polygon-points": nodeShapes.end.shape,
         width: nodeShapes.end.width,
-        height: nodeShapes.end.height
+        height: nodeShapes.end.height,
+        "text-max-width": maxTextWidth
       },
       endBig: {
         "border-width": 2,
@@ -71264,7 +71403,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     },
     selected: {
       node: {
-        "border-width": 4
+        "border-width": 4,
+        // if you hover / selected, show all the label
+        "text-max-width": maxTextWidth
       },
       edge: {
         width: edgePixelWidth * 2
@@ -71295,7 +71436,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     hidden: {
       node: {
         // visibility: "hidden",
-        opacity: 0.5,
+        "background-color": "white",
+        "background-opacity": 1,
+        "border-opacity": 0.5,
+        "text-opacity": 0.5,
         label: "data(label)" // do not display a value and only the raw label
 
       },
@@ -71404,15 +71548,19 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     name: "dagre",
     rankDir: "LR",
     // 'TB' for top to bottom flow, 'LR' for left to right,
-    rankSep: 150,
+    rankSep: 400,
     // the separation between node columns
     nodeSep: 10,
-    // the separation within a node column
+    // vertical separation of nodes
     edgeSep: 50,
     // the separation between adjacent edges in the same rank
     ranker: "longest-path",
     // Type of algorithm to assign a rank to each node in the input graph. Possible values: "network-simplex", "tight-tree" or "longest-path"
-    nodeDimensionsIncludeLabels: true,
+    padding: 30,
+    // fit padding
+    spacingFactor: 1,
+    // Applies a multiplicative factor (>0) to expand or compress the overall area that the nodes take up
+    nodeDimensionsIncludeLabels: false,
     // whether labels should be included in determining the space used by a node
     animate: true,
     // whether to transition the node positions
@@ -71474,15 +71622,22 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   /*#__PURE__*/
   function () {
     function ActiveStateStatus() {
+      var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
       _classCallCheck(this, ActiveStateStatus);
 
       _defineProperty(this, "state", void 0);
 
       _defineProperty(this, "activeStep", void 0);
 
-      this.state = stateOff; // "on", "finished", "off"
+      if (data instanceof ActiveStateStatus) {
+        this.state = data.state;
+        this.activeStep = data.activeStep;
+      } else {
+        this.state = stateOff; // "on", "finished", "off"
 
-      this.activeStep = -1;
+        this.activeStep = -1;
+      }
     }
 
     _createClass(ActiveStateStatus, [{
@@ -71566,18 +71721,21 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ./HoverStatus */ "./srcjs/graph/HoverStatus.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! lodash/isNil */ "./node_modules/lodash/isNil.js"), __webpack_require__(/*! ./HoverStatus */ "./srcjs/graph/HoverStatus.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
-})(this, function (_exports, _HoverStatus) {
+})(this, function (_exports, _isNil2, _HoverStatus) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
     value: true
   });
   _exports.ghostKey = _exports.edgeKey = _exports.Edge = void 0;
+  _isNil2 = _interopRequireDefault(_isNil2);
+
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
   function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -71630,12 +71788,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       this.reactId = data.reactId;
       this.depOnReactId = data.depOnReactId;
       this.ctxId = data.ctxId;
-      this.session = data.session || "Global";
+      this.session = (0, _isNil2.default)(data.session) ? "Global" : data.session;
       this.time = data.time;
-      this.status = "normal";
-      this.isGhost = false;
-      this.hoverStatus = data.hoverStatus || new _HoverStatus.HoverStatus();
-      this.isDisplayed = data.isDisplayed || true;
+      this.status = (0, _isNil2.default)(data.status) ? "normal" : data.status;
+      this.isGhost = (0, _isNil2.default)(data.isGhost) ? false : data.isGhost;
+      this.hoverStatus = new _HoverStatus.HoverStatus(data.hoverStatus);
+      this.isDisplayed = (0, _isNil2.default)(data.isDisplayed) ? true : data.isDisplayed;
     }
 
     _createClass(Edge, [{
@@ -71730,18 +71888,21 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ./HoverStatus */ "./srcjs/graph/HoverStatus.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! lodash/isNil */ "./node_modules/lodash/isNil.js"), __webpack_require__(/*! ./HoverStatus */ "./srcjs/graph/HoverStatus.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
-})(this, function (_exports, _HoverStatus) {
+})(this, function (_exports, _isNil2, _HoverStatus) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
     value: true
   });
   _exports.GhostEdge = void 0;
+  _isNil2 = _interopRequireDefault(_isNil2);
+
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
   function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -71776,11 +71937,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       if (typeof data.time === "undefined") throw "data.time not provided to new GhostEdge()";
       this.reactId = data.reactId;
       this.depOnReactId = data.depOnReactId;
-      this.session = data.session || "Global";
+      this.session = (0, _isNil2.default)(data.session) ? "Global" : data.session;
       this.time = data.time;
-      this.isGhost = true;
-      this.hoverStatus = data.hoverStatus || new _HoverStatus.HoverStatus();
-      this.isDisplayed = data.isDisplayed || true;
+      this.isGhost = (0, _isNil2.default)(data.isGhost) ? true : data.isGhost;
+      this.hoverStatus = new _HoverStatus.HoverStatus(data.hoverStatus);
+      this.isDisplayed = (0, _isNil2.default)(data.isDisplayed) ? true : data.isDisplayed;
     }
 
     _createClass(GhostEdge, [{
@@ -71864,20 +72025,22 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! lodash/some */ "./node_modules/lodash/some.js"), __webpack_require__(/*! lodash/filter */ "./node_modules/lodash/filter.js"), __webpack_require__(/*! lodash/union */ "./node_modules/lodash/union.js"), __webpack_require__(/*! lodash/last */ "./node_modules/lodash/last.js"), __webpack_require__(/*! cytoscape */ "./node_modules/cytoscape/dist/cytoscape.cjs.js"), __webpack_require__(/*! ../utils/MapHelper */ "./srcjs/utils/MapHelper.js"), __webpack_require__(/*! ../log/logStates */ "./srcjs/log/logStates.js"), __webpack_require__(/*! ./Node */ "./srcjs/graph/Node.js"), __webpack_require__(/*! ./Edge */ "./srcjs/graph/Edge.js"), __webpack_require__(/*! ./GhostEdge */ "./srcjs/graph/GhostEdge.js"), __webpack_require__(/*! ./HoverStatus */ "./srcjs/graph/HoverStatus.js"), __webpack_require__(/*! ./StatusArr */ "./srcjs/graph/StatusArr.js"), __webpack_require__(/*! ../utils/ArrayHelper */ "./srcjs/utils/ArrayHelper.js"), __webpack_require__(/*! ../utils/console */ "./srcjs/utils/console.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! lodash/clone */ "./node_modules/lodash/clone.js"), __webpack_require__(/*! lodash/some */ "./node_modules/lodash/some.js"), __webpack_require__(/*! lodash/filter */ "./node_modules/lodash/filter.js"), __webpack_require__(/*! lodash/isNil */ "./node_modules/lodash/isNil.js"), __webpack_require__(/*! lodash/union */ "./node_modules/lodash/union.js"), __webpack_require__(/*! lodash/last */ "./node_modules/lodash/last.js"), __webpack_require__(/*! cytoscape */ "./node_modules/cytoscape/dist/cytoscape.cjs.js"), __webpack_require__(/*! ../utils/MapHelper */ "./srcjs/utils/MapHelper.js"), __webpack_require__(/*! ../log/logStates */ "./srcjs/log/logStates.js"), __webpack_require__(/*! ./Node */ "./srcjs/graph/Node.js"), __webpack_require__(/*! ./Edge */ "./srcjs/graph/Edge.js"), __webpack_require__(/*! ./GhostEdge */ "./srcjs/graph/GhostEdge.js"), __webpack_require__(/*! ./HoverStatus */ "./srcjs/graph/HoverStatus.js"), __webpack_require__(/*! ./StatusArr */ "./srcjs/graph/StatusArr.js"), __webpack_require__(/*! ../utils/ArrayHelper */ "./srcjs/utils/ArrayHelper.js"), __webpack_require__(/*! ../utils/console */ "./srcjs/utils/console.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
-})(this, function (_exports, _some2, _filter2, _union2, _last2, _cytoscape, _MapHelper, _logStates, _Node, _Edge, _GhostEdge, _HoverStatus, _StatusArr, _ArrayHelper, _console) {
+})(this, function (_exports, _clone2, _some2, _filter2, _isNil2, _union2, _last2, _cytoscape, _MapHelper, _logStates, _Node, _Edge, _GhostEdge, _HoverStatus, _StatusArr, _ArrayHelper, _console) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
     value: true
   });
   _exports.Graph = void 0;
+  _clone2 = _interopRequireDefault(_clone2);
   _some2 = _interopRequireDefault(_some2);
   _filter2 = _interopRequireDefault(_filter2);
+  _isNil2 = _interopRequireDefault(_isNil2);
   _union2 = _interopRequireDefault(_union2);
   _last2 = _interopRequireDefault(_last2);
   _cytoscape = _interopRequireDefault(_cytoscape);
@@ -71898,7 +72061,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   var Graph =
   /*#__PURE__*/
   function () {
-    function Graph(log) {
+    function Graph(data) {
+      var _this = this;
+
       _classCallCheck(this, Graph);
 
       _defineProperty(this, "log", void 0);
@@ -71913,15 +72078,35 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
       _defineProperty(this, "activeInvalidateEnter", void 0);
 
-      this.log = log;
+      this.log = data instanceof Graph ? data.log : data;
       this.nodes = new Map();
       this.edges = new Map();
       this.edgesUnique = new Map();
       this.activeNodeEnter = [];
       this.activeInvalidateEnter = [];
+
+      if (data instanceof Graph) {
+        var priorGraph = data;
+        priorGraph.nodes.forEach(function (node, key) {
+          return _this.nodes.set(key, new _Node.Node(node));
+        });
+        priorGraph.edges.forEach(function (edge, key) {
+          return _this.edges.set(key, new _Edge.Edge(edge));
+        });
+        priorGraph.edgesUnique.forEach(function (edge, key) {
+          return _this.edgesUnique.set(key, new _GhostEdge.GhostEdge(edge));
+        });
+        this.activeNodeEnter = (0, _clone2.default)(priorGraph.activeNodeEnter);
+        this.activeInvalidateEnter = (0, _clone2.default)(priorGraph.activeInvalidateEnter);
+      }
     }
 
     _createClass(Graph, [{
+      key: "hasNodeReactId",
+      value: function hasNodeReactId(reactId) {
+        return this.nodes.has(reactId);
+      }
+    }, {
       key: "hasSomeData",
       value: function hasSomeData(data) {
         if (data instanceof _Node.Node) {
@@ -72035,7 +72220,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         } else {
           var reactId;
           reactId = this.reactIdFromData(data, true);
-          if (!reactId) return [];
+          if ((0, _isNil2.default)(reactId)) return [];
           return (0, _filter2.default)((0, _MapHelper.mapValues)(this.edgesUnique), function (edge) {
             // if the target is the reactId
             return edge.reactId === reactId;
@@ -72057,7 +72242,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           return [data.depOnReactId];
         } else {
           var reactId = this.reactIdFromData(data, false);
-          if (!reactId) return [];
+          if ((0, _isNil2.default)(reactId)) return [];
           return (0, _filter2.default)((0, _MapHelper.mapValues)(this.edgesUnique), function (edge) {
             // if the source is the reactId
             return edge.depOnReactId === reactId;
@@ -72070,11 +72255,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     }, {
       key: "ancestorNodeIds",
       value: function ancestorNodeIds(data) {
-        var _this = this;
+        var _this2 = this;
 
         var reactId = this.reactIdFromData(data, true);
 
-        if (!reactId) {
+        if ((0, _isNil2.default)(reactId)) {
           return [];
         } else {
           var _ret = function () {
@@ -72086,7 +72271,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
               reactId = reactIdArr.pop();
 
               if (!seenMap.has(reactId)) {
-                _this.parentNodeIds(reactId).forEach(function (parentReactId) {
+                _this2.parentNodeIds(reactId).forEach(function (parentReactId) {
                   if (parentReactId) {
                     reactIdArr.push(parentReactId);
                   }
@@ -72109,7 +72294,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       key: "decendentNodeIds",
       value: function decendentNodeIds(data) {
         var reactId = this.reactIdFromData(data, false);
-        if (!reactId) return [];
+        if ((0, _isNil2.default)(reactId)) return [];
         var originalReactId = reactId;
         var seenMap = new Set();
         var reactIdArr = [reactId];
@@ -72135,12 +72320,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
         if (isEdgeLike(data)) {
           reactId = this.reactIdFromData(data, true);
-          if (reactId) ret.push(reactId);
+          if (!(0, _isNil2.default)(reactId)) ret.push(reactId);
           reactId = this.reactIdFromData(data, false);
-          if (reactId) ret.push(reactId);
+          if (!(0, _isNil2.default)(reactId)) ret.push(reactId);
         } else {
           reactId = this.reactIdFromData(data);
-          if (reactId) ret.push(reactId);
+          if (!(0, _isNil2.default)(reactId)) ret.push(reactId);
         }
 
         return (0, _union2.default)(ret, this.ancestorNodeIds(data), this.decendentNodeIds(data));
@@ -72207,25 +72392,25 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     }, {
       key: "filterGraphOnNodeIds",
       value: function filterGraphOnNodeIds(nodeIds) {
-        var _this2 = this;
+        var _this3 = this;
 
         var nodeSet = new Set(nodeIds); // prune nodes
 
         this.nodes.forEach(function (node, key) {
           if (!nodeSet.has(node.reactId)) {
-            _this2.nodes.delete(key);
+            _this3.nodes.delete(key);
           }
         }); // prune edges
 
         this.edges.forEach(function (edge, key) {
           if (!(nodeSet.has(edge.reactId) && nodeSet.has(edge.depOnReactId))) {
-            _this2.edges.delete(key);
+            _this3.edges.delete(key);
           }
         }); // prune unique edges
 
         this.edgesUnique.forEach(function (edge, key) {
           if (!(nodeSet.has(edge.reactId) && nodeSet.has(edge.depOnReactId))) {
-            _this2.edgesUnique.delete(key);
+            _this3.edgesUnique.delete(key);
           }
         });
         return this;
@@ -72233,12 +72418,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     }, {
       key: "addEntry",
       value: function addEntry(data) {
-        if (data.reactId) {
+        if (!(0, _isNil2.default)(data.reactId)) {
           if (data.reactId === "rNoCtx") {
             return;
           }
         }
 
+        data = data;
         var node, lastNodeId, edge;
 
         switch (data.action) {
@@ -72440,7 +72626,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 if (expectedAction) {
                   var _logEntry4 = data;
                   (0, _StatusArr.expectPrevStatus)(_logEntry4, prevData, expectedAction);
-                  node.statusRemove();
+                  node.statusRemove(_logEntry4);
                 }
               }
 
@@ -72570,12 +72756,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! lodash/sortedIndex */ "./node_modules/lodash/sortedIndex.js"), __webpack_require__(/*! lodash/sortedIndexOf */ "./node_modules/lodash/sortedIndexOf.js"), __webpack_require__(/*! lodash/isNil */ "./node_modules/lodash/isNil.js"), __webpack_require__(/*! lodash/union */ "./node_modules/lodash/union.js"), __webpack_require__(/*! lodash/indexOf */ "./node_modules/lodash/indexOf.js"), __webpack_require__(/*! lodash/some */ "./node_modules/lodash/some.js"), __webpack_require__(/*! lodash/filter */ "./node_modules/lodash/filter.js"), __webpack_require__(/*! lodash/assign */ "./node_modules/lodash/assign.js"), __webpack_require__(/*! ../utils/console */ "./srcjs/utils/console.js"), __webpack_require__(/*! ../utils/MapHelper */ "./srcjs/utils/MapHelper.js"), __webpack_require__(/*! ../log/logStates */ "./srcjs/log/logStates.js"), __webpack_require__(/*! ./Graph */ "./srcjs/graph/Graph.js"), __webpack_require__(/*! ../cyto/layoutOptions */ "./srcjs/cyto/layoutOptions.js"), __webpack_require__(/*! ./Node */ "./srcjs/graph/Node.js"), __webpack_require__(/*! ./Edge */ "./srcjs/graph/Edge.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js"), __webpack_require__(/*! lodash/assign */ "./node_modules/lodash/assign.js"), __webpack_require__(/*! lodash/clone */ "./node_modules/lodash/clone.js"), __webpack_require__(/*! lodash/filter */ "./node_modules/lodash/filter.js"), __webpack_require__(/*! lodash/some */ "./node_modules/lodash/some.js"), __webpack_require__(/*! lodash/sortBy */ "./node_modules/lodash/sortBy.js"), __webpack_require__(/*! lodash/sortedIndex */ "./node_modules/lodash/sortedIndex.js"), __webpack_require__(/*! lodash/sortedIndexOf */ "./node_modules/lodash/sortedIndexOf.js"), __webpack_require__(/*! lodash/union */ "./node_modules/lodash/union.js"), __webpack_require__(/*! ../utils/console */ "./srcjs/utils/console.js"), __webpack_require__(/*! ../utils/MapHelper */ "./srcjs/utils/MapHelper.js"), __webpack_require__(/*! ../log/logStates */ "./srcjs/log/logStates.js"), __webpack_require__(/*! ./Graph */ "./srcjs/graph/Graph.js"), __webpack_require__(/*! ../cyto/layoutOptions */ "./srcjs/cyto/layoutOptions.js"), __webpack_require__(/*! ./Node */ "./srcjs/graph/Node.js"), __webpack_require__(/*! ./Edge */ "./srcjs/graph/Edge.js"), __webpack_require__(/*! ./GhostEdge */ "./srcjs/graph/GhostEdge.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
-})(this, function (_exports, _sortedIndex2, _sortedIndexOf2, _isNil2, _union2, _indexOf2, _some2, _filter2, _assign2, _console, _MapHelper, _logStates, _Graph, _layoutOptions, _Node, _Edge) {
+})(this, function (_exports, _jquery, _assign2, _clone2, _filter2, _some2, _sortBy2, _sortedIndex2, _sortedIndexOf2, _union2, _console, _MapHelper, _logStates, _Graph, _layoutOptions, _Node, _Edge, _GhostEdge) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
@@ -72583,14 +72769,15 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   });
   _exports.hasLength = hasLength;
   _exports.GraphAtStep = void 0;
+  _jquery = _interopRequireDefault(_jquery);
+  _assign2 = _interopRequireDefault(_assign2);
+  _clone2 = _interopRequireDefault(_clone2);
+  _filter2 = _interopRequireDefault(_filter2);
+  _some2 = _interopRequireDefault(_some2);
+  _sortBy2 = _interopRequireDefault(_sortBy2);
   _sortedIndex2 = _interopRequireDefault(_sortedIndex2);
   _sortedIndexOf2 = _interopRequireDefault(_sortedIndexOf2);
-  _isNil2 = _interopRequireDefault(_isNil2);
   _union2 = _interopRequireDefault(_union2);
-  _indexOf2 = _interopRequireDefault(_indexOf2);
-  _some2 = _interopRequireDefault(_some2);
-  _filter2 = _interopRequireDefault(_filter2);
-  _assign2 = _interopRequireDefault(_assign2);
   _console = _interopRequireDefault(_console);
   _layoutOptions = _interopRequireDefault(_layoutOptions);
 
@@ -72615,15 +72802,15 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
       _defineProperty(this, "originalLog", void 0);
 
-      _defineProperty(this, "searchRegex", void 0);
-
       _defineProperty(this, "filterDatas", void 0);
 
       _defineProperty(this, "hoverData", void 0);
 
       _defineProperty(this, "stickyDatas", void 0);
 
-      _defineProperty(this, "finalGraph", void 0);
+      _defineProperty(this, "finalFilteredGraph", void 0);
+
+      _defineProperty(this, "finalCompleteGraph", void 0);
 
       _defineProperty(this, "finalCyto", void 0);
 
@@ -72632,6 +72819,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       _defineProperty(this, "steps", void 0);
 
       _defineProperty(this, "stepsVisible", void 0);
+
+      _defineProperty(this, "filteredStepsVisible", void 0);
 
       _defineProperty(this, "stepsAsyncStart", void 0);
 
@@ -72649,7 +72838,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
       this.originalLog = log; // hoverInfo[key] = `HoverStatus`
 
-      this.searchRegex = null;
       this.filterDatas = [];
       this.hoverData = null;
       this.stickyDatas = []; // this.hoverDefault = "focused"
@@ -72657,13 +72845,19 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       // this.filterMap = {};
 
       this.log = log;
-      this.updateSteps(log);
-      this.updateFinalGraph();
+      this.initStepInfo(log); // make a graph with no filtering that is completly made
+
+      this.finalCompleteGraph = this.rawGraphAtStep(log.length);
+      this.updateFinalFilteredGraphAndStepsVisible();
     }
 
     _createClass(GraphAtStep, [{
-      key: "updateFinalGraph",
-      // function hasFilterDatas(): boolean %checks {
+      key: "updateFinalFilteredGraphAndStepsVisible",
+      value: function updateFinalFilteredGraphAndStepsVisible() {
+        this.updateFinalFilteredGraph();
+        this.updateFilteredStepsVisible();
+        return;
+      } // function hasFilterDatas(): boolean %checks {
       //   return this.filterDatas ? this.filterDatas.length > 0 : false;
       // }
       // get hasStickyDatas() {
@@ -72672,12 +72866,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       // get hasHoverData() {
       //   return this.hoverData ? true : false;
       // }
-      value: function updateFinalGraph() {
-        this.finalGraph = this.atStep(this.log.length, false); // this.finalCyto = this.finalGraph.cytoGraph;
-      }
+
     }, {
-      key: "updateSteps",
-      value: function updateSteps(log) {
+      key: "initStepInfo",
+      value: function initStepInfo(log) {
         this.steps = [];
         this.stepsAsyncStart = [];
         this.stepsAsyncStop = [];
@@ -72782,9 +72974,137 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           }
         }
 
-        this.stepsVisible = [].concat(this.steps).concat(this.stepsUserMark).concat(this.stepsIdle).sort(function (a, b) {
-          return a - b;
-        }); // this.graphCache = {};
+        this.stepsVisible = // sort integer list
+        (0, _sortBy2.default)( // get union (unique values) of all visible locations
+        (0, _union2.default)(this.steps, this.stepsUserMark, this.stepsIdle));
+      }
+    }, {
+      key: "updateFilteredStepsVisible",
+      value: function updateFilteredStepsVisible() {
+        if (!hasLength(this.filterDatas)) {
+          // no filtered data, so set to all visible steps
+          this.filteredStepsVisible = (0, _clone2.default)(this.stepsVisible);
+          return;
+        } // must have filtered data
+
+
+        var filteredStepsVisible = [];
+        var finalFilteredGraph = this.finalFilteredGraph;
+        var visibleStep, logEntry, i; // todo must be actual log. not visible steps
+
+        for (i = 0; i < this.stepsVisible.length; i++) {
+          visibleStep = this.stepsVisible[i];
+          logEntry = this.log[visibleStep];
+
+          switch (logEntry.action) {
+            case _logStates.LogStates.dependsOn:
+            case _logStates.LogStates.dependsOnRemove:
+              // check for both to and from (since it must exist beforehand)
+              if (finalFilteredGraph.hasNodeReactId(logEntry.reactId) && finalFilteredGraph.hasNodeReactId(logEntry.depOnReactId)) {
+                filteredStepsVisible.push(visibleStep);
+                break;
+              } // not found
+
+
+              break;
+
+            case _logStates.LogStates.define:
+            case _logStates.LogStates.updateNodeLabel:
+            case _logStates.LogStates.freeze:
+            case _logStates.LogStates.thaw:
+            case _logStates.LogStates.valueChange:
+            case _logStates.LogStates.enter:
+            case _logStates.LogStates.exit:
+            case _logStates.LogStates.invalidateLater:
+            case _logStates.LogStates.invalidateStart:
+            case _logStates.LogStates.invalidateEnd:
+            case _logStates.LogStates.isolateEnter:
+            case _logStates.LogStates.isolateExit:
+            case _logStates.LogStates.isolateInvalidateStart:
+            case _logStates.LogStates.isolateInvalidateEnd:
+              if (!finalFilteredGraph.hasNodeReactId(logEntry.reactId)) {
+                // no node found in filtered graph
+                break;
+              }
+
+              filteredStepsVisible.push(visibleStep);
+              break;
+
+            case _logStates.LogStates.idle:
+              if (filteredStepsVisible.length > 0) {
+                var priorFilteredStepVisible = filteredStepsVisible[filteredStepsVisible.length - 1];
+
+                if (this.log[priorFilteredStepVisible].action !== _logStates.LogStates.idle) {
+                  // if the visible state is not an idle state, add it
+                  filteredStepsVisible.push(visibleStep);
+                }
+              }
+
+              break;
+
+            case _logStates.LogStates.userMark:
+              // always include (for now, multiple idle steps are removed later)
+              filteredStepsVisible.push(visibleStep);
+              break;
+
+            case _logStates.LogStates.createContext:
+            case _logStates.LogStates.asyncStart:
+            case _logStates.LogStates.asyncStop:
+              // do not include
+              break;
+
+            default:
+              _console.default.error(logEntry);
+
+              throw "unknown logEntry action in 'next'";
+          }
+        }
+
+        this.filteredStepsVisible = filteredStepsVisible;
+        return;
+      }
+    }, {
+      key: "nextStep",
+      value: function nextStep(k) {
+        var idx = (0, _sortedIndexOf2.default)(this.filteredStepsVisible, k);
+
+        if (idx >= 0) {
+          // go to the next step location
+          idx += 1;
+        } else {
+          // doesn't exist... so go to next closes step
+          idx = (0, _sortedIndex2.default)(this.filteredStepsVisible, k);
+        } // else, does not exist, so it is directly there
+
+
+        if (idx >= this.filteredStepsVisible.length || idx < 0) return -1;
+        return this.filteredStepsVisible[idx];
+      }
+    }, {
+      key: "prevStep",
+      value: function prevStep(k) {
+        var idx = (0, _sortedIndex2.default)(this.filteredStepsVisible, k) - 1;
+        if (idx < 0 || idx >= this.filteredStepsVisible.length) return -1;
+        return this.filteredStepsVisible[idx];
+      } // full graph at step without filtering
+      //  no cometic changes
+
+    }, {
+      key: "rawGraphAtStep",
+      value: function rawGraphAtStep(k) {
+        var kVal = Math.max(0, Math.min(k, this.log.length)); // if (kVal >= this.cacheStep) {
+        //   iStart = Math.floor((kVal - 1) / this.cacheStep) * this.cacheStep;
+        //   graph = _cloneDeep(this.graphCache[iStart])
+        // }
+
+        var i,
+            graph = new _Graph.Graph(this.log);
+
+        for (i = 0; i < this.log.length && this.log[i].step <= kVal; i++) {
+          graph.addEntry(this.log[i]);
+        }
+
+        return graph; // this.graphCache = {};
         // this.cacheStep = 250;
         // var tmpGraph = new Graph(log);
         // for (i = 0; i < log.length; i++) {
@@ -72793,221 +73113,32 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         //     this.graphCache[i] = _cloneDeep(tmpGraph)
         //   }
         // }
-      }
+      } // update the filtering for the final graph. No cosmetics
+
     }, {
-      key: "nextStep",
-      value: function nextStep(k) {
-        // if no filtering... get next step from step array
-        if (!hasLength(this.filterDatas)) {
-          var nextStepPos = (0, _sortedIndex2.default)(this.stepsVisible, k);
+      key: "updateFinalFilteredGraph",
+      value: function updateFinalFilteredGraph() {
+        // copy final graph
+        var finalGraph = new _Graph.Graph(this.finalCompleteGraph); // if any filtering...
 
-          if ((0, _sortedIndexOf2.default)(this.stepsVisible, k) >= 0) {
-            // go to the next step location
-            nextStepPos += 1;
-          } // else, does not exist, so it is directly there
-
-
-          nextStepPos = Math.min(this.stepsVisible.length - 1, nextStepPos);
-          return this.stepsVisible[nextStepPos];
+        if (hasLength(this.filterDatas)) {
+          finalGraph.filterGraphOnNodeIds( // graph.familyTreeNodeIdsForDatas(this.filterDatas)
+          this.finalCompleteGraph.familyTreeNodeIdsForDatas(this.filterDatas));
         }
 
-        var graph = this.atStep(k);
-        var decendents = undefined,
-            ancestors = undefined;
-        var logEntry, i, ret;
+        this.finalFilteredGraph = finalGraph;
+        return;
+      } // graph at step with filtering
+      // include all cosmetic information
 
-        for (i = k + 1; i < this.log.length - 1; i++) {
-          logEntry = this.log[i]; // skip if if it's not a valid step anyways...
-
-          if ((0, _sortedIndexOf2.default)(this.stepsVisible, logEntry.step) === -1) {
-            continue;
-          } // console.log(logEntry);
-
-
-          ret = logEntry.step;
-
-          switch (logEntry.action) {
-            case _logStates.LogStates.dependsOn:
-              // lazy eval decendents and ancestors
-              if ((0, _isNil2.default)(decendents) || (0, _isNil2.default)(ancestors)) {
-                if (hasLength(this.filterDatas)) {
-                  // if (this.filterDatas && this.filterDatas.length > 0) {
-                  var filterReactIds = this.filterDatas.map(function (node) {
-                    return node.reactId;
-                  });
-                  decendents = (0, _union2.default)(filterReactIds, graph.decendentNodeIdsForDatas(this.filterDatas));
-                  ancestors = (0, _union2.default)(filterReactIds, graph.ancestorNodeIdsForDatas(this.filterDatas));
-                }
-              } // reactId is target (ends at ancestors)
-
-
-              if ((0, _indexOf2.default)(ancestors, logEntry.reactId) !== -1) {
-                return ret;
-              } // depOnReactId is source (starts from children)
-
-
-              if ((0, _indexOf2.default)(decendents, logEntry.depOnReactId) !== -1) {
-                return ret;
-              }
-
-              break;
-
-            case _logStates.LogStates.dependsOnRemove:
-              // check for both to and from (since it must exist beforehand)
-              if (graph.nodes.has(logEntry.reactId) && graph.nodes.has(logEntry.depOnReactId)) {
-                return ret;
-              }
-
-              break;
-
-            case _logStates.LogStates.define:
-            case _logStates.LogStates.updateNodeLabel:
-              if (this.searchRegex) {
-                if (this.searchRegex.test(logEntry.label)) {
-                  // if there is a search regex and the value is defined
-                  return ret;
-                }
-              }
-
-              break;
-
-            case _logStates.LogStates.freeze:
-            case _logStates.LogStates.thaw:
-            case _logStates.LogStates.valueChange:
-            case _logStates.LogStates.enter:
-            case _logStates.LogStates.exit:
-            case _logStates.LogStates.invalidateLater:
-            case _logStates.LogStates.invalidateStart:
-            case _logStates.LogStates.invalidateEnd:
-            case _logStates.LogStates.isolateEnter:
-            case _logStates.LogStates.isolateExit:
-            case _logStates.LogStates.isolateInvalidateStart:
-            case _logStates.LogStates.isolateInvalidateEnd:
-              if (graph.nodes.has(logEntry.reactId)) {
-                return ret;
-              }
-
-              break;
-
-            case _logStates.LogStates.idle:
-            case _logStates.LogStates.userMark:
-              return ret;
-
-            case _logStates.LogStates.createContext:
-            case _logStates.LogStates.asyncStart:
-            case _logStates.LogStates.asyncStop:
-              break;
-
-            default:
-              _console.default.error(logEntry);
-
-              throw "unknown logEntry action in 'next'";
-          }
-        } // return the max step possible
-
-
-        return -1;
-      }
     }, {
-      key: "prevStep",
-      value: function prevStep(k) {
-        // if no filtering... get next step from step array
-        if (!hasLength(this.filterDatas)) {
-          var prevStepPos = Math.max((0, _sortedIndex2.default)(this.stepsVisible, k) - 1, 0);
-          return this.stepsVisible[prevStepPos];
-        }
-
-        var graph = this.atStep(k);
-        var logEntry, logItem, i, ret;
-
-        for (i = k - 1; i >= 0; i--) {
-          logItem = this.log[i]; // skip if if it's not a valid step anyways...
-
-          if ((0, _sortedIndexOf2.default)(this.stepsVisible, logItem.step) === -1) {
-            continue;
-          }
-
-          ret = logItem.step;
-
-          switch (logItem.action) {
-            case _logStates.LogStates.dependsOn:
-            case _logStates.LogStates.dependsOnRemove:
-              // check for both to and from (since it must exist beforehand)
-              if (graph.nodes.has(logItem.reactId) && graph.nodes.has(logItem.depOnReactId)) {
-                // TODO-barret with filtered data, the depOnReactId could be the bridge between existing graph and new subgraph.  This edge should not be included
-                return ret;
-              }
-
-              break;
-
-            case _logStates.LogStates.freeze:
-            case _logStates.LogStates.thaw:
-            case _logStates.LogStates.updateNodeLabel:
-            case _logStates.LogStates.valueChange:
-            case _logStates.LogStates.enter:
-            case _logStates.LogStates.exit:
-            case _logStates.LogStates.invalidateLater:
-            case _logStates.LogStates.invalidateStart:
-            case _logStates.LogStates.invalidateEnd:
-            case _logStates.LogStates.isolateEnter:
-            case _logStates.LogStates.isolateExit:
-            case _logStates.LogStates.isolateInvalidateStart:
-            case _logStates.LogStates.isolateInvalidateEnd:
-              if (graph.nodes.has(logItem.reactId)) {
-                return ret;
-              }
-
-              break;
-
-            case _logStates.LogStates.define:
-              logEntry = logItem;
-
-              if ((0, _some2.default)(this.filterDatas, function (filterData) {
-                return filterData.reactId === logEntry.reactId;
-              })) {
-                // some filterdata is defined... so it must be a next step
-                return ret;
-              }
-
-              break;
-
-            case _logStates.LogStates.idle:
-            case _logStates.LogStates.userMark:
-              return ret;
-
-            case _logStates.LogStates.createContext:
-            case _logStates.LogStates.asyncStart:
-            case _logStates.LogStates.asyncStop:
-              break;
-
-            default:
-              _console.default.error(logItem);
-
-              throw "unknown logItem action in 'prev'";
-          }
-        }
-
-        return -1;
-      }
-    }, {
-      key: "atStep",
-      value: function atStep(k) {
-        var updateFinal = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
-        var kVal = Math.max(1, Math.min(k, this.log.length));
-        var i, graph; // if (kVal >= this.cacheStep) {
-        //   iStart = Math.floor((kVal - 1) / this.cacheStep) * this.cacheStep;
-        //   graph = _cloneDeep(this.graphCache[iStart])
-        // }
-
-        graph = new _Graph.Graph(this.log);
-
-        for (i = 0; i < this.log.length && this.log[i].step <= kVal; i++) {
-          graph.addEntry(this.log[i]);
-        } // if any hover...
-
+      key: "filteredGraphAtStep",
+      value: function filteredGraphAtStep(k) {
+        // get unfiltered graph at step k
+        var graph = this.rawGraphAtStep(k); // if any hover...
 
         if (this.hoverData && graph.hasSomeData(this.hoverData)) {
-          graph.hoverStatusOnNodeIds(graph.familyTreeNodeIds(this.hoverData), "state");
+          graph.hoverStatusOnNodeIds(this.finalFilteredGraph.familyTreeNodeIds(this.hoverData), "state");
           graph.highlightSelected(this.hoverData, "selected");
         } // if any sticky...
 
@@ -73017,7 +73148,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             return graph.hasSomeData(data);
           }))) {
             // at least some sticky data is visible
-            var stickyTree = graph.familyTreeNodeIdsForDatas(this.stickyDatas);
+            var stickyTree = this.finalFilteredGraph.familyTreeNodeIdsForDatas(this.stickyDatas);
             graph.hoverStatusOnNodeIds(stickyTree, "sticky");
             this.stickyDatas.map(function (data) {
               graph.highlightSelected(data, "selected");
@@ -73028,39 +73159,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
               graph.hoverStatusOnNodeIds(stickyTree, "state");
             }
           }
-        } // if any searching
+        } // if any filtering...
 
 
-        if (this.searchRegex) {
-          var searchRegex = this.searchRegex;
-          var matchedNodes = (0, _filter2.default)( // (mapValues(graph.nodes): ArraySomeGraphData),
-          (0, _MapHelper.mapValues)(graph.nodes), function (node) {
-            return searchRegex.test(node.label);
+        if (hasLength(this.filterDatas)) {
+          graph.filterGraphOnNodeIds( // graph.familyTreeNodeIdsForDatas(this.filterDatas)
+          this.finalFilteredGraph.familyTreeNodeIdsForDatas(this.filterDatas)); // graph.hoverStatusOnNodeIds(this.filterDatas.map((x) => x.reactId), "filtered");
+
+          this.filterDatas.map(function (data) {
+            graph.highlightSelected(data, "filtered");
           });
-
-          if (matchedNodes.length === 0) {
-            // TODO-barret warn of no matches
-            // console.log("no matches!");
-            graph.hoverStatusOnNodeIds([], "filtered");
-            this.updateFilterDatasReset(updateFinal);
-          } else {
-            // for some reason, an array of node does not work with an array of (node, edge, or ghostedge)
-            this.updateFilterDatas(matchedNodes, updateFinal); // filter on regex
-
-            graph.filterGraphOnNodeIds(graph.familyTreeNodeIdsForDatas(this.filterDatas));
-            matchedNodes.map(function (data) {
-              graph.highlightSelected(data, "filtered");
-            }); // graph.hoverStatusOnNodeIds(matchedNodes.map((x) => x.reactId), "filtered");
-          }
-        } else {
-          // if any filtering...
-          if (hasLength(this.filterDatas)) {
-            graph.filterGraphOnNodeIds(graph.familyTreeNodeIdsForDatas(this.filterDatas)); // graph.hoverStatusOnNodeIds(this.filterDatas.map((x) => x.reactId), "filtered");
-
-            this.filterDatas.map(function (data) {
-              graph.highlightSelected(data, "filtered");
-            });
-          }
         }
 
         return graph;
@@ -73113,173 +73221,82 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     }, {
       key: "updateFilterDatas",
       value: function updateFilterDatas(dataArr) {
-        var updateFinal = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
         this.filterDatas = dataArr;
-        if (updateFinal) this.updateFinalGraph();
+        this.updateFinalFilteredGraphAndStepsVisible();
       }
     }, {
       key: "updateFilterDatasReset",
       value: function updateFilterDatasReset() {
-        var updateFinal = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
-        this.filterDatas = [];
-        if (updateFinal) this.updateFinalGraph();
+        this.updateFilterDatas([]);
       }
     }, {
       key: "updateSearchRegex",
       value: function updateSearchRegex(regex) {
-        var updateFinal = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
-        this.searchRegex = regex;
-        if (updateFinal) this.updateFinalGraph();
+        // update filterDatas below
+        var matchedElements = (0, _filter2.default)( // (mapValues(graph.nodes): ArraySomeGraphData),
+        (0, _MapHelper.mapValues)(this.finalCompleteGraph.nodes), function (node) {
+          return regex.test(node.label) || regex.test(node.key);
+        });
+
+        if (matchedElements.length === 0) {
+          matchedElements = (0, _filter2.default)((0, _MapHelper.mapValues)(this.finalCompleteGraph.edges), function (edge) {
+            return regex.test(edge.ghostKey);
+          });
+        }
+
+        if (matchedElements.length === 0) {
+          matchedElements = (0, _filter2.default)((0, _MapHelper.mapValues)(this.finalCompleteGraph.edgesUnique), function (edge) {
+            return regex.test(edge.key);
+          });
+        }
+
+        if (matchedElements.length === 0) {
+          // no matches found
+          this.updateStickyDatasReset();
+          this.updateFilterDatasReset();
+        } else {
+          this.updateStickyDatas(matchedElements);
+          this.updateFilterDatas( // for some reason, an array of node does not work with an array of (node, edge, or ghostedge)
+          matchedElements);
+        }
       }
     }, {
       key: "updateSearchRegexReset",
       value: function updateSearchRegexReset() {
-        var updateFinal = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
-        this.updateFilterDatasReset(false);
-        this.searchRegex = null;
-        if (updateFinal) this.updateFinalGraph();
-      } // // set the value outright
-      // updateHoverData(hoverData) {
-      //   this.hoverData = hoverData;
-      //   // var hoverInfo = this.hoverInfo;
-      //   // focusedDatas.map(function(data) {
-      //   //   hoverInfo[data.hoverKey].toFocused()
-      //   // })
-      //   // notFocusedDatas.map(function(data) {
-      //   //   hoverInfo[data.hoverKey].toNotFocused()
-      //   // })
-      // }
-      //
-      // resetStickyInfo() {
-      //   this.stickyData = null;
-      //   // var anySticky = _some(this.hoverInfo, ["sticky", true])
-      //   // if (anySticky) {
-      //   //   _mapValues(this.hoverInfo, function(hoverStatus, key) {
-      //   //     hoverStatus.toNotSticky()
-      //   //     hoverStatus.toFocused()
-      //   //   })
-      //   // }
-      //   // this.hoverDefault = "focused";
-      //   return true;
-      // }
-      // updateStickyInfo(stickyData) {
-      //   this.stickyData = stickyData;
-      //   // var hoverInfo = this.hoverInfo;
-      //   // stickyDatas.map(function(data) {
-      //   //   hoverInfo[data.hoverKey].toSticky()
-      //   // })
-      //   // notStickyDatas.map(function(data) {
-      //   //   hoverInfo[data.hoverKey].toNotSticky()
-      //   // })
-      // }
-      // filterLogOnDatas(datas: Array<SomeGraphData>) {
-      //   let nodeMap: Map<ReactIdType, Node> = new Map();
-      //   datas.map(function(data) {
-      //     if (data instanceof Node) {
-      //       nodeMap.set(data.reactId, data);
-      //     }
-      //   });
-      //   let newLog = _filter(this.originalLog, function(logItem) {
-      //     switch (logItem.action) {
-      //       case LogStates.dependsOn:
-      //       case LogStates.dependsOnRemove:
-      //         // check for both to and from
-      //         return (
-      //           nodeMap.has(logItem.reactId) && nodeMap.has(logItem.depOnReactId)
-      //         );
-      //       case LogStates.freeze:
-      //       case LogStates.thaw:
-      //       case LogStates.define:
-      //       case LogStates.updateNodeLabel:
-      //       case LogStates.valueChange:
-      //       case LogStates.invalidateStart:
-      //       case LogStates.enter:
-      //       case LogStates.isolateInvalidateStart:
-      //       case LogStates.isolateEnter:
-      //       case LogStates.invalidateEnd:
-      //       case LogStates.exit:
-      //       case LogStates.isolateExit:
-      //       case LogStates.isolateInvalidateEnd:
-      //         // check for reactId
-      //         return nodeMap.has(logItem.reactId);
-      //       case LogStates.idle:
-      //       case LogStates.asyncStart:
-      //       case LogStates.asyncStop:
-      //       case LogStates.userMark:
-      //         // always add
-      //         return true;
-      //       default:
-      //         console.error("logItem.action: ", logItem.action, logItem);
-      //         throw logItem;
-      //     }
-      //   });
-      //   console.log("new Log: ", newLog);
-      //   return newLog;
-      // }
-      // filterDatasLog() {
-      //   var nodeMap = {};
-      //   datas.map(function(data) {
-      //     if (data instanceof Node) {
-      //       nodeMap[data.reactId] = data;
-      //     }
-      //   });
-      //   var newLog = _filter(this.originalLog, function(logEntry) {
-      //     switch (logEntry.action) {
-      //       case "dependsOn":
-      //       case "dependsOnRemove":
-      //         // check for both to and from
-      //         return (
-      //           _has(nodeMap, logEntry.reactId) &&
-      //           _has(nodeMap, logEntry.depOnReactId)
-      //         );
-      //         break;
-      //       case "define":
-      //       case "updateNodeLabel":
-      //       case "valueChange":
-      //       case "invalidateStart":
-      //       case "enter":
-      //       case "isolateInvalidateStart":
-      //       case "isolateEnter":
-      //       case "invalidateEnd":
-      //       case "exit":
-      //       case "isolateExit":
-      //       case "isolateInvalidateEnd":
-      //         // check for reactId
-      //         return _has(nodeMap, logEntry.reactId);
-      //         break;
-      //       case "idle":
-      //       case "asyncStart":
-      //       case "asyncStop":
-      //         // always add
-      //         return _has(nodeMap, logEntry.reactId);
-      //       default:
-      //         console.error("logEntry.action: ", logEntry.action, data);
-      //         throw data;
-      //     }
-      //   });
-      //   console.log("new Log: ", newLog);
-      //   return newLog;
-      // }
-      // computes a graph containing all points and edges possible,
+        this.resetHoverStickyFilterSearch();
+      }
+    }, {
+      key: "resetHoverStickyFilterSearch",
+      value: function resetHoverStickyFilterSearch() {
+        this.hoverData = null;
+        this.stickyDatas = [];
+        this.filterDatas = [];
+        (0, _jquery.default)("#search").val("");
+        this.updateFinalFilteredGraphAndStepsVisible();
+      } // computes a graph containing all points and edges possible,
       //   extending the original graph at step k
 
     }, {
-      key: "completeGraphAtStep",
-      value: function completeGraphAtStep(k) {
-        var graph = this.atStep(k);
-        var finalGraph = this.finalGraph;
-        (0, _MapHelper.mapValues)(finalGraph.nodes).map(function (finalNode) {
-          if (!graph.nodes.has(finalNode.key)) {
+      key: "fullFilteredGraphAtStep",
+      value: function fullFilteredGraphAtStep(k) {
+        // get graph at step k and update the final graph obect
+        var graph = this.filteredGraphAtStep(k);
+        var finalGraph = this.finalFilteredGraph; // add any points and edges that have not be defined yet
+        // do not include regular edges, only unique edges
+        // append all missing nodes
+
+        (0, _MapHelper.mapValues)(finalGraph.nodes).map(function (fullNode) {
+          if (!graph.nodes.has(fullNode.key)) {
             // stomps finalGraph node value, but currently not a consequence to worry about
-            finalNode.isDisplayed = false;
-            graph.nodes.set(finalNode.key, finalNode);
+            fullNode.isDisplayed = false;
+            graph.nodes.set(fullNode.key, fullNode);
           }
         });
-        (0, _MapHelper.mapValues)(finalGraph.edgesUnique).map(function (finalEdge) {
-          if (!graph.edgesUnique.has(finalEdge.key)) {
+        (0, _MapHelper.mapValues)(finalGraph.edgesUnique).map(function (fullEdge) {
+          if (!graph.edgesUnique.has(fullEdge.key)) {
             // stomps finalGraph edge value, but currently not a consequence to worry about
-            finalEdge.isDisplayed = false;
-            graph.edgesUnique.set(finalEdge.key, finalEdge);
+            fullEdge.isDisplayed = false;
+            graph.edgesUnique.set(fullEdge.key, fullEdge);
           }
         });
         return graph;
@@ -73288,7 +73305,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       key: "displayAtStep",
       value: function displayAtStep(k, cy) {
         var cytoOptions = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-        var graph = this.completeGraphAtStep(k);
+        var graph = this.fullFilteredGraphAtStep(k);
         cy.startBatch(); // let cytoDur = 0;
 
         var cyNodes = cy.nodes();
@@ -73301,7 +73318,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
         nodesLRB.right.map(function (graphNode) {
           var graphNodeData = graphNode.data();
-          cy.add(graphNode).classes(graphNodeData.cytoClasses).style(graphNodeData.cytoStyle); // .animate({
+          cy.add(graphNode).data("cytoLabel_", graphNodeData.cytoLabel).classes(graphNodeData.cytoClasses).style(graphNodeData.cytoStyle); // .animate({
           //   // style: ,
           //   duration: cytoDur
           // });
@@ -73328,7 +73345,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
           cyNode // update to latest data
           .data(graphNodeData) // prolly due to how accessor methods are done, this data value must be placed manually
-          .data("value", graphNodeData.value).classes(graphClasses).removeStyle().style(graphNodeData.cytoStyle); // .animate({
+          .data("value", graphNodeData.value).data("cytoLabel_", graphNodeData.cytoLabel).classes(graphClasses).removeStyle().style(graphNodeData.cytoStyle); // .animate({
           //   // style: graphNodeData.cytoStyle,
           //   duration: cytoDur
           // });
@@ -73394,7 +73411,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         }); // if no new edges appeared or disappeared
         // or no nodes entered or exited
 
-        if (edgesLRB.right.length === edgesLRB.left.length && nodesLRB.right.length === 0 && nodesLRB.left.length === 0 && !someNodeHasNewLabel) {
+        if (edgesLRB.right.length === edgesLRB.left.length && nodesLRB.right.length === 0 && nodesLRB.left.length === 0 && !someNodeHasNewLabel && cytoOptions.forceRedraw !== true) {
           // do not re-render layout... just call onLayoutReady
           onLayoutReady.map(function (fn) {
             fn();
@@ -73429,11 +73446,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           });
           this.cytoLayout.run();
         }
-      }
-    }, {
-      key: "hasSearchRegex",
-      get: function get() {
-        return this.searchRegex ? true : false;
       }
     }]);
 
@@ -73483,7 +73495,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   /*#__PURE__*/
   function () {
     function HoverStatus() {
-      var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : HoverStatus.valFocused;
+      var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
 
       _classCallCheck(this, HoverStatus);
 
@@ -73495,12 +73507,19 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
       _defineProperty(this, "filtered", void 0);
 
-      this.sticky = HoverStatus.valNotSticky; // true / false
+      if (data instanceof HoverStatus) {
+        this.sticky = data.sticky;
+        this.state = data.state;
+        this.selected = data.selected;
+        this.filtered = data.filtered;
+      } else {
+        this.sticky = HoverStatus.valNotSticky; // true / false
 
-      this.state = state; // "focused", "notFocused"
+        this.state = "focused"; // "focused", "notFocused"
 
-      this.selected = false;
-      this.filtered = false;
+        this.selected = false;
+        this.filtered = false;
+      }
     }
 
     _createClass(HoverStatus, [{
@@ -73652,18 +73671,21 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ../log/logStates */ "./srcjs/log/logStates.js"), __webpack_require__(/*! ./HoverStatus */ "./srcjs/graph/HoverStatus.js"), __webpack_require__(/*! ./ActiveStateStatus */ "./srcjs/graph/ActiveStateStatus.js"), __webpack_require__(/*! ./StatusArr */ "./srcjs/graph/StatusArr.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! lodash/isNil */ "./node_modules/lodash/isNil.js"), __webpack_require__(/*! ../rlog */ "./srcjs/rlog.js"), __webpack_require__(/*! ../log/logStates */ "./srcjs/log/logStates.js"), __webpack_require__(/*! ./HoverStatus */ "./srcjs/graph/HoverStatus.js"), __webpack_require__(/*! ./ActiveStateStatus */ "./srcjs/graph/ActiveStateStatus.js"), __webpack_require__(/*! ./StatusArr */ "./srcjs/graph/StatusArr.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
-})(this, function (_exports, _logStates, _HoverStatus, _ActiveStateStatus, _StatusArr) {
+})(this, function (_exports, _isNil2, _rlog, _logStates, _HoverStatus, _ActiveStateStatus, _StatusArr) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
     value: true
   });
   _exports.Node = void 0;
+  _isNil2 = _interopRequireDefault(_isNil2);
+
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
   function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -73707,6 +73729,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
       _defineProperty(this, "isDisplayed", void 0);
 
+      _defineProperty(this, "calculationTime", void 0);
+
+      _defineProperty(this, "calculationStartMap", void 0);
+
       if (typeof data.reactId === "undefined") throw "data.reactId not provided in new Node";
       if (typeof data.label === "undefined") throw "data.label not provided in new Node";
       if (typeof data.type === "undefined") throw "data.type not provided in new Node";
@@ -73715,13 +73741,15 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       this.reactId = data.reactId;
       this.label = data.label;
       this.type = data.type;
-      this.session = data.session || "Global";
+      this.session = (0, _isNil2.default)(data.session) ? "Global" : data.session;
       this.time = data.time;
       this.isFrozen = data.isFrozen || false;
       this.statusArr = new _StatusArr.StatusArr(data.statusArr || []);
-      this.value = data.value || null;
-      this.hoverStatus = data.hoverStatus || new _HoverStatus.HoverStatus();
-      this.isDisplayed = data.isDisplayed || true;
+      this.value = (0, _isNil2.default)(data.value) ? null : data.value;
+      this.hoverStatus = new _HoverStatus.HoverStatus(data.hoverStatus);
+      this.isDisplayed = (0, _isNil2.default)(data.isDisplayed) ? true : data.isDisplayed;
+      this.calculationTime = (0, _isNil2.default)(data.calculationTime) ? null : data.calculationTime;
+      this.calculationStartMap = (0, _isNil2.default)(data.calculationStartMap) ? new Map() : new Map(data.calculationStartMap);
       this.valueChangedStatus = data.valueChangedStatus || new _ActiveStateStatus.ActiveStateStatus(); // this.inInvalidate = data.inInvalidate || false;
       // this.activeInvalidate = data.activeInvalidate || false;
 
@@ -73743,13 +73771,35 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
     _createClass(Node, [{
       key: "statusAdd",
-      value: function statusAdd(obj) {
-        this.statusArr.add(obj);
+      value: function statusAdd(logEntry) {
+        if (logEntry.action === _logStates.LogStates.enter) {
+          this.calculationStartMap.set(logEntry.ctxId, logEntry.time);
+        }
+
+        switch (logEntry.action) {
+          case _logStates.LogStates.enter:
+          case _logStates.LogStates.isolateInvalidateStart:
+          case _logStates.LogStates.invalidateStart:
+            this.calculationTime = null;
+            break;
+        }
+
+        this.statusArr.add(logEntry);
         return this.statusArr;
       }
     }, {
       key: "statusRemove",
-      value: function statusRemove() {
+      value: function statusRemove(logEntry) {
+        if (logEntry.action === _logStates.LogStates.exit) {
+          var startEntryTime = this.calculationStartMap.get(logEntry.ctxId);
+
+          if (!(0, _isNil2.default)(startEntryTime)) {
+            this.calculationTime = (logEntry.time - startEntryTime) * 1000;
+          }
+
+          this.calculationStartMap.delete(logEntry.ctxId);
+        }
+
         return this.statusArr.remove();
       }
     }, {
@@ -73785,7 +73835,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     }, {
       key: "inInvalidate",
       get: function get() {
-        return this.statusArr.containsStatus("invalidateStart");
+        return this.statusArr.containsStatus(_logStates.LogStates.invalidateStart);
       }
     }, {
       key: "inIsolateInvalidate",
@@ -73803,14 +73853,22 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         var label = "".concat(this.label);
 
         if (this.type === "observer" || this.type === "observable") {
+          var time = this.calculationTime;
+
+          if (_rlog.rlog.displayTimeOnNodes) {
+            if (!(0, _isNil2.default)(time)) {
+              // is just chillin... so I'm assuming it's calculated and I want to know how long it took.
+              return "".concat(label, " (").concat(time.toFixed(0), "ms)");
+            }
+          }
+
           return label;
         } // not a middle or end node...
 
 
-        var value = "".concat(this.value);
+        if (!(0, _isNil2.default)(this.value)) {
+          var value = "".concat(this.value); // only if there are no new lines...
 
-        if (value.length > 0) {
-          // only if there are no new lines...
           if (!value.includes("\\n")) {
             // trim beginning of string
             value = value.replace(/^\s+/, "");
@@ -73962,20 +74020,25 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   /*#__PURE__*/
   function () {
     function StatusArr() {
-      var statusArr_ = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+      var statusArr = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
 
       _classCallCheck(this, StatusArr);
 
       _defineProperty(this, "statusArr", void 0);
 
-      if (statusArr_ instanceof StatusArr) {
-        this.statusArr = (0, _cloneDeep2.default)(statusArr_.statusArr);
-      } else if (Array.isArray(statusArr_)) {
-        this.statusArr = statusArr_;
+      if (statusArr instanceof StatusArr) {
+        this.statusArr = (0, _cloneDeep2.default)(statusArr.statusArr);
+      } else if (Array.isArray(statusArr)) {
+        this.statusArr = statusArr;
       }
     }
 
     _createClass(StatusArr, [{
+      key: "clone",
+      value: function clone() {
+        return new StatusArr(this);
+      }
+    }, {
       key: "add",
       value: function add(obj) {
         return this.statusArr.push(obj);
@@ -74043,15 +74106,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js"), __webpack_require__(/*! ./rlog */ "./srcjs/rlog.js"), __webpack_require__(/*! ./log/logStates */ "./srcjs/log/logStates.js"), __webpack_require__(/*! ./graph/GraphAtStep */ "./srcjs/graph/GraphAtStep.js"), __webpack_require__(/*! ./style/colors */ "./srcjs/style/colors.js"), __webpack_require__(/*! ./cyto/cytoscapeInit */ "./srcjs/cyto/cytoscapeInit.js"), __webpack_require__(/*! ./layout/keydown */ "./srcjs/layout/keydown.js"), __webpack_require__(/*! ./updateGraph */ "./srcjs/updateGraph/index.js"), __webpack_require__(/*! ./layout/logEntry */ "./srcjs/layout/logEntry.js"), __webpack_require__(/*! ./layout/progressBar */ "./srcjs/layout/progressBar.js"), __webpack_require__(/*! ./log/initStep */ "./srcjs/log/initStep.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js"), __webpack_require__(/*! lodash/debounce */ "./node_modules/lodash/debounce.js"), __webpack_require__(/*! ./rlog */ "./srcjs/rlog.js"), __webpack_require__(/*! ./log/logStates */ "./srcjs/log/logStates.js"), __webpack_require__(/*! ./graph/GraphAtStep */ "./srcjs/graph/GraphAtStep.js"), __webpack_require__(/*! ./style/colors */ "./srcjs/style/colors.js"), __webpack_require__(/*! ./cyto/cytoscapeInit */ "./srcjs/cyto/cytoscapeInit.js"), __webpack_require__(/*! ./layout/keydown */ "./srcjs/layout/keydown.js"), __webpack_require__(/*! ./updateGraph */ "./srcjs/updateGraph/index.js"), __webpack_require__(/*! ./layout/logEntry */ "./srcjs/layout/logEntry.js"), __webpack_require__(/*! ./layout/progressBar */ "./srcjs/layout/progressBar.js"), __webpack_require__(/*! ./log/initStep */ "./srcjs/log/initStep.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
-})(this, function (_jquery, _rlog, _logStates, _GraphAtStep, _colors, cytoscapeInit, layoutKeydown, updateGraph, logEntry, progressBar, _initStep) {
+})(this, function (_jquery, _debounce2, _rlog, _logStates, _GraphAtStep, _colors, cytoscapeInit, layoutKeydown, updateGraph, logEntry, progressBar, _initStep) {
   "use strict";
 
   _jquery = _interopRequireDefault(_jquery);
+  _debounce2 = _interopRequireDefault(_debounce2);
   _colors = _interopRequireDefault(_colors);
   cytoscapeInit = _interopRequireWildcard(cytoscapeInit);
   layoutKeydown = _interopRequireWildcard(layoutKeydown);
@@ -74088,7 +74152,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     _rlog.rlog.log = window.log;
     _rlog.rlog.cyto = cytoscapeInit.withContainer((0, _jquery.default)("#cyto"));
     _rlog.rlog.getGraph = new _GraphAtStep.GraphAtStep(_rlog.rlog.log);
-    _rlog.rlog.graph = _rlog.rlog.getGraph.atStep(_rlog.rlog.getGraph.maxStep);
+    _rlog.rlog.graph = _rlog.rlog.getGraph.finalCompleteGraph;
     (0, _jquery.default)("#prevUserMarkButton").click(updateGraph.buttonPrevMark);
     (0, _jquery.default)("#nextUserMarkButton").click(updateGraph.buttonNextMark);
     (0, _jquery.default)("#prevOutputCalcButton").click(updateGraph.buttonPrevOutputCalc);
@@ -74126,9 +74190,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     }
 
     logEntry.setContainers((0, _jquery.default)("#eventTimeNum"), (0, _jquery.default)("#eventSessionNum"), (0, _jquery.default)("#eventStepNum"), (0, _jquery.default)("#eventStatus"), (0, _jquery.default)("#logEntry"), _rlog.rlog.log, _rlog.rlog.getGraph.stepsVisible.length);
-    (0, _jquery.default)("#search").on("input", function (e) {
-      updateGraph.withSearchString((0, _jquery.default)(e.target).val());
-    });
+    window.addEventListener("resize", (0, _debounce2.default)(function (e) {
+      updateGraph.resize();
+    }, 250, {
+      maxWait: 1000
+    }));
+    updateGraph.searchStringContainer((0, _jquery.default)("#search"));
     {
       var docBody = document.body;
 
@@ -74306,17 +74373,20 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             if (sdReactIdStr === fdReactIdStr) {
               // the filter data is the same as the sticky data
               // remove both
-              _rlog.rlog.getGraph.updateStickyDatasReset();
-
-              _rlog.rlog.getGraph.updateFilterDatasReset();
+              _rlog.rlog.getGraph.resetHoverStickyFilterSearch();
 
               updateGraph.updateGraph(_rlog.rlog.curTick, {
                 fit: true
               });
               return;
             }
-          }
-        }
+          } // reset to original filter data information
+
+
+          updateGraph.stickyDatas(_rlog.rlog.getGraph.filterDatas);
+          return;
+        } // reset sticky data
+
 
         updateGraph.stickyDatasReset();
         return;
@@ -74367,6 +74437,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         (0, _jquery.default)("#logEntry").css("display", "inline");
       }
     }
+
+    if (e.which === 70) {
+      // f // for fit graph
+      updateGraph.resize();
+    }
   };
 
   var addKeydown = function addKeydown(jqueryContainer) {
@@ -74389,12 +74464,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! lodash/sortedIndex */ "./node_modules/lodash/sortedIndex.js"), __webpack_require__(/*! lodash/sortedIndexOf */ "./node_modules/lodash/sortedIndexOf.js"), __webpack_require__(/*! ../rlog */ "./srcjs/rlog.js"), __webpack_require__(/*! ../utils/numbers */ "./srcjs/utils/numbers.js"), __webpack_require__(/*! ../log/logStates */ "./srcjs/log/logStates.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! lodash/sortedIndex */ "./node_modules/lodash/sortedIndex.js"), __webpack_require__(/*! lodash/sortedIndexOf */ "./node_modules/lodash/sortedIndexOf.js"), __webpack_require__(/*! lodash/isNil */ "./node_modules/lodash/isNil.js"), __webpack_require__(/*! ../rlog */ "./srcjs/rlog.js"), __webpack_require__(/*! ../utils/numbers */ "./srcjs/utils/numbers.js"), __webpack_require__(/*! ../log/logStates */ "./srcjs/log/logStates.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
-})(this, function (_exports, _sortedIndex2, _sortedIndexOf2, _rlog, _numbers, _logStates) {
+})(this, function (_exports, _sortedIndex2, _sortedIndexOf2, _isNil2, _rlog, _numbers, _logStates) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
@@ -74403,6 +74478,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   _exports.setContainers = _exports.update = void 0;
   _sortedIndex2 = _interopRequireDefault(_sortedIndex2);
   _sortedIndexOf2 = _interopRequireDefault(_sortedIndexOf2);
+  _isNil2 = _interopRequireDefault(_isNil2);
 
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -74423,7 +74499,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     timeDiff = (0, _numbers.roundDecimals)(timeDiff, timeDecimalDigits).toFixed(timeDecimalDigits).padStart(logInfo.lastTimeCharLength, " ");
     containers.time.text("".concat(timeDiff, "s"));
 
-    if (curEntry.session) {
+    if (!(0, _isNil2.default)(curEntry.session)) {
       containers.session.text("".concat(curEntry.session).padEnd(logInfo.maxSessionCharLength, " "));
     } else {
       containers.session.text("(Global)".padEnd(logInfo.maxSessionCharLength, " "));
@@ -74471,7 +74547,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     for (var i = 0; i < logInfoLength; i++) {
       logEntry = log[i];
 
-      if (logEntry.session) {
+      if (!(0, _isNil2.default)(logEntry.session)) {
         sessionCharLength = logEntry.session.length;
 
         if (sessionCharLength > maxSessionCharLength) {
@@ -74514,11 +74590,17 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   var getReactIdValue = function getReactIdValue(entry) {
     var node = _rlog.rlog.graph.nodes.get(entry.reactId);
 
-    if (node.value) {
-      return node.value;
-    } else {
-      return "<unknown>";
+    if (node) {
+      if (!(0, _isNil2.default)(node.value)) {
+        return node.value;
+      }
     }
+
+    return "<unknown>";
+  };
+
+  var getContextId = function getContextId(entry) {
+    return entry.ctxId;
   };
 
   var monospaced = function monospaced(txt) {
@@ -74527,6 +74609,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
   var statusForEntry = function statusForEntry(entry) {
     switch (entry.action) {
+      case _logStates.LogStates.createContext:
+        {
+          var contextEntry = entry;
+          return "Create Context: ".concat(monospaced(getContextId(contextEntry)));
+        }
+
       case _logStates.LogStates.asyncStart:
         {
           return "Start asynchronous calculations";
@@ -74838,8 +74926,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     thaw: "thaw",
     updateNodeLabel: "updateNodeLabel",
     valueChange: "valueChange"
-  }; // type ActionsType = $Values<typeof states>;
-
+  };
   _exports.LogStates = states;
 });
 
@@ -74854,12 +74941,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! cytoscape */ "./node_modules/cytoscape/dist/cytoscape.cjs.js"), __webpack_require__(/*! ./graph/Graph */ "./srcjs/graph/Graph.js"), __webpack_require__(/*! ./graph/GraphAtStep */ "./srcjs/graph/GraphAtStep.js"), __webpack_require__(/*! ./updateGraph */ "./srcjs/updateGraph/index.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! cytoscape */ "./node_modules/cytoscape/dist/cytoscape.cjs.js"), __webpack_require__(/*! lodash/isNil */ "./node_modules/lodash/isNil.js"), __webpack_require__(/*! ./graph/Graph */ "./srcjs/graph/Graph.js"), __webpack_require__(/*! ./graph/GraphAtStep */ "./srcjs/graph/GraphAtStep.js"), __webpack_require__(/*! ./updateGraph */ "./srcjs/updateGraph/index.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
-})(this, function (_exports, _cytoscape, _Graph, _GraphAtStep, updateGraph) {
+})(this, function (_exports, _cytoscape, _isNil2, _Graph, _GraphAtStep, updateGraph) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
@@ -74867,6 +74954,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   });
   _exports.rlog = void 0;
   _cytoscape = _interopRequireDefault(_cytoscape);
+  _isNil2 = _interopRequireDefault(_isNil2);
   updateGraph = _interopRequireWildcard(updateGraph);
 
   function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
@@ -74882,7 +74970,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     graph: new _Graph.Graph([]),
     curTick: 1,
     updateGraph: updateGraph,
-    barret: null
+    barret: null,
+    displayTimeOnNodes: // is not `false`
+    window.__APP_TIME__ === true || (0, _isNil2.default)(window.__APP_TIME__)
   };
   _exports.rlog = ret;
 });
@@ -75131,14 +75221,14 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
   var buttonPrevStep = function buttonPrevStep() {
     var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    return step.prevStep(cytoOptions);
+    return step.prevStep(cytoOptions) || step.firstStep();
   };
 
   _exports.buttonPrevStep = buttonPrevStep;
 
   var buttonNextStep = function buttonNextStep() {
     var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    return step.nextStep(cytoOptions);
+    return step.nextStep(cytoOptions) || step.lastStep();
   };
 
   _exports.buttonNextStep = buttonNextStep;
@@ -75264,13 +75354,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   var resetHoverStickyFilterData = function resetHoverStickyFilterData() {
     var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    _rlog.rlog.getGraph.updateHoverDataReset();
-
-    _rlog.rlog.getGraph.updateStickyDatasReset();
-
-    _rlog.rlog.getGraph.updateFilterDatasReset();
-
-    _rlog.rlog.getGraph.updateSearchRegexReset();
+    _rlog.rlog.getGraph.resetHoverStickyFilterSearch();
 
     return (0, _updateGraph.updateGraph)(_rlog.rlog.curTick, (0, _assign2.default)({
       fit: true
@@ -75291,12 +75375,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ../rlog */ "./srcjs/rlog.js"), __webpack_require__(/*! ../updateGraph */ "./srcjs/updateGraph/index.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ../rlog */ "./srcjs/rlog.js"), __webpack_require__(/*! ../updateGraph */ "./srcjs/updateGraph/index.js"), __webpack_require__(/*! ./outputCalc */ "./srcjs/updateGraph/outputCalc.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
-})(this, function (_exports, _rlog, _updateGraph) {
+})(this, function (_exports, _rlog, _updateGraph, _outputCalc) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
@@ -75306,50 +75390,20 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
   var nextIdle = function nextIdle() {
     var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    var i, val; // traverse to the next valid step,
-    //   skipping the very close queue empties (which would be skipped on next step)
-
-    var nextTick = _rlog.rlog.getGraph.nextStep(_rlog.rlog.curTick); // move to queue empty
-
-
-    for (i = 0; i < _rlog.rlog.getGraph.stepsOutputCalc.length; i++) {
-      val = _rlog.rlog.getGraph.stepsIdle[i];
-
-      if (nextTick < val) {
-        (0, _updateGraph.updateGraph)(val, cytoOptions);
-        return true;
-      }
-    }
-
-    return false;
+    return (0, _outputCalc.nextStepInArr)(_rlog.rlog.getGraph.stepsIdle, cytoOptions);
   };
 
   _exports.nextIdle = nextIdle;
 
   var prevIdle = function prevIdle() {
     var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    var i, val; // traverse to the previous valid step,
-    //   skipping the very close queue empties (which would be skipped on prev step)
-
-    var prevTick = _rlog.rlog.getGraph.prevStep(_rlog.rlog.curTick); // move to queue empty
-
-
-    for (i = _rlog.rlog.getGraph.stepsIdle.length - 1; i >= 0; i--) {
-      val = _rlog.rlog.getGraph.stepsIdle[i];
-
-      if (prevTick > val) {
-        (0, _updateGraph.updateGraph)(val, cytoOptions);
-        return true;
-      }
-    }
-
-    return false;
+    return (0, _outputCalc.prevStepInArr)(_rlog.rlog.getGraph.stepsIdle, cytoOptions);
   };
 
   _exports.prevIdle = prevIdle;
 
   var lastIdle = function lastIdle() {
-    var nextTick = _rlog.rlog.getGraph.stepsIdle.length > 0 ? _rlog.rlog.getGraph.stepsIdle[_rlog.rlog.getGraph.stepsIdle.length - 1] : 0;
+    var nextTick = _rlog.rlog.getGraph.stepsIdle.length > 0 ? _rlog.rlog.getGraph.stepsIdle[_rlog.rlog.getGraph.stepsIdle.length - 1] : _rlog.rlog.log.length - 1;
     return (0, _updateGraph.updateGraph)(nextTick);
   };
 
@@ -75374,12 +75428,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ./atTick */ "./srcjs/updateGraph/atTick.js"), __webpack_require__(/*! ./outputCalc */ "./srcjs/updateGraph/outputCalc.js"), __webpack_require__(/*! ./idle */ "./srcjs/updateGraph/idle.js"), __webpack_require__(/*! ./step */ "./srcjs/updateGraph/step.js"), __webpack_require__(/*! ./tick */ "./srcjs/updateGraph/tick.js"), __webpack_require__(/*! ./searchString */ "./srcjs/updateGraph/searchString.js"), __webpack_require__(/*! ./hoverStickyFilterSearch */ "./srcjs/updateGraph/hoverStickyFilterSearch.js"), __webpack_require__(/*! ./userMarks */ "./srcjs/updateGraph/userMarks.js"), __webpack_require__(/*! ./buttons */ "./srcjs/updateGraph/buttons.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ./atTick */ "./srcjs/updateGraph/atTick.js"), __webpack_require__(/*! ./outputCalc */ "./srcjs/updateGraph/outputCalc.js"), __webpack_require__(/*! ./idle */ "./srcjs/updateGraph/idle.js"), __webpack_require__(/*! ./step */ "./srcjs/updateGraph/step.js"), __webpack_require__(/*! ./tick */ "./srcjs/updateGraph/tick.js"), __webpack_require__(/*! ./searchString */ "./srcjs/updateGraph/searchString.js"), __webpack_require__(/*! ./hoverStickyFilterSearch */ "./srcjs/updateGraph/hoverStickyFilterSearch.js"), __webpack_require__(/*! ./userMarks */ "./srcjs/updateGraph/userMarks.js"), __webpack_require__(/*! ./buttons */ "./srcjs/updateGraph/buttons.js"), __webpack_require__(/*! ./resize */ "./srcjs/updateGraph/resize.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
-})(this, function (_exports, _atTick, _outputCalc, _idle, _step, _tick, _searchString, _hoverStickyFilterSearch, _userMarks, _buttons) {
+})(this, function (_exports, _atTick, _outputCalc, _idle, _step, _tick, _searchString, _hoverStickyFilterSearch, _userMarks, _buttons, _resize) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
@@ -75387,7 +75441,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   });
   var _exportNames = {
     atTick: true,
-    updateGraph: true
+    updateGraph: true,
+    nextOutputCalc: true,
+    prevOutputCalc: true,
+    firstOutputCalc: true,
+    lastOutputCalc: true
   };
   Object.defineProperty(_exports, "atTick", {
     enumerable: true,
@@ -75401,15 +75459,29 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       return _atTick.atTick;
     }
   });
-  Object.keys(_outputCalc).forEach(function (key) {
-    if (key === "default" || key === "__esModule") return;
-    if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
-    Object.defineProperty(_exports, key, {
-      enumerable: true,
-      get: function get() {
-        return _outputCalc[key];
-      }
-    });
+  Object.defineProperty(_exports, "nextOutputCalc", {
+    enumerable: true,
+    get: function get() {
+      return _outputCalc.nextOutputCalc;
+    }
+  });
+  Object.defineProperty(_exports, "prevOutputCalc", {
+    enumerable: true,
+    get: function get() {
+      return _outputCalc.prevOutputCalc;
+    }
+  });
+  Object.defineProperty(_exports, "firstOutputCalc", {
+    enumerable: true,
+    get: function get() {
+      return _outputCalc.firstOutputCalc;
+    }
+  });
+  Object.defineProperty(_exports, "lastOutputCalc", {
+    enumerable: true,
+    get: function get() {
+      return _outputCalc.lastOutputCalc;
+    }
   });
   Object.keys(_idle).forEach(function (key) {
     if (key === "default" || key === "__esModule") return;
@@ -75481,6 +75553,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       }
     });
   });
+  Object.keys(_resize).forEach(function (key) {
+    if (key === "default" || key === "__esModule") return;
+    if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+    Object.defineProperty(_exports, key, {
+      enumerable: true,
+      get: function get() {
+        return _resize[key];
+      }
+    });
+  });
 });
 
 /***/ }),
@@ -75494,48 +75576,44 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! lodash/sortedIndexOf */ "./node_modules/lodash/sortedIndexOf.js"), __webpack_require__(/*! ../rlog */ "./srcjs/rlog.js"), __webpack_require__(/*! ../updateGraph */ "./srcjs/updateGraph/index.js"), __webpack_require__(/*! ../graph/GraphAtStep */ "./srcjs/graph/GraphAtStep.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! lodash/sortedIndexOf */ "./node_modules/lodash/sortedIndexOf.js"), __webpack_require__(/*! lodash/sortedIndex */ "./node_modules/lodash/sortedIndex.js"), __webpack_require__(/*! ../rlog */ "./srcjs/rlog.js"), __webpack_require__(/*! ../updateGraph */ "./srcjs/updateGraph/index.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
-})(this, function (_exports, _sortedIndexOf2, _rlog, _updateGraph, _GraphAtStep) {
+})(this, function (_exports, _sortedIndexOf2, _sortedIndex2, _rlog, _updateGraph) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
     value: true
   });
-  _exports.lastOutputCalc = _exports.firstOutputCalc = _exports.prevOutputCalc = _exports.nextOutputCalc = void 0;
+  _exports.prevStepInArr = _exports.nextStepInArr = _exports.lastOutputCalc = _exports.firstOutputCalc = _exports.prevOutputCalc = _exports.nextOutputCalc = void 0;
   _sortedIndexOf2 = _interopRequireDefault(_sortedIndexOf2);
+  _sortedIndex2 = _interopRequireDefault(_sortedIndex2);
 
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-  var nextOutputCalc = function nextOutputCalc() {
-    var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  var nextStepInArr = function nextStepInArr(arr) {
+    var cytoOptions = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
     var nextTick;
 
-    if ((0, _sortedIndexOf2.default)(_rlog.rlog.getGraph.stepsOutputCalc, _rlog.rlog.curTick) !== -1) {
-      // not at a cycle point
-      if ((0, _GraphAtStep.hasLength)(_rlog.rlog.getGraph.filterDatas)) {
-        // if filtered, will go to previous step, then next step location
-        nextTick = _rlog.rlog.getGraph.nextStep(_rlog.rlog.getGraph.prevStep(_rlog.rlog.curTick));
-      } else {
-        // if not filtered
-        nextTick = _rlog.rlog.curTick;
-      }
-    } else {
-      // at cycle point
-      // first move one step forward... then find next enter/exit empty
+    if ((0, _sortedIndexOf2.default)(arr, _rlog.rlog.curTick) !== -1) {
+      // at arr point, move the tick one ahead
       nextTick = _rlog.rlog.getGraph.nextStep(_rlog.rlog.curTick);
-    }
+    } else {
+      // not at arr point,
+      nextTick = _rlog.rlog.curTick;
+    } // get next tick idx
 
-    var val, i; // move to queue empty
 
-    for (i = 0; i < _rlog.rlog.getGraph.stepsOutputCalc.length; i++) {
-      val = _rlog.rlog.getGraph.stepsOutputCalc[i];
+    var nextTickIdx = (0, _sortedIndex2.default)(arr, nextTick);
+    var i, arrStep;
 
-      if (nextTick < val) {
-        (0, _updateGraph.updateGraph)(val, cytoOptions);
+    for (i = nextTickIdx; i < arr.length; i++) {
+      arrStep = arr[i];
+
+      if ((0, _sortedIndexOf2.default)(_rlog.rlog.getGraph.filteredStepsVisible, arrStep) >= 0) {
+        (0, _updateGraph.updateGraph)(arrStep, cytoOptions);
         return true;
       }
     }
@@ -75543,38 +75621,49 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     return false;
   };
 
-  _exports.nextOutputCalc = nextOutputCalc;
+  _exports.nextStepInArr = nextStepInArr;
 
-  var prevOutputCalc = function prevOutputCalc() {
-    var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  var prevStepInArr = function prevStepInArr(arr) {
+    var cytoOptions = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
     var prevTick;
 
-    if ((0, _sortedIndexOf2.default)(_rlog.rlog.getGraph.stepsOutputCalc, _rlog.rlog.curTick) !== -1) {
-      // not at a cycle point
-      if ((0, _GraphAtStep.hasLength)(_rlog.rlog.getGraph.filterDatas)) {
-        // if filtered, will go to next step, then prev step location
-        prevTick = _rlog.rlog.getGraph.prevStep(_rlog.rlog.getGraph.nextStep(_rlog.rlog.curTick));
-      } else {
-        // if not filtered
-        prevTick = _rlog.rlog.curTick;
-      }
-    } else {
-      // at cycle point
-      // first move one step backward... then find prev enter/exit empty
+    if ((0, _sortedIndexOf2.default)(arr, _rlog.rlog.curTick) !== -1) {
+      // at arr point, move the tick one back
       prevTick = _rlog.rlog.getGraph.prevStep(_rlog.rlog.curTick);
-    }
+    } else {
+      // not at arr point,
+      prevTick = _rlog.rlog.curTick;
+    } // get next tick idx
 
-    var val, i; // move to queue empty
 
-    for (i = _rlog.rlog.getGraph.stepsOutputCalc.length - 1; i >= 0; i--) {
-      val = _rlog.rlog.getGraph.stepsOutputCalc[i];
+    var prevTickIdx = (0, _sortedIndex2.default)(arr, prevTick) - 1;
+    if (prevTickIdx < 0) return false;
+    var i, arrStep;
 
-      if (prevTick > val) {
-        return (0, _updateGraph.updateGraph)(val, cytoOptions);
+    for (i = prevTickIdx; i >= 0; i--) {
+      arrStep = arr[i];
+
+      if ((0, _sortedIndexOf2.default)(_rlog.rlog.getGraph.filteredStepsVisible, arrStep) >= 0) {
+        (0, _updateGraph.updateGraph)(arrStep, cytoOptions);
+        return true;
       }
     }
 
     return false;
+  };
+
+  _exports.prevStepInArr = prevStepInArr;
+
+  var nextOutputCalc = function nextOutputCalc() {
+    var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    return nextStepInArr(_rlog.rlog.getGraph.stepsOutputCalc, cytoOptions);
+  };
+
+  _exports.nextOutputCalc = nextOutputCalc;
+
+  var prevOutputCalc = function prevOutputCalc() {
+    var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    return prevStepInArr(_rlog.rlog.getGraph.stepsOutputCalc, cytoOptions);
   };
 
   _exports.prevOutputCalc = prevOutputCalc;
@@ -75598,6 +75687,44 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
+/***/ "./srcjs/updateGraph/resize.js":
+/*!*************************************!*\
+  !*** ./srcjs/updateGraph/resize.js ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
+  if (true) {
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ../rlog */ "./srcjs/rlog.js"), __webpack_require__(/*! ./atTick */ "./srcjs/updateGraph/atTick.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+  } else { var mod; }
+})(this, function (_exports, _rlog, _atTick) {
+  "use strict";
+
+  Object.defineProperty(_exports, "__esModule", {
+    value: true
+  });
+  _exports.resize = void 0;
+
+  var resize = function resize() {
+    // tell cytoscape to update it's layout bounds
+    _rlog.rlog.cyto.resize(); // force a redraw
+
+
+    (0, _atTick.atTick)(_rlog.rlog.curTick, {
+      fit: true,
+      forceRedraw: true
+    });
+  };
+
+  _exports.resize = resize;
+});
+
+/***/ }),
+
 /***/ "./srcjs/updateGraph/searchString.js":
 /*!*******************************************!*\
   !*** ./srcjs/updateGraph/searchString.js ***!
@@ -75607,27 +75734,31 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! ./hoverStickyFilterSearch */ "./srcjs/updateGraph/hoverStickyFilterSearch.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js"), __webpack_require__(/*! ./hoverStickyFilterSearch */ "./srcjs/updateGraph/hoverStickyFilterSearch.js"), __webpack_require__(/*! ../graph/Node */ "./srcjs/graph/Node.js"), __webpack_require__(/*! ../graph/Edge */ "./srcjs/graph/Edge.js"), __webpack_require__(/*! ../graph/GhostEdge */ "./srcjs/graph/GhostEdge.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
-})(this, function (_exports, updateGraph) {
+})(this, function (_exports, _jquery, updateGraph, _Node, _Edge, _GhostEdge) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
     value: true
   });
-  _exports.withSearchString = void 0;
+  _exports.searchStringWithData = _exports.searchStringContainer = _exports.searchStringClearNoUpdate = _exports.searchStringClear = _exports.searchStringSet = _exports.searchStringWith = void 0;
+  _jquery = _interopRequireDefault(_jquery);
   updateGraph = _interopRequireWildcard(updateGraph);
 
   function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
   // import console from "../utils/console";
-  // when str length < 3 do not search
+  var searchElement; // when str length < 3 do not search
   // when str length = 0, reset filter
   // when str length >= 3, set filter to all elements that match
-  var withSearchString = function withSearchString(str) {
+
+  var searchStringWith = function searchStringWith(str) {
     // if less than three chars...
     if (str.length < 3) {
       if (str.length === 0) {
@@ -75651,7 +75782,46 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     return updateGraph.searchRegex(searchRegex);
   };
 
-  _exports.withSearchString = withSearchString;
+  _exports.searchStringWith = searchStringWith;
+
+  var searchStringSet = function searchStringSet(str) {
+    searchElement.val(str);
+    return searchStringWith(str);
+  };
+
+  _exports.searchStringSet = searchStringSet;
+
+  var searchStringClear = function searchStringClear() {
+    return searchStringSet("");
+  };
+
+  _exports.searchStringClear = searchStringClear;
+
+  var searchStringClearNoUpdate = function searchStringClearNoUpdate() {
+    searchElement.val("");
+  };
+
+  _exports.searchStringClearNoUpdate = searchStringClearNoUpdate;
+
+  var searchStringWithData = function searchStringWithData(obj) {
+    // update the graph by searching for the key
+    if (obj instanceof _Edge.Edge) {
+      return searchStringSet(obj.ghostKey);
+    }
+
+    return searchStringSet(obj.key);
+  };
+
+  _exports.searchStringWithData = searchStringWithData;
+
+  var searchStringContainer = function searchStringContainer(searchElement_) {
+    searchElement = searchElement_;
+    searchElement.on("input", function (e) {
+      searchStringWith((0, _jquery.default)(e.target).val());
+    });
+  };
+
+  _exports.searchStringContainer = searchStringContainer;
 });
 
 /***/ }),
@@ -75681,11 +75851,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   var nextStep = function nextStep() {
     var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    // Move one step ahead (skipping unneccessary steps)
-    var nextStepVal = _rlog.rlog.getGraph.nextStep(_rlog.rlog.curTick);
+    var nextTick = _rlog.rlog.getGraph.nextStep(_rlog.rlog.curTick);
 
-    if (nextStepVal === -1) return false;
-    return (0, _updateGraph.updateGraph)(nextStepVal, cytoOptions);
+    if (nextTick === -1) return false;
+    return (0, _updateGraph.updateGraph)(nextTick, cytoOptions);
   };
 
   _exports.nextStep = nextStep;
@@ -75693,11 +75862,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   var prevStep = function prevStep() {
     var cytoOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    // Move one step back
-    var prevStepVal = _rlog.rlog.getGraph.prevStep(_rlog.rlog.curTick);
+    var prevTick = _rlog.rlog.getGraph.prevStep(_rlog.rlog.curTick);
 
-    if (prevStepVal === -1) return false;
-    return (0, _updateGraph.updateGraph)(prevStepVal, cytoOptions);
+    if (prevTick === -1) return false;
+    return (0, _updateGraph.updateGraph)(prevTick, cytoOptions);
   };
 
   _exports.prevStep = prevStep;

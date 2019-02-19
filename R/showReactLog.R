@@ -36,7 +36,7 @@
 #'
 #' @param log Log produced by shiny to be processed
 #' @param time A boolean that specifies whether or not to display the
-#' time that each reactive.
+#' time that each reactive takes to calculate a result.
 #' @param ... Future parameter expansion. Currently ignored
 #' @export
 #' @examples

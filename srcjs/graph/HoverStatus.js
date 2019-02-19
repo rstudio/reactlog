@@ -71,11 +71,18 @@ class HoverStatus {
   selected: boolean;
   filtered: boolean;
 
-  constructor(state: "focused" | "notFocused" = HoverStatus.valFocused) {
-    this.sticky = HoverStatus.valNotSticky; // true / false
-    this.state = state; // "focused", "notFocused"
-    this.selected = false;
-    this.filtered = false;
+  constructor(data: HoverStatus | null = null) {
+    if (data instanceof HoverStatus) {
+      this.sticky = data.sticky;
+      this.state = data.state;
+      this.selected = data.selected;
+      this.filtered = data.filtered;
+    } else {
+      this.sticky = HoverStatus.valNotSticky; // true / false
+      this.state = "focused"; // "focused", "notFocused"
+      this.selected = false;
+      this.filtered = false;
+    }
   }
   isSticky() {
     return this.sticky === HoverStatus.valSticky;

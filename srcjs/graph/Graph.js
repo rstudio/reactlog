@@ -1,7 +1,9 @@
 // @flow
 
+import _clone from "lodash/clone";
 import _some from "lodash/some";
 import _filter from "lodash/filter";
+import _isNil from "lodash/isNil";
 import _union from "lodash/union";
 import _last from "lodash/last";
 import cytoscape from "cytoscape"; // flowlint-line untyped-import:off
@@ -21,7 +23,7 @@ import type { CytoscapeType } from "../cyto/cytoFlowType";
 
 import type {
   LogType,
-  LogEntryAnyType,
+  LogEntryHasReactId,
   ReactIdType,
   LogEntryDefineType,
   LogEntryInvalidateStartType,
@@ -48,13 +50,27 @@ class Graph {
   activeNodeEnter: Array<ReactIdType>;
   activeInvalidateEnter: Array<ReactIdType>;
 
-  constructor(log: LogType) {
-    this.log = log;
+  constructor(data: Graph | LogType) {
+    this.log = data instanceof Graph ? data.log : data;
     this.nodes = new Map();
     this.edges = new Map();
     this.edgesUnique = new Map();
     this.activeNodeEnter = [];
     this.activeInvalidateEnter = [];
+    if (data instanceof Graph) {
+      let priorGraph = data;
+      priorGraph.nodes.forEach((node, key) =>
+        this.nodes.set(key, new Node(node))
+      );
+      priorGraph.edges.forEach((edge, key) =>
+        this.edges.set(key, new Edge(edge))
+      );
+      priorGraph.edgesUnique.forEach((edge, key) =>
+        this.edgesUnique.set(key, new GhostEdge(edge))
+      );
+      this.activeNodeEnter = _clone(priorGraph.activeNodeEnter);
+      this.activeInvalidateEnter = _clone(priorGraph.activeInvalidateEnter);
+    }
   }
 
   get cytoGraph() {
@@ -76,6 +92,10 @@ class Graph {
     cyto.add(edges);
     cyto.add(ghostEdges);
     return cyto;
+  }
+
+  hasNodeReactId(reactId: ReactIdType): boolean {
+    return this.nodes.has(reactId);
   }
 
   hasSomeData(data: SomeGraphData): boolean {
@@ -144,7 +164,7 @@ class Graph {
   reactIdFromData(
     data: SomeGraphData | ?ReactIdType,
     getParentFromEdge: boolean = true
-  ): ?ReactIdType {
+  ): ReactIdType | null {
     if (data === null) {
       throw "Graph.prototype.reactIdFromData(data) must submit non null data";
     }
@@ -178,7 +198,7 @@ class Graph {
     } else {
       let reactId;
       reactId = this.reactIdFromData(data, true);
-      if (!reactId) return [];
+      if (_isNil(reactId)) return [];
       return _filter(mapValues(this.edgesUnique), function(edge) {
         // if the target is the reactId
         return edge.reactId === reactId;
@@ -197,7 +217,7 @@ class Graph {
       return [data.depOnReactId];
     } else {
       let reactId = this.reactIdFromData(data, false);
-      if (!reactId) return [];
+      if (_isNil(reactId)) return [];
       return _filter(mapValues(this.edgesUnique), function(edge) {
         // if the source is the reactId
         return edge.depOnReactId === reactId;
@@ -210,7 +230,7 @@ class Graph {
 
   ancestorNodeIds(data: SomeGraphData | ReactIdType): Array<ReactIdType> {
     let reactId = this.reactIdFromData(data, true);
-    if (!reactId) {
+    if (_isNil(reactId)) {
       return [];
     } else {
       let originalReactId = reactId;
@@ -233,7 +253,7 @@ class Graph {
   }
   decendentNodeIds(data: SomeGraphData | ReactIdType): Array<ReactIdType> {
     let reactId = this.reactIdFromData(data, false);
-    if (!reactId) return [];
+    if (_isNil(reactId)) return [];
     let originalReactId = reactId;
     let seenMap = new Set();
     let reactIdArr = [reactId];
@@ -254,14 +274,18 @@ class Graph {
     let reactId;
     if (isEdgeLike(data)) {
       reactId = this.reactIdFromData(data, true);
-      if (reactId) ret.push(reactId);
+      if (!_isNil(reactId)) ret.push(reactId);
       reactId = this.reactIdFromData(data, false);
-      if (reactId) ret.push(reactId);
+      if (!_isNil(reactId)) ret.push(reactId);
     } else {
       reactId = this.reactIdFromData(data);
-      if (reactId) ret.push(reactId);
+      if (!_isNil(reactId)) ret.push(reactId);
     }
-    return _union(ret, this.ancestorNodeIds(data), this.decendentNodeIds(data));
+    return _union(
+      (ret: Array<ReactIdType>),
+      this.ancestorNodeIds(data),
+      this.decendentNodeIds(data)
+    );
   }
 
   familyTreeNodeIdsForDatas(datas: Array<SomeGraphData>): Array<ReactIdType> {
@@ -350,12 +374,13 @@ class Graph {
     return this;
   }
 
-  addEntry(data: LogEntryAnyType) {
-    if (data.reactId) {
+  addEntry(data: any) {
+    if (!_isNil(data.reactId)) {
       if (data.reactId === "rNoCtx") {
         return;
       }
     }
+    data = (data: LogEntryHasReactId);
 
     let node, lastNodeId, edge;
 
@@ -517,7 +542,7 @@ class Graph {
               | LogEntryInvalidateEndType
               | LogEntryIsolateInvalidateEndType);
             expectPrevStatus((logEntry: Object), prevData, expectedAction);
-            node.statusRemove();
+            node.statusRemove((logEntry: Object));
           }
         }
         break;

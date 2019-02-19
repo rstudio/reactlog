@@ -32,10 +32,12 @@ let selectedScale = 2;
 
 let edgePixelWidth = 4;
 
+let maxTextWidth = "10000px";
+
 let graphStyles = {
   node: {
     default: {
-      label: "data(cytoLabel)",
+      label: "data(cytoLabel_)",
       color: colors.nodes.label_text_color,
       "text-opacity": colors.nodes.label_text_opacity,
       "text-valign": "bottom",
@@ -47,7 +49,7 @@ let graphStyles = {
       "border-width": 1,
       "background-color": colors.nodes.ready,
       "text-wrap": "ellipsis",
-      "text-max-width": "400px",
+      "text-max-width": "350px",
       "text-background-color": colors.nodes.label_background_color,
       "text-background-opacity": colors.nodes.label_background_opacity,
       "font-family": '"Fira Mono", monospace',
@@ -80,6 +82,7 @@ let graphStyles = {
       "shape-polygon-points": nodeShapes.end.shape,
       width: nodeShapes.end.width,
       height: nodeShapes.end.height,
+      "text-max-width": maxTextWidth,
     },
     endBig: {
       "border-width": 2,
@@ -191,6 +194,8 @@ let graphStyles = {
   selected: {
     node: {
       "border-width": 4,
+      // if you hover / selected, show all the label
+      "text-max-width": maxTextWidth,
     },
     edge: {
       width: edgePixelWidth * 2,
@@ -221,7 +226,10 @@ let graphStyles = {
   hidden: {
     node: {
       // visibility: "hidden",
-      opacity: 0.5,
+      "background-color": "white",
+      "background-opacity": 1,
+      "border-opacity": 0.5,
+      "text-opacity": 0.5,
       label: "data(label)", // do not display a value and only the raw label
     },
     edge: {

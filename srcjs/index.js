@@ -1,6 +1,7 @@
 // @flow
 
 import $ from "jquery";
+import _debounce from "lodash/debounce";
 
 import { rlog } from "./rlog";
 
@@ -53,7 +54,7 @@ $(function() {
   rlog.cyto = cytoscapeInit.withContainer($("#cyto"));
 
   rlog.getGraph = new GraphAtStep(rlog.log);
-  rlog.graph = rlog.getGraph.atStep(rlog.getGraph.maxStep);
+  rlog.graph = rlog.getGraph.finalCompleteGraph;
 
   $("#prevUserMarkButton").click(updateGraph.buttonPrevMark);
   $("#nextUserMarkButton").click(updateGraph.buttonNextMark);
@@ -113,9 +114,18 @@ $(function() {
     rlog.getGraph.stepsVisible.length
   );
 
-  $("#search").on("input", function(e) {
-    updateGraph.withSearchString($(e.target).val());
-  });
+  window.addEventListener(
+    "resize",
+    _debounce(
+      function(e) {
+        updateGraph.resize();
+      },
+      250,
+      { maxWait: 1000 }
+    )
+  );
+
+  updateGraph.searchStringContainer($("#search"));
 
   {
     let docBody = document.body;

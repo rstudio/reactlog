@@ -1,5 +1,7 @@
 // @flow
 
+import _isNil from "lodash/isNil";
+
 import { HoverStatus } from "./HoverStatus";
 
 import type { ReactIdType, CtxIdType } from "../log/logStates";
@@ -26,7 +28,7 @@ class Edge {
   hoverStatus: HoverStatus;
   isDisplayed: boolean;
 
-  constructor(data: EdgeInputType) {
+  constructor(data: Edge | EdgeInputType) {
     if (typeof data.reactId === "undefined")
       throw "data.reactId not provided to new Edge()";
     if (typeof data.depOnReactId === "undefined")
@@ -38,12 +40,12 @@ class Edge {
     this.reactId = data.reactId;
     this.depOnReactId = data.depOnReactId;
     this.ctxId = data.ctxId;
-    this.session = data.session || "Global";
+    this.session = _isNil(data.session) ? "Global" : data.session;
     this.time = data.time;
-    this.status = "normal";
-    this.isGhost = false;
-    this.hoverStatus = data.hoverStatus || new HoverStatus();
-    this.isDisplayed = data.isDisplayed || true;
+    this.status = _isNil(data.status) ? "normal" : data.status;
+    this.isGhost = _isNil(data.isGhost) ? false : data.isGhost;
+    this.hoverStatus = new HoverStatus(data.hoverStatus);
+    this.isDisplayed = _isNil(data.isDisplayed) ? true : data.isDisplayed;
   }
   get id(): EdgeIdType {
     return `${this.reactId}_${this.depOnReactId}_${this.ctxId}`.replace(
@@ -116,6 +118,8 @@ type EdgeLikeType = {
   time: number,
   hoverStatus?: ?HoverStatus,
   isDisplayed?: boolean,
+  status?: string,
+  isGhost?: boolean,
 };
 
 export { Edge, edgeKey, ghostKey };
