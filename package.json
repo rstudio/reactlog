@@ -68,7 +68,7 @@
     "grunt-cli": "1.x",
     "grunt-webpack": "3.x",
     "husky": "1.x",
-    "license-checker": "^20.1.0",
+    "license-checker": "^25.0.1",
     "lint-staged": "8.x",
     "prettier": "1.x",
     "webpack": "4.x",
