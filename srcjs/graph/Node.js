@@ -141,12 +141,35 @@ class Node {
       if (rlog.displayTimeOnNodes) {
         if (!_isNil(time)) {
           // is just chillin... so I'm assuming it's calculated and I want to know how long it took.
+          return `${label}\n\nCalculation Time: ${time.toFixed(0)}ms`;
+        }
+      }
+      return label;
+    }
+    // not a middle or end node...
+    if (!_isNil(this.value)) {
+      let value = `${this.value}`;
+      // only if there are no new lines...
+      if (!value.includes("\\n")) {
+        // trim beginning of string
+        value = value.replace(/^\s+/, "");
+      }
+      return `${label}\n\nValue:\n${value}`;
+    }
+    return label;
+  }
+  get cytoLabelShort(): string {
+    let label = `${this.label}`.replace(/[\t\n\r ]+/g, " ");
+    if (this.type === "observer" || this.type === "observable") {
+      let time = this.calculationTime;
+      if (rlog.displayTimeOnNodes) {
+        if (!_isNil(time)) {
+          // is just chillin... so I'm assuming it's calculated and I want to know how long it took.
           return `${label} (${time.toFixed(0)}ms)`;
         }
       }
       return label;
     }
-
     // not a middle or end node...
     if (!_isNil(this.value)) {
       let value = `${this.value}`;

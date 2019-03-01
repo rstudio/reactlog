@@ -33,7 +33,6 @@
       ],
       "srcjs/**/*.js": [
         "yarn fix",
-        "yarn git_add_map",
         "yarn flow-report-and-echo"
       ]
     }
