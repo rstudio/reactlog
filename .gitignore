@@ -1,3 +1,6 @@
+Meta
+doc
+inst/doc
 # History files
 .Rhistory
 .Rapp.history
@@ -26,12 +29,10 @@ vignettes/*.pdf
 # Shiny token, see https://shiny.rstudio.com/articles/shinyapps.html
 rsconnect/
 .Rproj.user
-
 inst/reactlogAsset/report.html
 node_modules
 flow-typed
 yarn-error.log
 src_old
-
 _ignore
 *.rej

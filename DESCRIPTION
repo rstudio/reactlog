@@ -15,7 +15,9 @@ Depends:
 Imports:
   jsonlite (>= 0.9.16)
 Suggests:
-  shiny (>= 1.2.0.9001)
+    shiny (>= 1.2.0.9001),
+    knitr,
+    rmarkdown
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
@@ -24,3 +26,4 @@ Remotes:
   rstudio/shiny
 URL: https://github.com/rstudio/reactlog
 BugReports: https://github.com/rstudio/reactlog/issues
+VignetteBuilder: knitr
