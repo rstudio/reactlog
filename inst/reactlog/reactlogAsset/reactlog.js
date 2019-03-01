@@ -73871,6 +73871,38 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           if (_rlog.rlog.displayTimeOnNodes) {
             if (!(0, _isNil2.default)(time)) {
               // is just chillin... so I'm assuming it's calculated and I want to know how long it took.
+              return "".concat(label, "\n\nCalculation Time: ").concat(time.toFixed(0), "ms");
+            }
+          }
+
+          return label;
+        } // not a middle or end node...
+
+
+        if (!(0, _isNil2.default)(this.value)) {
+          var value = "".concat(this.value); // only if there are no new lines...
+
+          if (!value.includes("\\n")) {
+            // trim beginning of string
+            value = value.replace(/^\s+/, "");
+          }
+
+          return "".concat(label, "\n\nValue:\n").concat(value);
+        }
+
+        return label;
+      }
+    }, {
+      key: "cytoLabelShort",
+      get: function get() {
+        var label = "".concat(this.label).replace(/[\t\n\r ]+/g, " ");
+
+        if (this.type === "observer" || this.type === "observable") {
+          var time = this.calculationTime;
+
+          if (_rlog.rlog.displayTimeOnNodes) {
+            if (!(0, _isNil2.default)(time)) {
+              // is just chillin... so I'm assuming it's calculated and I want to know how long it took.
               return "".concat(label, " (").concat(time.toFixed(0), "ms)");
             }
           }
@@ -73891,11 +73923,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         }
 
         return label;
-      }
-    }, {
-      key: "cytoLabelShort",
-      get: function get() {
-        return this.label.replace(/[\t\n\r ]+/g, " ");
       }
     }, {
       key: "cytoClasses",
