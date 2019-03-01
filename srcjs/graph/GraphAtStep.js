@@ -554,6 +554,7 @@ class GraphAtStep {
       let graphNodeData = (graphNode.data(): Node);
       cy.add(graphNode)
         .data("cytoLabel_", graphNodeData.cytoLabel)
+        .data("cytoLabelShort_", graphNodeData.cytoLabelShort)
         .classes(graphNodeData.cytoClasses)
         .style(graphNodeData.cytoStyle);
       // .animate({
@@ -586,6 +587,7 @@ class GraphAtStep {
         // prolly due to how accessor methods are done, this data value must be placed manually
         .data("value", graphNodeData.value)
         .data("cytoLabel_", graphNodeData.cytoLabel)
+        .data("cytoLabelShort_", graphNodeData.cytoLabelShort)
         .classes(graphClasses)
         .removeStyle()
         .style(graphNodeData.cytoStyle);

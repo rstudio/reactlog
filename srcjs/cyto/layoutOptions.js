@@ -3,6 +3,8 @@
 import cytoscape from "cytoscape"; // flowlint-line untyped-import:off
 import dagre from "cytoscape-dagre"; // flowlint-line untyped-import:off
 
+import { labelWidth } from "./cytoStyle";
+
 import type { CytoscapeElement, CytoscapeLibrary } from "./cytoFlowType";
 
 (cytoscape: CytoscapeLibrary).use(dagre);
@@ -14,7 +16,7 @@ let layoutOptions = {
 
   name: "dagre",
   rankDir: "LR", // 'TB' for top to bottom flow, 'LR' for left to right,
-  rankSep: 400, // the separation between node columns
+  rankSep: labelWidth + 50, // the separation between node columns
   nodeSep: 10, // vertical separation of nodes
   edgeSep: 50, // the separation between adjacent edges in the same rank
   ranker: "longest-path", // Type of algorithm to assign a rank to each node in the input graph. Possible values: "network-simplex", "tight-tree" or "longest-path"

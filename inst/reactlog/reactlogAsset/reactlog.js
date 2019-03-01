@@ -71209,7 +71209,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   Object.defineProperty(_exports, "__esModule", {
     value: true
   });
-  _exports.default = _exports.style = _exports.graphStyles = void 0;
+  _exports.default = _exports.labelWidth = _exports.style = _exports.graphStyles = void 0;
   _colors = _interopRequireDefault(_colors);
 
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -71242,11 +71242,14 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   var pulseScale = 1 + 1 / 16;
   var selectedScale = 2;
   var edgePixelWidth = 4;
-  var maxTextWidth = "10000px";
+  var labelWidth = 350;
+  _exports.labelWidth = labelWidth;
+  var maxTextWidth = "800px";
   var graphStyles = {
     node: {
       default: {
-        label: "data(cytoLabel_)",
+        "z-index": 0,
+        label: "data(cytoLabelShort_)",
         color: _colors.default.nodes.label_text_color,
         "text-opacity": _colors.default.nodes.label_text_opacity,
         "text-valign": "bottom",
@@ -71258,11 +71261,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         "border-width": 1,
         "background-color": _colors.default.nodes.ready,
         "text-wrap": "ellipsis",
-        "text-max-width": "350px",
+        "text-max-width": "".concat(labelWidth, "px"),
         "text-background-color": _colors.default.nodes.label_background_color,
         "text-background-opacity": _colors.default.nodes.label_background_opacity,
-        "font-family": '"Fira Mono", monospace' // "font-family": "monospace",
-
+        "font-family": '"Fira Mono", monospace'
       },
       start: {
         shape: "polygon",
@@ -71291,7 +71293,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         "shape-polygon-points": nodeShapes.end.shape,
         width: nodeShapes.end.width,
         height: nodeShapes.end.height,
-        "text-max-width": maxTextWidth
+        "text-max-width": "".concat(labelWidth * 1.5, "px")
       },
       endBig: {
         "border-width": 2,
@@ -71405,7 +71407,17 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       node: {
         "border-width": 4,
         // if you hover / selected, show all the label
-        "text-max-width": maxTextWidth
+        "text-max-width": maxTextWidth,
+        "text-wrap": "wrap",
+        "background-opacity": 1,
+        "text-background-opacity": 1,
+        "text-border-opacity": 1,
+        "text-border-width": 1,
+        "text-border-style": "solid",
+        "text-border-color": _colors.default.regular.black,
+        "text-background-padding": 8 * 2,
+        label: "data(cytoLabel_)",
+        "z-index": 1000
       },
       edge: {
         width: edgePixelWidth * 2
@@ -71521,12 +71533,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! cytoscape */ "./node_modules/cytoscape/dist/cytoscape.cjs.js"), __webpack_require__(/*! cytoscape-dagre */ "./node_modules/cytoscape-dagre/cytoscape-dagre.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! cytoscape */ "./node_modules/cytoscape/dist/cytoscape.cjs.js"), __webpack_require__(/*! cytoscape-dagre */ "./node_modules/cytoscape-dagre/cytoscape-dagre.js"), __webpack_require__(/*! ./cytoStyle */ "./srcjs/cyto/cytoStyle.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
-})(this, function (_exports, _cytoscape, _cytoscapeDagre) {
+})(this, function (_exports, _cytoscape, _cytoscapeDagre, _cytoStyle) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
@@ -71539,6 +71551,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
   // flowlint-line untyped-import:off
+  // flowlint-line untyped-import:off
   _cytoscape.default.use(_cytoscapeDagre.default);
 
   var layoutOptions = {
@@ -71548,7 +71561,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     name: "dagre",
     rankDir: "LR",
     // 'TB' for top to bottom flow, 'LR' for left to right,
-    rankSep: 400,
+    rankSep: _cytoStyle.labelWidth + 50,
     // the separation between node columns
     nodeSep: 10,
     // vertical separation of nodes
@@ -73318,7 +73331,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
         nodesLRB.right.map(function (graphNode) {
           var graphNodeData = graphNode.data();
-          cy.add(graphNode).data("cytoLabel_", graphNodeData.cytoLabel).classes(graphNodeData.cytoClasses).style(graphNodeData.cytoStyle); // .animate({
+          cy.add(graphNode).data("cytoLabel_", graphNodeData.cytoLabel).data("cytoLabelShort_", graphNodeData.cytoLabelShort).classes(graphNodeData.cytoClasses).style(graphNodeData.cytoStyle); // .animate({
           //   // style: ,
           //   duration: cytoDur
           // });
@@ -73345,7 +73358,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
           cyNode // update to latest data
           .data(graphNodeData) // prolly due to how accessor methods are done, this data value must be placed manually
-          .data("value", graphNodeData.value).data("cytoLabel_", graphNodeData.cytoLabel).classes(graphClasses).removeStyle().style(graphNodeData.cytoStyle); // .animate({
+          .data("value", graphNodeData.value).data("cytoLabel_", graphNodeData.cytoLabel).data("cytoLabelShort_", graphNodeData.cytoLabelShort).classes(graphClasses).removeStyle().style(graphNodeData.cytoStyle); // .animate({
           //   // style: graphNodeData.cytoStyle,
           //   duration: cytoDur
           // });
@@ -73878,6 +73891,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         }
 
         return label;
+      }
+    }, {
+      key: "cytoLabelShort",
+      get: function get() {
+        return this.label.replace(/[\t\n\r ]+/g, " ");
       }
     }, {
       key: "cytoClasses",
@@ -75817,7 +75835,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   var searchStringContainer = function searchStringContainer(searchElement_) {
     searchElement = searchElement_;
     searchElement.on("input", function (e) {
-      searchStringWith((0, _jquery.default)(e.target).val());
+      searchStringWith((0, _jquery.default)(e.target).val().toString());
     });
   };
 

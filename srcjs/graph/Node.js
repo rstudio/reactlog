@@ -159,6 +159,9 @@ class Node {
     }
     return label;
   }
+  get cytoLabelShort(): string {
+    return this.label.replace(/[\t\n\r ]+/g, " ");
+  }
   get cytoClasses(): string {
     let classes = [];
     switch (this.type) {
