@@ -58,7 +58,11 @@ let searchStringWithData = function(obj: Node | Edge | GhostEdge) {
 let searchStringContainer = function(searchElement_: JQuery) {
   searchElement = searchElement_;
   searchElement.on("input", function(e) {
-    searchStringWith($(e.target).val());
+    searchStringWith(
+      $(e.target)
+        .val()
+        .toString()
+    );
   });
 };
 

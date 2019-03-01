@@ -32,12 +32,14 @@ let selectedScale = 2;
 
 let edgePixelWidth = 4;
 
-let maxTextWidth = "10000px";
+let labelWidth = 350;
+let maxTextWidth = "800px";
 
 let graphStyles = {
   node: {
     default: {
-      label: "data(cytoLabel_)",
+      "z-index": 0,
+      label: "data(cytoLabelShort_)",
       color: colors.nodes.label_text_color,
       "text-opacity": colors.nodes.label_text_opacity,
       "text-valign": "bottom",
@@ -49,11 +51,10 @@ let graphStyles = {
       "border-width": 1,
       "background-color": colors.nodes.ready,
       "text-wrap": "ellipsis",
-      "text-max-width": "350px",
+      "text-max-width": `${labelWidth}px`,
       "text-background-color": colors.nodes.label_background_color,
       "text-background-opacity": colors.nodes.label_background_opacity,
       "font-family": '"Fira Mono", monospace',
-      // "font-family": "monospace",
     },
     start: {
       shape: "polygon",
@@ -82,7 +83,7 @@ let graphStyles = {
       "shape-polygon-points": nodeShapes.end.shape,
       width: nodeShapes.end.width,
       height: nodeShapes.end.height,
-      "text-max-width": maxTextWidth,
+      "text-max-width": `${labelWidth * 1.5}px`,
     },
     endBig: {
       "border-width": 2,
@@ -196,6 +197,16 @@ let graphStyles = {
       "border-width": 4,
       // if you hover / selected, show all the label
       "text-max-width": maxTextWidth,
+      "text-wrap": "wrap",
+      "background-opacity": 1,
+      "text-background-opacity": 1,
+      "text-border-opacity": 1,
+      "text-border-width": 1,
+      "text-border-style": "solid",
+      "text-border-color": colors.regular.black,
+      "text-background-padding": 8 * 2,
+      label: "data(cytoLabel_)",
+      "z-index": 1000,
     },
     edge: {
       width: edgePixelWidth * 2,
@@ -239,6 +250,6 @@ let graphStyles = {
   },
 };
 
-export { graphStyles, styleHelper as style };
+export { graphStyles, styleHelper as style, labelWidth };
 
 export default graphStyles;
