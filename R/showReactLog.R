@@ -9,7 +9,7 @@
 #' To use the reactive log visualizer, start with a fresh R session and
 #' run the command \code{options(shiny.reactlog=TRUE)}; then launch your
 #' application in the usual way (e.g. using \code{\link[shiny]{runApp}}). At
-#' any time you can hit Ctrl+F3 (or for Mac users, Command+F3) in your
+#' any time you can hit \preformatted{Ctrl+F3} (or for Mac users, \preformatted{Cmd+F3}) in your
 #' web browser to launch the reactive log visualization.
 #'
 #' The reactive log visualization only includes reactive activity up
@@ -21,7 +21,7 @@
 #' visualization will include all reactive activity that has taken place
 #' in the process, not just for a particular application or session.
 #'
-#' As an alternative to pressing Ctrl/Command+F3--for example, if you
+#' As an alternative to pressing \preformatted{Ctrl/Cmd+F3}--for example, if you
 #' are using reactives outside of the context of a Shiny
 #' application--you can run the \code{showReactLog} function, which will
 #' generate the reactive log visualization as a static HTML file and
