@@ -74173,9 +74173,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         entry = _rlog.rlog.log[i];
 
         if (entry.action === _logStates.LogStates.freeze) {
-          (0, _jquery.default)("#legendRowFrozen").css("display", ""); // remove display none form css
+          (0, _jquery.default)("#legendRowInvalidated").addClass("legendRowTopMiddle"); // add spacing around legend row
 
           (0, _jquery.default)("#legendFrozen").css("background-color", _colors.default.frozen.default);
+          (0, _jquery.default)("#legendRowFrozen").css("display", ""); // remove display none form css
+
           break;
         }
       }

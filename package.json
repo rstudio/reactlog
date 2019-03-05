@@ -15,7 +15,7 @@
     "update-license": "node ./bin/update-license.js > LICENSE.note",
     "postinstall": "./bin/postinstall.sh",
     "precommit": "lint-staged",
-    "git_add_map": "git add inst/reactlogAsset/reactlog.js inst/reactlogAsset/reactlog.js.map && git add"
+    "git_add_map": "git add inst/reactlog/reactlogAsset/reactlog.js inst/reactlog/reactlogAsset/reactlog.js.map && git add"
   },
   "husky": {
     "hooks": {
