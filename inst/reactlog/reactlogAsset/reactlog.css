@@ -8,45 +8,28 @@ body {
   padding: 0;
 }
 div {
+  -ms-user-select: none;
   -moz-user-select: none;
   -khtml-user-select: none;
   -webkit-user-select: none;
   -o-user-select: none;
+  user-select: none;
   cursor: default;
 }
-.buttonDirections {
-  color: lightgrey;
-}
-#instructions,
-#logEntry,
-#ended {
+#logEntry {
   font-weight: 200;
   color: #444;
   text-align: center;
 }
-#instructions, #logEntry {
+#logEntry {
   z-index: 1000;
   white-space: pre-wrap;
   text-align: left;
   position:absolute;
-  top:0px;
-  left:0px;
+  top:0;
+  left:0;
   padding: 10px;
   font-size: 10px;
-}
-#ended {
-  font-size: 30px;
-}
-#ended strong {
-  font-weight: 600;
-}
-#triangle {
-  fill: #ccc;
-}
-.link {
-  fill: none;
-  stroke: #ccc;
-  stroke-width: 0.5px;
 }
 #description {
   position: fixed;
@@ -62,7 +45,7 @@ div {
   left: 10px;
 }
 #timeline,
-#timeline *, .navigationButton {
+.navigationButton {
   cursor: pointer;
 }
 #timeline-bg {
@@ -179,7 +162,7 @@ text {
   margin-right: 5px;
 }
 #search {
-  background: url(images/iconSearch.svg) no-repeat scroll 0 0;
+  background: url("images/iconSearch.svg") no-repeat scroll 0 0;
   background-size: 20px 20px;
   padding-left: 20px;
   border-radius: 5px;
@@ -208,8 +191,8 @@ text {
   height: 100%;
   width: 100%;
   position: absolute;
-  top: 0px;
-  left: 0px;
+  top: 0;
+  left: 0;
 }
 #cyto {
   /* width: 100%; */
@@ -219,8 +202,8 @@ text {
   align-self: center;
 
   position: absolute;
-  left: 0px;
-  bottom: 0px;
+  left: 0;
+  bottom: 0;
   padding: 10px;
   background-color: rgba(255,255,255, 0.85);
 
