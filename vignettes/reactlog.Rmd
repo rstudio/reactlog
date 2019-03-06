@@ -1,6 +1,6 @@
 ---
 title: "Shiny Reactlog"
-author: "Barret Schloerke and Joe Cheng"
+author: "Barret Schloerke, Joe Cheng, and Carson Sievert"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -19,231 +19,43 @@ knitr::opts_chunk$set(
 )
 ```
 
+## Background 
 
+With 0.14.0, the **shiny** R package introduced a way to investigate the activity and logic of a **shiny** application through a visualization of it's reactive history. In version 1.3, **shiny** revamped this visual tool via the R package **reactlog**. The design and capabilities of this interactive visualization have vastly improved, especially for navigating large and complex reactive graphs. This vignette outlines the new design and helps explain how to navigate the new interface. 
 
-# Resources
+To understand **reactlog**, it helps to have a basic understanding of **shiny**'s reactive programming model. If you're fairly new to **shiny** and reactive programming, the next section, which has been modified from the [_Mastering Shiny_ book by Joe Cheng](https://github.com/jcheng5/shiny-book), provides an overview of **shiny**'s reactivity model and is designed specifically for understanding **reactlog**. You'll notice the terminology, concepts, and graphics are consistent with **reactlog**, which is introduced in the [Hello Reactlog](#reactlog) section through code and video demonstrations. Heavy users of **reactlog** may find the [Reactlog in detail](#reactlog-in-detail) section helpful to detailing all the individual components of the **reactlog** interface. Finally, the [Learn more](#learn-more) section has links to more resources for learning even more about reactivity in **shiny**.
 
-There are already many useful articles explaining what is reactive programming.  Here is a condensed set of links that I found to be useful while learning reactive programming.
+## The reactive lifecycle {#reactivity}
 
-* The core Shiny articles under [Build Reactivity](https://shiny.rstudio.com/articles/#reactivity): [https://shiny.rstudio.com/articles/#reactivity](https://shiny.rstudio.com/articles/#reactivity)
-  * These articles help explain to me:
-    * how reactive elements know about each other
-    * when elements are calculated
-    * why a `clientData` is randomly appearing in the reactive graph
-    * how to prevent reactivity from executing using `isolate()`
-* Shiny Tutorials: [https://shiny.rstudio.com/tutorial/](https://shiny.rstudio.com/tutorial/)
-  * Treasure trove of useful tutorials, videos, and links to outside resources
-* Effective Reactive Programming: [https://www.rstudio.com/resources/videos/effective-reactive-programming/](https://www.rstudio.com/resources/videos/effective-reactive-programming/)
-  * "This tutorial will go beyond the basics, explaining the philosophy behind Shiny’s reactive programming framework and exploring patterns and techniques for using it well."
-* [Mastering Shiny](https://github.com/jcheng5/shiny-book) by Joe Cheng
+### A reactive graph
 
-
-### Presentations
-
-The updated reactlog was presented at `rstudio::conf2019`, titled "Reactlog 2.0: Debugging the State of Shiny."
-
-* Presentation Repository: [https://github.com/schloerke/presentation-2019-01-18-reactlog](https://github.com/schloerke/presentation-2019-01-18-reactlog)
-* Presentation Recording: [https://resources.rstudio.com/rstudio-conf-2019/reactlog-2-0-debugging-the-state-of-shiny](https://resources.rstudio.com/rstudio-conf-2019/reactlog-2-0-debugging-the-state-of-shiny)
-
-
-# Reactlog
-
-## Layout
-
-The reactlog display is composed of two main parts: the status bar and the dependency graph.
-
-```{r}
-knitr::include_graphics("images/example_cranwhales.png")
-```
-
-
-### Status Bar
-
-Located on the top of the screen, the status bar contains:
-
-* navigation buttons
-* progress bar
-* current step information
-* current execution time
-* the session where the action is taking place
-* and a search bar
-
-```{r}
-knitr::include_graphics("images/status_bar.png")
-```
-
-#### Navigation Buttons
-
-The navigation buttons are used to jump around the recorded timeline of the reactlog graph.  There are four different ways to move time forwards and backwards within the reactlog.
-
-```{r echo=FALSE,}
-knitr::include_graphics("images/navigation.png")
-```
-
-* Previous / Next Step: <img src="images/buttons/prev-step.svg" width="30" style="vertical-align: middle"/> <img src="images/buttons/next-step.svg" width="30" style="vertical-align: middle"/>
-  * These buttons move one reactive step a single step forwards (right) or backwards (left) within the displayed reactlog.
-* Reactive Endpoint Calculation: <img src="images/buttons/prev-output-calc.svg" width="30" style="vertical-align: middle"/> <img src="images/buttons/next-output-calc.svg" width="30" style="vertical-align: middle"/>
-  * These buttons advance the progress bar to the next (or previous) reactive endpoint (ex: output values or observe statements) that finishes it's calculation phase within the displayed reactlog.  These steps were deemed important as to highlight what has changed within the reactlog when advancing to the next reactive endpoint calculation.
-* Idle Step: <img src="images/buttons/prev-idle.svg" width="30" style="vertical-align: middle"/> <img src="images/buttons/next-idle.svg" width="30" style="vertical-align: middle"/>
-  * These buttons advance the progress bar to the next time the Shiny app has idled.  This means the application is not processing any information and is waiting for something within the application to be invalidated.  A relatively large time gap will most likely appear after this step.
-* User Marked Step: <img src="images/buttons/prev-mark.svg" width="30" style="vertical-align: middle"/> <img src="images/buttons/next-mark.svg" width="30" style="vertical-align: middle"/>
-  * These buttons advance the progress bar to the nearest user supplied mark.  These marks can be added using `Ctrl + F4` (Mac: `Cmd + F4`)
-
-By default, reactlog will initially load to the last user mark.  If there are no user marks, the first reactive endpoint calculation will be loaded.
-
-If next _jump_ location can not be found, the reactlog will advance to the end of the progress bar.  Likewise, if the previous _jump_ location can not be found, the reactlog will move to the beginning of the progress bar.
-
-#### Progress Bar and Step Information
-
-```{r}
-knitr::include_graphics("images/progress_bar.png")
-```
-
-The progress bar is composed of four main components: the current progress location, reactive endpoint marks, idle shiny application marks, and user defined marks.  Each of the marks are a visual representation of the corresponding locations.  The current progress bar will be displayed behind the marked steps to help signify where the reactive graph is currently being display within the reactlog recording.
-
-```{r}
-knitr::include_graphics("images/step_information.png")
-```
-
-The current step information is displayed above the progress bar just after the navigation buttons. For each step within the reactlog, corresponding information is displayed.
-
-To the left of the search bar is the Time and Session information.  The Time will display the relative time difference from the first recorded step.  The Session will display the Shiny session that the current step is being executed in.
-
-##### Search Bar
-
-The search bar is a live search bar that requires a minimum of three characters to begin searching.  All matches are found against the name or ID of each reactive graph element.  If no matches are found, the full graph is displayed.  All matching elements are increased in size to signify a match.  When searching for an element, all matching elements' family trees will be displayed.
-
-Searching can be very useful to filter a large graph down to only the reactive elements involved in a calculation.
-
-```{r, out.width="40%"}
-knitr::include_graphics("images/search_bar.png")
-```
-
-> Pro tip: Use partial matching to filter the graph down to a particular module name.  The search above would look at the `input` values in the _details_ module.
-
-
-
-### Dependency Graph
-
-Once a reactlog has been recorded, all possible dependency connections are calculated to visually display which reactive elements are connected other reactive elements.  These possible connections will be displayed at all times to maintain graph structure and identify which elements will depend on other elements.  The directed, acyclic (typically) graph lays out the logical flow from left to right how reactive dependencies are invalidated and calculated.
-
-
-#### Reactive Graph Nodes
-
-```{r}
-knitr::include_graphics("images/elements.png")
-```
-
-Reactive inputs are values that are the beginning of a reactive chain.  They are the leftmost starting points of the reactive graph.  Reactive sources are typically values created in `input`, `clientData`, `shiny::reactiveVal`, or `shiny::reactiveValues`.
-
-Reactive expressions are conductors between sources and enpoints.  Their values depend on other reactive elements and are depended on by other reactive elements.  These expressions help with intermediate calculations, preventing duplicate calculations, and aid in logical flow.
-
-Reactive endpoints are values that are being stored to the `output` object or are `observe`ing other reactive elements to produce side effects.
-
-> Pro tip: Use the `label` parameter when defining reactive elements.  This will help your debug process and avoid long, code-exposing reactive element labels.
-
-## Actions
-
-#### Mouse
-
-* Navigation Buttons
-  * **Click**: Move to the next (or previous) appropriate step.
-* Progress Bar:
-  * **Click (+drag)**: Move to the step in the progress bar immediately.  This still works even if the targeted step is not in a filtered reactive graph.
-* Reactive Element
-  * **Hover**: Highlight the particular element's family tree within the graph.
-  * **Click**: Maintain the highlighting of a particular element's family tree even after the mouse leaves the element.
-  * **Double Click**: Subset the graph displayed to the family tree of the element clicked.
-
-#### Keyboard Shortcuts
-
-* Navigation
-  * `Left/Right Arrow keys`: Left / Right a single Step.
-  * `Left/Right Arrow keys + OPTION`: Move to the nearest Reactive Endpoint Calculation.
-  * `Left/Right Arrow keys + OPTION + SHIFT`: Move to the nearest Idle Step.
-  * `Home/End`: Move to the nearest User Marked Step or the beginning or end of the reactlog.
-
-> Pro tip: Hold down the arrow keys to quickly iterate over all the steps of the displayed graph.
-
-* `Esc`
-  * If an element has been clicked, remove the click selection.
-  * If the cursor focus is on the search bar, move the focus to the reactive graph.
-  * If the focus is on the graph and the graph is filtered, reset the filter and display the whole graph.
-* Reactlog Info
-  * `s`: Move the focus to the **s**earch bar
-  * `l`: When the cursor focus is on the graph, display the react**l**og step information.
-  * `f`: Resize the graph to **f**it on the screen
-
-## Reactive States
-
-```{r, out.width="15%"}
-knitr::include_graphics("images/legend.png")
-```
-
-Reactive elements will change their color throughout the reactlog.  At each stage of the reactlog, a reactive element can have one of the following states:
-
-* Ready:
-  * The reactive element has finished executing. For reactive conductors (such as the result of `reactive()`), a calculated value is available.
-* Calculating:
-  * The reactive element has started executing.  During calculation, direct dependencies will be added.
-* Invalidating:
-  * This is the opposite of calculating, the reactive element is resetting it's value and removing all direct dependencies.
-* Invalidated:
-  * The reactive element has been _reset_ and is waiting to calculate.
-* Frozen:
-  * A visual display of a frozen `reactiveVal` or `reactiveValues` key.  These elements behave as if their execution is done with `req(FALSE)`.  Please see [freezeReactiveValue](https://shiny.rstudio.com/reference/shiny/latest/freezeReactiveValue.html) for more information.
-* Undefined:
-  * Reactive elements that have not been defined at the current stage of the reactlog will appear white in color.  Their possible connections are maintained as a placeholder until the element is actually defined.
-
-> Pro tip: `input` keys are not defined until they are relied on.  This may cause some `input` values to be defined later into the reactlog, even if the value was actually set at an earlier time point.
-
-
-
-# Reactlog graph
-
-> The following section has been modified (with permission) from Joe Cheng's chapter on Reactivity in his book, [Mastering Shiny](https://github.com/jcheng5/shiny-book)
-
-## The reactive graph illustrated
-
-Here's an illustrated version of a reactive graph.
+Below is a diagram of a reactive graph. The shapes on the left are reactive inputs (or values), the ones in the middle are reactive expressions, and on the right are observers (or outputs). The lines between the shapes are directional, with the arrows indicating the direction of their inter-dependencies. When a **shiny** app is loaded, this graph is discovered and formed. When a user interacts with the app and changes reactive input values, the graph is partially destroyed and reformed. The sub-sections that follow explain how this reactive lifecyle works in detail. The **reactlog** visualization is designed to help you inspect each particular step in this reactive lifecycle.
 
 ```{r}
 knitr::include_graphics("images/04-reactivity/reactivity-graph-00.png")
 ```
 
-In the diagram above, the shapes on the left are reactive inputs and values, the ones in the middle are reactive expressions, and on the right are observers and outputs. (For the rest of this discussion, we'll simply refer to outputs as observers, rather than saying "observers and/or outputs" every time.)
-
-The lines between the shapes are directional, with the arrows indicating the direction of reactivity--we'll see in a moment why this means the arrows go from left to right, instead of from right to left.
-
-Now we'll follow along, step by step, as a Shiny app is loaded and these reactive relationships are discovered, formed, destroyed, and reformed.
-
 ### A session begins
 
-When a reactive app is visited and a session begins, the server function is executed and the reactive objects are created. However, Shiny has no _a priori_ knowledge of the relationships (lines) between the objects. As you can see in the following diagram, the shapes are all present but there are no lines yet.
-
-> The reactlog has a full history at render time, so an appropriate layout can be made on the initial display.
+When you load a **shiny** app, all reactive expression and observers begin in an _invalidated_ state (indicated in gray). Invalidated state essentially means that any code that the node depends upon needs to be re-executed. 
 
 ```{r}
 knitr::include_graphics("images/04-reactivity/reactivity-graph-01.png")
 ```
 
-Note that all of the reactive expressions and observers are a darker color. This indicates that they are in _invalidated_ state, which is the initial state for these objects. When an observer is in this state, it means it needs to be executed as soon as Shiny has a chance to. When a reactive expression is in this state, it means that the next time that reactive expression is read, its code will need to be executed (i.e., no result value is currently cached for that reactive expression).
-
 ### Execution begins
 
-Now that the session has been initialized, we can begin the execution phase. In this phase, Shiny picks an observer (_not_ a reactive expression) and starts executing it. In the diagrams below, we use an orange fill to indicate when a node is actively executing.
+After initializing a session, **shiny** picks an observer (_not_ a reactive expression) and starts executing it.^[You may wonder how Shiny decides which of the several invalidated observers/outputs to execute. The short answer is that you should act as if it's random. Ideally, your observers and especially outputs won't care what order they execute in, as each will function independently from the others. However, if you do have observers whose side effects must always happen in a certain relative order, you can use the `observe` function's `priority` argument to dictate that order for observers. You can also control the priority of outputs by calling the `outputOptions()` function with a `priority` argument.] Reactlog uses an orange fill to indicate when a node is actively executing (i.e., calculating).
 
 ```{r}
 knitr::include_graphics("images/04-reactivity/reactivity-graph-02.png")
 ```
 
-(You may wonder how Shiny decides which of the several invalidated observers/outputs to execute. The short answer is that you should act as if it's random. Ideally, your observers and especially outputs won't care what order they execute in, as each will function independently from the others. However, if you do have observers whose side effects must always happen in a certain relative order, you can use the `observe` function's `priority` argument to dictate that order for observers. You can also control the priority of outputs by calling the `outputOptions()` function with a `priority` argument.)
-
 ### Reading a reactive expression
 
-During an observer's execution, it may read one or more reactive expressions. As soon as this occurs, a dependency/dependent relationship is established between the reactive expression and the observer, represented below by the arrow. The arrow points from left to right; this is the direction that reactivity will flow, as we'll see in a moment.
+During an observer's execution, it may read one or more reactive expressions. As soon as this occurs, the observer becomes dependent on the reactive expression, represented below by the new arrow.
 
-As we said, all reactive expressions start out in invalidated state (represented by the grey fill), including the one this observer is now trying to access. So in order to return a value, the reactive expression needs to execute its code, which it starts doing now. We fill the reactive expression with orange to represent that it's running.
+Remember that all reactive expressions start out in invalidated state (represented by the grey fill), including the one this observer is now trying to access. In order to return a value, the reactive expression needs to execute its code, which it starts doing now. We fill the reactive expression with orange to represent that it's running.
 
 Note that the observer is still orange: just because the reactive expression is now running, doesn't mean that the observer has finished. The observer is waiting on the reactive expression to return its value so its own execution can continue, just like a regular function call in R.
 
@@ -253,9 +65,9 @@ knitr::include_graphics("images/04-reactivity/reactivity-graph-03.png")
 
 ### Reading an input
 
-This particular reactive expression happens to read a reactive input. Again, a dependency/dependent relationship is established, so we add another arrow.
+This particular reactive expression happens to read a reactive input. Therefore, the reactive expression depends on the input, represented below by the arrow.
 
-Unlike reactive expressions and observers, reactive inputs have nothing to execute, since they simply represent a variable.  This means their value is ready from the start.
+Unlike reactive expressions and observers, reactive inputs simply hold a value, so they don't require an execution phase (i.e., their value is ready from the start).
 
 ```{r}
 knitr::include_graphics("images/04-reactivity/reactivity-graph-04.png")
@@ -281,17 +93,17 @@ knitr::include_graphics("images/04-reactivity/reactivity-graph-06.png")
 
 ### The next observer executes
 
-Now that Shiny has completed execution of the first observer, it chooses a second one to execute. Again, it turns orange, and may read values from invalidated reactive expressions, which will turn orange, and so on. This cycle will repeat until every invalidated observer enters the idle/ready (green) state.
+Now that Shiny has completed execution of the first observer, it chooses a second one to execute. Again, it turns orange, and may read values from reactive expressions, which will turn orange, and so on. This cycle will repeat until every invalidated observer enters the idle/ready (green) state.
 
 ```{r}
 knitr::include_graphics("images/04-reactivity/reactivity-graph-07.png")
 ```
 
-### Execution completes, outputs flushed
+> As shown in the next diagram, the second observer in this particular graph depends on an idle reactive expression, so it can simply access it's cached value without performing redundant and possibly costly re-execution.
+
+### Execution completes, outputs flushed {#reactive-flush}
 
 At last, all of the observers have finished execution and are now idle. This round of reactive execution is complete, and nothing will happen with this session until some external force acts on the system (e.g. the user of the Shiny app moving a slider in the user interface). In reactive terms, this session is now at rest.
-
-I didn't mention it before, but when Shiny outputs finish executing, they don't immediately update the output in the browser. Instead, all of the new outputs are held until this point, at which time they are "flushed" to the browser all at once. (It'd be nice if Shiny could let the app author decide whether outputs update one by one or all at once, but as of this writing, Shiny only supports the latter.)
 
 ```{r}
 knitr::include_graphics("images/04-reactivity/reactivity-graph-08.png")
@@ -344,3 +156,212 @@ knitr::include_graphics("images/04-reactivity/reactivity-graph-12.png")
 ```
 
 What's different this time, though, is that not all of the reactive expressions and outputs are starting out in the invalidated state. Some parts of the graph weren't affected--neither directly nor indirectly--by the reactive input that had changed. That's great, as we won't need to reexecute those parts of the graph, even if they are used again by some of the invalidated parts!
+
+
+
+## Hello Reactlog {#reactlog}
+
+Consider the following **shiny** app with one reactive input and one output. It simply allows you to choose variables from the `diamonds` dataset to visualize that variable using **plotly**.
+
+```r
+options(shiny.reactlog = TRUE)
+
+library(shiny)
+library(plotly)
+
+ui <- fluidPage(
+  selectInput("var", "Choose a variable", choices = names(diamonds)),
+  plotlyOutput("p")
+)
+
+server <- function(input, output, session) {
+  output$plot <- renderPlotly({
+    plot_ly(x = diamonds[[input$var]])
+  })
+}
+
+shinyApp(ui, server)
+```
+
+The following video demonstrates how one could run this application, interact with it (i.e., choose a different variable), then launch the react log by pressing Ctrl+F3 (Mac: Cmd+F3). To start at the very beginning of the app's lifecycle, click the <img src="images/buttons/prev-mark.svg" width="20" style="vertical-align: middle"/> button. You can then navigate through each step of the reactive lifecyle by pressing the forward key or clicking <img src="images/buttons/next-step.svg" width="20" style="vertical-align: middle"/>. As you step through the lifecycle, notice how the status of the graph is displayed above the dependency graph. A breakdown of all the components of the status bar is provided in the [Status bar](#status-bar) section. 
+
+```{r}
+htmltools::tags$iframe(
+  src = "https://player.vimeo.com/video/321628235?title=0&byline=0&portrait=0",
+  width = "100%",
+  height = 400,
+  frameborder = "0",
+  seamless = "seamless",
+  webkitAllowFullScreen = NA,
+  mozallowfullscreen = NA,
+  allowFullScreen = NA
+)
+```
+
+For more complex graphs, like the one created by [Joe Cheng's cranwhales app](https://github.com/jcheng5/cranwhales), it's convenient to have more advanced navigation through the time-dependent graph, like jumping to the next idle step using <img src="images/buttons/next-idle.svg" width="30" style="vertical-align: middle"/>, and querying sub-graphs by double-clicking and/or searching for graph components by name. Also, notice how, upon opening **reactlog**, it navigates to the first [reactive flush](#reactive-flush) (i.e., completion of the first round of reactive execution). If there is a particular round of execution you're primarily interested in, you can add user mark(s), and **reactlog** would open to that time point instead (see [Navigation](#navigation-buttons) for more details on creating and navigating to user marks).
+
+```r
+options(shiny.reactlog = TRUE)
+shiny::runGitHub("cranwhales", "jcheng5", ref = "sync")
+```
+
+```{r}
+htmltools::tags$iframe(
+  src = "https://player.vimeo.com/video/321805975?title=0&byline=0&portrait=0",
+  width = "100%",
+  height = 400,
+  frameborder = "0",
+  seamless = "seamless",
+  webkitAllowFullScreen = NA,
+  mozallowfullscreen = NA,
+  allowFullScreen = NA
+)
+```
+
+These two videos demonstrate basic navigation of the **reactlog** interface. Next we'll explain all the components in detail.
+
+## Reactlog in detail {#reactlog-in-detail}
+
+The **reactlog** visualization consists of two main components: the [status bar](#status-bar) and [dependency graph](#dependency-graph).
+
+```{r, out.width="100%"}
+knitr::include_graphics("images/example_cranwhales.png")
+```
+
+### Status Bar {#status-bar}
+
+The status bar appears above the dependency graph and contains information about the current state of the graph. The status bar is comprised of the progress bar, current step information, navigation buttons, and a search bar.
+
+```{r, out.width="100%"}
+knitr::include_graphics("images/status_bar.png")
+```
+
+#### Progress Bar
+
+The progress bar is composed of four main components: the current progress location (dark gray rectangle), reactive endpoint marks (short green line), idle shiny application marks (tall green line), and user defined marks (gray line). Notice that the progress bar location reflects the current 'step' in the formation of the reactive graph which may or may not be in line with a endpoint/idle/user mark. You can navigate to any particular step of the progress bar by directly clicking or using the [navigation buttons](#navigation-buttons) (or key-bindings).
+
+```{r, out.width="100%"}
+knitr::include_graphics("images/progress_bar.png")
+```
+
+#### Current step
+
+Information about the current step appears above the progress bar and provides information about the current state of the reactive graph formation. The step description makes a direct reference to stages of the [The reactive lifecycle](#reactivity). The time information displays the relative time difference between the current step and from the first recorded step.^[**reactlog** is not designed to be a code profiling tool. If you are curious why your app is slow, use [the **profvis** package](https://rstudio.github.io/profvis/) to identify and address slow R code.] The Session will display the Shiny session ID that the current step is being executed in. The session ID can potentially be of interest if your shiny app is serving multiple users.
+
+```{r}
+knitr::include_graphics("images/step_information.png")
+```
+
+> Pro tip: Press the 'l' key to display even more detailed information about the current step.
+
+#### Navigation Buttons {#navigation-buttons}
+
+The navigation buttons are used to jump around the recorded timeline of the reactlog graph.  There are four different ways to move time forwards and backwards within the reactlog.
+
+```{r echo=FALSE,}
+knitr::include_graphics("images/navigation.png")
+```
+
+* Previous / Next Step (`Left/Right Arrow keys`): <img src="images/buttons/prev-step.svg" width="30" style="vertical-align: middle"/> <img src="images/buttons/next-step.svg" width="30" style="vertical-align: middle"/>
+  * These buttons move one reactive step a single step forwards (right) or backwards (left) within the displayed reactlog.
+* Reactive Endpoint Calculation (`Left/Right Arrow keys + OPTION`): <img src="images/buttons/prev-output-calc.svg" width="30" style="vertical-align: middle"/> <img src="images/buttons/next-output-calc.svg" width="30" style="vertical-align: middle"/>
+  * These buttons advance the progress bar to the next (or previous) reactive endpoint (ex: output values or observe statements) that finishes it's calculation phase within the displayed reactlog.  These steps were deemed important as to highlight what has changed within the reactlog when advancing to the next reactive endpoint calculation.
+* Idle Step (`Left/Right Arrow keys + OPTION + SHIFT`): <img src="images/buttons/prev-idle.svg" width="30" style="vertical-align: middle"/> <img src="images/buttons/next-idle.svg" width="30" style="vertical-align: middle"/>
+  * These buttons advance the progress bar to the next time the Shiny app has idled.  This means the application is not processing any information and is waiting for something within the application to be invalidated.  A relatively large time gap will most likely appear after this step.
+* User Marked Step (`Home/End`): <img src="images/buttons/prev-mark.svg" width="30" style="vertical-align: middle"/> <img src="images/buttons/next-mark.svg" width="30" style="vertical-align: middle"/>
+  * These buttons advance the progress bar to the nearest user supplied mark. These marks can be added by pressing `Ctrl + F4` (Mac: `Cmd + F4`) inside the **shiny** application.
+
+> Tip: Hold down the arrow keys to quickly iterate over all the steps of the displayed graph.
+
+##### Search Bar
+
+The search bar matches the name or ID of each reactive graph element. All matching elements are increased in size to signify a match and all matching elements' family trees are displayed. The search becomes active after three characters, and if no matches are found, the full graph is displayed.
+
+```{r, out.width="40%"}
+knitr::include_graphics("images/search_bar.png")
+```
+
+> Tip 1: Use partial matching to filter the graph down to a particular module name. The search above would look at the `input` values in the _details_ module.
+
+> Tip 2: Press the 's' key to bring focus to the search bar.
+
+
+### Dependency Graph {#dependency-graph}
+
+**Reactlog** always displays every dependency that was made at any point in time during the recorded lifecycle. This helps maintain graph structure (i.e., [object constancy](https://bost.ocks.org/mike/constancy/)) when stepping through the lifecycle and also to identify which nodes will depend on other nodes. To reflect the current reactive state, **reactlog** color encodes each graph node as well as dimmed arrows to denote dependencies that are yet to be established.
+
+#### Reactive States
+
+```{r, out.width="15%"}
+knitr::include_graphics("images/legend.png")
+```
+
+At each stage of the reactlog, a reactive element can have one of the following states:
+
+* Ready:
+  * The reactive element has finished executing. For reactive conductors (such as the result of `reactive()`), a calculated value is available.
+* Calculating:
+  * The reactive element has started executing.  During calculation, direct dependencies will be added.
+* Invalidating:
+  * This is the opposite of calculating, the reactive element is resetting it's value and removing all direct dependencies.
+* Invalidated:
+  * The reactive element has been _reset_ and is waiting to calculate.
+* Frozen:
+  * A visual display of a frozen `reactiveVal` or `reactiveValues` key.  These elements behave as if their execution is done with `req(FALSE)`.  Please see [freezeReactiveValue](https://shiny.rstudio.com/reference/shiny/latest/freezeReactiveValue.html) for more information.
+* Undefined:
+  * Reactive elements that have not been defined at the current stage of the reactlog will appear white in color.  Their possible connections are maintained as a placeholder until the element is actually defined.
+
+> Pro tip: `input` keys are not defined until they are relied on.  This may cause some `input` values to be defined later into the reactlog, even if the value was actually set at an earlier time point.
+
+
+#### Highlighting and filtering
+
+Hovering over a particular graph element (either a node or an edge) highlights that element's family tree. and clicking maintains that highlight. Double-clicking filters that element's family tree. To clear highlight and filter selections, click/double-click the background of the graph or press the `Esc` key when the graph is in focus.
+
+```{r}
+htmltools::tags$iframe(
+  src = "https://player.vimeo.com/video/321837450?title=0&byline=0&portrait=0",
+  width = "100%",
+  height = 400,
+  frameborder = "0",
+  seamless = "seamless",
+  webkitAllowFullScreen = NA,
+  mozallowfullscreen = NA,
+  allowFullScreen = NA
+)
+```
+
+#### Zooming
+
+When the graph is in focus, you can scroll the mouse to zoom in on the graph -- also, press the 'f' key to alter the zoom so that the current graph fits the screen.
+
+#### Labeling nodes
+
+Recall from [the reactive lifecycle](#reactivity) that nodes in a reactive graph encode reactive inputs, expressions, and outputs (or observers). Labeling inputs and outputs is relatively straight-forward since they already have an associated ID. Reactive expression and observers, on the other hand, don't have an associated ID -- **reactlog**, by default, will use the body of the expression to label these nodes. 
+
+```{r}
+knitr::include_graphics("images/elements.png")
+```
+
+
+Fortunately, **shiny**'s `reactive()` and `observe()` functions have a `label` argument. If provided, **reactlog** will use this value to label the corresponding nodes.
+
+## Learn more {#learn-more}
+
+This vignette explains the **reactlog** inferface, which requires a basic understanding of **shiny** and reactive programming. There are many other useful existing articles and resources that may help advance your understanding of **reactlog** and **shiny**, including but limited to:
+
+* The core **shiny** articles under [Build Reactivity](https://shiny.rstudio.com/articles/#reactivity), these articles help explain:
+    * How reactive elements know about each other
+    * When elements are calculated
+    * Why a `clientData` is randomly appearing in the reactive graph
+    * How to prevent reactivity from executing using `isolate()`
+* Shiny Tutorials: [https://shiny.rstudio.com/tutorial/](https://shiny.rstudio.com/tutorial/)
+  * Treasure trove of useful tutorials, videos, and links to outside resources
+* The `rstudio::conf2019` talk by Barret Schloerke: [Reactlog 2.0: Debugging the State of Shiny](https://resources.rstudio.com/rstudio-conf-2019/reactlog-2-0-debugging-the-state-of-shiny).
+* Effective Reactive Programming: [https://www.rstudio.com/resources/videos/effective-reactive-programming/](https://www.rstudio.com/resources/videos/effective-reactive-programming/)
+  * "This tutorial will go beyond the basics, explaining the philosophy behind Shiny’s reactive programming framework and exploring patterns and techniques for using it well."
+* [Mastering Shiny](https://github.com/jcheng5/shiny-book) by Joe Cheng
+
+* Presentation Repository: [https://github.com/schloerke/presentation-2019-01-18-reactlog](https://github.com/schloerke/presentation-2019-01-18-reactlog)
+* Presentation Recording: [https://resources.rstudio.com/rstudio-conf-2019/reactlog-2-0-debugging-the-state-of-shiny](https://resources.rstudio.com/rstudio-conf-2019/reactlog-2-0-debugging-the-state-of-shiny)
+
