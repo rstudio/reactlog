@@ -75801,7 +75801,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
   // import console from "../utils/console";
-  var searchElement; // when str length < 3 do not search
+  var searchElement;
+  var startsWithR = /^r\d/; // when str length < 3 do not search
   // when str length = 0, reset filter
   // when str length >= 3, set filter to all elements that match
 
@@ -75812,6 +75813,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         // TODO-barret show warning of resetting
         // console.log("resetting log!");
         return updateGraph.searchRegexReset();
+      } else if (startsWithR.test(str)) {// continue execution like normal
+        // will hopefully match against a node
       } else {
         // TODO-barret show warning of not enough characters
         // console.log("do nothing");
