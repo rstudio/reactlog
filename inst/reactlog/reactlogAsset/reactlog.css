@@ -199,27 +199,14 @@ text {
 
 
 #content {
-
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: flex-end;
-  align-items: stretch;
-  align-content: stretch;
-
   flex-grow: 1;
-
   position: relative;
-
 }
 #cytoWrapper  {
-  z-index: 0;
-  flex-grow: 1;
   /* border: 2px red dashed; */
+  z-index: 0;
   height: 100%;
   width: 100%;
-  /* align-self: stretch; */
-  /* display: inline-block; */
-
   position: absolute;
   top: 0px;
   left: 0px;
