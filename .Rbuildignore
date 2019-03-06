@@ -1,5 +1,6 @@
 ^Meta$
 ^doc$
+^cran-comments\.md$
 ^appveyor\.yml$
 ^.*\.Rproj$
 ^\.Rproj\.user$
@@ -24,3 +25,4 @@
 ^\.github/
 ^index\.html$
 ^\.lintr$
+^scripts/
