@@ -34,6 +34,12 @@ module.exports = function(grunt) {
           path: instdir + "reactlogAsset",
           filename: 'reactlog.js'
         },
+        optimization: {
+          splitChunks: {
+            automaticNameDelimiter: "-",
+            chunks: "all"
+          }
+        },
         plugins: [
           // new BundleAnalyzerPlugin({
           //   analyzerMode: 'static'
@@ -44,7 +50,7 @@ module.exports = function(grunt) {
         module: {
           rules: [{
             test: /\.js$/,
-            // exclude: /node_modules/,
+            exclude: /node_modules/,
             use: [{
               loader: "babel-loader"
             }]
