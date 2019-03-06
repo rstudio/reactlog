@@ -1,10 +1,16 @@
 language: r
-r:
-  - oldrel
-  - release
-  - devel
 sudo: false
 cache: packages
+
+
+matrix:
+  include:
+    - r: oldrel
+
+    - r: release
+
+    - r: devel
+      warnings_are_errors: false
 
 notifications:
   email:
