@@ -1,8 +1,6 @@
 html,
 body {
   font-family: "Source Sans Pro", sans-serif;
-  /* font-family: "Open Sans", sans-serif; */
-  /* font-weight: 400; */
   overflow: hidden;
   height: 100%;
   width: 100%;
@@ -22,10 +20,8 @@ div {
 #instructions,
 #logEntry,
 #ended {
-  /* position: relative; */
   font-weight: 200;
   color: #444;
-  /* top: 20px; */
   text-align: center;
 }
 #instructions, #logEntry {
@@ -44,70 +40,6 @@ div {
 #ended strong {
   font-weight: 600;
 }
-/* svg {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-} */
-/* .node {
-  cursor: pointer;
-} */
-/* .node .tspanTime {
-  font-weight: bold;
-  font-size: 87%;
-  user-select: none;
-  transition: fill 0.75s ease;
-} */
-/* .node .tspanLabel {
-  font-family: "Source Code Pro", monospace;
-  font-weight: normal;
-  text-anchor: start;
-  fill: #999;
-  user-select: none;
-  transition: fill 0.75s ease;
-} */
-/* .node.running .tspanLabel {
-  fill: black;
-} */
-/* .node.changed .tspanLabel {
-  fill: red;
-} */
-/* .node .tspanLabel {
-  white-space: pre;
-} */
-/* .node path {
-  fill: white;
-  stroke: #999;
-  stroke-width: 7.5px;
-  transition: fill 0.75s ease;
-} */
-/* .node.observer path {
-} */
-/* .node.observable path {
-} */
-/* .node.value path {
-} */
-/* .node.invalidated path {
-  fill: #e0e0e0;
-  / *fill: url(#diagonalHatch);* /
-} */
-/* .node.running path {
-  fill: #61b97e;
-} */
-/* .node.fixed path {
-  stroke: #000;
-} */
-/* .color.normal {
-  background-color: #white;
-}
-.color.invalidated {
-  background-color: #e0e0e0;
-}
-.color.running {
-  background-color: #61b97e;
-} */
 #triangle {
   fill: #ccc;
 }
@@ -139,7 +71,6 @@ div {
   left: 0;
   right: 0;
   bottom: 0;
-  /* bottom: 12px; */
   background-color: #f0f0f0;
 }
 #timeline-fill {
@@ -156,9 +87,6 @@ div {
 .timeline-mark {
   position: relative;
   float: left;
-  /* margin-left: -2px; */ /* margin and width must be equal in size, but margin is negative */
-  /* width: 2px; */
-  /* height: 100%; */
 }
 
 text {
@@ -176,23 +104,7 @@ text {
   z-index: 999;
 }
 
-/* h1 {
-  opacity: 0.5;
-  font-size: 1em;
-} */
 
-
-
-
-/* #header {
-  position: relative;
-  display: block;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1;
-  background-color: white;
-} */
 #statusHeader {
   width: 100%;
   height: 34px;
@@ -207,14 +119,8 @@ text {
   justify-content: space-between;
   align-items: center;
   align-content: center;
-
-
 }
 #movementButtons {
-  /* position: relative;
-  display: inline-block;
-  top: 0;
-  left: 0; */
   margin-left: 5px;
 
   display: flex;
@@ -232,8 +138,6 @@ text {
 }
 .monospaced-pre {
   white-space: pre;
-  /* height: 15.5px; */
-  /* padding-top: 1.5px; */
 }
 #eventStatus {
   margin-left: 5px;
@@ -243,7 +147,6 @@ text {
 }
 #eventTime {
   line-height: 15px;
-  /* text-align: right; */
 }
 #eventTimeSessionLabel {
   margin-left: 5px;
@@ -251,9 +154,6 @@ text {
 }
 #eventTimeSession {
   margin-left: 5px;
-  /* font-size: 11px; */
-  /* monospaced font is "larger", so must move this block up */
-  /* margin-top: -3px; */
 }
 #eventTime, #eventTimeNum, #eventSession, #eventSessionNum {
   line-height: 15px;
@@ -269,7 +169,6 @@ text {
   align-items: baseline;
 }
 #eventWrapper {
-  /* display: flex; */
   font-size: 11px;
   border-spacing: 0;
   padding-right: 10px
@@ -311,12 +210,6 @@ text {
 
   position: relative;
 
-  /* display: block; */
-  /* border: 2px orange solid; */
-  /* left: 0; */
-  /* top: 66px; */
-  /* bottom: 0px; */
-  /* width: 100%; */
 }
 #cytoWrapper  {
   z-index: 0;
@@ -332,10 +225,8 @@ text {
   left: 0px;
 }
 #cyto {
-  /* position: relative; */
   /* width: 100%; */
   height: 100%;
-  /* display: inline-block; */
 }
 #legend {
   align-self: center;
@@ -343,19 +234,9 @@ text {
   position: absolute;
   left: 0px;
   bottom: 0px;
-  /* margin-right: 20px; */
   padding: 10px;
   background-color: rgba(255,255,255, 0.85);
 
-  /* position: fixed; */
-  /* top: 50%; */
-  /* https://stackoverflow.com/questions/5703552/css-center-text-horizontally-and-vertically-inside-a-div-block */
-  /* transform: translateY(-50%); */
-  /* right: 30px; */
-  /* display: inline-block; */
-
-  /* z-index: 2; */
-  /* border: 1px red solid; */
   border-top: 1px rgba(150, 150, 150, 0.2) dotted;
   border-right: 1px rgba(150, 150, 150, 0.2) dotted;
 }
@@ -385,8 +266,6 @@ text {
   margin-left: 4px;
   font-size: 12px;
   line-height: 14px;
-  /* https://stackoverflow.com/questions/5703552/css-center-text-horizontally-and-vertically-inside-a-div-block */
-  /* transform: translateY(-4px); */
 }
 
 #bodyContent {
