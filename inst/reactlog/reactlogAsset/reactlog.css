@@ -291,7 +291,7 @@ text {
 }
 .legendLabel {
   -ms-flex-preferred-size: 0;
-      flex-basis: 0;
+  flex: 0 0 auto;
   color: #606060;
   margin-left: 4px;
   font-size: 12px;
