@@ -36,6 +36,7 @@ module.exports = function(grunt) {
         },
         optimization: {
           splitChunks: {
+            maxSize: 500000,
             automaticNameDelimiter: "-",
             chunks: "all"
           }
