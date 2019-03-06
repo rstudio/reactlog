@@ -1,5 +1,7 @@
 // @flow
 
+import "@babel/polyfill";
+
 import $ from "jquery";
 import _debounce from "lodash/debounce";
 

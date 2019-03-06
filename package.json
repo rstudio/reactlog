@@ -34,7 +34,7 @@
       "srcjs/**/*.js": [
         "yarn fix",
         "yarn flow-report-and-echo",
-        "git_add_map"
+        "yarn git_add_map"
       ]
     }
   },
@@ -75,6 +75,7 @@
     "webpack-bundle-analyzer": "3.x"
   },
   "dependencies": {
+    "@babel/polyfill": "^7.2.5",
     "cytoscape": "3.x",
     "cytoscape-dagre": "2.x",
     "jquery": "3.x",
