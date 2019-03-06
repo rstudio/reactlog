@@ -15,7 +15,7 @@ Depends:
 Imports:
   jsonlite (>= 0.9.16)
 Suggests:
-  shiny
+  shiny,
   knitr,
   rmarkdown
 License: GPL-3
