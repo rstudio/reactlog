@@ -322,10 +322,14 @@ text {
   z-index: 0;
   flex-grow: 1;
   /* border: 2px red dashed; */
-  /* height: 100%; */
+  height: 100%;
   width: 100%;
   /* align-self: stretch; */
   /* display: inline-block; */
+
+  position: absolute;
+  top: 0px;
+  left: 0px;
 }
 #cyto {
   /* position: relative; */
