@@ -316,7 +316,7 @@ At each stage of the reactlog, a reactive element can have one of the following 
 
 #### Highlighting and filtering
 
-Hovering over a particular graph element (either a node or an edge) highlights that element's family tree. A single click will maintain that highlighting. Double-clicking elements filters the graph that element's family tree. To clear the highlighting and filter selections, click/double-click the background of the graph or press the `Esc` key when the graph is in focus.
+Hovering over a particular graph element (either a node or an edge) highlights that element's family tree. A single click maintains that highlighting. Double-clicking filters the graph to that element's family tree. To clear any highlight/filter selections, click/double-click the background of the graph or press the `Esc` key when the graph is in focus.
 
 ```{r}
 htmltools::tags$iframe(
@@ -348,18 +348,15 @@ Fortunately, **shiny**'s `reactive()` and `observe()` functions have a `label` a
 
 ## Learn more {#learn-more}
 
-This vignette explains the **reactlog** inferface, which requires a basic understanding of **shiny** and reactive programming. There are many other useful existing articles and resources that may help advance your understanding of **reactlog** and **shiny**, including but limited to:
+This vignette explains the **reactlog** inferface, which requires a basic understanding of **shiny** and reactive programming. There are many other useful existing articles and resources that may help advance your understanding of **reactlog** and **shiny**, including but not limited to:
 
 * The core **shiny** articles under [Build Reactivity](https://shiny.rstudio.com/articles/#reactivity), these articles help explain:
     * How reactive elements know about each other
     * When elements are calculated
     * Why a `clientData` is randomly appearing in the reactive graph
     * How to prevent reactivity from executing using `isolate()`
-* Shiny Tutorials: [https://shiny.rstudio.com/tutorial/](https://shiny.rstudio.com/tutorial/)
-  * Treasure trove of useful tutorials, videos, and links to outside resources
-* The `rstudio::conf2019` talk by Barret Schloerke: [Reactlog 2.0: Debugging the State of Shiny](https://resources.rstudio.com/rstudio-conf-2019/reactlog-2-0-debugging-the-state-of-shiny).
-  * Presentation Repository: [https://github.com/schloerke/presentation-2019-01-18-reactlog](https://github.com/schloerke/presentation-2019-01-18-reactlog)
-  * Presentation Recording: [https://resources.rstudio.com/rstudio-conf-2019/reactlog-2-0-debugging-the-state-of-shiny](https://resources.rstudio.com/rstudio-conf-2019/reactlog-2-0-debugging-the-state-of-shiny)
+* The **shiny** [tutorials](https://shiny.rstudio.com/tutorial/), which provides many great instructional videos and various learning resources.
+* The `rstudio::conf2019` talk by Barret Schloerke: _Reactlog 2.0: Debugging the State of Shiny_ ([Video](https://resources.rstudio.com/rstudio-conf-2019/reactlog-2-0-debugging-the-state-of-shiny) / [Slides](https://github.com/schloerke/presentation-2019-01-18-reactlog/blob/master/rstudio-conf-2019-reactlog.pdf)).
 * Effective Reactive Programming: [https://www.rstudio.com/resources/videos/effective-reactive-programming/](https://www.rstudio.com/resources/videos/effective-reactive-programming/)
   * "This tutorial will go beyond the basics, explaining the philosophy behind Shiny’s reactive programming framework and exploring patterns and techniques for using it well."
 * [Mastering Shiny](https://github.com/jcheng5/shiny-book) by Joe Cheng
