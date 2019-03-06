@@ -356,8 +356,8 @@ text {
 
   /* z-index: 2; */
   /* border: 1px red solid; */
-  border-top: 1px rgba(217, 217, 217, 0.2) dotted;
-  border-right: 1px rgba(217, 217, 217, 0.2) dotted;
+  border-top: 1px rgba(150, 150, 150, 0.2) dotted;
+  border-right: 1px rgba(150, 150, 150, 0.2) dotted;
 }
 
 .legendRow {
