@@ -69,7 +69,7 @@ Example snapshot of a reactlog graph from the synchronous [cranwhales](https://g
 
 [Live demo](https://rstudio.github.io/reactlog/inst/reactlog/reactlog.html) of a [cranwhales](https://github.com/rstudio/cranwhales) reactlog with one user-marked step.
 
-![](man/figures/example_cranwhales.png)
+[![](man/figures/example_cranwhales.png)](https://rstudio.github.io/reactlog/inst/reactlog/reactlog.html)
 
 ## Development
 
