@@ -10,7 +10,6 @@ body {
 div {
   -ms-user-select: none;
   -moz-user-select: none;
-  -khtml-user-select: none;
   -webkit-user-select: none;
   -o-user-select: none;
   user-select: none;
@@ -62,6 +61,8 @@ div {
   top: 0;
   bottom: 0;
   width: 0;
+  -webkit-transition: width 250ms;
+  -o-transition: width 250ms;
   transition: width 250ms;
 }
 .timeline-tick,
@@ -97,20 +98,44 @@ text {
   white-space: nowrap;
   color: #606060;
 
+  display: -webkit-box;
+
+  display: -ms-flexbox;
+
   display: flex;
-  flex-flow: row nowrap;
-  justify-content: space-between;
-  align-items: center;
-  align-content: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: row nowrap;
+          flex-flow: row nowrap;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -ms-flex-line-pack: center;
+      align-content: center;
 }
 #movementButtons {
   margin-left: 5px;
 
+  display: -webkit-box;
+
+  display: -ms-flexbox;
+
   display: flex;
-  flex-flow: row nowrap;
-  justify-content: center;
-  align-items: center;
-  align-content: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: row nowrap;
+          flex-flow: row nowrap;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -ms-flex-line-pack: center;
+      align-content: center;
   min-width: 240px;
 }
 #eventStep {
@@ -124,9 +149,12 @@ text {
 }
 #eventStatus {
   margin-left: 5px;
-  flex-grow: 1;
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
   overflow: hidden;
-  text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+     text-overflow: ellipsis;
 }
 #eventTime {
   line-height: 15px;
@@ -142,14 +170,22 @@ text {
   line-height: 15px;
 }
 #eventTime, #eventSession {
-  flex: 0 0 45px;
+  -webkit-box-flex: 0;
+      -ms-flex: 0 0 45px;
+          flex: 0 0 45px;
 }
 #eventTimeNum, #eventSessionNum {
-  flex: 0 0 auto;
+  -webkit-box-flex: 0;
+      -ms-flex: 0 0 auto;
+          flex: 0 0 auto;
 }
 #eventTimeBlock, #eventSessionBlock {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  align-items: baseline;
+  -webkit-box-align: baseline;
+      -ms-flex-align: baseline;
+          align-items: baseline;
 }
 #eventWrapper {
   font-size: 11px;
@@ -169,6 +205,15 @@ text {
   font-size: 16px;
   width: 150px;
 }
+::-webkit-input-placeholder {
+   color:    #cfcfcf;
+}
+:-ms-input-placeholder {
+   color:    #cfcfcf;
+}
+::-ms-input-placeholder {
+   color:    #cfcfcf;
+}
 ::placeholder {
    color:    #cfcfcf;
 }
@@ -182,7 +227,9 @@ text {
 
 
 #content {
-  flex-grow: 1;
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
   position: relative;
 }
 #cytoWrapper  {
@@ -199,7 +246,9 @@ text {
   height: 100%;
 }
 #legend {
-  align-self: center;
+  -ms-flex-item-align: center;
+      -ms-grid-row-align: center;
+      align-self: center;
 
   position: absolute;
   left: 0;
@@ -212,11 +261,21 @@ text {
 }
 
 .legendRow {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-flow: row nowrap;
-  justify-content: flex-start;
-  align-items: center;
-  align-content: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: row nowrap;
+          flex-flow: row nowrap;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -ms-flex-line-pack: center;
+      align-content: center;
 }
 .legendRowTopMiddle {
   margin-bottom: 8px;
@@ -231,7 +290,8 @@ text {
   border-radius: 2px;
 }
 .legendLabel {
-  flex-basis: 0;
+  -ms-flex-preferred-size: 0;
+      flex-basis: 0;
   color: #606060;
   margin-left: 4px;
   font-size: 12px;
@@ -241,9 +301,21 @@ text {
 #bodyContent {
   height: 100%;
 
+  display: -webkit-box;
+
+  display: -ms-flexbox;
+
   display: flex;
-  flex-flow: column nowrap;
-  justify-content: flex-start;
-  align-items: stretch;
-  align-content: stretch;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: column nowrap;
+          flex-flow: column nowrap;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: stretch;
+      -ms-flex-align: stretch;
+          align-items: stretch;
+  -ms-flex-line-pack: stretch;
+      align-content: stretch;
 }
