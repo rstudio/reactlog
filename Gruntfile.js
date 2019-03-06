@@ -34,13 +34,6 @@ module.exports = function(grunt) {
           path: instdir + "reactlogAsset",
           filename: 'reactlog.js'
         },
-        optimization: {
-          splitChunks: {
-            maxSize: 500000,
-            automaticNameDelimiter: "-",
-            chunks: "all"
-          }
-        },
         plugins: [
           // new BundleAnalyzerPlugin({
           //   analyzerMode: 'static'
