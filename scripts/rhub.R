@@ -4,7 +4,7 @@ if (!require("rhub", quietly = TRUE)) {
 
 cat("building...\n")
 build_dir <- "../builds"
-if (!dir.exists(build_dir) {
+if (!dir.exists(build_dir)) {
   dir.create(build_dir, recursive = TRUE, showWarnings = FALSE)
 }
 build_file <- rhub:::build_package(".", build_dir)
