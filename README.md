@@ -7,9 +7,9 @@
 ![](man/figures/pythagoras.png)
 
 
-[Shiny](http://shiny.rstudio.com/) is an R package from RStudio that makes it incredibly easy to build interactive web applications with R.  The complexity of the reactive elements within a shiny application can quickly become complicated and are difficult to debug.  `reactlog` provides a visual debugger for shiny reactivity.  After logging the reactive interactions of a shiny application, `reactlog` visualizes the shiny reaction state at any time point in the record.
+[Shiny](http://shiny.rstudio.com/) is an R package from RStudio that makes it incredibly easy to build interactive web applications with R.  The complexity of the reactive elements within a shiny application can quickly become complicated and are difficult to debug.  **reactlog** provides a visual debugger for shiny reactivity.  After logging the reactive interactions of a shiny application, **reactlog** visualizes the shiny reaction state at any time point in the record.
 
-The `reactlog` dependency graph provides users with the ability to visually see if reactive elements are:
+The **reactlog** dependency graph provides users with the ability to visually see if reactive elements are:
 * not utilized (never retrieved)
 * over utilized (called independently many times)
 * interacting with unexpected elements
@@ -18,7 +18,7 @@ The `reactlog` dependency graph provides users with the ability to visually see 
 
 <!-- For an introduction and examples, visit the [Shiny Dev Center](http://shiny.rstudio.com/). -->
 
-If you have general questions about using `reactlog`, please use the [RStudio Community website](https://community.rstudio.com/c/shiny). For bug reports, please use the `reactlog` [issue tracker](https://github.com/rstudio/reactlog/issues).
+If you have general questions about using **reactlog**, please use the [RStudio Community website](https://community.rstudio.com/c/shiny). For bug reports, please use the **reactlog** [issue tracker](https://github.com/rstudio/reactlog/issues).
 
 ## Major Features
 
@@ -60,7 +60,7 @@ runApp(app)
 shiny::showReactLog()
 ```
 
-Or while your shiny app is running, press the key combination `Ctrl+F3` (Mac: `Cmd+F3`) to launch the reactlog application.
+Or while your shiny app is running, press the key combination `Ctrl+F3` (Mac: `Cmd+F3`) to launch the **reactlog** application.
 
 To mark a specific execution time point within your shiny app, press the key combination `Ctrl+F4` (Mac: `Cmd+F4`). This will highlight a specific point in time in your reactlog.
 
@@ -93,4 +93,4 @@ By changing the file `'./inst/reactlog/defaultLog.js'` with the contents of any 
 
 We welcome contributions to the **reactlog** package. Please see our [CONTRIBUTING.md](.github/CONTRIBUTING.md) file for detailed guidelines of how to contribute.
 
-Please note that the 'reactlog' project is released with a [Contributor Code of Conduct](.github/CODE_OF_CONDUCT.md). By contributing to this project, you agree to abide by its terms.
+Please note that the **reactlog** project is released with a [Contributor Code of Conduct](.github/CODE_OF_CONDUCT.md). By contributing to this project, you agree to abide by its terms.
