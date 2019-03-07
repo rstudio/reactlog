@@ -171,7 +171,7 @@ library(plotly)
 
 ui <- fluidPage(
   selectInput("var", "Choose a variable", choices = names(diamonds)),
-  plotlyOutput("p")
+  plotlyOutput("plot")
 )
 
 server <- function(input, output, session) {
