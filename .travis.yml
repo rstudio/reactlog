@@ -35,8 +35,8 @@ jobs:
         provider: pages
         # deploy from docs folder
         local-dir: docs
-        # clean to original github pull
-        skip-cleanup: false
+        # keep pkgdown output
+        skip-cleanup: true
         # overwrite all history as this is an auto deploy from master
         keep-history: false
         on:
