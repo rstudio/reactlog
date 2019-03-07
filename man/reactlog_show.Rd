@@ -70,5 +70,5 @@ shiny::showReactLog()
 }
 }
 \seealso{
-\code{shiny::\link[shiny]{reactlogShow}}
+\code{shiny::\link[shiny]{showReactLog}}
 }

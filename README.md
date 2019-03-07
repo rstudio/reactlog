@@ -66,9 +66,9 @@ To mark a specific execution time point within your shiny app, press the key com
 
 #### Example
 
-Example snapshot of a reactlog graph from the synchronous [cranwhales](https://github.com/rstudio/cranwhales) shiny application.
+Example snapshot of a reactlog graph from the synchronous [`cranwhales`](https://github.com/rstudio/cranwhales) shiny application.
 
-[Live demo](https://rstudio.github.io/reactlog/inst/reactlog/reactlog.html) of a [cranwhales](https://github.com/rstudio/cranwhales) reactlog with one user-marked step.
+[Live demo](https://rstudio.github.io/reactlog/inst/reactlog/reactlog.html) of a [`cranwhales`](https://github.com/rstudio/cranwhales) reactlog with one user-marked step.
 
 [![](man/figures/example_cranwhales.png)](https://rstudio.github.io/reactlog/inst/reactlog/reactlog.html)
 
@@ -79,14 +79,14 @@ Please make sure you have [Node.js](https://nodejs.org/en/) and [yarn](https://y
 Installation script:
 
 ```bash
-# install dependencies and build javascript
+# install dependencies and build JavaScript
 yarn install
 
 # build on file change
 yarn watch
 ```
 
-By changing the file `'./inst/reactlog/defaultLog.js'` with the contents of any log file in `'./inst/log-files/'`, different default log files can be loaded.  Once the local js (`'./inst/reactlog/reactlogAsset/reactlog.js'`) has been built with `yarn build` or `yarn watch`, refresh `'./inst/reactlog/reactlog.html'` to avoid constantly spawning shiny applications for testing.
+By changing the file `'./inst/reactlog/defaultLog.js'` with the contents of any log file in `'./inst/log-files/'`, different default log files can be loaded.  Once the local JavaScript (`'./inst/reactlog/reactlogAsset/reactlog.js'`) has been built with `yarn build` or `yarn watch`, refresh `'./inst/reactlog/reactlog.html'` to avoid constantly spawning shiny applications for testing.
 
 
 ## Guidelines for contributing
