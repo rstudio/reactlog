@@ -38,7 +38,7 @@
 #' @param time A boolean that specifies whether or not to display the
 #' time that each reactive takes to calculate a result.
 #' @param ... Future parameter expansion. Currently ignored
-#' @seealso \code{shiny::\link[shiny]{reactlogShow}}
+#' @seealso \code{shiny::\link[shiny]{showReactLog}}
 #' @export
 #' @examples
 #'

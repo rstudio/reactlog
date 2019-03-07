@@ -1,8 +1,13 @@
-if (!require("rhub", quietly = TRUE)) install.packages("rhub")
+if (!require("rhub", quietly = TRUE)) {
+  install.packages("rhub")
+}
 
 cat("building...\n")
-dir.create("../builds", recursive = TRUE, showWarnings = FALSE)
-build_file <- rhub:::build_package(".", "../builds")
+build_dir <- "../builds"
+if (!dir.exists(build_dir) {
+  dir.create(build_dir, recursive = TRUE, showWarnings = FALSE)
+}
+build_file <- rhub:::build_package(".", build_dir)
 
 platforms <- c("windows-x86_64-release", rhub:::default_cran_check_platforms(build_file))
 check_output <- rhub::check_for_cran(
