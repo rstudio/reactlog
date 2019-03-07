@@ -22,7 +22,7 @@ jobs:
     # Only deploy docs if all three branches pass
     - stage: deploy
       r: release
-      if: branch IN (master, travis)
+      if: branch IN (master, travis, rc-v1.0.0)
       r_binary_packages:
         - pkgdown
       # if any script fails, deploy will not occur
