@@ -68,9 +68,9 @@ To mark a specific execution time point within your shiny app, press the key com
 
 Example snapshot of a reactlog graph from the synchronous [`cranwhales`](https://github.com/rstudio/cranwhales) shiny application.
 
-[Live demo](https://rstudio.github.io/reactlog/inst/reactlog/reactlog.html) of a [`cranwhales`](https://github.com/rstudio/cranwhales) reactlog with one user-marked step.
+[Live demo](https://rstudio.github.io/reactlog/demo/reactlog.html) of a [`cranwhales`](https://github.com/rstudio/cranwhales) reactlog with one user-marked step.
 
-[![](man/figures/example_cranwhales.png)](https://rstudio.github.io/reactlog/inst/reactlog/reactlog.html)
+[![](man/figures/example_cranwhales.png)](https://rstudio.github.io/reactlog/demo/reactlog.html)
 
 ## Development
 
