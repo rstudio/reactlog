@@ -19,12 +19,14 @@ jobs:
       r: devel
       warnings_are_errors: false
 
+    # Only deploy docs if all three branches pass
     - stage: deploy
       r: release
       if: branch IN (master, travis)
       r_binary_packages:
         - pkgdown
-      after_success:
+      # if any script fails, deploy will not occur
+      before_deploy:
         - Rscript -e 'pkgdown::build_site()'
         # copy inst/reactlog/ to docs/demo/ to maintain live demo
         - Rscript -e 'stopifnot(file.copy("inst/reactlog/", "docs/", recursive = TRUE))'
