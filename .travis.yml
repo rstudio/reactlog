@@ -37,8 +37,9 @@ jobs:
         skip-cleanup: false
         # overwrite all history as this is an auto deploy from master
         keep-history: false
-        # deploy on all branches as the stage will check the branch
-        all_branches: true
+        on:
+          # deploy on all branches as the stage will check the branch
+          all_branches: true
         github-token:
           secure:
             "fH2wg82kkxo6hWJIejIuihnwjysnxMkE6IgmSe6v5Jhg4jNhTZOAZXt0c6nk+nOZfgRKk5xiXbF1WlQWr0lrJakJZ8uKPVJCyZNQMu0A2KykxFoQDK/nZoTzgHTfsTHNpPvE3aaWCPS/VDo1mYFV1vv2MvxpPgcYKFClGeh74oJX30yVE868/HUYVeGnOjRghG7ZMQo7W02dm9W8KSBR1sTAoU0r84ehWCWG0xQCUOAQfoKv5anzx437FFLAxG2ACaBRM9k9I+FFZu6yIlNGC0Qbnsb68uWqtHleofh1FKqGG8CwSgEMQfGrVfqYK0pYVkHueICpIlN0OwFIj+PuL2TTKDPI3XMCkV9m0wp/a3Snd+YjlntlkQ2tdL2l8OhMw9ZE0Q0QXzAWKix+dJ8+GZmtlVhBKG+grZlxiVoTmxTPl13NoQMGIUKkAKuim1nAMJ1CnwXrjb9uk7IUE7ua2E0dDuUJmjtONUwrGAjnq7uSvMn2QbCEml06NuoI+L0NBlaXCgd0MDJoROsqSFlptYPsarkcQWrXZx488OjStmgIWZUmgZqqeWseo+/b9t6MWQk8FTEEvWvrzchaUf3FJbtQZStA64OTMtDJFrivY/mMRLIVKbfVViDJ3SgHA8b1ppZG+CGp7+DLeXlkShtVdjGwnMwYlwivubdCz1nTG7A="
