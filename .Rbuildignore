@@ -1,3 +1,5 @@
+^Meta$
+^doc$
 ^cran-comments\.md$
 ^docs$
 ^_pkgdown\.yml$
