@@ -54,7 +54,7 @@
 #' runApp(app)
 #'
 #' # once app has closed, display reactlog
-#' shiny::reactlogShow()
+#' shiny::showReactLog()
 #' }
 
 reactlog_show <- function(log, time = TRUE, ...) {

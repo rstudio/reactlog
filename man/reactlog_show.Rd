@@ -66,7 +66,7 @@ app <- system.file("examples/01_hello", package = "shiny")
 runApp(app)
 
 # once app has closed, display reactlog
-shiny::reactlogShow()
+shiny::showReactLog()
 }
 }
 \seealso{

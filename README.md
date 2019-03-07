@@ -57,7 +57,7 @@ app <- system.file("examples/01_hello", package = "shiny")
 runApp(app)
 
 # once app has closed, display reactlog from shiny
-shiny::reactlogShow()
+shiny::showReactLog()
 ```
 
 Or while your shiny app is running, press the key combination `Ctrl+F3` (Mac: `Cmd+F3`) to launch the reactlog application.
