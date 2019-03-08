@@ -107,7 +107,7 @@ let updateLogEntry = function(): void {
     // 1 start counting (not 0)
     stepDisplayVal = stepDisplayValPadding(stepDisplayVal + 1);
   }
-  containers.step.text(`${stepDisplayVal}`);
+  containers.step.text(`${stepDisplayVal} `);
   containers.status.html(statusForEntry(curEntry));
 
   containers.container.text(JSON.stringify(rlog.log[rlog.curTick], null, "  "));

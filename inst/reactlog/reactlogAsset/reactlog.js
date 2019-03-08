@@ -83214,7 +83214,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       stepDisplayVal = stepDisplayValPadding(stepDisplayVal + 1);
     }
 
-    containers.step.text("".concat(stepDisplayVal));
+    containers.step.text("".concat(stepDisplayVal, " "));
     containers.status.html(statusForEntry(curEntry));
     containers.container.text(JSON.stringify(_rlog.rlog.log[_rlog.rlog.curTick], null, "  "));
   };
