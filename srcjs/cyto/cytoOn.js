@@ -74,6 +74,7 @@ let onClick = function(cyto: CytoscapeType) {
   let cytoClickedBefore, cytoClickedTimeout;
 
   return function(evt: CytoEvent) {
+    alert("Tap!");
     // remove focus on search
     $("#search").blur();
 

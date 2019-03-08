@@ -79732,7 +79732,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   var onClick = function onClick(cyto) {
     var cytoClickedBefore, cytoClickedTimeout;
     return function (evt) {
-      // remove focus on search
+      alert("Tap!"); // remove focus on search
+
       (0, _jquery.default)("#search").blur();
       var target = evt.target; // check for double click
       // https://stackoverflow.com/a/44160927
