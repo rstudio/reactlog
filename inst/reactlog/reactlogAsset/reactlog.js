@@ -83197,25 +83197,27 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       return "".concat(i).padStart("".concat(logInfo.logLength).length, " ");
     };
 
-    var stepDisplayVal = (0, _sortedIndex2.default)(_rlog.rlog.getGraph.stepsVisible, curEntry.step);
+    var stepDisplayVal;
+    var visibleStepIdx = (0, _sortedIndex2.default)(_rlog.rlog.getGraph.stepsVisible, curEntry.step);
 
     if ((0, _sortedIndexOf2.default)(_rlog.rlog.getGraph.stepsVisible, curEntry.step) === -1) {
       // does not contain the step. display how many steps advanced from last visible step
-      if (stepDisplayVal === 0) {
+      if (visibleStepIdx === 0) {
         // occurs before any visible step
         // let halfStepPos = _sortedIndex(rlog.getGraph.steps, curEntry.step);
         stepDisplayVal = "".concat(stepDisplayValPadding(0), "_").concat(curEntry.step);
       } else {
         // get visible step location
-        var smallerStepVal = _rlog.rlog.getGraph.stepsVisible[stepDisplayVal - 1];
-        var smallerStepValVisible = (0, _sortedIndex2.default)(_rlog.rlog.getGraph.stepsVisible, smallerStepVal); // display number of steps away from lower, visible step
+        var priorStepIdx = visibleStepIdx - 1;
+        var smallerStepVal = _rlog.rlog.getGraph.stepsVisible[priorStepIdx]; // display number of steps away from lower, visible step
 
         var diffSteps = curEntry.step - smallerStepVal;
-        stepDisplayVal = "".concat(stepDisplayValPadding(smallerStepValVisible + 1), "_").concat(diffSteps);
+        stepDisplayVal = "".concat( // 1 start counting (not 0)
+        stepDisplayValPadding(priorStepIdx + 1), "_").concat(diffSteps);
       }
     } else {
       // 1 start counting (not 0)
-      stepDisplayVal = stepDisplayValPadding(stepDisplayVal + 1);
+      stepDisplayVal = stepDisplayValPadding(visibleStepIdx + 1);
     }
 
     containers.step.text("".concat(stepDisplayVal));
