@@ -81557,7 +81557,14 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
               break;
 
             case _logStates.LogStates.idle:
-              this.stepsIdle.push(logItem.step);
+              if (i > 0) {
+                // if the previous step was not an idle step
+                if (log[i - 1].action !== _logStates.LogStates.idle) {
+                  this.stepsIdle.push(logItem.step);
+                }
+              } // do not show an idle at step 0
+
+
               break;
 
             case _logStates.LogStates.userMark:

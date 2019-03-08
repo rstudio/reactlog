@@ -149,7 +149,13 @@ class GraphAtStep {
           this.stepsAsyncStop.push(logItem.step);
           break;
         case LogStates.idle:
-          this.stepsIdle.push(logItem.step);
+          if (i > 0) {
+            // if the previous step was not an idle step
+            if (log[i - 1].action !== LogStates.idle) {
+              this.stepsIdle.push(logItem.step);
+            }
+          }
+          // do not show an idle at step 0
           break;
         case LogStates.userMark:
           this.stepsUserMark.push(logItem.step);
