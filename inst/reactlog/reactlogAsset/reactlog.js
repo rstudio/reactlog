@@ -79805,8 +79805,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   _exports.onDblClick = onDblClick;
 
   var addOnMethods = function addOnMethods(cyto) {
-    cyto.on("mouseover", onMouseOver(cyto));
-    cyto.on("click", onClick(cyto));
+    cyto.on("mouseover", onMouseOver(cyto)); // "normalised tap event (either click, or touchstart followed by touchend without touchmove)"
+
+    cyto.on("tap", onClick(cyto)); // reactlog event
+
     cyto.on("dblclick", onDblClick(cyto));
   };
 
