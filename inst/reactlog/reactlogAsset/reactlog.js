@@ -79805,8 +79805,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   _exports.onDblClick = onDblClick;
 
   var addOnMethods = function addOnMethods(cyto) {
-    cyto.on("mouseover", onMouseOver(cyto));
-    cyto.on("click", onClick(cyto));
+    cyto.on("mouseover", onMouseOver(cyto)); // cyto.on("click", onClick(cyto));
+
     cyto.on("tap", onClick(cyto));
     cyto.on("dblclick", onDblClick(cyto));
   };

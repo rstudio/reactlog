@@ -150,7 +150,7 @@ let onDblClick = function(cyto: CytoscapeType) {
 let addOnMethods = function(cyto: CytoscapeType) {
   cyto.on("mouseover", onMouseOver(cyto));
 
-  cyto.on("click", onClick(cyto));
+  // cyto.on("click", onClick(cyto));
   cyto.on("tap", onClick(cyto));
 
   cyto.on("dblclick", onDblClick(cyto));
