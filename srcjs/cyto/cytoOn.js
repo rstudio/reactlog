@@ -150,8 +150,10 @@ let onDblClick = function(cyto: CytoscapeType) {
 let addOnMethods = function(cyto: CytoscapeType) {
   cyto.on("mouseover", onMouseOver(cyto));
 
-  cyto.on("click", onClick(cyto));
+  // "normalised tap event (either click, or touchstart followed by touchend without touchmove)"
+  cyto.on("tap", onClick(cyto));
 
+  // reactlog event
   cyto.on("dblclick", onDblClick(cyto));
 };
 
