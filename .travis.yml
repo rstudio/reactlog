@@ -9,16 +9,16 @@ notifications:
 
 jobs:
   include:
-    # - stage: test
-    #   r: oldrel
-    #
-    # - stage: test
-    #   r: release
-    #
-    # - stage: test
-    #   r: devel
-    #   warnings_are_errors: false
-    #
+    - stage: test
+      r: oldrel
+
+    - stage: test
+      r: release
+
+    - stage: test
+      r: devel
+      warnings_are_errors: false
+
     # Only deploy docs if all three branches pass
     - stage: deploy
       r: release
