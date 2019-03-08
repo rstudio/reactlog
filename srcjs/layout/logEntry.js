@@ -156,20 +156,20 @@ let getLabel = function(reactId: ReactIdType): string {
   if (node) {
     return node.label;
   } else {
-    return "<unknown>";
+    return reactId;
   }
 };
 let getReactIdLabel = function(entry: LogEntryHasReactId) {
   return getLabel(entry.reactId);
 };
-let getReactIdValue = function(entry: LogEntryHasReactId) {
+let getReactIdValue = function(entry: LogEntryValueChangeType) {
   let node = rlog.graph.nodes.get(entry.reactId);
   if (node) {
     if (!_isNil(node.value)) {
       return node.value;
     }
   }
-  return "<unknown>";
+  return entry.value;
 };
 let getContextId = function(entry: LogEntryCreateContextType) {
   return entry.ctxId;

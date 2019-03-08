@@ -81523,12 +81523,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         var idleArr = [];
         var startI = 0;
 
-        while (log.length > startI + 2 && log[startI].action === _logStates.LogStates.asyncStart && log[startI].session === null && log[startI + 1].action === _logStates.LogStates.asyncStop && log[startI + 1].session === null && log[startI + 2].action === _logStates.LogStates.idle && log[startI + 2].session === null) {
-          startI = startI + 3;
-        }
-
-        while (log.length > startI && log[startI].action === _logStates.LogStates.idle) {
-          startI = startI + 1;
+        while (true) {
+          // if async start, then async stop, then idle... skip them
+          if (log.length > startI + 2 && log[startI].action === _logStates.LogStates.asyncStart && log[startI].session === null && log[startI + 1].action === _logStates.LogStates.asyncStop && log[startI + 1].session === null && log[startI + 2].action === _logStates.LogStates.idle && log[startI + 2].session === null) {
+            startI = startI + 3;
+          } else if (log.length > startI && log[startI].action === _logStates.LogStates.idle) {
+            // if multiple idles are in a row... skip them
+            startI = startI + 1;
+          } else {
+            break;
+          }
         }
 
         for (i = startI; i < log.length; i++) {
@@ -83259,7 +83263,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     if (node) {
       return node.label;
     } else {
-      return "<unknown>";
+      return reactId;
     }
   };
 
@@ -83276,7 +83280,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       }
     }
 
-    return "<unknown>";
+    return entry.value;
   };
 
   var getContextId = function getContextId(entry) {
