@@ -83202,11 +83202,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       } else {
         // get visible step location
         var smallerStepVal = _rlog.rlog.getGraph.stepsVisible[stepDisplayVal - 1];
-        var smallerStepValVisible = (0, _sortedIndex2.default)(_rlog.rlog.getGraph.stepsVisible, smallerStepVal);
-        var smallerPos = (0, _sortedIndex2.default)(_rlog.rlog.getGraph.steps, smallerStepVal);
-        var halfStepPos = (0, _sortedIndex2.default)(_rlog.rlog.getGraph.steps, curEntry.step); // display number of steps away from lower, visible step
+        var smallerStepValVisible = (0, _sortedIndex2.default)(_rlog.rlog.getGraph.stepsVisible, smallerStepVal); // display number of steps away from lower, visible step
 
-        var diffSteps = halfStepPos - smallerPos;
+        var diffSteps = curEntry.step - smallerStepVal;
         stepDisplayVal = "".concat(stepDisplayValPadding(smallerStepValVisible + 1), "_").concat(diffSteps);
       }
     } else {

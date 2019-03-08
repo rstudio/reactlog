@@ -94,11 +94,8 @@ let updateLogEntry = function(): void {
         rlog.getGraph.stepsVisible,
         smallerStepVal
       );
-      let smallerPos = _sortedIndex(rlog.getGraph.steps, smallerStepVal);
-      let halfStepPos = _sortedIndex(rlog.getGraph.steps, curEntry.step);
-
       // display number of steps away from lower, visible step
-      let diffSteps = halfStepPos - smallerPos;
+      let diffSteps = curEntry.step - smallerStepVal;
       stepDisplayVal = `${stepDisplayValPadding(
         smallerStepValVisible + 1
       )}_${diffSteps}`;
