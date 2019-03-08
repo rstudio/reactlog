@@ -81521,7 +81521,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         this.maxStep = log.length > 0 ? log[log.length - 1].step : -1;
         var logItem, i;
         var idleArr = [];
-        var startI = 0;
+        var startI = 0; // eslint-disable-next-line no-constant-condition
 
         while (true) {
           // if async start, then async stop, then idle... skip them

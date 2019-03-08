@@ -116,20 +116,28 @@ class GraphAtStep {
     let logItem, i;
     let idleArr = [];
     let startI = 0;
-    while (
-      log.length > startI + 2 &&
-      log[startI].action === LogStates.asyncStart &&
-      log[startI].session === null &&
-      log[startI + 1].action === LogStates.asyncStop &&
-      log[startI + 1].session === null &&
-      log[startI + 2].action === LogStates.idle &&
-      log[startI + 2].session === null
-    ) {
-      startI = startI + 3;
+
+    // eslint-disable-next-line no-constant-condition
+    while (true) {
+      // if async start, then async stop, then idle... skip them
+      if (
+        log.length > startI + 2 &&
+        log[startI].action === LogStates.asyncStart &&
+        log[startI].session === null &&
+        log[startI + 1].action === LogStates.asyncStop &&
+        log[startI + 1].session === null &&
+        log[startI + 2].action === LogStates.idle &&
+        log[startI + 2].session === null
+      ) {
+        startI = startI + 3;
+      } else if (log.length > startI && log[startI].action === LogStates.idle) {
+        // if multiple idles are in a row... skip them
+        startI = startI + 1;
+      } else {
+        break;
+      }
     }
-    while (log.length > startI && log[startI].action === LogStates.idle) {
-      startI = startI + 1;
-    }
+
     for (i = startI; i < log.length; i++) {
       logItem = log[i];
       switch (logItem.action) {
