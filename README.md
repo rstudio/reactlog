@@ -7,7 +7,7 @@
 ![](man/figures/pythagoras.png)
 
 
-[Shiny](http://shiny.rstudio.com/) is an R package from RStudio that makes it incredibly easy to build interactive web applications with R.  The complexity of the reactive elements within a shiny application can quickly become complicated and are difficult to debug.  **reactlog** provides a visual debugger for shiny reactivity.  After logging the reactive interactions of a shiny application, **reactlog** visualizes the shiny reaction state at any time point in the record.
+[Shiny](http://shiny.rstudio.com/) is an R package from RStudio that makes it incredibly easy to build interactive web applications with R.  The complexity of the reactive elements within a Shiny application can quickly become intertwined and are difficult to debug.  **reactlog** provides a visual insight into the _black box_ of Shiny reactivity.  After logging the reactive interactions of a Shiny application, **reactlog** constructs a directed dependency graph of the Shiny's reactive state at any time point in the record.
 
 The **reactlog** dependency graph provides users with the ability to visually see if reactive elements are:
 * not utilized (never retrieved)
@@ -18,19 +18,18 @@ The **reactlog** dependency graph provides users with the ability to visually se
 
 <!-- For an introduction and examples, visit the [Shiny Dev Center](http://shiny.rstudio.com/). -->
 
-If you have general questions about using **reactlog**, please use the [RStudio Community website](https://community.rstudio.com/c/shiny). For bug reports, please use the **reactlog** [issue tracker](https://github.com/rstudio/reactlog/issues).
 
 ## Major Features
 
-* Display the reactivity dependency graph of your shiny applications
-* See how often elements of your shiny application are being processed
+* Display the reactivity dependency graph of your Shiny applications
 * Move throughout your reactive history to replay element interactions
-* Highlight family trees within the reactive graph
-* Filter on family trees within the reactive graph
+* Highlight reactive family trees
+* Filter on reactive family trees
+* Search for reactive elements
 
 ## Installation
 
-To install the stable version from CRAN, simply run the following from an R console:
+To install the stable version from CRAN, run the following from an R console:
 
 ```r
 install.packages("reactlog")
@@ -49,8 +48,8 @@ remotes::install_github("rstudio/reactlog")
 library(shiny)
 library(reactlog)
 
-# tell shiny to log reactivity
-options("shiny.reactlog" = TRUE)
+# tell shiny to log all reactivity
+options(shiny.reactlog = TRUE)
 
 # run a shiny app
 app <- system.file("examples/01_hello", package = "shiny")
@@ -60,17 +59,24 @@ runApp(app)
 shiny::showReactLog()
 ```
 
-Or while your shiny app is running, press the key combination `Ctrl+F3` (Mac: `Cmd+F3`) to launch the **reactlog** application.
+Or while your Shiny app is running, press the key combination `Ctrl+F3` (Mac: `Cmd+F3`) to launch the **reactlog** application.
 
-To mark a specific execution time point within your shiny app, press the key combination `Ctrl+F4` (Mac: `Cmd+F4`). This will highlight a specific point in time in your reactlog.
+To mark a specific execution time point within your Shiny app, press the key combination `Ctrl+F4` (Mac: `Cmd+F4`). This will highlight a specific point in time in your reactlog.
+
 
 #### Example
 
-Example snapshot of a reactlog graph from the synchronous [`cranwhales`](https://github.com/rstudio/cranwhales) shiny application.
+Example snapshot of a reactlog graph from the synchronous [`cranwhales`](https://github.com/rstudio/cranwhales) Shiny application.
 
 [Live demo](https://rstudio.github.io/reactlog/demo/reactlog.html) of a [`cranwhales`](https://github.com/rstudio/cranwhales) reactlog with one user-marked step.
 
 [![](man/figures/example_cranwhales.png)](https://rstudio.github.io/reactlog/demo/reactlog.html)
+
+
+## Help
+
+If you have general questions about using **reactlog**, please use the [RStudio Community website](https://community.rstudio.com/c/shiny). For bug reports, please use the **reactlog** [issue tracker](https://github.com/rstudio/reactlog/issues).
+
 
 ## Development
 
@@ -86,7 +92,7 @@ yarn install
 yarn watch
 ```
 
-By changing the file `'./inst/reactlog/defaultLog.js'` with the contents of any log file in `'./inst/log-files/'`, different default log files can be loaded.  Once the local JavaScript (`'./inst/reactlog/reactlogAsset/reactlog.js'`) has been built with `yarn build` or `yarn watch`, refresh `'./inst/reactlog/reactlog.html'` to avoid constantly spawning shiny applications for testing.
+By changing the file `'./inst/reactlog/defaultLog.js'` with the contents of any log file in `'./inst/log-files/'`, different default log files can be loaded.  Once the local JavaScript (`'./inst/reactlog/reactlogAsset/reactlog.js'`) has been built with `yarn build` or `yarn watch`, refresh `'./inst/reactlog/reactlog.html'` to avoid constantly spawning Shiny applications for testing.
 
 
 ## Guidelines for contributing
