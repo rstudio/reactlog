@@ -81523,14 +81523,18 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         this.maxStep = log.length > 0 ? log[log.length - 1].step : -1;
         var logItem, i;
         var idleArr = [];
-        var startI = 0;
+        var startI = 0; // eslint-disable-next-line no-constant-condition
 
-        while (log.length > startI + 2 && log[startI].action === _logStates.LogStates.asyncStart && log[startI].session === null && log[startI + 1].action === _logStates.LogStates.asyncStop && log[startI + 1].session === null && log[startI + 2].action === _logStates.LogStates.idle && log[startI + 2].session === null) {
-          startI = startI + 3;
-        }
-
-        while (log.length > startI && log[startI].action === _logStates.LogStates.idle) {
-          startI = startI + 1;
+        while (true) {
+          // if async start, then async stop, then idle... skip them
+          if (log.length > startI + 2 && log[startI].action === _logStates.LogStates.asyncStart && log[startI].session === null && log[startI + 1].action === _logStates.LogStates.asyncStop && log[startI + 1].session === null && log[startI + 2].action === _logStates.LogStates.idle && log[startI + 2].session === null) {
+            startI = startI + 3;
+          } else if (log.length > startI && log[startI].action === _logStates.LogStates.idle) {
+            // if multiple idles are in a row... skip them
+            startI = startI + 1;
+          } else {
+            break;
+          }
         }
 
         for (i = startI; i < log.length; i++) {
@@ -81559,7 +81563,14 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
               break;
 
             case _logStates.LogStates.idle:
-              this.stepsIdle.push(logItem.step);
+              if (i > 0) {
+                // if the previous step was not an idle step
+                if (log[i - 1].action !== _logStates.LogStates.idle) {
+                  this.stepsIdle.push(logItem.step);
+                }
+              } // do not show an idle at step 0
+
+
               break;
 
             case _logStates.LogStates.userMark:
@@ -83186,27 +83197,27 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       return "".concat(i).padStart("".concat(logInfo.logLength).length, " ");
     };
 
-    var stepDisplayVal = (0, _sortedIndex2.default)(_rlog.rlog.getGraph.stepsVisible, curEntry.step);
+    var stepDisplayVal;
+    var visibleStepIdx = (0, _sortedIndex2.default)(_rlog.rlog.getGraph.stepsVisible, curEntry.step);
 
     if ((0, _sortedIndexOf2.default)(_rlog.rlog.getGraph.stepsVisible, curEntry.step) === -1) {
       // does not contain the step. display how many steps advanced from last visible step
-      if (stepDisplayVal === 0) {
+      if (visibleStepIdx === 0) {
         // occurs before any visible step
         // let halfStepPos = _sortedIndex(rlog.getGraph.steps, curEntry.step);
         stepDisplayVal = "".concat(stepDisplayValPadding(0), "_").concat(curEntry.step);
       } else {
         // get visible step location
-        var smallerStepVal = _rlog.rlog.getGraph.stepsVisible[stepDisplayVal - 1];
-        var smallerStepValVisible = (0, _sortedIndex2.default)(_rlog.rlog.getGraph.stepsVisible, smallerStepVal);
-        var smallerPos = (0, _sortedIndex2.default)(_rlog.rlog.getGraph.steps, smallerStepVal);
-        var halfStepPos = (0, _sortedIndex2.default)(_rlog.rlog.getGraph.steps, curEntry.step); // display number of steps away from lower, visible step
+        var priorStepIdx = visibleStepIdx - 1;
+        var smallerStepVal = _rlog.rlog.getGraph.stepsVisible[priorStepIdx]; // display number of steps away from lower, visible step
 
-        var diffSteps = halfStepPos - smallerPos;
-        stepDisplayVal = "".concat(stepDisplayValPadding(smallerStepValVisible + 1), "_").concat(diffSteps);
+        var diffSteps = curEntry.step - smallerStepVal;
+        stepDisplayVal = "".concat( // 1 start counting (not 0)
+        stepDisplayValPadding(priorStepIdx + 1), "_").concat(diffSteps);
       }
     } else {
       // 1 start counting (not 0)
-      stepDisplayVal = stepDisplayValPadding(stepDisplayVal + 1);
+      stepDisplayVal = stepDisplayValPadding(visibleStepIdx + 1);
     }
 
     containers.step.text("".concat(stepDisplayVal));
@@ -83256,7 +83267,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     if (node) {
       return node.label;
     } else {
-      return "<unknown>";
+      return reactId;
     }
   };
 
@@ -83273,7 +83284,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       }
     }
 
-    return "<unknown>";
+    return entry.value;
   };
 
   var getContextId = function getContextId(entry) {
