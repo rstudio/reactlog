@@ -21,11 +21,15 @@ The **reactlog** dependency graph provides users with the ability to visually se
 
 ## Major Features
 
+There are many subtle features hidden throughout **reactlog**. Here is a short list quickly describing what is possible within **reactlog**:
+
 * Display the reactivity dependency graph of your Shiny applications
-* Move throughout your reactive history to replay element interactions
+* Navigate throughout your reactive history to replay element interactions
 * Highlight reactive family trees
 * Filter on reactive family trees
 * Search for reactive elements
+
+For a more in-depth explanation of **reactlog**, please visit the [**reactlog** vignette](https://rstudio.github.io/reactlog/articles/reactlog.html).
 
 ## Installation
 
@@ -35,7 +39,7 @@ To install the stable version from CRAN, run the following from an R console:
 install.packages("reactlog")
 ```
 
-For the latest version:
+For the latest development version:
 
 ```r
 remotes::install_github("rstudio/reactlog")
@@ -66,11 +70,14 @@ To mark a specific execution time point within your Shiny app, press the key com
 
 #### Example
 
-Example snapshot of a reactlog graph from the synchronous [`cranwhales`](https://github.com/rstudio/cranwhales) Shiny application.
+[Live demo](https://rstudio.github.io/reactlog/demo/reactlog.html) of a reactlog graph from a synchronous [`cranwhales`](https://github.com/rstudio/cranwhales) application.
 
-[Live demo](https://rstudio.github.io/reactlog/demo/reactlog.html) of a [`cranwhales`](https://github.com/rstudio/cranwhales) reactlog with one user-marked step.
+```r
+options(shiny.reactlog = TRUE)
+shiny::runGitHub("cranwhales", "jcheng5", ref = "sync")
+```
 
-[![](man/figures/example_cranwhales.png)](https://rstudio.github.io/reactlog/demo/reactlog.html)
+[![](man/figures/cranwhales.gif)](https://rstudio.github.io/reactlog/demo/reactlog.html)
 
 
 ## Help
