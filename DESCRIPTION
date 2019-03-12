@@ -9,14 +9,12 @@ Authors@R: c(
       person("Joe", "Cheng", email = "joe@rstudio.com", role = c("ctb")),
       person("RStudio", role = c("cph", "fnd"))
     )
-Description: 'shiny' is an R package from RStudio that makes it incredibly
-  easy to build interactive web applications with R. The complexity of the
-  reactive elements within a 'shiny' application can quickly become
-  intertwined and are difficult to debug. 'reactlog' provides a visual insight
-  into the black box of 'shiny' reactivity. After logging the reactive
-  interactions of a 'shiny' application, 'reactlog' constructs a directed
-  dependency graph of the application's reactive state at any time point in the
-  record.
+Description: Shiny is an R package from RStudio that makes it incredibly easy
+  to build interactive web applications with R.  Behind the scenes, Shiny
+  builds a reactive graph that can quickly become intertwined and difficult to
+  debug. 'reactlog' provides a visual insight into that black box of Shiny
+  reactivity by constructing a directed dependency graph of the Shiny's
+  reactive state at any time point in a reactive recording.
 Depends:
   R (>= 3.0.2)
 Imports:
