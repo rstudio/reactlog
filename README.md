@@ -74,7 +74,7 @@ To mark a specific execution time point within your Shiny app, press the key com
 
 ```r
 options(shiny.reactlog = TRUE)
-shiny::runGitHub("cranwhales", "jcheng5", ref = "sync")
+shiny::runGitHub("cranwhales", "rstudio", ref = "sync")
 ```
 
 [![](man/figures/cranwhales.gif)](https://rstudio.github.io/reactlog/demo/reactlog.html)
