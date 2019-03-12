@@ -22,14 +22,14 @@
 ![](man/figures/pythagoras.png)
 
 
-[Shiny](http://shiny.rstudio.com/) is an R package from RStudio that makes it incredibly easy to build interactive web applications with R.  The complexity of the reactive elements within a Shiny application can quickly become intertwined and are difficult to debug.  **reactlog** provides a visual insight into the _black box_ of Shiny reactivity.  After logging the reactive interactions of a Shiny application, **reactlog** constructs a directed dependency graph of the Shiny's reactive state at any time point in the record.
+[Shiny](http://shiny.rstudio.com/) is an R package from RStudio that makes it incredibly easy to build interactive web applications with R.  Behind the scenes, Shiny builds a reactive graph that can quickly become intertwined and difficult to debug. **reactlog** provides a visual insight into that _black box_ of Shiny reactivity.
 
-The **reactlog** dependency graph provides users with the ability to visually see if reactive elements are:
-* not utilized (never retrieved)
-* over utilized (called independently many times)
-* interacting with unexpected elements
-* invalidating all expected dependencies
-* freezing (and thawing), preventing triggering of future reactivity
+After logging the reactive interactions of a Shiny application, **reactlog** constructs a directed dependency graph of the Shiny's reactive state at any time point in the record. The **reactlog** dependency graph provides users with the ability to visually see if reactive elements are:
+* Not utilized (never retrieved)
+* Over utilized (called independently many times)
+* Interacting with unexpected elements
+* Invalidating all expected dependencies
+* Freezing (and thawing), preventing triggering of future reactivity
 
 <!-- For an introduction and examples, visit the [Shiny Dev Center](http://shiny.rstudio.com/). -->
 
@@ -85,14 +85,11 @@ To mark a specific execution time point within your Shiny app, press the key com
 
 #### Example
 
-[Live demo](https://rstudio.github.io/reactlog/demo/reactlog.html) of a reactlog graph from a synchronous [`cranwhales`](https://github.com/rstudio/cranwhales) application.
-
-```r
-options(shiny.reactlog = TRUE)
-shiny::runGitHub("cranwhales", "rstudio", ref = "sync")
-```
+Here is a [demo](https://rstudio.github.io/reactlog/demo/reactlog.html) of the **reactlog** visualization applied to the [`cranwhales`](https://github.com/rstudio/cranwhales) shiny app.
 
 [![](man/figures/cranwhales.gif)](https://rstudio.github.io/reactlog/demo/reactlog.html)
+
+For more examples and explanation, see the [**reactlog** vignette](https://rstudio.github.io/reactlog/articles/reactlog.html#reactlog).
 
 
 ## Help
