@@ -184,7 +184,7 @@ server <- function(input, output, session) {
 shinyApp(ui, server)
 ```
 
-The following video demonstrates how one could run this application, interact with it (i.e., choose a different variable), then launch the reactlog by pressing `Ctrl + F3` (Mac: `Cmd + F3`). To start at the very beginning of the app's life cycle, click the <img src="images/buttons/prev-mark.svg" width="20" style="vertical-align: middle"/> button. You can then navigate through each step of the reactive life cyle by pressing the right arrow key or clicking <img src="images/buttons/next-step.svg" width="20" style="vertical-align: middle"/>. As you step through the life cycle, notice how the status of the graph is displayed above the dependency graph. A breakdown of all the components of the status bar is provided in the [Status bar](#status-bar) section.
+The following video demonstrates how one could run this application, interact with it (i.e., choose a different variable), then launch the reactlog by pressing `Ctrl + F3` (Mac: `Cmd + F3`). To start at the very beginning of the app's life cycle, click the <img src="images/buttons/prev-mark.svg" width="20" style="vertical-align: middle"/> button. You can then navigate through each step of the reactive life cycle by pressing the right arrow key or clicking <img src="images/buttons/next-step.svg" width="20" style="vertical-align: middle"/>. As you step through the life cycle, notice how the status of the graph is displayed above the dependency graph. A breakdown of all the components of the status bar is provided in the [Status bar](#status-bar) section.
 
 ```{r}
 htmltools::tags$iframe(

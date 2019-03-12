@@ -26,3 +26,4 @@ RoxygenNote: 6.1.1
 URL: https://github.com/rstudio/reactlog
 BugReports: https://github.com/rstudio/reactlog/issues
 VignetteBuilder: knitr
+Language: en-US
