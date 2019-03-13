@@ -184,7 +184,7 @@ server <- function(input, output, session) {
 shinyApp(ui, server)
 ```
 
-The following video demonstrates how one could run this application, interact with it (i.e., choose a different variable), then launch the reactlog by pressing `Ctrl + F3` (Mac: `Cmd + F3`). To start at the very beginning of the app's life cycle, click the <img src="images/buttons/prev-mark.svg" width="20" style="vertical-align: middle"/> button. You can then navigate through each step of the reactive life cyle by pressing the right arrow key or clicking <img src="images/buttons/next-step.svg" width="20" style="vertical-align: middle"/>. As you step through the life cycle, notice how the status of the graph is displayed above the dependency graph. A breakdown of all the components of the status bar is provided in the [Status bar](#status-bar) section.
+The following video demonstrates how one could run this application, interact with it (i.e., choose a different variable), then launch the reactlog by pressing `Ctrl + F3` (Mac: `Cmd + F3`). To start at the very beginning of the app's life cycle, click the <img src="images/buttons/prev-mark.svg" width="20" style="vertical-align: middle"/> button. You can then navigate through each step of the reactive life cycle by pressing the right arrow key or clicking <img src="images/buttons/next-step.svg" width="20" style="vertical-align: middle"/>. As you step through the life cycle, notice how the status of the graph is displayed above the dependency graph. A breakdown of all the components of the status bar is provided in the [Status bar](#status-bar) section.
 
 ```{r}
 htmltools::tags$iframe(
@@ -199,11 +199,11 @@ htmltools::tags$iframe(
 )
 ```
 
-For more complex graphs, like the one created by [Joe Cheng's **cranwhales** app](https://github.com/jcheng5/cranwhales), it's convenient to have more advanced navigation through the time-dependent graph, like jumping to the next idle step using <img src="images/buttons/next-idle.svg" width="30" style="vertical-align: middle"/>, and querying sub-graphs by double-clicking and/or searching for graph components by name. Also, notice how, upon opening **reactlog**, it navigates to the first [reactive flush](#reactive-flush) (i.e., completion of the first round of reactive execution). If there is a particular round of execution you're primarily interested in, you can add user mark(s), and **reactlog** would open to that time point instead (see [Navigation](#navigation-buttons) for more details on creating and navigating to user marks).
+For more complex graphs, like the one created by [Joe Cheng's **cranwhales** app](https://github.com/rstudio/cranwhales), it's convenient to have more advanced navigation through the time-dependent graph, like jumping to the next idle step using <img src="images/buttons/next-idle.svg" width="30" style="vertical-align: middle"/>, and querying sub-graphs by double-clicking and/or searching for graph components by name. Also, notice how, upon opening **reactlog**, it navigates to the first [reactive flush](#reactive-flush) (i.e., completion of the first round of reactive execution). If there is a particular round of execution you're primarily interested in, you can add user mark(s), and **reactlog** would open to that time point instead (see [Navigation](#navigation-buttons) for more details on creating and navigating to user marks).
 
 ```r
 options(shiny.reactlog = TRUE)
-shiny::runGitHub("cranwhales", "jcheng5", ref = "sync")
+shiny::runGitHub("cranwhales", "rstudio", ref = "sync")
 ```
 
 ```{r}

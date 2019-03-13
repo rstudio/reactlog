@@ -9,7 +9,12 @@ Authors@R: c(
       person("Joe", "Cheng", email = "joe@rstudio.com", role = c("ctb")),
       person("RStudio", role = c("cph", "fnd"))
     )
-Description: Display all shiny reactions in a graphical network display.
+Description: Shiny is an R package from RStudio that makes it incredibly easy
+  to build interactive web applications with R.  Behind the scenes, Shiny
+  builds a reactive graph that can quickly become intertwined and difficult to
+  debug. 'reactlog' provides a visual insight into that black box of Shiny
+  reactivity by constructing a directed dependency graph of the Shiny's
+  reactive state at any time point in a reactive recording.
 Depends:
   R (>= 3.0.2)
 Imports:
@@ -26,3 +31,4 @@ RoxygenNote: 6.1.1
 URL: https://github.com/rstudio/reactlog
 BugReports: https://github.com/rstudio/reactlog/issues
 VignetteBuilder: knitr
+Language: en-US

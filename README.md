@@ -1,31 +1,51 @@
 # reactlog
 
 [![Travis Build Status](https://travis-ci.org/rstudio/reactlog.svg?branch=master)](https://travis-ci.org/rstudio/reactlog)
-<!-- [![Coverage status](https://codecov.io/gh/rstudio/reactlog/branch/master/graph/badge.svg)](https://codecov.io/github/rstudio/reactlog?branch=master) -->
 [![CRAN version](http://www.r-pkg.org/badges/version/reactlog)](https://cran.r-project.org/package=reactlog)
+[![](http://cranlogs.r-pkg.org/badges/reactlog)](http://www.rpackages.io/package/reactlog)
+[![DOI](https://zenodo.org/badge/137799634.svg)](https://zenodo.org/badge/latestdoi/137799634)
+[![code style: lintr](https://img.shields.io/badge/linter-lintr-198CE7.svg)](https://eslint.org/)
+<br/><!-- single line break only -->
+[![node version: 11.x](https://img.shields.io/badge/node-11.x-brightgreen.svg)](https://nodejs.org/en/)
+[![yarn version: 1.13.0](https://img.shields.io/badge/yarn-1.13.0-257bac.svg)](https://yarnpkg.com/en/)
+[![JavaScript type: flow](https://img.shields.io/npm/types/flow-typed.svg)](https://github.com/flow-typed/flow-typed)
+[![cytoscape version: 1.13.0](https://img.shields.io/github/package-json/dependency-version/rstudio/reactlog/cytoscape.svg)](http://js.cytoscape.org/)
+[![@babel/preset-env](https://img.shields.io/github/package-json/dependency-version/rstudio/reactlog/dev/@babel/preset-env.svg)](https://babeljs.io/)
+[![webpack](https://img.shields.io/github/package-json/dependency-version/rstudio/reactlog/dev/webpack.svg)](https://webpack.js.org/)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+[![linter: eslint](https://img.shields.io/badge/linter-eslint-3524ca.svg)](https://eslint.org/)
+
+
+
+<!-- [![Coverage status](https://codecov.io/gh/rstudio/reactlog/branch/master/graph/badge.svg)](https://codecov.io/github/rstudio/reactlog?branch=master) -->
+
 
 ![](man/figures/pythagoras.png)
 
 
-[Shiny](http://shiny.rstudio.com/) is an R package from RStudio that makes it incredibly easy to build interactive web applications with R.  The complexity of the reactive elements within a Shiny application can quickly become intertwined and are difficult to debug.  **reactlog** provides a visual insight into the _black box_ of Shiny reactivity.  After logging the reactive interactions of a Shiny application, **reactlog** constructs a directed dependency graph of the Shiny's reactive state at any time point in the record.
+[Shiny](http://shiny.rstudio.com/) is an R package from RStudio that makes it incredibly easy to build interactive web applications with R.  Behind the scenes, Shiny builds a reactive graph that can quickly become intertwined and difficult to debug. **reactlog** provides a visual insight into that _black box_ of Shiny reactivity.
 
-The **reactlog** dependency graph provides users with the ability to visually see if reactive elements are:
-* not utilized (never retrieved)
-* over utilized (called independently many times)
-* interacting with unexpected elements
-* invalidating all expected dependencies
-* freezing (and thawing), preventing triggering of future reactivity
+After logging the reactive interactions of a Shiny application, **reactlog** constructs a directed dependency graph of the Shiny's reactive state at any time point in the record. The **reactlog** dependency graph provides users with the ability to visually see if reactive elements are:
+* Not utilized (never retrieved)
+* Over utilized (called independently many times)
+* Interacting with unexpected elements
+* Invalidating all expected dependencies
+* Freezing (and thawing), preventing triggering of future reactivity
 
 <!-- For an introduction and examples, visit the [Shiny Dev Center](http://shiny.rstudio.com/). -->
 
 
 ## Major Features
 
+There are many subtle features hidden throughout **reactlog**. Here is a short list quickly describing what is possible within **reactlog**:
+
 * Display the reactivity dependency graph of your Shiny applications
-* Move throughout your reactive history to replay element interactions
+* Navigate throughout your reactive history to replay element interactions
 * Highlight reactive family trees
 * Filter on reactive family trees
 * Search for reactive elements
+
+For a more in-depth explanation of **reactlog**, please visit the [**reactlog** vignette](https://rstudio.github.io/reactlog/articles/reactlog.html).
 
 ## Installation
 
@@ -35,7 +55,7 @@ To install the stable version from CRAN, run the following from an R console:
 install.packages("reactlog")
 ```
 
-For the latest version:
+For the latest development version:
 
 ```r
 remotes::install_github("rstudio/reactlog")
@@ -66,11 +86,11 @@ To mark a specific execution time point within your Shiny app, press the key com
 
 #### Example
 
-Example snapshot of a reactlog graph from the synchronous [`cranwhales`](https://github.com/rstudio/cranwhales) Shiny application.
+Here is a [demo](https://rstudio.github.io/reactlog/demo/reactlog.html) of the **reactlog** visualization applied to the [`cranwhales`](https://github.com/rstudio/cranwhales) shiny app.
 
-[Live demo](https://rstudio.github.io/reactlog/demo/reactlog.html) of a [`cranwhales`](https://github.com/rstudio/cranwhales) reactlog with one user-marked step.
+[![](man/figures/cranwhales.gif)](https://rstudio.github.io/reactlog/demo/reactlog.html)
 
-[![](man/figures/example_cranwhales.png)](https://rstudio.github.io/reactlog/demo/reactlog.html)
+For more examples and explanation, see the [**reactlog** vignette](https://rstudio.github.io/reactlog/articles/reactlog.html#reactlog).
 
 
 ## Help
