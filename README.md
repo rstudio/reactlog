@@ -11,7 +11,7 @@
 <!-- [![Coverage status](https://codecov.io/gh/rstudio/reactlog/branch/master/graph/badge.svg)](https://codecov.io/github/rstudio/reactlog?branch=master) -->
 
 
-<img src="man/figures/pythagoras.gif" style="border: 1px solid black;">
+<img src="https://rstudio.github.io/reactlog/readme-images/pythagoras.gif" style="border: 1px solid black; box-shadow: 5px 5px 5px #eee;">
 
 
 [Shiny](http://shiny.rstudio.com/) is an R package from RStudio that makes it incredibly easy to build interactive web applications with R.  Behind the scenes, Shiny builds a reactive graph that can quickly become intertwined and difficult to debug. **reactlog** provides a visual insight into that _black box_ of Shiny reactivity.
@@ -80,7 +80,7 @@ To mark a specific execution time point within your Shiny app, press the key com
 Here is a [demo](https://rstudio.github.io/reactlog/demo/reactlog.html) of the **reactlog** visualization applied to the [`cranwhales`](https://github.com/rstudio/cranwhales) shiny app.
 
 [
-<img src="man/figures/cranwhales.gif" style="border: 1px solid black;">
+<img src="https://rstudio.github.io/reactlog/readme-images/cranwhales.gif" style="border: 1px solid black; box-shadow: 5px 5px 5px #eee;">
 ](https://rstudio.github.io/reactlog/demo/reactlog.html)
 
 For more examples and explanation, see the [**reactlog** vignette](https://rstudio.github.io/reactlog/articles/reactlog.html#reactlog).
@@ -110,6 +110,9 @@ Please make sure you have [Node.js](https://nodejs.org/en/) and [yarn](https://y
 Installation script:
 
 ```bash
+# install git lfs hooks
+git lfs install
+
 # install dependencies and build JavaScript
 yarn install
 
