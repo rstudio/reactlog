@@ -14,14 +14,12 @@
     "watch": "yarn lint-all && grunt webpackSetWatch default",
     "update-license": "node ./bin/update-license.js > LICENSE.note",
     "postinstall": "./bin/postinstall.sh",
-    "precommit": "lint-staged",
+    "lint-staged": "lint-staged",
     "git_add_map": "git add inst/reactlog/reactlogAsset/reactlog.js inst/reactlog/reactlogAsset/reactlog.js.map && git add"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
+  "pre-commit": [
+    "lint-staged"
+  ],
   "lint-staged": {
     "concurrent": false,
     "linters": {
@@ -67,9 +65,9 @@
     "grunt": "1.x",
     "grunt-cli": "1.x",
     "grunt-webpack": "3.x",
-    "husky": "1.x",
     "license-checker": "^25.0.1",
     "lint-staged": "8.x",
+    "pre-commit": "^1.2.2",
     "prettier": "1.x",
     "webpack": "4.x",
     "webpack-bundle-analyzer": "3.x"
