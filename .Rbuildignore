@@ -31,3 +31,5 @@
 .*\.js\.map$
 ^inst/log-files
 ^readme-images
+^inst/gantt
+^vignettes
