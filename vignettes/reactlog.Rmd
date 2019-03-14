@@ -1,7 +1,7 @@
 ---
 title: "Shiny Reactlog"
 author: "Carson Sievert, Joe Cheng, and Barret Schloerke"
-date: "`r Sys.Date()`"
+date: "2019-03-14"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Shiny Reactlog}
