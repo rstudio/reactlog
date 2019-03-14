@@ -15,7 +15,7 @@
     "update-license": "node ./bin/update-license.js > LICENSE.note",
     "postinstall": "./bin/postinstall.sh",
     "lint-staged": "lint-staged",
-    "git_add_map": "git add inst/reactlog/reactlogAsset/reactlog.js inst/reactlog/reactlogAsset/reactlog.js.map && git add"
+    "git_add_compiled": "git add inst/reactlog/reactlogAsset/reactlog.js && git add"
   },
   "pre-commit": [
     "lint-staged"
@@ -32,7 +32,7 @@
       "srcjs/**/*.js": [
         "yarn fix",
         "yarn flow-report-and-echo",
-        "yarn git_add_map"
+        "yarn git_add_compiled"
       ]
     }
   },
