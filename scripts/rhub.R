@@ -14,7 +14,6 @@ check_output <- rhub::check_for_cran(
   build_file,
   email = "barret@rstudio.com",
   platforms = platforms,
-  env_vars = c("_R_CHECK_FORCE_SUGGESTS_" = "0"),
   show_status = FALSE
 )
 
