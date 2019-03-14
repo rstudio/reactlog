@@ -7,19 +7,7 @@
 [![CRAN version](http://www.r-pkg.org/badges/version/reactlog)](https://cran.r-project.org/package=reactlog)
 [![reactlog downloads per month](http://cranlogs.r-pkg.org/badges/reactlog)](http://www.rpackages.io/package/reactlog)
 [![DOI](https://zenodo.org/badge/137799634.svg)](https://zenodo.org/badge/latestdoi/137799634)
-[![code style: lintr](https://img.shields.io/badge/linter-lintr-198CE7.svg)](https://eslint.org/)
-<br/><!-- single line break only -->
-[![node version: 11.x](https://img.shields.io/badge/node-11.x-brightgreen.svg)](https://nodejs.org/en/)
-[![yarn version: 1.13.0](https://img.shields.io/badge/yarn-1.13.0-257bac.svg)](https://yarnpkg.com/en/)
-[![JavaScript type: flow](https://img.shields.io/npm/types/flow-typed.svg)](https://github.com/flow-typed/flow-typed)
-[![cytoscape version: 1.13.0](https://img.shields.io/github/package-json/dependency-version/rstudio/reactlog/cytoscape.svg)](http://js.cytoscape.org/)
-[![@babel/preset-env](https://img.shields.io/github/package-json/dependency-version/rstudio/reactlog/dev/@babel/preset-env.svg)](https://babeljs.io/)
-[![webpack](https://img.shields.io/github/package-json/dependency-version/rstudio/reactlog/dev/webpack.svg)](https://webpack.js.org/)
-[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
-[![linter: eslint](https://img.shields.io/badge/linter-eslint-3524ca.svg)](https://eslint.org/)
-
-
-
+<br><br><!-- space above image break only -->
 <!-- [![Coverage status](https://codecov.io/gh/rstudio/reactlog/branch/master/graph/badge.svg)](https://codecov.io/github/rstudio/reactlog?branch=master) -->
 
 
@@ -106,6 +94,16 @@ For bug reports, please use the **reactlog** [issue tracker](https://github.com/
 
 
 ## Development
+
+[![node version: 11.x](https://img.shields.io/badge/node-11.x-brightgreen.svg)](https://nodejs.org/en/)
+[![yarn version: 1.13.0](https://img.shields.io/badge/yarn-1.13.0-257bac.svg)](https://yarnpkg.com/en/)
+[![JavaScript type: flow](https://img.shields.io/npm/types/flow-typed.svg)](https://github.com/flow-typed/flow-typed)
+[![cytoscape version: 1.13.0](https://img.shields.io/github/package-json/dependency-version/rstudio/reactlog/cytoscape.svg)](http://js.cytoscape.org/)
+[![@babel/preset-env](https://img.shields.io/github/package-json/dependency-version/rstudio/reactlog/dev/@babel/preset-env.svg)](https://babeljs.io/)
+[![webpack](https://img.shields.io/github/package-json/dependency-version/rstudio/reactlog/dev/webpack.svg)](https://webpack.js.org/)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+[![linter: eslint](https://img.shields.io/badge/linter-eslint-3524ca.svg)](https://eslint.org/)
+
 
 Please make sure you have [Node.js](https://nodejs.org/en/) and [yarn](https://yarnpkg.com/en/docs/install) installed.
 
