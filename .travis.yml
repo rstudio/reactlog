@@ -27,7 +27,8 @@ jobs:
         - Rscript -e 'stopifnot(file.copy("inst/reactlog/", "docs/", recursive = TRUE)); stopifnot(file.rename("docs/reactlog/", "docs/demo/"))'
       deploy:
         on:
-          condition: branch IN (master, travis, rc-v1.0.0)
+          # deploy on any of these branches
+          condition: $TRAVIS_BRANCH =~ ^master|travis|rc-v1.0.0$
         provider: pages # github pages
         local-dir: docs # deploy from docs folder
         skip-cleanup: true # keep pkgdown output
