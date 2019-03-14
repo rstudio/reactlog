@@ -1,0 +1,2 @@
+inst/reactlog/reactlogAsset/*.js filter=lfs diff=lfs merge=lfs -text
+inst/reactlog/reactlogAsset/*.js.map filter=lfs diff=lfs merge=lfs -text
