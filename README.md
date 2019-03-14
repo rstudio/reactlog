@@ -5,7 +5,7 @@
 <br/><!-- single line break only -->
 [![Travis Build Status](https://travis-ci.org/rstudio/reactlog.svg?branch=master)](https://travis-ci.org/rstudio/reactlog)
 [![CRAN version](http://www.r-pkg.org/badges/version/reactlog)](https://cran.r-project.org/package=reactlog)
-[![](http://cranlogs.r-pkg.org/badges/reactlog)](http://www.rpackages.io/package/reactlog)
+[![reactlog downloads per month](http://cranlogs.r-pkg.org/badges/reactlog)](http://www.rpackages.io/package/reactlog)
 [![DOI](https://zenodo.org/badge/137799634.svg)](https://zenodo.org/badge/latestdoi/137799634)
 [![code style: lintr](https://img.shields.io/badge/linter-lintr-198CE7.svg)](https://eslint.org/)
 <br/><!-- single line break only -->
@@ -23,7 +23,7 @@
 <!-- [![Coverage status](https://codecov.io/gh/rstudio/reactlog/branch/master/graph/badge.svg)](https://codecov.io/github/rstudio/reactlog?branch=master) -->
 
 
-![](man/figures/pythagoras.png)
+<img src="man/figures/pythagoras.gif" style="border: 1px solid black;">
 
 
 [Shiny](http://shiny.rstudio.com/) is an R package from RStudio that makes it incredibly easy to build interactive web applications with R.  Behind the scenes, Shiny builds a reactive graph that can quickly become intertwined and difficult to debug. **reactlog** provides a visual insight into that _black box_ of Shiny reactivity.
@@ -91,7 +91,9 @@ To mark a specific execution time point within your Shiny app, press the key com
 
 Here is a [demo](https://rstudio.github.io/reactlog/demo/reactlog.html) of the **reactlog** visualization applied to the [`cranwhales`](https://github.com/rstudio/cranwhales) shiny app.
 
-[![](man/figures/cranwhales.gif)](https://rstudio.github.io/reactlog/demo/reactlog.html)
+[
+<img src="man/figures/cranwhales.gif" style="border: 1px solid black;">
+](https://rstudio.github.io/reactlog/demo/reactlog.html)
 
 For more examples and explanation, see the [**reactlog** vignette](https://rstudio.github.io/reactlog/articles/reactlog.html#reactlog).
 
