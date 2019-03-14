@@ -105,7 +105,7 @@ For bug reports, please use the **reactlog** [issue tracker](https://github.com/
 [![linter: eslint](https://img.shields.io/badge/linter-eslint-3524ca.svg)](https://eslint.org/)
 
 
-Please make sure you have [Node.js](https://nodejs.org/en/) and [yarn](https://yarnpkg.com/en/docs/install) installed.
+Please make sure you have [Github Large File Storage](https://git-lfs.github.com/), [Node.js](https://nodejs.org/en/) and [yarn](https://yarnpkg.com/en/docs/install) installed.
 
 Installation script:
 
