@@ -1,6 +1,28 @@
 ## Cran comments
 
-#### 2019-3-7
+#### 2019-3-14
+
+I've reduced the file size and updated the check outputs below.
+
+Thank you for your time!
+
+Best,
+Barret
+
+
+#### 2019-3-14
+
+Thanks, we see:
+
+   Size of tarball: 7138666 bytes
+
+Not more than 5 MB for a CRAN package, please.
+
+Best,
+Uwe Ligges
+
+
+#### 2019-3-14
 
 This is a new release.
 
@@ -12,7 +34,7 @@ Barret
 
 ## R CMD check results
 
-Overall there is a consistent note of two sub-directories over 1Mb and a note that it is a new submission.
+Overall there are no consistent notes or warnings other than the note of `reactlog` being a new submission.
 
 0 errors | 0 warnings | 1 note
 
@@ -20,15 +42,12 @@ Overall there is a consistent note of two sub-directories over 1Mb and a note th
   * checking CRAN incoming feasibility ... NOTE
     Maintainer: 'Barret Schloerke <barret@rstudio.com>'
     New submission
-  * checking installed package size ... NOTE
-    installed size is  7.4Mb
-    sub-directories of 1Mb or more:
-      doc        1.8Mb
-      reactlog   5.4Mb
 
 
-The WARNING for the README.md conversion on rhub is most likely due to rhub's setup.  The NOTE for window's old release not converting Authors@R consistently.
-
+False positives:
+* The 404 README.md URL (http://www.rpackages.io/package/reactlog) is valid once reactlog is on cran.  The webpage works, just the status is a 404.
+* The WARNING for the README.md conversion on rhub is most likely due to rhub's setup.
+* The NOTE for window's old release not converting Authors@R consistently.
 
 
 ## Test environments
@@ -38,34 +57,19 @@ The WARNING for the README.md conversion on rhub is most likely due to rhub's se
   * checking CRAN incoming feasibility ... NOTE
     Maintainer: 'Barret Schloerke <barret@rstudio.com>'
     New submission
-  * checking installed package size ... NOTE
-    installed size is  7.4Mb
-    sub-directories of 1Mb or more:
-      doc        1.8Mb
-      reactlog   5.4Mb
 
+  Found the following (possibly) invalid URLs:
+    URL: http://www.rpackages.io/package/reactlog
+      From: README.md
+      Status: 404
+      Message: Not Found
 #### ubuntu 14.04 (on travis-ci)
 
-* R 3.4.4
-  * checking installed package size ... NOTE
-    installed size is  7.4Mb
-    sub-directories of 1Mb or more:
-      doc        1.8Mb
-      reactlog   5.4Mb
+* R 3.4.4 - Status: OK
 
-* R 3.5.2
-  * checking installed package size ... NOTE
-    installed size is  7.4Mb
-    sub-directories of 1Mb or more:
-      doc        1.8Mb
-      reactlog   5.4Mb
+* R 3.5.2 - Status: OK
 
-* R Under development (unstable) (2019-03-14 r76232)
-  * checking installed package size ... NOTE
-    installed size is  7.4Mb
-    sub-directories of 1Mb or more:
-      doc        1.8Mb
-      reactlog   5.4Mb
+* R Under development (unstable) (2019-03-14 r76237) - Status: OK
 
 
 #### win-builder (devel and release)
@@ -75,11 +79,12 @@ The WARNING for the README.md conversion on rhub is most likely due to rhub's se
   Maintainer: 'Barret Schloerke <barret@rstudio.com>'
 
   New submission
-  * checking installed package size ... NOTE
-    installed size is  7.4Mb
-    sub-directories of 1Mb or more:
-      doc        1.8Mb
-      reactlog   5.4Mb
+
+  Found the following (possibly) invalid URLs:
+    URL: http://www.rpackages.io/package/reactlog
+      From: README.md
+      Status: 404
+      Message: Not Found
   * checking DESCRIPTION meta-information ... NOTE
   Author field differs from that derived from Authors@R
     Author:    'Barret Schloerke [aut, cre] (<https://orcid.org/0000-0001-9986-114X>), Joe Cheng [ctb], RStudio [cph, fnd]'
@@ -91,20 +96,26 @@ The WARNING for the README.md conversion on rhub is most likely due to rhub's se
 
   New submission
 
+  Found the following (possibly) invalid URLs:
+    URL: http://www.rpackages.io/package/reactlog
+      From: README.md
+      Status: 404
+      Message: Not Found
+
 * R version 3.5.3 (2019-03-11)
   * checking CRAN incoming feasibility ... NOTE
   Maintainer: 'Barret Schloerke <barret@rstudio.com>'
 
   New submission
-  * checking installed package size ... NOTE
-    installed size is  7.4Mb
-    sub-directories of 1Mb or more:
-      doc        1.8Mb
-      reactlog   5.4Mb
 
+  Found the following (possibly) invalid URLs:
+    URL: http://www.rpackages.io/package/reactlog
+      From: README.md
+      Status: 404
+      Message: Not Found
 #### rhub
 
-* Build ID: reactlog_1.0.0.tar.gz-f669dd93575b41a184b1b4d28653e687
+* Build ID: reactlog_1.0.0.tar.gz-8f10a076c4d543ee935621494de204a2
   Platform: Windows Server 2008 R2 SP1, R-devel, 32/64 bit
   R Under development (unstable) (2019-03-09 r76216)
   * checking CRAN incoming feasibility ... NOTE
@@ -112,28 +123,14 @@ The WARNING for the README.md conversion on rhub is most likely due to rhub's se
 
   New submission
 
-  Size of tarball: 7138656 bytes
-  * checking installed package size ... NOTE
-    installed size is  7.3Mb
-    sub-directories of 1Mb or more:
-      reactlog   5.4Mb
-      doc        1.8Mb
-
-* Build ID: reactlog_1.0.0.tar.gz-b645116d73b04dfc8e0881788f0786ee
+* Build ID: reactlog_1.0.0.tar.gz-61464674f5894f2aafbdeb08cde4398e
   Platform: Windows Server 2008 R2 SP1, R-release, 32/64 bit
   R version 3.5.3 (2019-03-11)
   * checking CRAN incoming feasibility ... NOTE
   Maintainer: 'Barret Schloerke <barret@rstudio.com>'
   New submission
 
-  Size of tarball: 7138656 bytes
-  * checking installed package size ... NOTE
-    installed size is  7.3Mb
-    sub-directories of 1Mb or more:
-      reactlog   5.4Mb
-      doc        1.8Mb
-
-* Build ID:   reactlog_1.0.0.tar.gz-4f7745e321db443e8b9b1bcc38e72a50
+* Build ID:   reactlog_1.0.0.tar.gz-6f17d96a1158459d9d1a673bdf970a3d
   Platform:   Ubuntu Linux 16.04 LTS, R-release, GCC
   R version 3.5.3 (2019-03-11) -- "Great Truth"
   * checking top-level files ... WARNING
@@ -144,24 +141,10 @@ The WARNING for the README.md conversion on rhub is most likely due to rhub's se
 
   New submission
 
-  Size of tarball: 7138656 bytes
-  * checking installed package size ... NOTE
-    installed size is  7.4Mb
-    sub-directories of 1Mb or more:
-      doc        1.8Mb
-      reactlog   5.4Mb
-
-* Build ID:   reactlog_1.0.0.tar.gz-1c3c90ecafc4469a92e7753d00fabd2b
+* Build ID:   reactlog_1.0.0.tar.gz-ce002ac23eac49d0bf288412970c2627
   Platform:   Fedora Linux, R-devel, clang, gfortran
   R Under development (unstable) (2019-03-13 r76230) -- "Unsuffered Consequences"
   * checking CRAN incoming feasibility ... NOTE
   Maintainer: ‘Barret Schloerke <barret@rstudio.com>’
 
   New submission
-
-  Size of tarball: 7138656 bytes
-  * checking installed package size ... NOTE
-    installed size is  7.4Mb
-    sub-directories of 1Mb or more:
-      doc        1.8Mb
-      reactlog   5.4Mb
