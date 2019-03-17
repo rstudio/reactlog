@@ -1,5 +1,49 @@
 ## Cran comments
 
+
+#### 2019-3-17
+
+Hello,
+
+Possible invalid URL:
+* The README.md URL (http://www.rpackages.io/package/reactlog) is valid once reactlog is on CRAN.  The webpage works, just the status is a 404.
+
+Single quote packages:
+* Changed `Shiny` to `'shiny'` in the DESCRIPTION file.
+
+Omit stock license file:
+* Added the License.md file to `.Rbuildignore`.
+
+Thank you for the changes!
+
+Best,
+Barret
+
+
+
+#### 2019-3-17
+
+Thanks,
+
+   Found the following (possibly) invalid URLs:
+     URL: http://www.rpackages.io/package/reactlog
+       From: README.md
+       Status: 404
+       Message: Not Found
+
+
+Please always write package names, software names and API names in
+single quotes (e.g. 'Shiny') in the Title and the Description field.
+
+The LICENSE file is only needed if you have additional restrictions to
+the GPL-3 which you have not? In that please case omit the file.
+
+Please fix and resubmit.
+
+Best,
+Martina Schmirl
+
+
 #### 2019-3-14
 
 I've reduced the file size and updated the check outputs below.
