@@ -1,5 +1,30 @@
 ## Cran comments
 
+#### 2019-3-18
+
+Reworded the description and added the DOI mid sentenance in the description.
+I kept the name inside the parenthesis to avoid confusion, similar to https://CRAN.R-project.org/package=phyclust.
+> 'reactlog' (Schloerke 2019) <doi:10.5281/zenodo.2591517> provides a visual insight into...
+
+
+Thank you for the change and suggestion!
+
+Best,
+Barret
+
+
+#### 2019-3-18
+
+> The Description field should start with a capital letter.
+
+Please fix and resubmit.
+
+Is there some reference about the method you can add in the Description
+field in the form Authors (year) <doi:.....>?
+
+Best,
+Uwe Ligges
+
 
 #### 2019-3-17
 

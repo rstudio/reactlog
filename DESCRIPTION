@@ -1,5 +1,5 @@
 Package: reactlog
-Title: 'shiny' Reactivity Visualizer
+Title: Reactivity Visualizer for 'shiny'
 Version: 1.0.0
 Authors@R: c(
       person(
@@ -9,12 +9,13 @@ Authors@R: c(
       person("Joe", "Cheng", email = "joe@rstudio.com", role = c("ctb")),
       person("RStudio", role = c("cph", "fnd"))
     )
-Description: 'shiny' is an R package from RStudio that makes it incredibly easy
-  to build interactive web applications with R.  Behind the scenes, 'shiny'
-  builds a reactive graph that can quickly become intertwined and difficult to
-  debug. 'reactlog' provides a visual insight into that black box of 'shiny'
-  reactivity by constructing a directed dependency graph of the application's
-  reactive state at any time point in a reactive recording.
+Description: Building interactive web applications with R is incredibly easy
+  with 'shiny'. Behind the scenes, 'shiny' builds a reactive graph that can
+  quickly become intertwined and difficult to debug. 'reactlog' 
+  (Schloerke 2019) <doi:10.5281/zenodo.2591517> provides a visual insight into
+  that black box of 'shiny' reactivity by constructing a directed dependency
+  graph of the application's reactive state at any time point in a reactive
+  recording.
 Depends:
   R (>= 3.0.2)
 Imports:
