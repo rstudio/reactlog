@@ -7,28 +7,21 @@ notifications:
     on_success: change
     on_failure: change
 
+r:
+  - oldrel
+  - release
+  - devel
+
 jobs:
   include:
-    - stage: "R CMD check"
-      name: "Old Release"
-      r: oldrel
-
-
-    - name: "Release"
-      r: release
-
-
-    - name: "Devel"
-      r: devel
-
-
     - stage: "Deploy"
       name: "pkgdown"
       r: release
+      # only if in a rc-vX.X.X branch
       if: |
-        branch IN (master, travis, rc-v1.0.0) AND \
+        repo = rstudio/reactlog AND \
         type = push AND \
-        repo = rstudio/reactlog
+        branch =~ /^rc-v\d+\.\d+\.\d+$/
       before_deploy: # build site and copy over files
         - Rscript -e 'if(!require("pkgdown")) install.packages("pkgdown")'
         - Rscript -e 'pkgdown::build_site()'
