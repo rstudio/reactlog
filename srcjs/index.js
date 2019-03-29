@@ -1,5 +1,7 @@
 // @flow
 
+import "@babel/polyfill";
+
 import $ from "jquery";
 import _debounce from "lodash/debounce";
 
@@ -75,8 +77,9 @@ $(function() {
     for (let i = 0; i < rlog.log.length; i++) {
       entry = rlog.log[i];
       if (entry.action === LogStates.freeze) {
-        $("#legendRowFrozen").css("display", ""); // remove display none form css
+        $("#legendRowInvalidated").addClass("legendRowTopMiddle"); // add spacing around legend row
         $("#legendFrozen").css("background-color", colors.frozen.default);
+        $("#legendRowFrozen").css("display", ""); // remove display none form css
         break;
       }
     }

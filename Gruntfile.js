@@ -15,7 +15,7 @@ module.exports = function(grunt) {
 
     webpack: {
       options: {
-        mode: "development", // do not take time to shrink files;
+        mode: "production", // do not take time to shrink files;
         devtool: "source-map", // produce a sibling source map file
         stats: {
           colors: true,
@@ -24,9 +24,6 @@ module.exports = function(grunt) {
         },
         progress: true,
         failOnError: true,
-        // optimization: {
-        //   minimize: false // uglify the code
-        // },
       },
       reactlog: {
         entry: jsSrcdir + "index.js",
