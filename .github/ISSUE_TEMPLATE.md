@@ -8,13 +8,15 @@ Delete these instructions once you have read them.
 
 ---
 
-Brief description of the problem
+## Recording issue
+
+Brief description of the problem.  This should show how shiny is not recording something properly.
 
 ```r
 library(shiny)
 library(reactlog)
 
-options("shiny.reactlog" = TRUE)
+options(shiny.reactlog = TRUE)
 
 ui <- # FILL IN UI
 server <- function(input, output, session) {
@@ -22,4 +24,24 @@ server <- function(input, output, session) {
 }
 
 shiny::shinyApp(ui = ui, server = server)
+```
+
+#### Interactive steps to produce bad reactlog recording
+
+* Select A
+* Click plot
+* Show reactlog
+* ...
+
+
+-----------------
+
+## Playback issue
+
+Brief description of the problem.  Given that Shiny recorded it correctly, the reactlog provided by `shiny::reactlog()` is not being displaying properly.
+
+Please attach a screenshot if appropriate.
+
+```r
+jsonlite::toJSON(shiny::reactlog(), pretty = TRUE, auto_unbox = TRUE)
 ```

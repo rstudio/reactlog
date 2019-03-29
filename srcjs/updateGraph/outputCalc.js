@@ -1,66 +1,74 @@
 // @flow
 
 import _sortedIndexOf from "lodash/sortedIndexOf";
+import _sortedIndex from "lodash/sortedIndex";
 
 import { rlog } from "../rlog";
 import { updateGraph } from "../updateGraph";
-import { hasLength } from "../graph/GraphAtStep";
 
 import type { CytoscapeOptions } from "../cyto/cytoFlowType";
 
-let nextOutputCalc = function(cytoOptions?: CytoscapeOptions = {}) {
+let nextStepInArr = function(
+  arr: Array<number>,
+  cytoOptions?: CytoscapeOptions = {}
+) {
   let nextTick;
-  if (_sortedIndexOf(rlog.getGraph.stepsOutputCalc, rlog.curTick) !== -1) {
-    // not at a cycle point
-    if (hasLength(rlog.getGraph.filterDatas)) {
-      // if filtered, will go to previous step, then next step location
-      nextTick = rlog.getGraph.nextStep(rlog.getGraph.prevStep(rlog.curTick));
-    } else {
-      // if not filtered
-      nextTick = rlog.curTick;
-    }
-  } else {
-    // at cycle point
-    // first move one step forward... then find next enter/exit empty
+  if (_sortedIndexOf(arr, rlog.curTick) !== -1) {
+    // at arr point, move the tick one ahead
     nextTick = rlog.getGraph.nextStep(rlog.curTick);
+  } else {
+    // not at arr point,
+    nextTick = rlog.curTick;
   }
-  let val, i;
-  // move to queue empty
-  for (i = 0; i < rlog.getGraph.stepsOutputCalc.length; i++) {
-    val = rlog.getGraph.stepsOutputCalc[i];
-    if (nextTick < val) {
-      updateGraph(val, cytoOptions);
+
+  // get next tick idx
+  let nextTickIdx = _sortedIndex(arr, nextTick);
+
+  let i, arrStep;
+  for (i = nextTickIdx; i < arr.length; i++) {
+    arrStep = arr[i];
+    if (_sortedIndexOf(rlog.getGraph.filteredStepsVisible, arrStep) >= 0) {
+      updateGraph(arrStep, cytoOptions);
       return true;
     }
   }
   return false;
 };
 
-let prevOutputCalc = function(cytoOptions?: CytoscapeOptions = {}) {
+let prevStepInArr = function(
+  arr: Array<number>,
+  cytoOptions?: CytoscapeOptions = {}
+) {
   let prevTick;
-  if (_sortedIndexOf(rlog.getGraph.stepsOutputCalc, rlog.curTick) !== -1) {
-    // not at a cycle point
-    if (hasLength(rlog.getGraph.filterDatas)) {
-      // if filtered, will go to next step, then prev step location
-      prevTick = rlog.getGraph.prevStep(rlog.getGraph.nextStep(rlog.curTick));
-    } else {
-      // if not filtered
-      prevTick = rlog.curTick;
-    }
-  } else {
-    // at cycle point
-    // first move one step backward... then find prev enter/exit empty
+  if (_sortedIndexOf(arr, rlog.curTick) !== -1) {
+    // at arr point, move the tick one back
     prevTick = rlog.getGraph.prevStep(rlog.curTick);
+  } else {
+    // not at arr point,
+    prevTick = rlog.curTick;
   }
-  let val, i;
-  // move to queue empty
-  for (i = rlog.getGraph.stepsOutputCalc.length - 1; i >= 0; i--) {
-    val = rlog.getGraph.stepsOutputCalc[i];
-    if (prevTick > val) {
-      return updateGraph(val, cytoOptions);
+
+  // get next tick idx
+  let prevTickIdx = _sortedIndex(arr, prevTick) - 1;
+  if (prevTickIdx < 0) return false;
+
+  let i, arrStep;
+  for (i = prevTickIdx; i >= 0; i--) {
+    arrStep = arr[i];
+    if (_sortedIndexOf(rlog.getGraph.filteredStepsVisible, arrStep) >= 0) {
+      updateGraph(arrStep, cytoOptions);
+      return true;
     }
   }
   return false;
+};
+
+let nextOutputCalc = function(cytoOptions?: CytoscapeOptions = {}) {
+  return nextStepInArr(rlog.getGraph.stepsOutputCalc, cytoOptions);
+};
+
+let prevOutputCalc = function(cytoOptions?: CytoscapeOptions = {}) {
+  return prevStepInArr(rlog.getGraph.stepsOutputCalc, cytoOptions);
 };
 
 let lastOutputCalc = function(cytoOptions?: CytoscapeOptions = {}) {
@@ -74,4 +82,11 @@ let firstOutputCalc = function(cytoOptions?: CytoscapeOptions = {}) {
   return updateGraph(nextTick, cytoOptions);
 };
 
-export { nextOutputCalc, prevOutputCalc, firstOutputCalc, lastOutputCalc };
+export {
+  nextOutputCalc,
+  prevOutputCalc,
+  firstOutputCalc,
+  lastOutputCalc,
+  nextStepInArr,
+  prevStepInArr,
+};

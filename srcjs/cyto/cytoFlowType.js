@@ -19,7 +19,7 @@ type CytoscapeLRB = {
 type CytoscapeEdge = {
   id: () => string,
   // data: () => SomeGraphData,
-  data: (info?: SomeGraphData) => any,
+  data: (info?: SomeGraphData | string) => any,
   flashClass: (className: string, timeout: number) => void,
   once: (string, (CytoEvent) => any) => any,
   trigger: (string, CytoEvent) => any,
@@ -33,7 +33,7 @@ type CytoscapeEdge = {
 type CytoscapeNode = {
   id: () => string,
   // data: (info: SomeGraphData) => CytoscapeElements,
-  data: (info?: SomeGraphData) => any,
+  data: (info?: SomeGraphData | string) => any,
   flashClass: (className: string, timeout: number) => void,
   once: (string, (CytoEvent) => any) => any,
   trigger: (string, CytoEvent) => any,
@@ -46,7 +46,7 @@ type CytoscapeElements = {
   $: (identifier?: string | CytoscapeElement) => CytoscapeElements,
   $id: (id: string) => CytoscapeElement,
   length: number,
-  data: (info?: SomeGraphData) => any,
+  data: (info?: SomeGraphData | string) => any,
   map: ((element: CytoscapeElement) => void) => void,
   diff: (other: CytoscapeElements) => CytoscapeLRB,
   style: Object => CytoscapeElements,
@@ -62,7 +62,7 @@ type CytoscapeLayoutObject = {
 type CytoscapeType = {
   $: (identifier?: string | CytoscapeElement) => CytoscapeElements,
   $id: (id: string) => CytoscapeElement,
-  add: (x: Array<CytoData> | CytoData | CytoscapeElement) => CytoscapeElement,
+  add: (x: Array<CytoData> | CytoData | CytoscapeElement) => any,
   on: CytoOnEvent, // | CytoOnDblClick
   startBatch: () => void,
   endBatch: () => void,
@@ -74,6 +74,7 @@ type CytoscapeType = {
   zoom: (zoomLevel?: number) => number,
   minZoom: (zoomLevel?: number) => number,
   maxZoom: (zoomLevel?: number) => number,
+  resize: () => void,
 };
 
 type CytoEvent = {
@@ -108,6 +109,7 @@ type CytoscapeOptions = {
     position: { x: number, y: number }
   ) => { x: number, y: number }, // transform a given node position. Useful for changing flow direction in discrete layouts
   zoom?: number, // zoom level as a positive number to set after animation
+  forceRedraw?: boolean,
 };
 
 export type {

@@ -1,13 +1,15 @@
 // @flow
 
+import $ from "jquery";
+
+import _assign from "lodash/assign";
+import _clone from "lodash/clone";
+import _filter from "lodash/filter";
+import _some from "lodash/some";
+import _sortBy from "lodash/sortBy";
 import _sortedIndex from "lodash/sortedIndex";
 import _sortedIndexOf from "lodash/sortedIndexOf";
-import _isNil from "lodash/isNil";
 import _union from "lodash/union";
-import _indexOf from "lodash/indexOf";
-import _some from "lodash/some";
-import _filter from "lodash/filter";
-import _assign from "lodash/assign";
 
 import console from "../utils/console";
 
@@ -19,15 +21,17 @@ import layoutOptions from "../cyto/layoutOptions";
 
 import { Node } from "./Node";
 import { Edge } from "./Edge";
+import { GhostEdge } from "./GhostEdge";
 
 import type {
   LogType,
   LogEntryInvalidateStartType,
-  LogEntryDefineType,
+  // LogEntryDefineType,
   // ReactIdType,
 } from "../log/logStates";
 import type { SomeGraphData } from "./Graph";
 import type {
+  CytoscapeElement,
   CytoscapeType,
   CytoscapeNode,
   CytoscapeEdge,
@@ -40,18 +44,20 @@ import type { CytoscapeOptions } from "../cyto/cytoFlowType";
 class GraphAtStep {
   log: LogType;
   originalLog: LogType;
-  searchRegex: ?RegExp;
+
   filterDatas: Array<SomeGraphData>;
   hoverData: ?SomeGraphData;
   stickyDatas: Array<SomeGraphData>;
 
-  finalGraph: Graph;
+  finalFilteredGraph: Graph;
+  finalCompleteGraph: Graph;
   finalCyto: any;
 
   cytoLayout: any;
 
   steps: Array<number>;
   stepsVisible: Array<number>;
+  filteredStepsVisible: Array<number>;
   stepsAsyncStart: Array<number>;
   stepsAsyncStop: Array<number>;
   stepsIdle: Array<number>;
@@ -64,7 +70,6 @@ class GraphAtStep {
     this.originalLog = log;
 
     // hoverInfo[key] = `HoverStatus`
-    this.searchRegex = null;
     this.filterDatas = [];
     this.hoverData = null;
     this.stickyDatas = [];
@@ -74,14 +79,20 @@ class GraphAtStep {
     // this.filterMap = {};
 
     this.log = log;
-    this.updateSteps(log);
+    this.initStepInfo(log);
 
-    this.updateFinalGraph();
+    // make a graph with no filtering that is completly made
+    this.finalCompleteGraph = this.rawGraphAtStep(log.length);
+
+    this.updateFinalFilteredGraphAndStepsVisible();
   }
 
-  get hasSearchRegex() {
-    return this.searchRegex ? true : false;
+  updateFinalFilteredGraphAndStepsVisible(): void {
+    this.updateFinalFilteredGraph();
+    this.updateFilteredStepsVisible();
+    return;
   }
+
   // function hasFilterDatas(): boolean %checks {
   //   return this.filterDatas ? this.filterDatas.length > 0 : false;
   // }
@@ -92,12 +103,7 @@ class GraphAtStep {
   //   return this.hoverData ? true : false;
   // }
 
-  updateFinalGraph() {
-    this.finalGraph = this.atStep(this.log.length, false);
-    // this.finalCyto = this.finalGraph.cytoGraph;
-  }
-
-  updateSteps(log: LogType) {
+  initStepInfo(log: LogType) {
     this.steps = [];
     this.stepsAsyncStart = [];
     this.stepsAsyncStop = [];
@@ -110,20 +116,28 @@ class GraphAtStep {
     let logItem, i;
     let idleArr = [];
     let startI = 0;
-    while (
-      log.length > startI + 2 &&
-      log[startI].action === LogStates.asyncStart &&
-      log[startI].session === null &&
-      log[startI + 1].action === LogStates.asyncStop &&
-      log[startI + 1].session === null &&
-      log[startI + 2].action === LogStates.idle &&
-      log[startI + 2].session === null
-    ) {
-      startI = startI + 3;
+
+    // eslint-disable-next-line no-constant-condition
+    while (true) {
+      // if async start, then async stop, then idle... skip them
+      if (
+        log.length > startI + 2 &&
+        log[startI].action === LogStates.asyncStart &&
+        log[startI].session === null &&
+        log[startI + 1].action === LogStates.asyncStop &&
+        log[startI + 1].session === null &&
+        log[startI + 2].action === LogStates.idle &&
+        log[startI + 2].session === null
+      ) {
+        startI = startI + 3;
+      } else if (log.length > startI && log[startI].action === LogStates.idle) {
+        // if multiple idles are in a row... skip them
+        startI = startI + 1;
+      } else {
+        break;
+      }
     }
-    while (log.length > startI && log[startI].action === LogStates.idle) {
-      startI = startI + 1;
-    }
+
     for (i = startI; i < log.length; i++) {
       logItem = log[i];
       switch (logItem.action) {
@@ -143,7 +157,13 @@ class GraphAtStep {
           this.stepsAsyncStop.push(logItem.step);
           break;
         case LogStates.idle:
-          this.stepsIdle.push(logItem.step);
+          if (i > 0) {
+            // if the previous step was not an idle step
+            if (log[i - 1].action !== LogStates.idle) {
+              this.stepsIdle.push(logItem.step);
+            }
+          }
+          // do not show an idle at step 0
           break;
         case LogStates.userMark:
           this.stepsUserMark.push(logItem.step);
@@ -200,12 +220,130 @@ class GraphAtStep {
       }
     }
 
-    this.stepsVisible = []
-      .concat(this.steps)
-      .concat(this.stepsUserMark)
-      .concat(this.stepsIdle)
-      .sort((a, b) => a - b);
+    this.stepsVisible =
+      // sort integer list
+      _sortBy(
+        // get union (unique values) of all visible locations
+        _union(this.steps, this.stepsUserMark, this.stepsIdle)
+      );
+  }
 
+  updateFilteredStepsVisible(): void {
+    if (!hasLength(this.filterDatas)) {
+      // no filtered data, so set to all visible steps
+      this.filteredStepsVisible = _clone(this.stepsVisible);
+      return;
+    }
+    // must have filtered data
+
+    let filteredStepsVisible = [];
+    let finalFilteredGraph = this.finalFilteredGraph;
+    let visibleStep, logEntry, i;
+
+    // todo must be actual log. not visible steps
+    for (i = 0; i < this.stepsVisible.length; i++) {
+      visibleStep = this.stepsVisible[i];
+      logEntry = this.log[visibleStep];
+
+      switch (logEntry.action) {
+        case LogStates.dependsOn:
+        case LogStates.dependsOnRemove:
+          // check for both to and from (since it must exist beforehand)
+          if (
+            finalFilteredGraph.hasNodeReactId(logEntry.reactId) &&
+            finalFilteredGraph.hasNodeReactId(logEntry.depOnReactId)
+          ) {
+            filteredStepsVisible.push(visibleStep);
+            break;
+          }
+          // not found
+          break;
+
+        case LogStates.define:
+        case LogStates.updateNodeLabel:
+        case LogStates.freeze:
+        case LogStates.thaw:
+        case LogStates.valueChange:
+        case LogStates.enter:
+        case LogStates.exit:
+        case LogStates.invalidateLater:
+        case LogStates.invalidateStart:
+        case LogStates.invalidateEnd:
+        case LogStates.isolateEnter:
+        case LogStates.isolateExit:
+        case LogStates.isolateInvalidateStart:
+        case LogStates.isolateInvalidateEnd:
+          if (!finalFilteredGraph.hasNodeReactId(logEntry.reactId)) {
+            // no node found in filtered graph
+            break;
+          }
+          filteredStepsVisible.push(visibleStep);
+          break;
+
+        case LogStates.idle:
+          if (filteredStepsVisible.length > 0) {
+            let priorFilteredStepVisible =
+              filteredStepsVisible[filteredStepsVisible.length - 1];
+            if (this.log[priorFilteredStepVisible].action !== LogStates.idle) {
+              // if the visible state is not an idle state, add it
+              filteredStepsVisible.push(visibleStep);
+            }
+          }
+          break;
+        case LogStates.userMark:
+          // always include (for now, multiple idle steps are removed later)
+          filteredStepsVisible.push(visibleStep);
+          break;
+
+        case LogStates.createContext:
+        case LogStates.asyncStart:
+        case LogStates.asyncStop:
+          // do not include
+          break;
+
+        default:
+          console.error(logEntry);
+          throw "unknown logEntry action in 'next'";
+      }
+    }
+
+    this.filteredStepsVisible = filteredStepsVisible;
+    return;
+  }
+
+  nextStep(k: number): number {
+    let idx = _sortedIndexOf(this.filteredStepsVisible, k);
+    if (idx >= 0) {
+      // go to the next step location
+      idx += 1;
+    } else {
+      // doesn't exist... so go to next closes step
+      idx = _sortedIndex(this.filteredStepsVisible, k);
+    }
+    // else, does not exist, so it is directly there
+    if (idx >= this.filteredStepsVisible.length || idx < 0) return -1;
+    return this.filteredStepsVisible[idx];
+  }
+  prevStep(k: number): number {
+    let idx = _sortedIndex(this.filteredStepsVisible, k) - 1;
+    if (idx < 0 || idx >= this.filteredStepsVisible.length) return -1;
+    return this.filteredStepsVisible[idx];
+  }
+
+  // full graph at step without filtering
+  //  no cometic changes
+  rawGraphAtStep(k: number): Graph {
+    let kVal = Math.max(0, Math.min(k, this.log.length));
+    // if (kVal >= this.cacheStep) {
+    //   iStart = Math.floor((kVal - 1) / this.cacheStep) * this.cacheStep;
+    //   graph = _cloneDeep(this.graphCache[iStart])
+    // }
+    let i,
+      graph = new Graph(this.log);
+    for (i = 0; i < this.log.length && this.log[i].step <= kVal; i++) {
+      graph.addEntry(this.log[i]);
+    }
+    return graph;
     // this.graphCache = {};
     // this.cacheStep = 250;
     // var tmpGraph = new Graph(log);
@@ -217,211 +355,32 @@ class GraphAtStep {
     // }
   }
 
-  nextStep(k: number): number {
-    // if no filtering... get next step from step array
-    if (!hasLength(this.filterDatas)) {
-      let nextStepPos = _sortedIndex(this.stepsVisible, k);
-      if (_sortedIndexOf(this.stepsVisible, k) >= 0) {
-        // go to the next step location
-        nextStepPos += 1;
-      }
-      // else, does not exist, so it is directly there
-      nextStepPos = Math.min(this.stepsVisible.length - 1, nextStepPos);
-      return this.stepsVisible[nextStepPos];
+  // update the filtering for the final graph. No cosmetics
+  updateFinalFilteredGraph(): void {
+    // copy final graph
+    let finalGraph = new Graph(this.finalCompleteGraph);
+
+    // if any filtering...
+    if (hasLength(this.filterDatas)) {
+      finalGraph.filterGraphOnNodeIds(
+        // graph.familyTreeNodeIdsForDatas(this.filterDatas)
+        this.finalCompleteGraph.familyTreeNodeIdsForDatas(this.filterDatas)
+      );
     }
 
-    let graph = this.atStep(k);
-    let decendents = undefined,
-      ancestors = undefined;
-
-    let logEntry, i, ret;
-
-    for (i = k + 1; i < this.log.length - 1; i++) {
-      logEntry = this.log[i];
-
-      // skip if if it's not a valid step anyways...
-      if (_sortedIndexOf(this.stepsVisible, logEntry.step) === -1) {
-        continue;
-      }
-      // console.log(logEntry);
-      ret = logEntry.step;
-      switch (logEntry.action) {
-        case LogStates.dependsOn:
-          // lazy eval decendents and ancestors
-          if (_isNil(decendents) || _isNil(ancestors)) {
-            if (hasLength(this.filterDatas)) {
-              // if (this.filterDatas && this.filterDatas.length > 0) {
-              let filterReactIds = this.filterDatas.map(function(node) {
-                return node.reactId;
-              });
-              decendents = _union(
-                filterReactIds,
-                graph.decendentNodeIdsForDatas(this.filterDatas)
-              );
-              ancestors = _union(
-                filterReactIds,
-                graph.ancestorNodeIdsForDatas(this.filterDatas)
-              );
-            }
-          }
-          // reactId is target (ends at ancestors)
-          if (_indexOf(ancestors, logEntry.reactId) !== -1) {
-            return ret;
-          }
-          // depOnReactId is source (starts from children)
-          if (_indexOf(decendents, logEntry.depOnReactId) !== -1) {
-            return ret;
-          }
-          break;
-        case LogStates.dependsOnRemove:
-          // check for both to and from (since it must exist beforehand)
-          if (
-            graph.nodes.has(logEntry.reactId) &&
-            graph.nodes.has(logEntry.depOnReactId)
-          ) {
-            return ret;
-          }
-          break;
-
-        case LogStates.define:
-        case LogStates.updateNodeLabel:
-          if (this.searchRegex) {
-            if (this.searchRegex.test(logEntry.label)) {
-              // if there is a search regex and the value is defined
-              return ret;
-            }
-          }
-          break;
-        case LogStates.freeze:
-        case LogStates.thaw:
-        case LogStates.valueChange:
-        case LogStates.enter:
-        case LogStates.exit:
-        case LogStates.invalidateLater:
-        case LogStates.invalidateStart:
-        case LogStates.invalidateEnd:
-        case LogStates.isolateEnter:
-        case LogStates.isolateExit:
-        case LogStates.isolateInvalidateStart:
-        case LogStates.isolateInvalidateEnd:
-          if (graph.nodes.has(logEntry.reactId)) {
-            return ret;
-          }
-          break;
-
-        case LogStates.idle:
-        case LogStates.userMark:
-          return ret;
-
-        case LogStates.createContext:
-        case LogStates.asyncStart:
-        case LogStates.asyncStop:
-          break;
-
-        default:
-          console.error(logEntry);
-          throw "unknown logEntry action in 'next'";
-      }
-    }
-
-    // return the max step possible
-    return -1;
+    this.finalFilteredGraph = finalGraph;
+    return;
   }
-  prevStep(k: number): number {
-    // if no filtering... get next step from step array
-    if (!hasLength(this.filterDatas)) {
-      let prevStepPos = Math.max(_sortedIndex(this.stepsVisible, k) - 1, 0);
-      return this.stepsVisible[prevStepPos];
-    }
-
-    let graph = this.atStep(k);
-    let logEntry, logItem, i, ret;
-
-    for (i = k - 1; i >= 0; i--) {
-      logItem = this.log[i];
-
-      // skip if if it's not a valid step anyways...
-      if (_sortedIndexOf(this.stepsVisible, logItem.step) === -1) {
-        continue;
-      }
-      ret = logItem.step;
-      switch (logItem.action) {
-        case LogStates.dependsOn:
-        case LogStates.dependsOnRemove:
-          // check for both to and from (since it must exist beforehand)
-          if (
-            graph.nodes.has(logItem.reactId) &&
-            graph.nodes.has(logItem.depOnReactId)
-          ) {
-            // TODO-barret with filtered data, the depOnReactId could be the bridge between existing graph and new subgraph.  This edge should not be included
-            return ret;
-          }
-          break;
-
-        case LogStates.freeze:
-        case LogStates.thaw:
-        case LogStates.updateNodeLabel:
-        case LogStates.valueChange:
-        case LogStates.enter:
-        case LogStates.exit:
-        case LogStates.invalidateLater:
-        case LogStates.invalidateStart:
-        case LogStates.invalidateEnd:
-        case LogStates.isolateEnter:
-        case LogStates.isolateExit:
-        case LogStates.isolateInvalidateStart:
-        case LogStates.isolateInvalidateEnd:
-          if (graph.nodes.has(logItem.reactId)) {
-            return ret;
-          }
-          break;
-
-        case LogStates.define:
-          logEntry = (logItem: LogEntryDefineType);
-          if (
-            _some(this.filterDatas, function(filterData) {
-              return filterData.reactId === logEntry.reactId;
-            })
-          ) {
-            // some filterdata is defined... so it must be a next step
-            return ret;
-          }
-          break;
-
-        case LogStates.idle:
-        case LogStates.userMark:
-          return ret;
-
-        case LogStates.createContext:
-        case LogStates.asyncStart:
-        case LogStates.asyncStop:
-          break;
-
-        default:
-          console.error(logItem);
-          throw "unknown logItem action in 'prev'";
-      }
-    }
-
-    return -1;
-  }
-
-  atStep(k: number, updateFinal?: boolean = true): Graph {
-    let kVal = Math.max(1, Math.min(k, this.log.length));
-    let i, graph;
-    // if (kVal >= this.cacheStep) {
-    //   iStart = Math.floor((kVal - 1) / this.cacheStep) * this.cacheStep;
-    //   graph = _cloneDeep(this.graphCache[iStart])
-    // }
-    graph = new Graph(this.log);
-    for (i = 0; i < this.log.length && this.log[i].step <= kVal; i++) {
-      graph.addEntry(this.log[i]);
-    }
+  // graph at step with filtering
+  // include all cosmetic information
+  filteredGraphAtStep(k: number): Graph {
+    // get unfiltered graph at step k
+    let graph = this.rawGraphAtStep(k);
 
     // if any hover...
     if (this.hoverData && graph.hasSomeData(this.hoverData)) {
       graph.hoverStatusOnNodeIds(
-        graph.familyTreeNodeIds(this.hoverData),
+        this.finalFilteredGraph.familyTreeNodeIds(this.hoverData),
         "state"
       );
       graph.highlightSelected(this.hoverData, "selected");
@@ -436,7 +395,9 @@ class GraphAtStep {
         )
       ) {
         // at least some sticky data is visible
-        let stickyTree = graph.familyTreeNodeIdsForDatas(this.stickyDatas);
+        let stickyTree = this.finalFilteredGraph.familyTreeNodeIdsForDatas(
+          this.stickyDatas
+        );
         graph.hoverStatusOnNodeIds(stickyTree, "sticky");
         this.stickyDatas.map(function(data) {
           graph.highlightSelected(data, "selected");
@@ -448,48 +409,16 @@ class GraphAtStep {
       }
     }
 
-    // if any searching
-    if (this.searchRegex) {
-      let searchRegex = this.searchRegex;
-      let matchedNodes = _filter(
-        // (mapValues(graph.nodes): ArraySomeGraphData),
-        mapValues(graph.nodes),
-        function(node: Node) {
-          return searchRegex.test(node.label);
-        }
+    // if any filtering...
+    if (hasLength(this.filterDatas)) {
+      graph.filterGraphOnNodeIds(
+        // graph.familyTreeNodeIdsForDatas(this.filterDatas)
+        this.finalFilteredGraph.familyTreeNodeIdsForDatas(this.filterDatas)
       );
-
-      if (matchedNodes.length === 0) {
-        // TODO-barret warn of no matches
-        // console.log("no matches!");
-        graph.hoverStatusOnNodeIds([], "filtered");
-        this.updateFilterDatasReset(updateFinal);
-      } else {
-        // for some reason, an array of node does not work with an array of (node, edge, or ghostedge)
-        this.updateFilterDatas(
-          ((matchedNodes: Array<Object>): Array<SomeGraphData>),
-          updateFinal
-        );
-        // filter on regex
-        graph.filterGraphOnNodeIds(
-          graph.familyTreeNodeIdsForDatas(this.filterDatas)
-        );
-        matchedNodes.map(function(data) {
-          graph.highlightSelected(data, "filtered");
-        });
-        // graph.hoverStatusOnNodeIds(matchedNodes.map((x) => x.reactId), "filtered");
-      }
-    } else {
-      // if any filtering...
-      if (hasLength(this.filterDatas)) {
-        graph.filterGraphOnNodeIds(
-          graph.familyTreeNodeIdsForDatas(this.filterDatas)
-        );
-        // graph.hoverStatusOnNodeIds(this.filterDatas.map((x) => x.reactId), "filtered");
-        this.filterDatas.map(function(data) {
-          graph.highlightSelected(data, "filtered");
-        });
-      }
+      // graph.hoverStatusOnNodeIds(this.filterDatas.map((x) => x.reactId), "filtered");
+      this.filterDatas.map(function(data) {
+        graph.highlightSelected(data, "filtered");
+      });
     }
 
     return graph;
@@ -531,169 +460,85 @@ class GraphAtStep {
   updateStickyDatasReset() {
     this.stickyDatas = [];
   }
-  updateFilterDatas(
-    dataArr: Array<SomeGraphData>,
-    updateFinal?: boolean = true
-  ) {
+  updateFilterDatas(dataArr: Array<SomeGraphData>) {
     this.filterDatas = dataArr;
-    if (updateFinal) this.updateFinalGraph();
+    this.updateFinalFilteredGraphAndStepsVisible();
   }
-  updateFilterDatasReset(updateFinal?: boolean = true) {
+  updateFilterDatasReset() {
+    this.updateFilterDatas([]);
+  }
+  updateSearchRegex(regex: RegExp) {
+    // update filterDatas below
+
+    let matchedElements = _filter(
+      // (mapValues(graph.nodes): ArraySomeGraphData),
+      mapValues(this.finalCompleteGraph.nodes),
+      function(node: Node) {
+        return regex.test(node.label) || regex.test(node.key);
+      }
+    );
+    if (matchedElements.length === 0) {
+      matchedElements = _filter(
+        mapValues(this.finalCompleteGraph.edges),
+        function(edge: Edge) {
+          return regex.test(edge.ghostKey);
+        }
+      );
+    }
+    if (matchedElements.length === 0) {
+      matchedElements = _filter(
+        mapValues(this.finalCompleteGraph.edgesUnique),
+        function(edge: GhostEdge) {
+          return regex.test(edge.key);
+        }
+      );
+    }
+
+    if (matchedElements.length === 0) {
+      // no matches found
+      this.updateStickyDatasReset();
+      this.updateFilterDatasReset();
+    } else {
+      this.updateStickyDatas((matchedElements: Array<Object>));
+      this.updateFilterDatas(
+        // for some reason, an array of node does not work with an array of (node, edge, or ghostedge)
+        (matchedElements: Array<Object>)
+      );
+    }
+  }
+  updateSearchRegexReset() {
+    this.resetHoverStickyFilterSearch();
+  }
+  resetHoverStickyFilterSearch() {
+    this.hoverData = null;
+    this.stickyDatas = [];
     this.filterDatas = [];
-    if (updateFinal) this.updateFinalGraph();
+    $("#search").val("");
+    this.updateFinalFilteredGraphAndStepsVisible();
   }
-  updateSearchRegex(regex: ?RegExp, updateFinal?: boolean = true) {
-    this.searchRegex = regex;
-    if (updateFinal) this.updateFinalGraph();
-  }
-  updateSearchRegexReset(updateFinal?: boolean = true) {
-    this.updateFilterDatasReset(false);
-    this.searchRegex = null;
-    if (updateFinal) this.updateFinalGraph();
-  }
-  // // set the value outright
-  // updateHoverData(hoverData) {
-  //   this.hoverData = hoverData;
-  //   // var hoverInfo = this.hoverInfo;
-  //   // focusedDatas.map(function(data) {
-  //   //   hoverInfo[data.hoverKey].toFocused()
-  //   // })
-  //   // notFocusedDatas.map(function(data) {
-  //   //   hoverInfo[data.hoverKey].toNotFocused()
-  //   // })
-  // }
-  //
-  // resetStickyInfo() {
-  //   this.stickyData = null;
-  //   // var anySticky = _some(this.hoverInfo, ["sticky", true])
-  //   // if (anySticky) {
-  //   //   _mapValues(this.hoverInfo, function(hoverStatus, key) {
-  //   //     hoverStatus.toNotSticky()
-  //   //     hoverStatus.toFocused()
-  //   //   })
-  //   // }
-  //   // this.hoverDefault = "focused";
-  //   return true;
-  // }
-  // updateStickyInfo(stickyData) {
-  //   this.stickyData = stickyData;
-  //   // var hoverInfo = this.hoverInfo;
-  //   // stickyDatas.map(function(data) {
-  //   //   hoverInfo[data.hoverKey].toSticky()
-  //   // })
-  //   // notStickyDatas.map(function(data) {
-  //   //   hoverInfo[data.hoverKey].toNotSticky()
-  //   // })
-  // }
-
-  // filterLogOnDatas(datas: Array<SomeGraphData>) {
-  //   let nodeMap: Map<ReactIdType, Node> = new Map();
-  //   datas.map(function(data) {
-  //     if (data instanceof Node) {
-  //       nodeMap.set(data.reactId, data);
-  //     }
-  //   });
-  //   let newLog = _filter(this.originalLog, function(logItem) {
-  //     switch (logItem.action) {
-  //       case LogStates.dependsOn:
-  //       case LogStates.dependsOnRemove:
-  //         // check for both to and from
-  //         return (
-  //           nodeMap.has(logItem.reactId) && nodeMap.has(logItem.depOnReactId)
-  //         );
-  //       case LogStates.freeze:
-  //       case LogStates.thaw:
-  //       case LogStates.define:
-  //       case LogStates.updateNodeLabel:
-  //       case LogStates.valueChange:
-  //       case LogStates.invalidateStart:
-  //       case LogStates.enter:
-  //       case LogStates.isolateInvalidateStart:
-  //       case LogStates.isolateEnter:
-  //       case LogStates.invalidateEnd:
-  //       case LogStates.exit:
-  //       case LogStates.isolateExit:
-  //       case LogStates.isolateInvalidateEnd:
-  //         // check for reactId
-  //         return nodeMap.has(logItem.reactId);
-  //       case LogStates.idle:
-  //       case LogStates.asyncStart:
-  //       case LogStates.asyncStop:
-  //       case LogStates.userMark:
-  //         // always add
-  //         return true;
-  //       default:
-  //         console.error("logItem.action: ", logItem.action, logItem);
-  //         throw logItem;
-  //     }
-  //   });
-  //   console.log("new Log: ", newLog);
-  //   return newLog;
-  // }
-
-  // filterDatasLog() {
-  //   var nodeMap = {};
-  //   datas.map(function(data) {
-  //     if (data instanceof Node) {
-  //       nodeMap[data.reactId] = data;
-  //     }
-  //   });
-  //   var newLog = _filter(this.originalLog, function(logEntry) {
-  //     switch (logEntry.action) {
-  //       case "dependsOn":
-  //       case "dependsOnRemove":
-  //         // check for both to and from
-  //         return (
-  //           _has(nodeMap, logEntry.reactId) &&
-  //           _has(nodeMap, logEntry.depOnReactId)
-  //         );
-  //         break;
-  //       case "define":
-  //       case "updateNodeLabel":
-  //       case "valueChange":
-  //       case "invalidateStart":
-  //       case "enter":
-  //       case "isolateInvalidateStart":
-  //       case "isolateEnter":
-  //       case "invalidateEnd":
-  //       case "exit":
-  //       case "isolateExit":
-  //       case "isolateInvalidateEnd":
-  //         // check for reactId
-  //         return _has(nodeMap, logEntry.reactId);
-  //         break;
-  //       case "idle":
-  //       case "asyncStart":
-  //       case "asyncStop":
-  //         // always add
-  //         return _has(nodeMap, logEntry.reactId);
-  //       default:
-  //         console.error("logEntry.action: ", logEntry.action, data);
-  //         throw data;
-  //     }
-  //   });
-  //   console.log("new Log: ", newLog);
-  //   return newLog;
-  // }
 
   // computes a graph containing all points and edges possible,
   //   extending the original graph at step k
-  completeGraphAtStep(k: number) {
-    let graph = this.atStep(k);
-    let finalGraph = this.finalGraph;
+  fullFilteredGraphAtStep(k: number) {
+    // get graph at step k and update the final graph obect
+    let graph = this.filteredGraphAtStep(k);
+    let finalGraph = this.finalFilteredGraph;
 
-    mapValues(finalGraph.nodes).map(function(finalNode) {
-      if (!graph.nodes.has(finalNode.key)) {
+    // add any points and edges that have not be defined yet
+    // do not include regular edges, only unique edges
+    // append all missing nodes
+    mapValues(finalGraph.nodes).map(function(fullNode) {
+      if (!graph.nodes.has(fullNode.key)) {
         // stomps finalGraph node value, but currently not a consequence to worry about
-        finalNode.isDisplayed = false;
-        graph.nodes.set(finalNode.key, finalNode);
+        fullNode.isDisplayed = false;
+        graph.nodes.set(fullNode.key, fullNode);
       }
     });
-    mapValues(finalGraph.edgesUnique).map(function(finalEdge) {
-      if (!graph.edgesUnique.has(finalEdge.key)) {
+    mapValues(finalGraph.edgesUnique).map(function(fullEdge) {
+      if (!graph.edgesUnique.has(fullEdge.key)) {
         // stomps finalGraph edge value, but currently not a consequence to worry about
-        finalEdge.isDisplayed = false;
-        graph.edgesUnique.set(finalEdge.key, finalEdge);
+        fullEdge.isDisplayed = false;
+        graph.edgesUnique.set(fullEdge.key, fullEdge);
       }
     });
 
@@ -705,8 +550,7 @@ class GraphAtStep {
     cy: CytoscapeType,
     cytoOptions?: CytoscapeOptions = {}
   ) {
-    let graph = this.completeGraphAtStep(k);
-
+    let graph = this.fullFilteredGraphAtStep(k);
     cy.startBatch();
 
     // let cytoDur = 0;
@@ -720,9 +564,11 @@ class GraphAtStep {
     let someNodeHasNewLabel = false;
 
     // enter visible nodes
-    nodesLRB.right.map(function(graphNode: CytoscapeNode) {
+    nodesLRB.right.map(function(graphNode: CytoscapeElement) {
       let graphNodeData = (graphNode.data(): Node);
       cy.add(graphNode)
+        .data("cytoLabel_", graphNodeData.cytoLabel)
+        .data("cytoLabelShort_", graphNodeData.cytoLabelShort)
         .classes(graphNodeData.cytoClasses)
         .style(graphNodeData.cytoStyle);
       // .animate({
@@ -731,7 +577,7 @@ class GraphAtStep {
       // });
     });
     // update visible nodes
-    nodesLRB.both.map(function(cytoNode: CytoscapeNode) {
+    nodesLRB.both.map(function(cytoNode: CytoscapeElement) {
       let cyNode = (cy.$id(cytoNode.id()): CytoscapeNode);
 
       let graphNode = (graphNodes.$id(cytoNode.id()): CytoscapeNode);
@@ -754,6 +600,8 @@ class GraphAtStep {
         .data(graphNodeData)
         // prolly due to how accessor methods are done, this data value must be placed manually
         .data("value", graphNodeData.value)
+        .data("cytoLabel_", graphNodeData.cytoLabel)
+        .data("cytoLabelShort_", graphNodeData.cytoLabelShort)
         .classes(graphClasses)
         .removeStyle()
         .style(graphNodeData.cytoStyle);
@@ -843,7 +691,8 @@ class GraphAtStep {
       edgesLRB.right.length === edgesLRB.left.length &&
       nodesLRB.right.length === 0 &&
       nodesLRB.left.length === 0 &&
-      !someNodeHasNewLabel
+      !someNodeHasNewLabel &&
+      cytoOptions.forceRedraw !== true
     ) {
       // do not re-render layout... just call onLayoutReady
       onLayoutReady.map(function(fn) {

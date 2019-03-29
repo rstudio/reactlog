@@ -1,3 +1,5 @@
+# nolint start
+
 #' <Add Title>
 #'
 #' <Add Description>
@@ -60,3 +62,5 @@ reactlog_html <- function(id, style, class, ...) {
   make_html(id)
   # #id .cyto
 }
+
+# nolint end

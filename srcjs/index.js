@@ -1,9 +1,9 @@
 // @flow
 
-
-
+import "@babel/polyfill";
 
 import $ from "jquery";
+import _debounce from "lodash/debounce";
 
 import { rlog } from "./rlog";
 
@@ -58,13 +58,13 @@ let make_reactlog = function(el: JQuery, log, time, id) {
 
   window.barret = rlog;
 
-  rlog = new RLog()
+  rlog = new RLog();
 
   rlog.log = (window.log: LogType);
   rlog.cyto = cytoscapeInit.withContainer($("#cyto"));
 
   rlog.getGraph = new GraphAtStep(rlog.log);
-  rlog.graph = rlog.getGraph.atStep(rlog.getGraph.maxStep);
+  rlog.graph = rlog.getGraph.finalCompleteGraph;
 
   $(el).find(".prevUserMarkButton").click(updateGraph.buttonPrevMark);
   $("#nextUserMarkButton").click(updateGraph.buttonNextMark);
@@ -85,8 +85,9 @@ let make_reactlog = function(el: JQuery, log, time, id) {
     for (let i = 0; i < rlog.log.length; i++) {
       entry = rlog.log[i];
       if (entry.action === LogStates.freeze) {
-        $("#legendRowFrozen").css("display", ""); // remove display none form css
+        $("#legendRowInvalidated").addClass("legendRowTopMiddle"); // add spacing around legend row
         $("#legendFrozen").css("background-color", colors.frozen.default);
+        $("#legendRowFrozen").css("display", ""); // remove display none form css
         break;
       }
     }
@@ -124,9 +125,18 @@ let make_reactlog = function(el: JQuery, log, time, id) {
     rlog.getGraph.stepsVisible.length
   );
 
-  $("#search").on("input", function(e) {
-    updateGraph.withSearchString($(e.target).val());
-  });
+  window.addEventListener(
+    "resize",
+    _debounce(
+      function(e) {
+        updateGraph.resize();
+      },
+      250,
+      { maxWait: 1000 }
+    )
+  );
+
+  updateGraph.searchStringContainer($("#search"));
 
   {
     let docBody = document.body;
@@ -152,6 +162,4 @@ let make_reactlog = function(el: JQuery, log, time, id) {
     // start at last user mark or first idle location
     updateGraph.lastUserMark(cytoOpts) || updateGraph.nextIdle(cytoOpts);
   }
-// });
-  }
-}
+};

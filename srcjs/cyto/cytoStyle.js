@@ -32,10 +32,14 @@ let selectedScale = 2;
 
 let edgePixelWidth = 4;
 
+let labelWidth = 350;
+let maxTextWidth = "800px";
+
 let graphStyles = {
   node: {
     default: {
-      label: "data(cytoLabel)",
+      "z-index": 0,
+      label: "data(cytoLabelShort_)",
       color: colors.nodes.label_text_color,
       "text-opacity": colors.nodes.label_text_opacity,
       "text-valign": "bottom",
@@ -47,11 +51,10 @@ let graphStyles = {
       "border-width": 1,
       "background-color": colors.nodes.ready,
       "text-wrap": "ellipsis",
-      "text-max-width": "400px",
+      "text-max-width": `${labelWidth}px`,
       "text-background-color": colors.nodes.label_background_color,
       "text-background-opacity": colors.nodes.label_background_opacity,
       "font-family": '"Fira Mono", monospace',
-      // "font-family": "monospace",
     },
     start: {
       shape: "polygon",
@@ -80,6 +83,7 @@ let graphStyles = {
       "shape-polygon-points": nodeShapes.end.shape,
       width: nodeShapes.end.width,
       height: nodeShapes.end.height,
+      "text-max-width": `${labelWidth * 1.5}px`,
     },
     endBig: {
       "border-width": 2,
@@ -191,6 +195,18 @@ let graphStyles = {
   selected: {
     node: {
       "border-width": 4,
+      // if you hover / selected, show all the label
+      "text-max-width": maxTextWidth,
+      "text-wrap": "wrap",
+      "background-opacity": 1,
+      "text-background-opacity": 1,
+      "text-border-opacity": 1,
+      "text-border-width": 1,
+      "text-border-style": "solid",
+      "text-border-color": colors.regular.black,
+      "text-background-padding": 8 * 2,
+      label: "data(cytoLabel_)",
+      "z-index": 1000,
     },
     edge: {
       width: edgePixelWidth * 2,
@@ -221,7 +237,10 @@ let graphStyles = {
   hidden: {
     node: {
       // visibility: "hidden",
-      opacity: 0.5,
+      "background-color": "white",
+      "background-opacity": 1,
+      "border-opacity": 0.5,
+      "text-opacity": 0.5,
       label: "data(label)", // do not display a value and only the raw label
     },
     edge: {
@@ -231,6 +250,6 @@ let graphStyles = {
   },
 };
 
-export { graphStyles, styleHelper as style };
+export { graphStyles, styleHelper as style, labelWidth };
 
 export default graphStyles;

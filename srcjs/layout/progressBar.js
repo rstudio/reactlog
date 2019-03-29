@@ -32,6 +32,7 @@ let setContainers = function(
   fillContainer = fillContainerVal;
 
   fullContainerVal.css("height", `${timelineHeight}px`);
+  fullContainerVal.css("min-height", `${timelineHeight}px`);
   fullContainerVal.css("background-color", colors.progressBar.background);
   fullContainerVal.on("mousedown mousemove", updateFromProgressBar);
 };
