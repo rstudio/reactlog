@@ -1,9 +1,14 @@
 // @flow
 
+import _isNil from "lodash/isNil";
+
+import { rlog } from "../rlog";
+
 import { LogStates } from "../log/logStates";
 import { HoverStatus } from "./HoverStatus";
 import { ActiveStateStatus } from "./ActiveStateStatus";
 import { StatusArr } from "./StatusArr";
+import type { LogEntryAnyType, CtxIdType } from "../log/logStates";
 import type { StatusEntry } from "./StatusArr";
 import type { CytoData } from "../cyto/cytoFlowType";
 
@@ -24,8 +29,10 @@ class Node {
   enterStatus: ActiveStateStatus;
   invalidateStatus: ActiveStateStatus;
   isDisplayed: boolean;
+  calculationTime: ?number;
+  calculationStartMap: Map<CtxIdType, number>;
 
-  constructor(data: NodeInputType) {
+  constructor(data: Node | NodeInputType) {
     if (typeof data.reactId === "undefined")
       throw "data.reactId not provided in new Node";
     if (typeof data.label === "undefined")
@@ -39,13 +46,20 @@ class Node {
     this.reactId = data.reactId;
     this.label = data.label;
     this.type = data.type;
-    this.session = data.session || "Global";
+    this.session = _isNil(data.session) ? "Global" : data.session;
     this.time = data.time;
     this.isFrozen = data.isFrozen || false;
     this.statusArr = new StatusArr(data.statusArr || []);
-    this.value = data.value || null;
-    this.hoverStatus = data.hoverStatus || new HoverStatus();
-    this.isDisplayed = data.isDisplayed || true;
+    this.value = _isNil(data.value) ? null : data.value;
+    this.hoverStatus = new HoverStatus(data.hoverStatus);
+    this.isDisplayed = _isNil(data.isDisplayed) ? true : data.isDisplayed;
+
+    this.calculationTime = _isNil(data.calculationTime)
+      ? null
+      : data.calculationTime;
+    this.calculationStartMap = _isNil(data.calculationStartMap)
+      ? new Map()
+      : new Map(data.calculationStartMap);
 
     this.valueChangedStatus =
       data.valueChangedStatus || new ActiveStateStatus();
@@ -68,6 +82,7 @@ class Node {
       }
     }
   }
+
   get id(): NodeIdType {
     return this.reactId.replace(/\$/g, "_");
   }
@@ -77,11 +92,28 @@ class Node {
   get hoverKey(): NodeHoverKeyType {
     return this.key;
   }
-  statusAdd(obj: StatusEntry): StatusArr {
-    this.statusArr.add(obj);
+  statusAdd(logEntry: LogEntryAnyType): StatusArr {
+    if (logEntry.action === LogStates.enter) {
+      this.calculationStartMap.set(logEntry.ctxId, logEntry.time);
+    }
+    switch (logEntry.action) {
+      case LogStates.enter:
+      case LogStates.isolateInvalidateStart:
+      case LogStates.invalidateStart:
+        this.calculationTime = null;
+        break;
+    }
+    this.statusArr.add(((logEntry: Object): StatusEntry));
     return this.statusArr;
   }
-  statusRemove(): StatusEntry {
+  statusRemove(logEntry: LogEntryAnyType): StatusEntry {
+    if (logEntry.action === LogStates.exit) {
+      let startEntryTime = this.calculationStartMap.get(logEntry.ctxId);
+      if (!_isNil(startEntryTime)) {
+        this.calculationTime = (logEntry.time - startEntryTime) * 1000;
+      }
+      this.calculationStartMap.delete(logEntry.ctxId);
+    }
     return this.statusArr.remove();
   }
   statusLast(): StatusEntry {
@@ -94,7 +126,7 @@ class Node {
     return this.statusArr.containsStatus(LogStates.isolateEnter);
   }
   get inInvalidate(): boolean {
-    return this.statusArr.containsStatus("invalidateStart");
+    return this.statusArr.containsStatus(LogStates.invalidateStart);
   }
   get inIsolateInvalidate(): boolean {
     return this.statusArr.containsStatus(LogStates.isolateInvalidateStart);
@@ -105,12 +137,42 @@ class Node {
   get cytoLabel(): string {
     let label = `${this.label}`;
     if (this.type === "observer" || this.type === "observable") {
+      let time = this.calculationTime;
+      if (rlog.displayTimeOnNodes) {
+        if (!_isNil(time)) {
+          // is just chillin... so I'm assuming it's calculated and I want to know how long it took.
+          return `${label}\n\nCalculation Time: ${time.toFixed(0)}ms`;
+        }
+      }
       return label;
     }
-
     // not a middle or end node...
-    let value = `${this.value}`;
-    if (value.length > 0) {
+    if (!_isNil(this.value)) {
+      let value = `${this.value}`;
+      // only if there are no new lines...
+      if (!value.includes("\\n")) {
+        // trim beginning of string
+        value = value.replace(/^\s+/, "");
+      }
+      return `${label}\n\nValue:\n${value}`;
+    }
+    return label;
+  }
+  get cytoLabelShort(): string {
+    let label = `${this.label}`.replace(/[\t\n\r ]+/g, " ");
+    if (this.type === "observer" || this.type === "observable") {
+      let time = this.calculationTime;
+      if (rlog.displayTimeOnNodes) {
+        if (!_isNil(time)) {
+          // is just chillin... so I'm assuming it's calculated and I want to know how long it took.
+          return `${label} (${time.toFixed(0)}ms)`;
+        }
+      }
+      return label;
+    }
+    // not a middle or end node...
+    if (!_isNil(this.value)) {
+      let value = `${this.value}`;
       // only if there are no new lines...
       if (!value.includes("\\n")) {
         // trim beginning of string
@@ -218,6 +280,8 @@ type NodeInputType = {
   enterStatus?: ActiveStateStatus,
   invalidateStatus?: ActiveStateStatus,
   isDisplayed?: boolean,
+  calculationTime?: number,
+  calculationStartMap?: number,
 };
 
 export { Node };

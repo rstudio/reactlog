@@ -27,27 +27,25 @@ While you may not be able to submit true `reprex::reprex({#code})` due to the in
 
 Delete these instructions once you have read them.
 
----
+---------------------------------------------
 
-Brief description of the problem
+
+## Playback issue fixed
+
+Brief description of the problem.  Given that Shiny recorded it correctly, the reactlog provided by `shiny::reactlog()` is not being displaying properly.
+
+Please attach a screenshot of before and after if appropriate.
 
 ```r
-library(shiny)
-library(reactlog)
-
-options("shiny.reactlog" = TRUE)
-
-ui <- # FILL IN UI
-server <- function(input, output, session) {
-  # FILL IN SERVER
-}
-
-shiny::shinyApp(ui = ui, server = server)
+jsonlite::toJSON(shiny::reactlog(), pretty = TRUE, auto_unbox = TRUE)
 ```
 
 
-PR task list:
+---------------------------------------------
+
+## PR task list:
+
 - [ ] Passes `devtools::check()`
-- [ ] Add NEWS entry explaining change (reference PR#)
+- [ ] Add NEWS entry explaining change (reference username and PR#)
 - [ ] Add tests (if appropriate)
 - [ ] Update documentation with `devtools::document()`

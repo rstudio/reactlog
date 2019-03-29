@@ -1,18 +1,25 @@
+inst_reactlog_file <- function(file) {
+  system.file(file.path("reactlog", file), package = "reactlog")
+}
+inst_reactlog_assets <- function() {
+  inst_reactlog_file("reactlogAsset")
+}
+
 
 #' @export
-#' @rdname show_reactlog
+#' @rdname reactlog_show
 #' @param session_token token to be used to subset which session is displayed.  Defaults to all sessions.
-render_reactlog <- function(log, session_token = NULL, time = TRUE) {
-  log <- upgrade_reactlog(log)
+reactlog_render <- function(log, session_token = NULL, time = TRUE) {
+  log <- reactlog_upgrade(log)
 
-  template_file <- system.file("reactlog.html", package = "reactlog")
+  template_file <- inst_reactlog_file("reactlog.html")
   html <- paste(readLines(template_file, warn = FALSE), collapse = "\r\n")
 
   tmpfile <- file("")
   on.exit({
     close(tmpfile)
   })
-  write_reactlog(log, tmpfile, session_token)
+  reactlog_write(log, tmpfile, session_token)
 
   fixed_sub <- function(...) {
     sub(..., fixed = TRUE)
@@ -32,12 +39,23 @@ render_reactlog <- function(log, session_token = NULL, time = TRUE) {
     )
   )
 
+  # check if shiny is even available
+  if (requireNamespace("shiny")) {
+    # add resource path to pkg files for shiny
+    # (avoids warning of tmp folder moving around)
+    shiny::addResourcePath(
+      "reactlogAsset", # prefix
+      inst_reactlog_assets()
+    )
+  }
+
+
   file <- tempfile(fileext = ".html")
   writeLines(html, file)
 
   # copy js and style folder
   file.copy(
-    system.file("reactlogAsset", package = "reactlog"),
+    inst_reactlog_assets(),
     dirname(file),
     recursive = TRUE
   )

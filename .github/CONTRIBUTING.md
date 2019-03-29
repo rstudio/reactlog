@@ -1,3 +1,5 @@
+# Contributing
+
 We welcome contributions to the **reactlog** package!
 
 To submit a contribution:

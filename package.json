@@ -14,14 +14,12 @@
     "watch": "yarn lint-all && grunt webpackSetWatch default",
     "update-license": "node ./bin/update-license.js > LICENSE.note",
     "postinstall": "./bin/postinstall.sh",
-    "precommit": "lint-staged",
-    "git_add_map": "git add inst/reactlogAsset/reactlog.js inst/reactlogAsset/reactlog.js.map && git add"
+    "lint-staged": "lint-staged",
+    "git_add_compiled": "git add inst/reactlog/reactlogAsset/reactlog.js && git add"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
+  "pre-commit": [
+    "lint-staged"
+  ],
   "lint-staged": {
     "concurrent": false,
     "linters": {
@@ -33,8 +31,8 @@
       ],
       "srcjs/**/*.js": [
         "yarn fix",
-        "yarn git_add_map",
-        "yarn flow-report-and-echo"
+        "yarn flow-report-and-echo",
+        "yarn git_add_compiled"
       ]
     }
   },
@@ -67,14 +65,15 @@
     "grunt": "1.x",
     "grunt-cli": "1.x",
     "grunt-webpack": "3.x",
-    "husky": "1.x",
-    "license-checker": "^20.1.0",
+    "license-checker": "^25.0.1",
     "lint-staged": "8.x",
+    "pre-commit": "^1.2.2",
     "prettier": "1.x",
     "webpack": "4.x",
     "webpack-bundle-analyzer": "3.x"
   },
   "dependencies": {
+    "@babel/polyfill": "^7.2.5",
     "cytoscape": "3.x",
     "cytoscape-dagre": "2.x",
     "cytoscape-klay": "^3.1.2",

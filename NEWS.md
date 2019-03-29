@@ -1,4 +1,4 @@
-reactlog 0.0.0.9000
+reactlog 1.0.0
 ==========================
 
 Initialize package

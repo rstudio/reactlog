@@ -142,15 +142,18 @@ let onDblClick = function(cyto: CytoscapeType) {
     // var familyDatas = elesData(familyEles)
 
     updateGraph.searchRegexReset();
-    updateGraph.filterDatas([target.data()]);
+    updateGraph.searchStringWithData(target.data());
+    // updateGraph.filterDatas([target.data()]);
   };
 };
 
 let addOnMethods = function(cyto: CytoscapeType) {
   cyto.on("mouseover", onMouseOver(cyto));
 
-  cyto.on("click", onClick(cyto));
+  // "normalised tap event (either click, or touchstart followed by touchend without touchmove)"
+  cyto.on("tap", onClick(cyto));
 
+  // reactlog event
   cyto.on("dblclick", onDblClick(cyto));
 };
 
