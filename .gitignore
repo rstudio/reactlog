@@ -44,7 +44,6 @@ rsconnect/
 
 .Rproj.user
 inst/reactlog/reactlogAsset/report.html
-inst/reactlog/reactlogAsset/*.js.map
 node_modules
 flow-typed
 yarn-error.log
