@@ -79,7 +79,7 @@ reactlog_write <- function(log, file=stdout(), session_token = NULL) {
     )
   }
   json <- jsonlite::toJSON(
-    log, prett = TRUE,
+    log, pretty = TRUE,
     # from shiny pkg
     null = "null", na = "null",
     auto_unbox = TRUE, digits = getOption("shiny.json.digits", 16),
