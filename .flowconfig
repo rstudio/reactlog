@@ -4,7 +4,7 @@ src/old
 .*/node_modules/.*broken.json
 
 [include]
-src
+srcjs
 
 [libs]
 # https://github.com/nrnb/GoogleSummerOfCode/issues/94
