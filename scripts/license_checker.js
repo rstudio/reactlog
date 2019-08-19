@@ -1,4 +1,4 @@
-// node ./scripts/license_checker.js > LICENSE.note
+// node ./scripts/license_checker.js > LICENSE
 
 var checker = require('license-checker');
 var fs = require('fs');

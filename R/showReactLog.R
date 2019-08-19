@@ -38,7 +38,7 @@
 #' @param time A boolean that specifies whether or not to display the
 #' time that each reactive takes to calculate a result.
 #' @param ... Future parameter expansion. Currently ignored
-#' @seealso \code{shiny::\link[shiny]{showReactLog}}
+#' @seealso \code{shiny::\link[shiny]{reactlogShow}}
 #' @export
 #' @examples
 #'
@@ -54,7 +54,7 @@
 #' runApp(app)
 #'
 #' # once app has closed, display reactlog
-#' shiny::showReactLog()
+#' shiny::reactlogShow()
 #' }
 
 reactlog_show <- function(log, time = TRUE, ...) {
@@ -79,7 +79,7 @@ reactlog_write <- function(log, file=stdout(), session_token = NULL) {
     )
   }
   json <- jsonlite::toJSON(
-    log, prett = TRUE,
+    log, pretty = TRUE,
     # from shiny pkg
     null = "null", na = "null",
     auto_unbox = TRUE, digits = getOption("shiny.json.digits", 16),
