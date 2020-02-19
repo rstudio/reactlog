@@ -168,7 +168,7 @@ library(shiny)
 library(reactlog)
 library(plotly)
 
-reactlog_set()
+reactlog_enable()
 
 ui <- fluidPage(
   selectInput("var", "Choose a variable", choices = names(diamonds)),
@@ -202,7 +202,7 @@ htmltools::tags$iframe(
 For more complex graphs, like the one created by [Joe Cheng's **cranwhales** app](https://github.com/rstudio/cranwhales), it's convenient to have more advanced navigation through the time-dependent graph, like jumping to the next idle step using <img src="images/buttons/next-idle.svg" width="30" style="vertical-align: middle"/>, and querying sub-graphs by double-clicking and/or searching for graph components by name. Also, notice how, upon opening **reactlog**, it navigates to the first [reactive flush](#reactive-flush) (i.e., completion of the first round of reactive execution). If there is a particular round of execution you're primarily interested in, you can add user mark(s), and **reactlog** would open to that time point instead (see [Navigation](#navigation-buttons) for more details on creating and navigating to user marks).
 
 ```r
-reactlog::reactlog_set()
+reactlog::reactlog_enable()
 shiny::runGitHub("cranwhales", "rstudio", ref = "sync")
 ```
 
