@@ -7,7 +7,7 @@
 #' dependencies and execution in your application.
 #'
 #' To use the reactive log visualizer, start with a fresh R session and
-#' run the command \code{options(shiny.reactlog=TRUE)}; then launch your
+#' run the command \code{reactlog_set()}; then launch your
 #' application in the usual way (e.g. using \code{\link[shiny]{runApp}}). At
 #' any time you can hit \preformatted{Ctrl+F3} (or for Mac users, \preformatted{Cmd+F3}) in your
 #' web browser to launch the reactive log visualization.
@@ -23,14 +23,14 @@
 #'
 #' As an alternative to pressing \preformatted{Ctrl/Cmd+F3}--for example, if you
 #' are using reactives outside of the context of a Shiny
-#' application--you can run the \code{showReactLog} function, which will
+#' application--you can run the \code{showReactLog()} function, which will
 #' generate the reactive log visualization as a static HTML file and
 #' launch it in your default browser. In this case, refreshing your
 #' browser will not load new activity into the report; you will need to
 #' call \code{showReactLog()} explicitly.
 #'
-#' For security and performance reasons, do not enable
-#' \code{shiny.reactlog} in production environments. When the option is
+#' For security and performance reasons, do not enable the reactlog
+#' in production environments. When the option is
 #' enabled, it's possible for any user of your app to see at least some
 #' of the source code of your reactive expressions and observers.
 #'
@@ -39,6 +39,7 @@
 #' time that each reactive takes to calculate a result.
 #' @param ... Future parameter expansion. Currently ignored
 #' @seealso \code{shiny::\link[shiny]{reactlogShow}}
+#' \code{\link[reactlog]{reactlog_set}}
 #' @export
 #' @examples
 #'
@@ -47,7 +48,7 @@
 #' library(reactlog)
 #'
 #' # tell shiny to log reactivity
-#' options("shiny.reactlog" = TRUE)
+#' reactlog_set()
 #'
 #' # run a shiny app
 #' app <- system.file("examples/01_hello", package = "shiny")

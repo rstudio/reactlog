@@ -16,7 +16,7 @@ Brief description of the problem.  This should show how shiny is not recording s
 library(shiny)
 library(reactlog)
 
-options(shiny.reactlog = TRUE)
+reactlog_set()
 
 ui <- # FILL IN UI
 server <- function(input, output, session) {
