@@ -59,7 +59,7 @@ library(shiny)
 library(reactlog)
 
 # tell shiny to log all reactivity
-reactlog_set()
+reactlog_enable()
 
 # run a shiny app
 app <- system.file("examples/01_hello", package = "shiny")
