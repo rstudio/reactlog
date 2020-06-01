@@ -6,7 +6,6 @@
 #' @param warn Should a warning message be shown?
 #' @seealso \code{\link[reactlog]{reactlog_show}}
 #' @name setReactLog
-
 #' @export
 #' @rdname setReactLog
 reactlog_enable <- function() {

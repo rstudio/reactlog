@@ -9,10 +9,14 @@ reactlog_write(log, file = stdout(), session_token = NULL)
 \arguments{
 \item{log}{produced by shiny to be written}
 
-\item{file}{location to \code{cat} the file to}
+\item{file}{location of output file. If a \code{NULL} file is given, the
+json representation is return.}
 
-\item{session_token}{Session token identifier to be used when subsetting the complete reactlog}
+\item{session_token}{Session token identifier to be used when subsetting the
+complete reactlog}
 }
 \description{
-Write the reactlog to a file.  If a session token is provided, all reactive interactions will be subsetted to either the global session or the session provided.
+Write the reactlog to a file.  If a session token is provided, all reactive
+interactions will be subsetted to either the global session or the
+session provided.
 }
