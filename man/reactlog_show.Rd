@@ -25,8 +25,8 @@ dependencies and execution in your application.
 }
 \details{
 To use the reactive log visualizer, start with a fresh R session and
-run the command \code{reactlog_enable()}; then launch your
-application in the usual way (e.g. using \code{\link[shiny]{runApp}}). At
+run the command \code{\link[=reactlog_enable]{reactlog_enable()}}; then launch your
+application in the usual way (e.g. using \code{\link[shiny:runApp]{shiny::runApp()}}). At
 any time you can hit \preformatted{Ctrl+F3} (or for Mac users, \preformatted{Cmd+F3}) in your
 web browser to launch the reactive log visualization.
 
@@ -41,11 +41,11 @@ in the process, not just for a particular application or session.
 
 As an alternative to pressing \preformatted{Ctrl/Cmd+F3}--for example, if you
 are using reactives outside of the context of a Shiny
-application--you can run the \code{showReactLog()} function, which will
+application--you can run the \code{\link[shiny:reactlogShow]{shiny::reactlogShow()}} function, which will
 generate the reactive log visualization as a static HTML file and
 launch it in your default browser. In this case, refreshing your
 browser will not load new activity into the report; you will need to
-call \code{showReactLog()} explicitly.
+call \code{\link[shiny:reactlogShow]{shiny::reactlogShow()}} explicitly.
 
 For security and performance reasons, do not enable the reactlog
 in production environments. When the option is
@@ -70,6 +70,6 @@ shiny::reactlogShow()
 }
 }
 \seealso{
-\code{shiny::\link[shiny]{reactlogShow}}
-\code{\link[reactlog]{reactlog_enable}}
+\code{\link[shiny:reactlogShow]{shiny::reactlogShow()}} and
+\code{\link[reactlog:reactlog_enable]{reactlog::reactlog_enable()}}
 }

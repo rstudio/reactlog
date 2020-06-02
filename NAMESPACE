@@ -2,6 +2,8 @@
 
 export(reactlog_disable)
 export(reactlog_enable)
+export(reactlog_module_server)
+export(reactlog_module_ui)
 export(reactlog_render)
 export(reactlog_show)
 export(reactlog_write)

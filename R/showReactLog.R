@@ -7,8 +7,8 @@
 #' dependencies and execution in your application.
 #'
 #' To use the reactive log visualizer, start with a fresh R session and
-#' run the command \code{reactlog_enable()}; then launch your
-#' application in the usual way (e.g. using \code{\link[shiny]{runApp}}). At
+#' run the command [reactlog_enable()]; then launch your
+#' application in the usual way (e.g. using [shiny::runApp()]). At
 #' any time you can hit \preformatted{Ctrl+F3} (or for Mac users, \preformatted{Cmd+F3}) in your
 #' web browser to launch the reactive log visualization.
 #'
@@ -23,11 +23,11 @@
 #'
 #' As an alternative to pressing \preformatted{Ctrl/Cmd+F3}--for example, if you
 #' are using reactives outside of the context of a Shiny
-#' application--you can run the \code{showReactLog()} function, which will
+#' application--you can run the [shiny::reactlogShow()] function, which will
 #' generate the reactive log visualization as a static HTML file and
 #' launch it in your default browser. In this case, refreshing your
 #' browser will not load new activity into the report; you will need to
-#' call \code{showReactLog()} explicitly.
+#' call [shiny::reactlogShow()] explicitly.
 #'
 #' For security and performance reasons, do not enable the reactlog
 #' in production environments. When the option is
@@ -38,8 +38,8 @@
 #' @param time A boolean that specifies whether or not to display the
 #' time that each reactive takes to calculate a result.
 #' @param ... Future parameter expansion. Currently ignored
-#' @seealso \code{shiny::\link[shiny]{reactlogShow}}
-#' \code{\link[reactlog]{reactlog_enable}}
+#' @seealso [shiny::reactlogShow()] and
+#' [reactlog::reactlog_enable()]
 #' @export
 #' @examples
 #'
@@ -67,7 +67,7 @@ reactlog_show <- function(log, time = TRUE, ...) {
 #'
 #' Write the reactlog to a file.  If a session token is provided, all reactive interactions will be subsetted to either the global session or the session provided.
 #' @param log produced by shiny to be written
-#' @param file location to \code{cat} the file to
+#' @param file location to `cat` the file to
 #' @param session_token Session token identifier to be used when subsetting the complete reactlog
 #' @export
 reactlog_write <- function(log, file=stdout(), session_token = NULL) {

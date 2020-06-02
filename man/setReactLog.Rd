@@ -19,5 +19,5 @@ and performance reasons, you should not enable the reactlog in a shiny app
 in production.
 }
 \seealso{
-\code{\link[reactlog]{reactlog_show}}
+\code{\link[reactlog:reactlog_show]{reactlog::reactlog_show()}}
 }
