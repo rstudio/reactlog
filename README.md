@@ -5,7 +5,7 @@
 [![CRAN version](http://www.r-pkg.org/badges/version/reactlog)](https://cran.r-project.org/package=reactlog)
 [![reactlog downloads per month](http://cranlogs.r-pkg.org/badges/reactlog)](http://www.rpackages.io/package/reactlog)
 [![DOI](https://zenodo.org/badge/137799634.svg)](https://zenodo.org/badge/latestdoi/137799634)
-[![RStudio community](https://img.shields.io/badge/community-GGally-blue?style=social&logo=rstudio&logoColor=75AADB)](https://community.rstudio.com/tags/c/shiny/8/reactlog)
+[![RStudio community](https://img.shields.io/badge/community-reactlog-blue?style=social&logo=rstudio&logoColor=75AADB)](https://community.rstudio.com/tags/c/shiny/8/reactlog)
 <!-- badges: end -->
 
 <br><!-- space above image break only -->
