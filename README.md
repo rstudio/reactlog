@@ -1,6 +1,7 @@
 # reactlog
 
-[![Travis Build Status](https://travis-ci.org/rstudio/reactlog.svg?branch=master)](https://travis-ci.org/rstudio/reactlog)
+<!-- badges: start -->
+[![R build status](https://github.com/rstudio/reactlog/workflows/R-CMD-check/badge.svg)](https://github.com/rstudio/reactlog/actions)
 [![CRAN version](http://www.r-pkg.org/badges/version/reactlog)](https://cran.r-project.org/package=reactlog)
 [![reactlog downloads per month](http://cranlogs.r-pkg.org/badges/reactlog)](http://www.rpackages.io/package/reactlog)
 [![DOI](https://zenodo.org/badge/137799634.svg)](https://zenodo.org/badge/latestdoi/137799634)
