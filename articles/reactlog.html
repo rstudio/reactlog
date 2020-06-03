@@ -6,18 +6,19 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Shiny Reactlog • reactlog</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="Shiny Reactlog">
-<meta property="og:description" content="">
-<meta name="twitter:card" content="summary">
+<meta property="og:description" content="reactlog">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
-<body>
+<body data-spy="scroll" data-target="#toc">
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -30,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">reactlog</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0.9000</span>
       </span>
     </div>
 
@@ -38,7 +39,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -54,8 +55,8 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/rstudio/reactlog">
-    <span class="fa fa-github fa-lg"></span>
+  <a href="https://github.com/rstudio/reactlog/">
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -68,10 +69,11 @@
 <!--/.navbar -->
 
       
+
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>Shiny Reactlog</h1>
+      <h1 data-toc-skip>Shiny Reactlog</h1>
                         <h4 class="author">Carson Sievert, Joe Cheng, and Barret Schloerke</h4>
             
             <h4 class="date">2019-03-14</h4>
@@ -190,29 +192,29 @@
 <h2 class="hasAnchor">
 <a href="#reactlog" class="anchor"></a>Hello Reactlog</h2>
 <p>Consider the following <strong>shiny</strong> app with one reactive input and one output. It simply allows you to choose variables from the <code>diamonds</code> dataset to visualize that variable using <strong>plotly</strong>.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/options">options</a></span>(<span class="dt">shiny.reactlog =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(shiny)</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(reactlog)</a>
-<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(plotly)</a>
-<a class="sourceLine" id="cb1-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb1-7" data-line-number="7">ui &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/shiny/topics/fluidPage">fluidPage</a></span>(</a>
-<a class="sourceLine" id="cb1-8" data-line-number="8">  <span class="kw"><a href="https://www.rdocumentation.org/packages/shiny/topics/selectInput">selectInput</a></span>(<span class="st">"var"</span>, <span class="st">"Choose a variable"</span>, <span class="dt">choices =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(diamonds)),</a>
-<a class="sourceLine" id="cb1-9" data-line-number="9">  <span class="kw">plotlyOutput</span>(<span class="st">"plot"</span>)</a>
-<a class="sourceLine" id="cb1-10" data-line-number="10">)</a>
-<a class="sourceLine" id="cb1-11" data-line-number="11"></a>
-<a class="sourceLine" id="cb1-12" data-line-number="12">server &lt;-<span class="st"> </span><span class="cf">function</span>(input, output, session) {</a>
-<a class="sourceLine" id="cb1-13" data-line-number="13">  output<span class="op">$</span>plot &lt;-<span class="st"> </span><span class="kw">renderPlotly</span>({</a>
-<a class="sourceLine" id="cb1-14" data-line-number="14">    <span class="kw">plot_ly</span>(<span class="dt">x =</span> diamonds[[input<span class="op">$</span>var]])</a>
-<a class="sourceLine" id="cb1-15" data-line-number="15">  })</a>
-<a class="sourceLine" id="cb1-16" data-line-number="16">}</a>
-<a class="sourceLine" id="cb1-17" data-line-number="17"></a>
-<a class="sourceLine" id="cb1-18" data-line-number="18"><span class="kw"><a href="https://www.rdocumentation.org/packages/shiny/topics/shinyApp">shinyApp</a></span>(ui, server)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">shiny</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">reactlog</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">plotly</span>)
+
+<span class="fu"><a href="../reference/setReactLog.html">reactlog_enable</a></span>()
+
+<span class="no">ui</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html">fluidPage</a></span>(
+  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/selectInput.html">selectInput</a></span>(<span class="st">"var"</span>, <span class="st">"Choose a variable"</span>, <span class="kw">choices</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="no">diamonds</span>)),
+  <span class="fu">plotlyOutput</span>(<span class="st">"plot"</span>)
+)
+
+<span class="no">server</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">input</span>, <span class="no">output</span>, <span class="no">session</span>) {
+  <span class="no">output</span>$<span class="no">plot</span> <span class="kw">&lt;-</span> <span class="fu">renderPlotly</span>({
+    <span class="fu">plot_ly</span>(<span class="kw">x</span> <span class="kw">=</span> <span class="no">diamonds</span><span class="kw">[[</span><span class="no">input</span>$<span class="no">var</span>]])
+  })
+}
+
+<span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span>(<span class="no">ui</span>, <span class="no">server</span>)</pre></body></html></div>
 <p>The following video demonstrates how one could run this application, interact with it (i.e., choose a different variable), then launch the reactlog by pressing <code>Ctrl + F3</code> (Mac: <code>Cmd + F3</code>). To start at the very beginning of the app’s life cycle, click the <img src="images/buttons/prev-mark.svg" width="20" style="vertical-align: middle"> button. You can then navigate through each step of the reactive life cycle by pressing the right arrow key or clicking <img src="images/buttons/next-step.svg" width="20" style="vertical-align: middle">. As you step through the life cycle, notice how the status of the graph is displayed above the dependency graph. A breakdown of all the components of the status bar is provided in the <a href="#status-bar">Status bar</a> section.</p>
 <iframe src="https://player.vimeo.com/video/321628235?title=0&amp;byline=0&amp;portrait=0" width="100%" height="400" frameborder="0" seamless="seamless" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
 <p>For more complex graphs, like the one created by <a href="https://github.com/rstudio/cranwhales">Joe Cheng’s <strong>cranwhales</strong> app</a>, it’s convenient to have more advanced navigation through the time-dependent graph, like jumping to the next idle step using <img src="images/buttons/next-idle.svg" width="30" style="vertical-align: middle">, and querying sub-graphs by double-clicking and/or searching for graph components by name. Also, notice how, upon opening <strong>reactlog</strong>, it navigates to the first <a href="#reactive-flush">reactive flush</a> (i.e., completion of the first round of reactive execution). If there is a particular round of execution you’re primarily interested in, you can add user mark(s), and <strong>reactlog</strong> would open to that time point instead (see <a href="#navigation-buttons">Navigation</a> for more details on creating and navigating to user marks).</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/options">options</a></span>(<span class="dt">shiny.reactlog =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">shiny<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/shiny/topics/runUrl">runGitHub</a></span>(<span class="st">"cranwhales"</span>, <span class="st">"rstudio"</span>, <span class="dt">ref =</span> <span class="st">"sync"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="kw pkg">reactlog</span><span class="kw ns">::</span><span class="fu"><a href="../reference/setReactLog.html">reactlog_enable</a></span>()
+<span class="kw pkg">shiny</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/runUrl.html">runGitHub</a></span>(<span class="st">"cranwhales"</span>, <span class="st">"rstudio"</span>, <span class="kw">ref</span> <span class="kw">=</span> <span class="st">"sync"</span>)</pre></body></html></div>
 <iframe src="https://player.vimeo.com/video/321805975?title=0&amp;byline=0&amp;portrait=0" width="100%" height="400" frameborder="0" seamless="seamless" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
 <p>These two videos demonstrate basic navigation of the <strong>reactlog</strong> interface. Next we’ll explain all the components in detail.</p>
 </div>
@@ -293,7 +295,7 @@
 <ul>
 <li>Ready:
 <ul>
-<li>The reactive element has finished executing. For reactive conductors (such as the result of <code><a href="https://www.rdocumentation.org/packages/shiny/topics/reactive">reactive()</a></code>), a calculated value is available.</li>
+<li>The reactive element has finished executing. For reactive conductors (such as the result of <code><a href="https://rdrr.io/pkg/shiny/man/reactive.html">reactive()</a></code>), a calculated value is available.</li>
 </ul>
 </li>
 <li>Calculating:
@@ -313,7 +315,7 @@
 </li>
 <li>Frozen:
 <ul>
-<li>A visual display of a frozen <code>reactiveVal</code> or <code>reactiveValues</code> key. These elements behave as if their execution is done with <code><a href="https://www.rdocumentation.org/packages/shiny/topics/req">req(FALSE)</a></code>. Please see <a href="https://shiny.rstudio.com/reference/shiny/latest/freezeReactiveValue.html"><code>freezeReactiveValue</code></a> for more information.</li>
+<li>A visual display of a frozen <code>reactiveVal</code> or <code>reactiveValues</code> key. These elements behave as if their execution is done with <code><a href="https://rdrr.io/pkg/shiny/man/req.html">req(FALSE)</a></code>. Please see <a href="https://shiny.rstudio.com/reference/shiny/latest/freezeReactiveValue.html"><code>freezeReactiveValue</code></a> for more information.</li>
 </ul>
 </li>
 <li>Undefined:
@@ -342,7 +344,7 @@
 <a href="#labeling-nodes" class="anchor"></a>Labeling nodes</h4>
 <p>Recall from <a href="#reactivity">the reactive life cycle</a> that nodes in a reactive graph encode reactive inputs, expressions, and outputs (or observers). Labeling inputs and outputs is relatively straight-forward since they already have an associated ID. Reactive expression and observers, on the other hand, don’t have an associated ID – <strong>reactlog</strong>, by default, will use the body of the expression to label these nodes.</p>
 <p><img src="images/elements.png" width="80%" style="display: block; margin: auto;"></p>
-<p>Fortunately, <strong>shiny</strong>’s <code><a href="https://www.rdocumentation.org/packages/shiny/topics/reactive">reactive()</a></code> and <code><a href="https://www.rdocumentation.org/packages/shiny/topics/observe">observe()</a></code> functions have a <code>label</code> argument. If provided, <strong>reactlog</strong> will use this value to label the corresponding nodes.</p>
+<p>Fortunately, <strong>shiny</strong>’s <code><a href="https://rdrr.io/pkg/shiny/man/reactive.html">reactive()</a></code> and <code><a href="https://rdrr.io/pkg/shiny/man/observe.html">observe()</a></code> functions have a <code>label</code> argument. If provided, <strong>reactlog</strong> will use this value to label the corresponding nodes.</p>
 </div>
 </div>
 </div>
@@ -356,7 +358,7 @@
 <li>How reactive elements know about each other</li>
 <li>When elements are calculated</li>
 <li>Why a <code>clientData</code> is randomly appearing in the reactive graph</li>
-<li>How to prevent reactivity from executing using <code><a href="https://www.rdocumentation.org/packages/shiny/topics/isolate">isolate()</a></code>
+<li>How to prevent reactivity from executing using <code><a href="https://rdrr.io/pkg/shiny/man/isolate.html">isolate()</a></code>
 </li>
 </ul>
 </li>
@@ -375,27 +377,20 @@
 <div class="footnotes">
 <hr>
 <ol>
-<li id="fn1"><p>You may wonder how Shiny decides which of the several invalidated observers/outputs to execute. The short answer is that you should act as if it’s random. Ideally, your observers and especially outputs won’t care what order they execute in, as each will function independently from the others. However, if you do have observers whose side effects must always happen in a certain relative order, you can use the <code>observe</code> function’s <code>priority</code> argument to dictate that order for observers. You can also control the priority of outputs by calling the <code><a href="https://www.rdocumentation.org/packages/shiny/topics/outputOptions">outputOptions()</a></code> function with a <code>priority</code> argument.<a href="#fnref1" class="footnote-back">↩</a></p></li>
-<li id="fn2"><p><strong>reactlog</strong> is not designed to be a code profiling tool. If you are curious why your app is slow, use <a href="https://rstudio.github.io/profvis/">the <strong>profvis</strong> package</a> to identify and address slow R code.<a href="#fnref2" class="footnote-back">↩</a></p></li>
+<li id="fn1"><p>You may wonder how Shiny decides which of the several invalidated observers/outputs to execute. The short answer is that you should act as if it’s random. Ideally, your observers and especially outputs won’t care what order they execute in, as each will function independently from the others. However, if you do have observers whose side effects must always happen in a certain relative order, you can use the <code>observe</code> function’s <code>priority</code> argument to dictate that order for observers. You can also control the priority of outputs by calling the <code><a href="https://rdrr.io/pkg/shiny/man/outputOptions.html">outputOptions()</a></code> function with a <code>priority</code> argument.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn2"><p><strong>reactlog</strong> is not designed to be a code profiling tool. If you are curious why your app is slow, use <a href="https://rstudio.github.io/profvis/">the <strong>profvis</strong> package</a> to identify and address slow R code.<a href="#fnref2" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-        <div id="tocnav">
-      <h2 class="hasAnchor">
-<a href="#tocnav" class="anchor"></a>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-<li><a href="#background">Background</a></li>
-      <li><a href="#reactivity">The reactive life cycle</a></li>
-      <li><a href="#reactlog">Hello Reactlog</a></li>
-      <li><a href="#reactlog-in-detail">Reactlog in detail</a></li>
-      <li><a href="#learn-more">Learn more</a></li>
-      </ul>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+
+        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
+    </nav>
 </div>
-      </div>
 
 </div>
+
 
 
       <footer><div class="copyright">
@@ -403,12 +398,14 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
+
       </footer>
 </div>
 
   
+
 
   </body>
 </html>
