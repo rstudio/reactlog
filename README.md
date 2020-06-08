@@ -72,7 +72,7 @@ shiny::reactlogShow()
 
 Or while your Shiny app is running, press the key combination `Ctrl+F3` (Mac: `Cmd+F3`) to launch the **reactlog** application.
 
-To mark a specific execution time point within your Shiny app, press the key combination `Ctrl+F4` (Mac: `Cmd+F4`). This will highlight a specific point in time in your reactlog.
+To mark a specific execution time point within your Shiny app, press the key combination `Ctrl+Shift+F3` (Mac: `Cmd+Shift+F3`). This will highlight a specific point in time in your reactlog.
 
 
 #### Example

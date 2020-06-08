@@ -28,6 +28,8 @@ Displays an iframe of the reactlog in the given application.
 }
 \details{
 State will not be preserved between refreshes.
+To open the reactlog at a particular step, be sure to mark your time points
+with \code{Cmd+Shift+F3} (Windows: \code{Ctrl+Shift+F3})
 }
 \examples{
 if (!require("shiny")) {
@@ -37,35 +39,31 @@ if (!require("shiny")) {
 
 library(shiny)
 # Enable reactlog
-reactlog::reactlog_enable()
+reactlog_enable()
 
 # Define UI for app that draws a histogram ----
 ui <- fluidPage(
-  titlePanel("Hello Shiny!"),
-  sidebarLayout(
-    sidebarPanel(
-      sliderInput(inputId = "bins", label = "Number of bins:",
-                  min = 1, max = 50, value = 30)
-    ),
-    mainPanel(plotOutput(outputId = "distPlot"))
-  ),
+  tags$h1("Pythagorean theorem"),
+  numericInput("a", "A", 3),
+  numericInput("b", "B", 4),
+  "C:", verbatimTextOutput("c"),
 ### start ui module
-  reactlog::reactlog_module_ui(id = "reactlog")
+  reactlog_module_ui()
 ### end ui module
 )
 
 server <- function(input, output, session) {
+  a2 <- reactive({a <- input$a; req(a); a * a}, label = "a^2")
+  b2 <- reactive({b <- input$b; req(b); b * b}, label = "b^2")
+  c2 <- reactive({a2() + b2()}, label = "c^2")
+  c_val <- reactive({sqrt(c2())}, label = "c")
 
-  output$distPlot <- renderPlot({
-    x    <- faithful$waiting
-    bins <- seq(min(x), max(x), length.out = input$bins + 1)
-    hist(x, breaks = bins, col = "#75AADB", border = "white",
-        xlab = "Waiting time to next eruption (in mins)",
-        main = "Histogram of waiting times")
+  output$c <- renderText({
+    c_val()
   })
 
 ### start server module
-  reactlog::reactlog_module_server()
+  reactlog_module_server()
 ### end server module
 
 }
