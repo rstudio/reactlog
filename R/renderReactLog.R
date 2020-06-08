@@ -8,7 +8,8 @@ inst_reactlog_assets <- function() {
 
 #' @export
 #' @rdname reactlog_show
-#' @param session_token token to be used to subset which session is displayed.  Defaults to all sessions.
+#' @param session_token token to be used to subset which session is displayed.
+#'   Defaults to all sessions.
 reactlog_render <- function(log, session_token = NULL, time = TRUE) {
   log <- reactlog_upgrade(log)
 

@@ -12,7 +12,8 @@ reactlog_show(log, time = TRUE, ...)
 \arguments{
 \item{log}{Log produced by shiny to be processed}
 
-\item{session_token}{token to be used to subset which session is displayed.  Defaults to all sessions.}
+\item{session_token}{token to be used to subset which session is displayed.
+Defaults to all sessions.}
 
 \item{time}{A boolean that specifies whether or not to display the
 time that each reactive takes to calculate a result.}

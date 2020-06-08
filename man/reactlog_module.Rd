@@ -5,31 +5,23 @@
 \alias{reactlog_module_server}
 \title{Reactlog Shiny Module}
 \usage{
-reactlog_module_ui(id = "reactlog", ...)
+reactlog_module_ui(include_refresh = TRUE, id = "reactlog_module")
 
 reactlog_module_server(
-  id = "reactlog",
-  text_init = "Display Reactlog",
-  text_refresh = "Refresh Reactlog",
+  id = "reactlog_module",
   width = "100\%",
   height = 600,
-  display_immediately = TRUE
+  ...
 )
 }
 \arguments{
+\item{include_refresh}{should the ifram refresh button be included?}
+
 \item{id}{\pkg{shiny} module id to use}
-
-\item{...}{parameters passed to \code{\link[shiny:actionButton]{shiny::actionButton()}}}
-
-\item{text_init}{text to be displayed before the reactlog is displayed.
-Clicking the button will cause the reactlog to be loaded.}
-
-\item{text_refresh}{text to be displayed once the reactlog has been displayed.
-Clicking the button will cause the reactlog to be reloaded.}
 
 \item{width, height}{HTML attributes to be applied to the reactlog iframe}
 
-\item{display_immediately}{should the reactlog iframe be displayed immediately?}
+\item{...}{parameters passed to \code{\link[shiny:actionButton]{shiny::actionButton()}}}
 }
 \description{
 Displays an iframe of the reactlog in the given application.
@@ -57,9 +49,9 @@ ui <- fluidPage(
     ),
     mainPanel(plotOutput(outputId = "distPlot"))
   ),
-### start ui
+### start ui module
   reactlog::reactlog_module_ui(id = "reactlog")
-### end ui
+### end ui module
 )
 
 server <- function(input, output, session) {
@@ -72,9 +64,9 @@ server <- function(input, output, session) {
         main = "Histogram of waiting times")
   })
 
-### start server
+### start server module
   reactlog::reactlog_module_server()
-### end server
+### end server module
 
 }
 

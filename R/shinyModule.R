@@ -8,12 +8,8 @@
 #'
 #' @param id \pkg{shiny} module id to use
 #' @param ... parameters passed to [shiny::actionButton()]
-#' @param text_init text to be displayed before the reactlog is displayed.
-#'   Clicking the button will cause the reactlog to be loaded.
-#' @param text_refresh text to be displayed once the reactlog has been displayed.
-#'   Clicking the button will cause the reactlog to be reloaded.
 #' @param width,height HTML attributes to be applied to the reactlog iframe
-#' @param display_immediately should the reactlog iframe be displayed immediately?
+#' @param include_refresh should the ifram refresh button be included?
 #' @seealso [shiny::moduleServer()]
 #' @rdname reactlog_module
 #' @export
@@ -37,9 +33,9 @@
 #'     ),
 #'     mainPanel(plotOutput(outputId = "distPlot"))
 #'   ),
-#' ### start ui
+#' ### start ui module
 #'   reactlog::reactlog_module_ui(id = "reactlog")
-#' ### end ui
+#' ### end ui module
 #' )
 #'
 #' server <- function(input, output, session) {
@@ -52,32 +48,36 @@
 #'         main = "Histogram of waiting times")
 #'   })
 #'
-#' ### start server
+#' ### start server module
 #'   reactlog::reactlog_module_server()
-#' ### end server
+#' ### end server module
 #'
 #' }
 #'
 #' if (interactive()) {
 #'   shinyApp(ui = ui, server = server)
 #' }
-reactlog_module_ui <- function(id = "reactlog", ...) {
+reactlog_module_ui <- function(include_refresh = TRUE, id = "reactlog_module") {
   ns <- shiny::NS(id)
   shiny::tagList(
-    shiny::actionButton(ns("button"), "", ...),
-    shiny::uiOutput(ns("iframe"))
+    if (isTRUE(include_refresh))
+      shiny::actionButton(
+        ns("refresh"),
+        "",
+        icon = shiny::icon("refresh"),
+        class = "btn-sm btn-warning"
+      ),
+    shiny::uiOutput(ns("iframe"), inline = TRUE)
   )
 }
 
 #' @rdname reactlog_module
 #' @export
 reactlog_module_server <- function(
-  id = "reactlog",
-  text_init = "Display Reactlog",
-  text_refresh = "Refresh Reactlog",
+  id = "reactlog_module",
   width = "100%",
   height = 600,
-  display_immediately = TRUE
+  ...
 ) {
 
   assert_shiny_version()
@@ -85,18 +85,11 @@ reactlog_module_server <- function(
   shiny::moduleServer(
     id,
     function(input, output, session) {
-      # init label
-      shiny::updateActionButton(session, "button", label = text_init)
+      ns <- shiny::NS(id)
 
       output$iframe <- shiny::renderUI({
-        # trigger refresh
-        button_val <- input$button
-        if (!isTRUE(display_immediately)) {
-          shiny::req(button_val > 0)
-        }
-
-        # update label
-        shiny::updateActionButton(session, "button", label = text_refresh)
+        # trigger render refresh
+        input$refresh
 
         random_id <- paste0(
           "reactlog_iframe_",
@@ -105,20 +98,23 @@ reactlog_module_server <- function(
 
         htmltools::tagList(
           htmltools::tags$iframe(
-            id = random_id,
+            id = ns(random_id),
             width = width,
-            height = height),
+            height = height,
+            ...
+          ),
           htmltools::tags$script(htmltools::HTML(paste0("
             (function() {
               var src =
                 'reactlog?w=' + window.escape(window.Shiny.shinyapp.config.workerId) +
                 '&s=' + window.escape(window.Shiny.shinyapp.config.sessionId);
-              $('#", random_id, "').attr('src', src);
+              $('#", ns(random_id), "').attr('src', src);
             })()
           ")))
-
         )
+
       })
+
     }
   )
 }

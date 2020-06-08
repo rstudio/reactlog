@@ -26,41 +26,9 @@ test_that("iframe is displayed immediately", {
     reactlog_module_server,
     args = list(
       width = width,
-      height = height,
-      display_immediately = TRUE
+      height = height
     ),
-    { # nolint
-
-      session$setInputs(button = 0)
-
-      expect_iframe(output)
-    }
-  )
-
-})
-
-test_that("iframe is displayed immediately", {
-
-  if (!test_shiny_version()) {
-    testthat::skip("Insufficient shiny version. Need >= 1.5.0")
-  }
-
-  shiny::testServer(
-    reactlog_module_server,
-    args = list(
-      width = width,
-      height = height,
-      display_immediately = FALSE
-    ),
-    { # nolint
-
-      session$setInputs(button = 0)
-
-      expect_error(
-        output$iframe
-      )
-
-      session$setInputs(button = 1)
+    expr = {
 
       expect_iframe(output)
     }

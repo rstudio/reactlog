@@ -14,5 +14,6 @@ reactlog_write(log, file = stdout(), session_token = NULL)
 \item{session_token}{Session token identifier to be used when subsetting the complete reactlog}
 }
 \description{
-Write the reactlog to a file.  If a session token is provided, all reactive interactions will be subsetted to either the global session or the session provided.
+Write the reactlog to a file.  If a session token is provided, all reactive interactions will
+be subsetted to either the global session or the session provided.
 }
