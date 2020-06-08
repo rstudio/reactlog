@@ -121,7 +121,10 @@ reactlog_module_server <- function(
 
 
 test_shiny_version <- function() {
-  utils::packageVersion("shiny") >= "1.4.0.9003"
+  suggests <- read.dcf(system.file("DESCRIPTION", package = "reactlog"))[1,"Suggests"]
+  pkgs <- strsplit(suggests, ",")[[1]]
+  shiny_version <- gsub("[^.0-9]", "", pkgs[grepl("^shiny ", pkgs)])
+  utils::packageVersion("shiny") >= package_version(shiny_version)
 }
 assert_shiny_version <- function() {
   if (!test_shiny_version()) {
