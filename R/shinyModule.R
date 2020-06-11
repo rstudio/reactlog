@@ -65,7 +65,7 @@ reactlog_module_ui <- function(include_refresh = TRUE, id = "reactlog_module") {
         icon = shiny::icon("refresh"),
         class = "btn-sm btn-warning"
       ),
-    shiny::uiOutput(ns("iframe"), inline = TRUE)
+    shiny::uiOutput(ns("iframe"))
   )
 }
 
