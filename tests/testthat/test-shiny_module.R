@@ -19,7 +19,7 @@ expect_iframe <- function(output) {
 test_that("iframe is displayed immediately", {
 
   if (!test_shiny_version()) {
-    testthat::skip("Insufficient shiny version. Need >= 1.5.0")
+    testthat::skip(paste0("Insufficient shiny version. Need >= ", shiny_version_required()))
   }
 
   shiny::testServer(
