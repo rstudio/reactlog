@@ -70,7 +70,7 @@
 
       
 
-      </header><div class="row">
+      </header><script src="reactlog_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Shiny Reactlog</h1>
@@ -192,29 +192,33 @@
 <h2 class="hasAnchor">
 <a href="#reactlog" class="anchor"></a>Hello Reactlog</h2>
 <p>Consider the following <strong>shiny</strong> app with one reactive input and one output. It simply allows you to choose variables from the <code>diamonds</code> dataset to visualize that variable using <strong>plotly</strong>.</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">shiny</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">reactlog</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">plotly</span>)
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="http://shiny.rstudio.com">shiny</a></span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://rstudio.github.io/reactlog">reactlog</a></span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw">plotly</span>)
 
 <span class="fu"><a href="../reference/setReactLog.html">reactlog_enable</a></span>()
 
-<span class="no">ui</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html">fluidPage</a></span>(
-  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/selectInput.html">selectInput</a></span>(<span class="st">"var"</span>, <span class="st">"Choose a variable"</span>, <span class="kw">choices</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="no">diamonds</span>)),
+<span class="kw">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html">fluidPage</a></span>(
+  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/selectInput.html">selectInput</a></span>(<span class="st">"var"</span>, <span class="st">"Choose a variable"</span>, choices = <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="kw">diamonds</span>)),
   <span class="fu">plotlyOutput</span>(<span class="st">"plot"</span>)
 )
 
-<span class="no">server</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">input</span>, <span class="no">output</span>, <span class="no">session</span>) {
-  <span class="no">output</span>$<span class="no">plot</span> <span class="kw">&lt;-</span> <span class="fu">renderPlotly</span>({
-    <span class="fu">plot_ly</span>(<span class="kw">x</span> <span class="kw">=</span> <span class="no">diamonds</span><span class="kw">[[</span><span class="no">input</span>$<span class="no">var</span>]])
+<span class="kw">server</span> <span class="op">&lt;-</span> <span class="fu">function</span>(<span class="kw">input</span>, <span class="kw">output</span>, <span class="kw">session</span>) {
+  <span class="kw">output</span><span class="op">$</span><span class="kw">plot</span> <span class="op">&lt;-</span> <span class="fu">renderPlotly</span>({
+    <span class="fu">plot_ly</span>(x = <span class="kw">diamonds</span>[[<span class="kw">input</span><span class="op">$</span><span class="kw">var</span>]])
   })
 }
 
-<span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span>(<span class="no">ui</span>, <span class="no">server</span>)</pre></body></html></div>
+<span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span>(<span class="kw">ui</span>, <span class="kw">server</span>)
+</pre></div>
 <p>The following video demonstrates how one could run this application, interact with it (i.e., choose a different variable), then launch the reactlog by pressing <code>Ctrl + F3</code> (Mac: <code>Cmd + F3</code>). To start at the very beginning of the app’s life cycle, click the <img src="images/buttons/prev-mark.svg" width="20" style="vertical-align: middle"> button. You can then navigate through each step of the reactive life cycle by pressing the right arrow key or clicking <img src="images/buttons/next-step.svg" width="20" style="vertical-align: middle">. As you step through the life cycle, notice how the status of the graph is displayed above the dependency graph. A breakdown of all the components of the status bar is provided in the <a href="#status-bar">Status bar</a> section.</p>
 <iframe src="https://player.vimeo.com/video/321628235?title=0&amp;byline=0&amp;portrait=0" width="100%" height="400" frameborder="0" seamless="seamless" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
 <p>For more complex graphs, like the one created by <a href="https://github.com/rstudio/cranwhales">Joe Cheng’s <strong>cranwhales</strong> app</a>, it’s convenient to have more advanced navigation through the time-dependent graph, like jumping to the next idle step using <img src="images/buttons/next-idle.svg" width="30" style="vertical-align: middle">, and querying sub-graphs by double-clicking and/or searching for graph components by name. Also, notice how, upon opening <strong>reactlog</strong>, it navigates to the first <a href="#reactive-flush">reactive flush</a> (i.e., completion of the first round of reactive execution). If there is a particular round of execution you’re primarily interested in, you can add user mark(s), and <strong>reactlog</strong> would open to that time point instead (see <a href="#navigation-buttons">Navigation</a> for more details on creating and navigating to user marks).</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="kw pkg">reactlog</span><span class="kw ns">::</span><span class="fu"><a href="../reference/setReactLog.html">reactlog_enable</a></span>()
-<span class="kw pkg">shiny</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/runUrl.html">runGitHub</a></span>(<span class="st">"cranwhales"</span>, <span class="st">"rstudio"</span>, <span class="kw">ref</span> <span class="kw">=</span> <span class="st">"sync"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="kw">reactlog</span>::<span class="fu"><a href="../reference/setReactLog.html">reactlog_enable</a></span>()
+<span class="kw">shiny</span>::<span class="fu"><a href="https://rdrr.io/pkg/shiny/man/runUrl.html">runGitHub</a></span>(<span class="st">"cranwhales"</span>, <span class="st">"rstudio"</span>, ref = <span class="st">"sync"</span>)
+</pre></div>
 <iframe src="https://player.vimeo.com/video/321805975?title=0&amp;byline=0&amp;portrait=0" width="100%" height="400" frameborder="0" seamless="seamless" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
 <p>These two videos demonstrate basic navigation of the <strong>reactlog</strong> interface. Next we’ll explain all the components in detail.</p>
 </div>

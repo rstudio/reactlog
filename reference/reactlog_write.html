@@ -40,7 +40,9 @@
 
 
 <meta property="og:title" content="Write reactlog — reactlog_write" />
-<meta property="og:description" content="Write the reactlog to a file.  If a session token is provided, all reactive interactions will be subsetted to either the global session or the session provided." />
+<meta property="og:description" content="Write the reactlog to a file.  If a session token is provided, all reactive
+interactions will be subsetted to either the global session or the
+session provided." />
 
 
 
@@ -120,10 +122,12 @@
     </div>
 
     <div class="ref-description">
-    <p>Write the reactlog to a file.  If a session token is provided, all reactive interactions will be subsetted to either the global session or the session provided.</p>
+    <p>Write the reactlog to a file.  If a session token is provided, all reactive
+interactions will be subsetted to either the global session or the
+session provided.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>reactlog_write</span>(<span class='no'>log</span>, <span class='kw'>file</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/showConnections.html'>stdout</a></span>(), <span class='kw'>session_token</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/reactlog/man/reactlog_write.html'>reactlog_write</a></span>(<span class='kw'>log</span>, file = <span class='fu'><a href='https://rdrr.io/r/base/showConnections.html'>stdout</a></span>(), session_token = <span class='kw'>NULL</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -134,11 +138,13 @@
     </tr>
     <tr>
       <th>file</th>
-      <td><p>location to <code>cat</code> the file to</p></td>
+      <td><p>location of output file. If a <code>NULL</code> file is given, the
+json representation is return.</p></td>
     </tr>
     <tr>
       <th>session_token</th>
-      <td><p>Session token identifier to be used when subsetting the complete reactlog</p></td>
+      <td><p>Session token identifier to be used when subsetting the
+complete reactlog</p></td>
     </tr>
     </table>
 

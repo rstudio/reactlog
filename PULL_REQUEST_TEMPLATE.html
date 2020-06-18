@@ -151,7 +151,9 @@
 <a href="#playback-issue-fixed" class="anchor"></a>Playback issue fixed</h2>
 <p>Brief description of the problem. Given that Shiny recorded it correctly, the reactlog provided by <code><a href="https://rdrr.io/pkg/shiny/man/reactlog.html">shiny::reactlog()</a></code> is not being displaying properly.</p>
 <p>Please attach a screenshot of before and after if appropriate.</p>
-<div class="sourceCode" id="cb1"><html><pre class="r"><span class="kw pkg">jsonlite</span><span class="kw ns">::</span><span class="fu"><a href="https://jeroen.cran.dev/jsonlite/reference/fromJSON.html">toJSON</a></span>(<span class="kw pkg">shiny</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactlog.html">reactlog</a></span>(), <span class="kw">pretty</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">auto_unbox</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></html></div>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="kw">jsonlite</span>::<span class="fu"><a href="https://jeroen.cran.dev/jsonlite/reference/fromJSON.html">toJSON</a></span>(<span class="kw">shiny</span>::<span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactlog.html">reactlog</a></span>(), pretty = <span class="fl">TRUE</span>, auto_unbox = <span class="fl">TRUE</span>)
+</pre></div>
 <hr>
 </div>
 <div id="pr-task-list" class="section level2">

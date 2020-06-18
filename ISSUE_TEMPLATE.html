@@ -126,17 +126,19 @@
 <h2 class="hasAnchor">
 <a href="#recording-issue" class="anchor"></a>Recording issue</h2>
 <p>Brief description of the problem. This should show how shiny is not recording something properly.</p>
-<div class="sourceCode" id="cb1"><html><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">shiny</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">reactlog</span>)
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="http://shiny.rstudio.com">shiny</a></span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://rstudio.github.io/reactlog">reactlog</a></span>)
 
-<span class="fu"><a href="reference/setReactLog.html">reactlog_enable</a></span>()
+<span class="fu"><a href="https://rdrr.io/pkg/reactlog/man/setReactLog.html">reactlog_enable</a></span>()
 
-<span class="no">ui</span> <span class="kw">&lt;-</span> <span class="co"># FILL IN UI</span>
-<span class="no">server</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">input</span>, <span class="no">output</span>, <span class="no">session</span>) {
+<span class="kw">ui</span> <span class="op">&lt;-</span> <span class="co"># FILL IN UI</span>
+<span class="kw">server</span> <span class="op">&lt;-</span> <span class="fu">function</span>(<span class="kw">input</span>, <span class="kw">output</span>, <span class="kw">session</span>) {
   <span class="co"># FILL IN SERVER</span>
 }
 
-<span class="kw pkg">shiny</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span>(<span class="kw">ui</span> <span class="kw">=</span> <span class="no">ui</span>, <span class="kw">server</span> <span class="kw">=</span> <span class="no">server</span>)</pre></html></div>
+<span class="kw">shiny</span>::<span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span>(ui = <span class="kw">ui</span>, server = <span class="kw">server</span>)
+</pre></div>
 <div id="interactive-steps-to-produce-bad-reactlog-recording" class="section level4">
 <h4 class="hasAnchor">
 <a href="#interactive-steps-to-produce-bad-reactlog-recording" class="anchor"></a>Interactive steps to produce bad reactlog recording</h4>
@@ -154,7 +156,9 @@
 <a href="#playback-issue" class="anchor"></a>Playback issue</h2>
 <p>Brief description of the problem. Given that Shiny recorded it correctly, the reactlog provided by <code><a href="https://rdrr.io/pkg/shiny/man/reactlog.html">shiny::reactlog()</a></code> is not being displaying properly.</p>
 <p>Please attach a screenshot if appropriate.</p>
-<div class="sourceCode" id="cb2"><html><pre class="r"><span class="kw pkg">jsonlite</span><span class="kw ns">::</span><span class="fu"><a href="https://jeroen.cran.dev/jsonlite/reference/fromJSON.html">toJSON</a></span>(<span class="kw pkg">shiny</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactlog.html">reactlog</a></span>(), <span class="kw">pretty</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">auto_unbox</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></html></div>
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="kw">jsonlite</span>::<span class="fu"><a href="https://jeroen.cran.dev/jsonlite/reference/fromJSON.html">toJSON</a></span>(<span class="kw">shiny</span>::<span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactlog.html">reactlog</a></span>(), pretty = <span class="fl">TRUE</span>, auto_unbox = <span class="fl">TRUE</span>)
+</pre></div>
 </div>
 
 
