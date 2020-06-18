@@ -12,7 +12,8 @@ reactlog_show(log, time = TRUE, ...)
 \arguments{
 \item{log}{Log produced by shiny to be processed}
 
-\item{session_token}{token to be used to subset which session is displayed.  Defaults to all sessions.}
+\item{session_token}{token to be used to subset which session is displayed.
+Defaults to all sessions.}
 
 \item{time}{A boolean that specifies whether or not to display the
 time that each reactive takes to calculate a result.}
@@ -27,7 +28,8 @@ dependencies and execution in your application.
 To use the reactive log visualizer, start with a fresh R session and
 run the command \code{reactlog_enable()}; then launch your
 application in the usual way (e.g. using \code{\link[shiny]{runApp}}). At
-any time you can hit \preformatted{Ctrl+F3} (or for Mac users, \preformatted{Cmd+F3}) in your
+any time you can hit \preformatted{Ctrl+F3}
+(or for Mac users, \preformatted{Cmd+F3}) in your
 web browser to launch the reactive log visualization.
 
 The reactive log visualization only includes reactive activity up

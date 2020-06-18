@@ -24,7 +24,7 @@
     "concurrent": false,
     "linters": {
       "R/*.R": [
-        "Rscript -e \"devtools::load_all(); devtools::lint() -> lints; if(length(lints) > 0) print(lints); testthat::expect_equal(length(lints), 0)\""
+        "Rscript -e \"devtools::load_all(); devtools::lint(cache = FALSE) -> lints; if(length(lints) > 0) print(lints); testthat::expect_equal(length(lints), 0)\""
       ],
       ".flowconfig": [
         "yarn flow-report-and-echo"
@@ -74,6 +74,7 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.2.5",
+    "core-js": "2",
     "cytoscape": "3.x",
     "cytoscape-dagre": "2.x",
     "jquery": "3.x",
