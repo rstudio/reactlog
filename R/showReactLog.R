@@ -7,9 +7,10 @@
 #' dependencies and execution in your application.
 #'
 #' To use the reactive log visualizer, start with a fresh R session and
-#' run the command [reactlog_enable()]; then launch your
+#' run the command \code{reactlog_enable()}; then launch your
 #' application in the usual way (e.g. using [shiny::runApp()]). At
-#' any time you can hit \preformatted{Ctrl+F3} (or for Mac users, \preformatted{Cmd+F3}) in your
+#' any time you can hit \preformatted{Ctrl+F3}
+#' (or for Mac users, \preformatted{Cmd+F3}) in your
 #' web browser to launch the reactive log visualization.
 #'
 #' The reactive log visualization only includes reactive activity up
@@ -65,12 +66,15 @@ reactlog_show <- function(log, time = TRUE, ...) {
 
 #' Write reactlog
 #'
-#' Write the reactlog to a file.  If a session token is provided, all reactive interactions will
-#' be subsetted to either the global session or the session provided.
+#' Write the reactlog to a file.  If a session token is provided, all reactive
+#' interactions will be subsetted to either the global session or the
+#' session provided.
 #'
 #' @param log produced by shiny to be written
-#' @param file location to `cat` the file to
-#' @param session_token Session token identifier to be used when subsetting the complete reactlog
+#' @param file location of output file. If a \code{NULL} file is given, the
+#'   json representation is return.
+#' @param session_token Session token identifier to be used when subsetting the
+#'   complete reactlog
 #' @export
 reactlog_write <- function(log, file=stdout(), session_token = NULL) {
   if (!is.null(session_token)) {
@@ -89,5 +93,16 @@ reactlog_write <- function(log, file=stdout(), session_token = NULL) {
     use_signif = TRUE, force = TRUE, POSIXt = "ISO8601", UTC = TRUE,
     rownames = FALSE, keep_vec_names = TRUE, strict_atomic = TRUE
   )
-  cat(json, file = file)
+  if (is.null(file)) {
+    # return the json as a character string
+    json
+  } else {
+    # write to the file connection
+    write_utf8(json, file = file)
+  }
+}
+
+
+write_utf8 <- function(x, file, ...) {
+  writeLines(enc2utf8(x), file, ..., useBytes = TRUE)
 }

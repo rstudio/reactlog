@@ -3,7 +3,11 @@
   "compact": false,
   "presets": [
     "@babel/preset-flow",
-    ["@babel/preset-env", {"modules": "umd", "useBuiltIns": "entry"}]
+    ["@babel/preset-env", {
+      "modules": "umd",
+      "useBuiltIns": "entry",
+      "corejs": 2
+    }]
   ],
   "plugins": [
     "@babel/plugin-proposal-class-properties"

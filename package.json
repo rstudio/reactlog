@@ -74,6 +74,7 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.2.5",
+    "core-js": "2",
     "cytoscape": "3.x",
     "cytoscape-dagre": "2.x",
     "jquery": "3.x",

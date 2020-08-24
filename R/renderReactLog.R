@@ -14,23 +14,20 @@ reactlog_render <- function(log, session_token = NULL, time = TRUE) {
   log <- reactlog_upgrade(log)
 
   template_file <- inst_reactlog_file("reactlog.html")
-  html <- paste(readLines(template_file, warn = FALSE), collapse = "\r\n")
+  # does not need utf8 support
+  html <- paste(readLines(template_file, warn = FALSE), collapse = "\n")
 
-  tmpfile <- file("")
-  on.exit({
-    close(tmpfile)
-  })
-  reactlog_write(log, tmpfile, session_token)
+  # get the json form of the lgo without writing to disk
+  json_blob <- as.character(
+    reactlog_write(log, file = NULL, session_token = session_token)
+  )
 
   fixed_sub <- function(...) {
     sub(..., fixed = TRUE)
   }
 
-  # incomplete final line warning
-  lines <- readLines(tmpfile, warn = FALSE, encoding = "UTF-8")
-
   html <- fixed_sub(
-    "__DATA__", paste(lines, collapse = "\r\n"),
+    "__DATA__", paste(json_blob, collapse = "\n"),
     fixed_sub(
       "__TIME__", paste0("\"", time, "\""),
       fixed_sub(
@@ -50,9 +47,9 @@ reactlog_render <- function(log, session_token = NULL, time = TRUE) {
     )
   }
 
-
   file <- tempfile(fileext = ".html")
-  writeLines(html, file)
+
+  write_utf8(html, file = file)
 
   # copy js and style folder
   file.copy(
