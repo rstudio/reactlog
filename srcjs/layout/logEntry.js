@@ -32,6 +32,7 @@ import type {
   LogEntryUpdateNodeLabelType,
   LogEntryValueChangeType,
 } from "../log/logStates";
+import { inTestMode, shinytest } from "../utils/shinytest";
 
 let containers: {
   container: JQuery,
@@ -58,21 +59,26 @@ let updateLogEntry = function(): void {
 
   let curEntry = rlog.log[rlog.curTick];
 
-  let timeDiff = curEntry.time - logInfo.firstTime; // milliseconds
-
-  timeDiff = roundDecimals(timeDiff, timeDecimalDigits)
-    .toFixed(timeDecimalDigits)
-    .padStart(logInfo.lastTimeCharLength, " ");
-
-  containers.time.text(`${timeDiff}s`);
-  if (!_isNil(curEntry.session)) {
-    containers.session.text(
-      `${curEntry.session}`.padEnd(logInfo.maxSessionCharLength, " ")
-    );
+  if (inTestMode) {
+    containers.time.text(shinytest);
+    containers.session.text(shinytest);
   } else {
-    containers.session.text(
-      "(Global)".padEnd(logInfo.maxSessionCharLength, " ")
-    );
+    let timeDiff = curEntry.time - logInfo.firstTime; // milliseconds
+
+    timeDiff = roundDecimals(timeDiff, timeDecimalDigits)
+      .toFixed(timeDecimalDigits)
+      .padStart(logInfo.lastTimeCharLength, " ");
+
+    containers.time.text(`${timeDiff}s`);
+    if (!_isNil(curEntry.session)) {
+      containers.session.text(
+        `${curEntry.session}`.padEnd(logInfo.maxSessionCharLength, " ")
+      );
+    } else {
+      containers.session.text(
+        "(Global)".padEnd(logInfo.maxSessionCharLength, " ")
+      );
+    }
   }
 
   let stepDisplayValPadding = function(i) {

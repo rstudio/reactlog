@@ -11,6 +11,7 @@ import { StatusArr } from "./StatusArr";
 import type { LogEntryAnyType, CtxIdType } from "../log/logStates";
 import type { StatusEntry } from "./StatusArr";
 import type { CytoData } from "../cyto/cytoFlowType";
+import { inTestMode } from "../utils/shinytest";
 
 // // TODO-barret use log states everywhere
 // import logStates from "../log/logStates"
@@ -83,6 +84,16 @@ class Node {
     }
   }
 
+  get calculationTimeStr(): string {
+    if (_isNil(this.calculationTime)) {
+      return null;
+    }
+    if (inTestMode) {
+      return "(shinytest)";
+    }
+    return `${this.calculationTime.toFixed(0)}ms`;
+  }
+
   get id(): NodeIdType {
     return this.reactId.replace(/\$/g, "_");
   }
@@ -137,11 +148,11 @@ class Node {
   get cytoLabel(): string {
     let label = `${this.label}`;
     if (this.type === "observer" || this.type === "observable") {
-      let time = this.calculationTime;
+      let time = this.calculationTimeStr;
       if (rlog.displayTimeOnNodes) {
         if (!_isNil(time)) {
           // is just chillin... so I'm assuming it's calculated and I want to know how long it took.
-          return `${label}\n\nCalculation Time: ${time.toFixed(0)}ms`;
+          return `${label}\n\nCalculation Time: ${time}`;
         }
       }
       return label;
@@ -161,11 +172,11 @@ class Node {
   get cytoLabelShort(): string {
     let label = `${this.label}`.replace(/[\t\n\r ]+/g, " ");
     if (this.type === "observer" || this.type === "observable") {
-      let time = this.calculationTime;
       if (rlog.displayTimeOnNodes) {
+        let time = this.calculationTimeStr;
         if (!_isNil(time)) {
           // is just chillin... so I'm assuming it's calculated and I want to know how long it took.
-          return `${label} (${time.toFixed(0)}ms)`;
+          return `${label} (${time})`;
         }
       }
       return label;
