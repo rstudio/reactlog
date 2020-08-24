@@ -4,7 +4,7 @@
 #' and performance reasons, you should not enable the reactlog in a shiny app
 #' in production.
 #' @param warn Should a warning message be shown?
-#' @seealso \code{\link[reactlog]{reactlog_show}}
+#' @seealso [reactlog::reactlog_show()]
 #' @name setReactLog
 #' @export
 #' @rdname setReactLog
