@@ -131,10 +131,10 @@
 
 <span class="co"># run a shiny app</span>
 <span class="kw">app</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"examples/01_hello"</span>, package = <span class="st">"shiny"</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/shiny/man/runApp.html">runApp</a></span>(<span class="kw">app</span>)
+<span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/runApp.html">runApp</a></span>(<span class="kw">app</span>)
 
 <span class="co"># once app has closed, display reactlog from shiny</span>
-<span class="kw">shiny</span>::<span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactlog.html">reactlogShow</a></span>()
+<span class="kw">shiny</span>::<span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/reactlog.html">reactlogShow</a></span>()
 </pre></div>
 <p>Or while your Shiny app is running, press the key combination <code>Ctrl+F3</code> (Mac: <code>Cmd+F3</code>) to launch the <strong>reactlog</strong> application.</p>
 <p>To mark a specific execution time point within your Shiny app, press the key combination <code>Ctrl+F4</code> (Mac: <code>Cmd+F4</code>). This will highlight a specific point in time in your reactlog.</p>

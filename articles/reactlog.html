@@ -199,8 +199,8 @@
 
 <span class="fu"><a href="../reference/setReactLog.html">reactlog_enable</a></span>()
 
-<span class="kw">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html">fluidPage</a></span>(
-  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/selectInput.html">selectInput</a></span>(<span class="st">"var"</span>, <span class="st">"Choose a variable"</span>, choices = <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="kw">diamonds</span>)),
+<span class="kw">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/fluidPage.html">fluidPage</a></span>(
+  <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/selectInput.html">selectInput</a></span>(<span class="st">"var"</span>, <span class="st">"Choose a variable"</span>, choices = <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="kw">diamonds</span>)),
   <span class="fu">plotlyOutput</span>(<span class="st">"plot"</span>)
 )
 
@@ -210,14 +210,14 @@
   })
 }
 
-<span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span>(<span class="kw">ui</span>, <span class="kw">server</span>)
+<span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/shinyApp.html">shinyApp</a></span>(<span class="kw">ui</span>, <span class="kw">server</span>)
 </pre></div>
 <p>The following video demonstrates how one could run this application, interact with it (i.e., choose a different variable), then launch the reactlog by pressing <code>Ctrl + F3</code> (Mac: <code>Cmd + F3</code>). To start at the very beginning of the app’s life cycle, click the <img src="images/buttons/prev-mark.svg" width="20" style="vertical-align: middle"> button. You can then navigate through each step of the reactive life cycle by pressing the right arrow key or clicking <img src="images/buttons/next-step.svg" width="20" style="vertical-align: middle">. As you step through the life cycle, notice how the status of the graph is displayed above the dependency graph. A breakdown of all the components of the status bar is provided in the <a href="#status-bar">Status bar</a> section.</p>
 <iframe src="https://player.vimeo.com/video/321628235?title=0&amp;byline=0&amp;portrait=0" width="100%" height="400" frameborder="0" seamless="seamless" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
 <p>For more complex graphs, like the one created by <a href="https://github.com/rstudio/cranwhales">Joe Cheng’s <strong>cranwhales</strong> app</a>, it’s convenient to have more advanced navigation through the time-dependent graph, like jumping to the next idle step using <img src="images/buttons/next-idle.svg" width="30" style="vertical-align: middle">, and querying sub-graphs by double-clicking and/or searching for graph components by name. Also, notice how, upon opening <strong>reactlog</strong>, it navigates to the first <a href="#reactive-flush">reactive flush</a> (i.e., completion of the first round of reactive execution). If there is a particular round of execution you’re primarily interested in, you can add user mark(s), and <strong>reactlog</strong> would open to that time point instead (see <a href="#navigation-buttons">Navigation</a> for more details on creating and navigating to user marks).</p>
 <div class="sourceCode" id="cb2"><pre class="downlit">
 <span class="kw">reactlog</span>::<span class="fu"><a href="../reference/setReactLog.html">reactlog_enable</a></span>()
-<span class="kw">shiny</span>::<span class="fu"><a href="https://rdrr.io/pkg/shiny/man/runUrl.html">runGitHub</a></span>(<span class="st">"cranwhales"</span>, <span class="st">"rstudio"</span>, ref = <span class="st">"sync"</span>)
+<span class="kw">shiny</span>::<span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/runUrl.html">runGitHub</a></span>(<span class="st">"cranwhales"</span>, <span class="st">"rstudio"</span>, ref = <span class="st">"sync"</span>)
 </pre></div>
 <iframe src="https://player.vimeo.com/video/321805975?title=0&amp;byline=0&amp;portrait=0" width="100%" height="400" frameborder="0" seamless="seamless" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
 <p>These two videos demonstrate basic navigation of the <strong>reactlog</strong> interface. Next we’ll explain all the components in detail.</p>
@@ -299,7 +299,7 @@
 <ul>
 <li>Ready:
 <ul>
-<li>The reactive element has finished executing. For reactive conductors (such as the result of <code><a href="https://rdrr.io/pkg/shiny/man/reactive.html">reactive()</a></code>), a calculated value is available.</li>
+<li>The reactive element has finished executing. For reactive conductors (such as the result of <code><a href="https://shiny.rstudio.com/reference/shiny/latest/reactive.html">reactive()</a></code>), a calculated value is available.</li>
 </ul>
 </li>
 <li>Calculating:
@@ -319,7 +319,7 @@
 </li>
 <li>Frozen:
 <ul>
-<li>A visual display of a frozen <code>reactiveVal</code> or <code>reactiveValues</code> key. These elements behave as if their execution is done with <code><a href="https://rdrr.io/pkg/shiny/man/req.html">req(FALSE)</a></code>. Please see <a href="https://shiny.rstudio.com/reference/shiny/latest/freezeReactiveValue.html"><code>freezeReactiveValue</code></a> for more information.</li>
+<li>A visual display of a frozen <code>reactiveVal</code> or <code>reactiveValues</code> key. These elements behave as if their execution is done with <code><a href="https://shiny.rstudio.com/reference/shiny/latest/req.html">req(FALSE)</a></code>. Please see <a href="https://shiny.rstudio.com/reference/shiny/latest/freezeReactiveValue.html"><code>freezeReactiveValue</code></a> for more information.</li>
 </ul>
 </li>
 <li>Undefined:
@@ -348,7 +348,7 @@
 <a href="#labeling-nodes" class="anchor"></a>Labeling nodes</h4>
 <p>Recall from <a href="#reactivity">the reactive life cycle</a> that nodes in a reactive graph encode reactive inputs, expressions, and outputs (or observers). Labeling inputs and outputs is relatively straight-forward since they already have an associated ID. Reactive expression and observers, on the other hand, don’t have an associated ID – <strong>reactlog</strong>, by default, will use the body of the expression to label these nodes.</p>
 <p><img src="images/elements.png" width="80%" style="display: block; margin: auto;"></p>
-<p>Fortunately, <strong>shiny</strong>’s <code><a href="https://rdrr.io/pkg/shiny/man/reactive.html">reactive()</a></code> and <code><a href="https://rdrr.io/pkg/shiny/man/observe.html">observe()</a></code> functions have a <code>label</code> argument. If provided, <strong>reactlog</strong> will use this value to label the corresponding nodes.</p>
+<p>Fortunately, <strong>shiny</strong>’s <code><a href="https://shiny.rstudio.com/reference/shiny/latest/reactive.html">reactive()</a></code> and <code><a href="https://shiny.rstudio.com/reference/shiny/latest/observe.html">observe()</a></code> functions have a <code>label</code> argument. If provided, <strong>reactlog</strong> will use this value to label the corresponding nodes.</p>
 </div>
 </div>
 </div>
@@ -362,7 +362,7 @@
 <li>How reactive elements know about each other</li>
 <li>When elements are calculated</li>
 <li>Why a <code>clientData</code> is randomly appearing in the reactive graph</li>
-<li>How to prevent reactivity from executing using <code><a href="https://rdrr.io/pkg/shiny/man/isolate.html">isolate()</a></code>
+<li>How to prevent reactivity from executing using <code><a href="https://shiny.rstudio.com/reference/shiny/latest/isolate.html">isolate()</a></code>
 </li>
 </ul>
 </li>
@@ -381,7 +381,7 @@
 <div class="footnotes">
 <hr>
 <ol>
-<li id="fn1"><p>You may wonder how Shiny decides which of the several invalidated observers/outputs to execute. The short answer is that you should act as if it’s random. Ideally, your observers and especially outputs won’t care what order they execute in, as each will function independently from the others. However, if you do have observers whose side effects must always happen in a certain relative order, you can use the <code>observe</code> function’s <code>priority</code> argument to dictate that order for observers. You can also control the priority of outputs by calling the <code><a href="https://rdrr.io/pkg/shiny/man/outputOptions.html">outputOptions()</a></code> function with a <code>priority</code> argument.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn1"><p>You may wonder how Shiny decides which of the several invalidated observers/outputs to execute. The short answer is that you should act as if it’s random. Ideally, your observers and especially outputs won’t care what order they execute in, as each will function independently from the others. However, if you do have observers whose side effects must always happen in a certain relative order, you can use the <code>observe</code> function’s <code>priority</code> argument to dictate that order for observers. You can also control the priority of outputs by calling the <code><a href="https://shiny.rstudio.com/reference/shiny/latest/outputOptions.html">outputOptions()</a></code> function with a <code>priority</code> argument.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
 <li id="fn2"><p><strong>reactlog</strong> is not designed to be a code profiling tool. If you are curious why your app is slow, use <a href="https://rstudio.github.io/profvis/">the <strong>profvis</strong> package</a> to identify and address slow R code.<a href="#fnref2" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>

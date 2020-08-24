@@ -125,9 +125,9 @@ dependencies and execution in your application." />
 dependencies and execution in your application.</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/reactlog/man/reactlog_show.html'>reactlog_render</a></span>(<span class='kw'>log</span>, session_token = <span class='kw'>NULL</span>, time = <span class='fl'>TRUE</span>)
+    <pre class="usage"><span class='fu'>reactlog_render</span>(<span class='kw'>log</span>, session_token = <span class='kw'>NULL</span>, time = <span class='fl'>TRUE</span>)
 
-<span class='fu'><a href='https://rdrr.io/pkg/reactlog/man/reactlog_show.html'>reactlog_show</a></span>(<span class='kw'>log</span>, time = <span class='fl'>TRUE</span>, <span class='kw'>...</span>)</pre>
+<span class='fu'>reactlog_show</span>(<span class='kw'>log</span>, time = <span class='fl'>TRUE</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -155,8 +155,8 @@ time that each reactive takes to calculate a result.</p></td>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>To use the reactive log visualizer, start with a fresh R session and
-run the command <code><a href='https://rdrr.io/pkg/reactlog/man/setReactLog.html'>reactlog_enable()</a></code>; then launch your
-application in the usual way (e.g. using <code><a href='https://rdrr.io/pkg/shiny/man/runApp.html'>runApp</a></code>). At
+run the command <code><a href='setReactLog.html'>reactlog_enable()</a></code>; then launch your
+application in the usual way (e.g. using <code><a href='https://shiny.rstudio.com/reference/shiny/latest/runApp.html'>runApp</a></code>). At
 any time you can hit</p><pre><span class='kw'>Ctrl</span><span class='op'>+</span><span class='kw'>F3</span></pre><p>(or for Mac users,</p><pre><span class='kw'>Cmd</span><span class='op'>+</span><span class='kw'>F3</span></pre><p>) in your
 web browser to launch the reactive log visualization.</p>
 <p>The reactive log visualization only includes reactive activity up
@@ -168,19 +168,19 @@ visualization will include all reactive activity that has taken place
 in the process, not just for a particular application or session.</p>
 <p>As an alternative to pressing</p><pre><span class='kw'>Ctrl</span><span class='op'>/</span><span class='kw'>Cmd</span><span class='op'>+</span><span class='kw'>F3</span></pre><p>--for example, if you
 are using reactives outside of the context of a Shiny
-application--you can run the <code><a href='https://rdrr.io/pkg/shiny/man/reactlog.html'>showReactLog()</a></code> function, which will
+application--you can run the <code><a href='https://shiny.rstudio.com/reference/shiny/latest/reactlog.html'>showReactLog()</a></code> function, which will
 generate the reactive log visualization as a static HTML file and
 launch it in your default browser. In this case, refreshing your
 browser will not load new activity into the report; you will need to
-call <code><a href='https://rdrr.io/pkg/shiny/man/reactlog.html'>showReactLog()</a></code> explicitly.</p>
+call <code><a href='https://shiny.rstudio.com/reference/shiny/latest/reactlog.html'>showReactLog()</a></code> explicitly.</p>
 <p>For security and performance reasons, do not enable the reactlog
 in production environments. When the option is
 enabled, it's possible for any user of your app to see at least some
 of the source code of your reactive expressions and observers.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code>shiny::<a href='https://rdrr.io/pkg/shiny/man/reactlog.html'>reactlogShow</a></code>
-<code><a href='https://rdrr.io/pkg/reactlog/man/setReactLog.html'>reactlog_enable</a></code></p></div>
+    <div class='dont-index'><p><code>shiny::<a href='https://shiny.rstudio.com/reference/shiny/latest/reactlog.html'>reactlogShow</a></code>
+<code><a href='setReactLog.html'>reactlog_enable</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
@@ -189,14 +189,14 @@ of the source code of your reactive expressions and observers.</p>
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://rstudio.github.io/reactlog'>reactlog</a></span>)
 
 <span class='co'># tell shiny to log reactivity</span>
-<span class='fu'><a href='https://rdrr.io/pkg/reactlog/man/setReactLog.html'>reactlog_enable</a></span>()
+<span class='fu'><a href='setReactLog.html'>reactlog_enable</a></span>()
 
 <span class='co'># run a shiny app</span>
 <span class='kw'>app</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"examples/01_hello"</span>, package = <span class='st'>"shiny"</span>)
-<span class='fu'><a href='https://rdrr.io/pkg/shiny/man/runApp.html'>runApp</a></span>(<span class='kw'>app</span>)
+<span class='fu'><a href='https://shiny.rstudio.com/reference/shiny/latest/runApp.html'>runApp</a></span>(<span class='kw'>app</span>)
 
 <span class='co'># once app has closed, display reactlog</span>
-<span class='kw'>shiny</span>::<span class='fu'><a href='https://rdrr.io/pkg/shiny/man/reactlog.html'>reactlogShow</a></span>()
+<span class='kw'>shiny</span>::<span class='fu'><a href='https://shiny.rstudio.com/reference/shiny/latest/reactlog.html'>reactlogShow</a></span>()
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
