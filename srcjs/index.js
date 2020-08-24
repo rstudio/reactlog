@@ -50,7 +50,7 @@ import "./log/initStep";
 //
 
 $(function() {
-  window.barret = rlog;
+  window._reactlog = rlog;
 
   rlog.log = (window.log: LogType);
   rlog.cyto = cytoscapeInit.withContainer($("#cyto"));
