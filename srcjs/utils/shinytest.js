@@ -1,8 +1,8 @@
 // @flow
 
-const queryParams = new URLSearchParams(window.location.search);
+import { parseQuery } from "./queryString";
 
-let inTestMode = queryParams.get("test") === "1";
+let inTestMode = parseQuery().test === "1";
 
 const shinytest = "(shinytest)";
 
