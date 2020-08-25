@@ -1,0 +1,874 @@
+[{
+    "action": "define",
+    "reactId": "r3",
+    "label": "datasetInput",
+    "type": "observable",
+    "value": " NULL",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296859.84846,
+    "step": 0
+  },
+  {
+    "action": "define",
+    "reactId": "r4",
+    "label": "output$caption_out",
+    "type": "observer",
+    "value": " NULL",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296859.85896,
+    "step": 1
+  },
+  {
+    "action": "createContext",
+    "ctxId": "ctx1",
+    "label": "output$caption_out",
+    "type": "observer",
+    "prevCtxId": null,
+    "srcref": [
+      30,
+      36,
+      30,
+      50,
+      36,
+      50
+    ],
+    "srcfile": "app.R",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296859.8632,
+    "step": 2
+  },
+  {
+    "action": "invalidateStart",
+    "reactId": "r4",
+    "ctxId": "ctx1",
+    "type": "observer",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296859.86333,
+    "step": 3
+  },
+  {
+    "action": "asyncStart",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296859.86358,
+    "step": 4
+  },
+  {
+    "action": "invalidateEnd",
+    "reactId": "r4",
+    "ctxId": "ctx1",
+    "type": "observer",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296859.86409,
+    "step": 5
+  },
+  {
+    "action": "define",
+    "reactId": "r5",
+    "label": "output$summary",
+    "type": "observer",
+    "value": " NULL",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296859.92667,
+    "step": 6
+  },
+  {
+    "action": "createContext",
+    "ctxId": "ctx2",
+    "label": "output$summary",
+    "type": "observer",
+    "prevCtxId": null,
+    "srcref": [
+      31,
+      33,
+      31,
+      57,
+      33,
+      57
+    ],
+    "srcfile": "app.R",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296859.92689,
+    "step": 7
+  },
+  {
+    "action": "invalidateStart",
+    "reactId": "r5",
+    "ctxId": "ctx2",
+    "type": "observer",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296859.92703,
+    "step": 8
+  },
+  {
+    "action": "invalidateEnd",
+    "reactId": "r5",
+    "ctxId": "ctx2",
+    "type": "observer",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296859.92718,
+    "step": 9
+  },
+  {
+    "action": "define",
+    "reactId": "r6",
+    "label": "output$view",
+    "type": "observer",
+    "value": " NULL",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296859.92995,
+    "step": 10
+  },
+  {
+    "action": "createContext",
+    "ctxId": "ctx3",
+    "label": "output$view",
+    "type": "observer",
+    "prevCtxId": null,
+    "srcref": [
+      32,
+      30,
+      32,
+      66,
+      30,
+      66
+    ],
+    "srcfile": "app.R",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296859.93031,
+    "step": 11
+  },
+  {
+    "action": "invalidateStart",
+    "reactId": "r6",
+    "ctxId": "ctx3",
+    "type": "observer",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296859.93045,
+    "step": 12
+  },
+  {
+    "action": "invalidateEnd",
+    "reactId": "r6",
+    "ctxId": "ctx3",
+    "type": "observer",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296859.93061,
+    "step": 13
+  },
+  {
+    "action": "define",
+    "reactId": "r7",
+    "label": "output$reactlog_module-iframe",
+    "type": "observer",
+    "value": " NULL",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296859.93743,
+    "step": 14
+  },
+  {
+    "action": "createContext",
+    "ctxId": "ctx4",
+    "label": "output$reactlog_module-iframe",
+    "type": "observer",
+    "prevCtxId": null,
+    "srcref": null,
+    "srcfile": null,
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296859.93766,
+    "step": 15
+  },
+  {
+    "action": "invalidateStart",
+    "reactId": "r7",
+    "ctxId": "ctx4",
+    "type": "observer",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296859.93779,
+    "step": 16
+  },
+  {
+    "action": "invalidateEnd",
+    "reactId": "r7",
+    "ctxId": "ctx4",
+    "type": "observer",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296859.93796,
+    "step": 17
+  },
+  {
+    "action": "createContext",
+    "ctxId": "ctx5",
+    "label": "output$caption_out",
+    "type": "observer",
+    "prevCtxId": "ctx1",
+    "srcref": [
+      30,
+      36,
+      30,
+      50,
+      36,
+      50
+    ],
+    "srcfile": "app.R",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296859.9674,
+    "step": 18
+  },
+  {
+    "action": "enter",
+    "reactId": "r4",
+    "ctxId": "ctx5",
+    "type": "observer",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296859.96773,
+    "step": 19
+  },
+  {
+    "action": "define",
+    "reactId": "r1$caption",
+    "label": "input$caption",
+    "type": "reactiveValuesKey",
+    "value": " chr \"Data Summary\"",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296859.96948,
+    "step": 20
+  },
+  {
+    "action": "dependsOn",
+    "reactId": "r4",
+    "depOnReactId": "r1$caption",
+    "ctxId": "ctx5",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296859.96979,
+    "step": 21
+  },
+  {
+    "action": "exit",
+    "reactId": "r4",
+    "ctxId": "ctx5",
+    "type": "observer",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296859.97074,
+    "step": 22
+  },
+  {
+    "action": "createContext",
+    "ctxId": "ctx6",
+    "label": "output$summary",
+    "type": "observer",
+    "prevCtxId": "ctx2",
+    "srcref": [
+      31,
+      33,
+      31,
+      57,
+      33,
+      57
+    ],
+    "srcfile": "app.R",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296859.97116,
+    "step": 23
+  },
+  {
+    "action": "enter",
+    "reactId": "r5",
+    "ctxId": "ctx6",
+    "type": "observer",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296859.97133,
+    "step": 24
+  },
+  {
+    "action": "dependsOn",
+    "reactId": "r5",
+    "depOnReactId": "r3",
+    "ctxId": "ctx6",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296859.97268,
+    "step": 25
+  },
+  {
+    "action": "createContext",
+    "ctxId": "ctx7",
+    "label": "datasetInput",
+    "type": "observable",
+    "prevCtxId": null,
+    "srcref": [
+      28,
+      5,
+      28,
+      78,
+      5,
+      78,
+      28,
+      28
+    ],
+    "srcfile": "app.R",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296859.97293,
+    "step": 26
+  },
+  {
+    "action": "enter",
+    "reactId": "r3",
+    "ctxId": "ctx7",
+    "type": "observable",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296859.97311,
+    "step": 27
+  },
+  {
+    "action": "define",
+    "reactId": "r1$dataset",
+    "label": "input$dataset",
+    "type": "reactiveValuesKey",
+    "value": " chr \"rock\"",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296859.97388,
+    "step": 28
+  },
+  {
+    "action": "dependsOn",
+    "reactId": "r3",
+    "depOnReactId": "r1$dataset",
+    "ctxId": "ctx7",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296859.97418,
+    "step": 29
+  },
+  {
+    "action": "exit",
+    "reactId": "r3",
+    "ctxId": "ctx7",
+    "type": "observable",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296859.97543,
+    "step": 30
+  },
+  {
+    "action": "exit",
+    "reactId": "r5",
+    "ctxId": "ctx6",
+    "type": "observer",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296859.98363,
+    "step": 31
+  },
+  {
+    "action": "createContext",
+    "ctxId": "ctx8",
+    "label": "output$view",
+    "type": "observer",
+    "prevCtxId": "ctx3",
+    "srcref": [
+      32,
+      30,
+      32,
+      66,
+      30,
+      66
+    ],
+    "srcfile": "app.R",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296859.98461,
+    "step": 32
+  },
+  {
+    "action": "enter",
+    "reactId": "r6",
+    "ctxId": "ctx8",
+    "type": "observer",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296859.98494,
+    "step": 33
+  },
+  {
+    "action": "dependsOn",
+    "reactId": "r6",
+    "depOnReactId": "r3",
+    "ctxId": "ctx8",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296859.98601,
+    "step": 34
+  },
+  {
+    "action": "define",
+    "reactId": "r1$obs",
+    "label": "input$obs",
+    "type": "reactiveValuesKey",
+    "value": " int 10",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296859.9875,
+    "step": 35
+  },
+  {
+    "action": "dependsOn",
+    "reactId": "r6",
+    "depOnReactId": "r1$obs",
+    "ctxId": "ctx8",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296859.98783,
+    "step": 36
+  },
+  {
+    "action": "exit",
+    "reactId": "r6",
+    "ctxId": "ctx8",
+    "type": "observer",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296859.99701,
+    "step": 37
+  },
+  {
+    "action": "createContext",
+    "ctxId": "ctx9",
+    "label": "output$reactlog_module-iframe",
+    "type": "observer",
+    "prevCtxId": "ctx4",
+    "srcref": null,
+    "srcfile": null,
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296859.99767,
+    "step": 38
+  },
+  {
+    "action": "enter",
+    "reactId": "r7",
+    "ctxId": "ctx9",
+    "type": "observer",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296859.99795,
+    "step": 39
+  },
+  {
+    "action": "define",
+    "reactId": "r1$reactlog_module-refresh",
+    "label": "input$reactlog_module-refresh",
+    "type": "reactiveValuesKey",
+    "value": " int 0",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296860.00012,
+    "step": 40
+  },
+  {
+    "action": "dependsOn",
+    "reactId": "r7",
+    "depOnReactId": "r1$reactlog_module-refresh",
+    "ctxId": "ctx9",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296860.00061,
+    "step": 41
+  },
+  {
+    "action": "exit",
+    "reactId": "r7",
+    "ctxId": "ctx9",
+    "type": "observer",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296860.0036,
+    "step": 42
+  },
+  {
+    "action": "asyncStop",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296860.00372,
+    "step": 43
+  },
+  {
+    "action": "idle",
+    "session": null,
+    "time": 1598296860.00457,
+    "step": 44
+  },
+  {
+    "action": "valueChange",
+    "reactId": "r1$reactlog_module-refresh",
+    "value": " int 1",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296878.3832,
+    "step": 45
+  },
+  {
+    "action": "invalidateStart",
+    "reactId": "r1$reactlog_module-refresh",
+    "ctxId": null,
+    "type": "other",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296878.38334,
+    "step": 46
+  },
+  {
+    "action": "invalidateStart",
+    "reactId": "r7",
+    "ctxId": "ctx9",
+    "type": "observer",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296878.38357,
+    "step": 47
+  },
+  {
+    "action": "asyncStart",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296878.385,
+    "step": 48
+  },
+  {
+    "action": "dependsOnRemove",
+    "reactId": "r7",
+    "depOnReactId": "r1$reactlog_module-refresh",
+    "ctxId": "ctx9",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296878.38596,
+    "step": 49
+  },
+  {
+    "action": "invalidateEnd",
+    "reactId": "r7",
+    "ctxId": "ctx9",
+    "type": "observer",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296878.38613,
+    "step": 50
+  },
+  {
+    "action": "invalidateEnd",
+    "reactId": "r1$reactlog_module-refresh",
+    "ctxId": null,
+    "type": "other",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296878.38623,
+    "step": 51
+  },
+  {
+    "action": "createContext",
+    "ctxId": "ctx10",
+    "label": "output$reactlog_module-iframe",
+    "type": "observer",
+    "prevCtxId": "ctx9",
+    "srcref": null,
+    "srcfile": null,
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296878.39403,
+    "step": 52
+  },
+  {
+    "action": "enter",
+    "reactId": "r7",
+    "ctxId": "ctx10",
+    "type": "observer",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296878.39423,
+    "step": 53
+  },
+  {
+    "action": "dependsOn",
+    "reactId": "r7",
+    "depOnReactId": "r1$reactlog_module-refresh",
+    "ctxId": "ctx10",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296878.42224,
+    "step": 54
+  },
+  {
+    "action": "exit",
+    "reactId": "r7",
+    "ctxId": "ctx10",
+    "type": "observer",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296878.42516,
+    "step": 55
+  },
+  {
+    "action": "asyncStop",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296878.42537,
+    "step": 56
+  },
+  {
+    "action": "idle",
+    "session": null,
+    "time": 1598296878.42627,
+    "step": 57
+  },
+  {
+    "action": "createContext",
+    "ctxId": "ctx11",
+    "label": "[isolate]",
+    "type": "isolate",
+    "prevCtxId": null,
+    "srcref": null,
+    "srcfile": null,
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296878.50708,
+    "step": 58
+  },
+  {
+    "action": "isolateEnter",
+    "reactId": "rNoCtxReactId",
+    "ctxId": "ctx11",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296878.50731,
+    "step": 59
+  },
+  {
+    "action": "define",
+    "reactId": "as.list(r1, all.names = TRUE)",
+    "label": "as.list(input, all.names = TRUE)",
+    "type": "reactiveValuesAsListAll",
+    "value": "List of 4\n $ caption                : chr \"Data Summary\"\n $ obs                    : int 10\n $ dataset                : chr \"rock\"\n $ reactlog_module-refresh: int 1",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296878.51085,
+    "step": 60
+  },
+  {
+    "action": "dependsOn",
+    "reactId": "rNoCtxReactId",
+    "depOnReactId": "as.list(r1, all.names = TRUE)",
+    "ctxId": "ctx11",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296878.51096,
+    "step": 61
+  },
+  {
+    "action": "define",
+    "reactId": "as.list(r1)",
+    "label": "as.list(input)",
+    "type": "reactiveValuesAsList",
+    "value": "List of 4\n $ caption                : chr \"Data Summary\"\n $ obs                    : int 10\n $ dataset                : chr \"rock\"\n $ reactlog_module-refresh: int 1",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296878.5143,
+    "step": 62
+  },
+  {
+    "action": "dependsOn",
+    "reactId": "rNoCtxReactId",
+    "depOnReactId": "as.list(r1)",
+    "ctxId": "ctx11",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296878.51441,
+    "step": 63
+  },
+  {
+    "action": "isolateExit",
+    "reactId": "rNoCtxReactId",
+    "ctxId": "ctx11",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296878.51456,
+    "step": 64
+  },
+  {
+    "action": "isolateInvalidateStart",
+    "reactId": "rNoCtxReactId",
+    "ctxId": "ctx11",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296878.51463,
+    "step": 65
+  },
+  {
+    "action": "dependsOnRemove",
+    "reactId": "rNoCtxReactId",
+    "depOnReactId": "as.list(r1, all.names = TRUE)",
+    "ctxId": "ctx11",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296878.51469,
+    "step": 66
+  },
+  {
+    "action": "dependsOnRemove",
+    "reactId": "rNoCtxReactId",
+    "depOnReactId": "as.list(r1)",
+    "ctxId": "ctx11",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296878.5148,
+    "step": 67
+  },
+  {
+    "action": "isolateInvalidateEnd",
+    "reactId": "rNoCtxReactId",
+    "ctxId": "ctx11",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296878.51496,
+    "step": 68
+  },
+  {
+    "action": "createContext",
+    "ctxId": "ctx12",
+    "label": "[isolate]",
+    "type": "isolate",
+    "prevCtxId": null,
+    "srcref": null,
+    "srcfile": null,
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296878.51584,
+    "step": 69
+  },
+  {
+    "action": "isolateEnter",
+    "reactId": "rNoCtxReactId",
+    "ctxId": "ctx12",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296878.51604,
+    "step": 70
+  },
+  {
+    "action": "isolateExit",
+    "reactId": "rNoCtxReactId",
+    "ctxId": "ctx12",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296878.51613,
+    "step": 71
+  },
+  {
+    "action": "isolateInvalidateStart",
+    "reactId": "rNoCtxReactId",
+    "ctxId": "ctx12",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296878.5162,
+    "step": 72
+  },
+  {
+    "action": "isolateInvalidateEnd",
+    "reactId": "rNoCtxReactId",
+    "ctxId": "ctx12",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296878.51626,
+    "step": 73
+  },
+  {
+    "action": "valueChange",
+    "reactId": "r1$reactlog_module-refresh",
+    "value": " int 2",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296908.83303,
+    "step": 74
+  },
+  {
+    "action": "invalidateStart",
+    "reactId": "r1$reactlog_module-refresh",
+    "ctxId": null,
+    "type": "other",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296908.83312,
+    "step": 75
+  },
+  {
+    "action": "invalidateStart",
+    "reactId": "r7",
+    "ctxId": "ctx10",
+    "type": "observer",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296908.83326,
+    "step": 76
+  },
+  {
+    "action": "asyncStart",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296908.8341,
+    "step": 77
+  },
+  {
+    "action": "dependsOnRemove",
+    "reactId": "r7",
+    "depOnReactId": "r1$reactlog_module-refresh",
+    "ctxId": "ctx10",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296908.83472,
+    "step": 78
+  },
+  {
+    "action": "invalidateEnd",
+    "reactId": "r7",
+    "ctxId": "ctx10",
+    "type": "observer",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296908.83485,
+    "step": 79
+  },
+  {
+    "action": "invalidateEnd",
+    "reactId": "r1$reactlog_module-refresh",
+    "ctxId": null,
+    "type": "other",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296908.83491,
+    "step": 80
+  },
+  {
+    "action": "valueChange",
+    "reactId": "as.list(r1)",
+    "value": "List of 4\n $ caption                : chr \"Data Summary\"\n $ obs                    : int 10\n $ dataset                : chr \"rock\"\n $ reactlog_module-refresh: int 2",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296908.8378,
+    "step": 81
+  },
+  {
+    "action": "invalidateStart",
+    "reactId": "as.list(r1)",
+    "ctxId": null,
+    "type": "other",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296908.83788,
+    "step": 82
+  },
+  {
+    "action": "invalidateEnd",
+    "reactId": "as.list(r1)",
+    "ctxId": null,
+    "type": "other",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296908.83797,
+    "step": 83
+  },
+  {
+    "action": "createContext",
+    "ctxId": "ctx13",
+    "label": "output$reactlog_module-iframe",
+    "type": "observer",
+    "prevCtxId": "ctx10",
+    "srcref": null,
+    "srcfile": null,
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296908.83882,
+    "step": 84
+  },
+  {
+    "action": "enter",
+    "reactId": "r7",
+    "ctxId": "ctx13",
+    "type": "observer",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296908.83901,
+    "step": 85
+  },
+  {
+    "action": "dependsOn",
+    "reactId": "r7",
+    "depOnReactId": "r1$reactlog_module-refresh",
+    "ctxId": "ctx13",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296908.83997,
+    "step": 86
+  },
+  {
+    "action": "exit",
+    "reactId": "r7",
+    "ctxId": "ctx13",
+    "type": "observer",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296908.84301,
+    "step": 87
+  },
+  {
+    "action": "asyncStop",
+    "session": "db9a8f2ef83c8e41da851bcdb47b52be",
+    "time": 1598296908.84325,
+    "step": 88
+  },
+  {
+    "action": "idle",
+    "session": null,
+    "time": 1598296908.84421,
+    "step": 89
+  }
+]
