@@ -89,6 +89,13 @@ reactlog_module_server <- function(
         # trigger render refresh
         input$refresh
 
+        test_mode_txt <-
+          if (isTRUE(getOption("shiny.testmode"))) {
+            "&test=1"
+          } else {
+            ""
+          }
+
         random_id <- ns(paste0(
           "reactlog_iframe_",
           as.hexmode(floor(stats::runif(1, 1, 16^7)))
@@ -104,7 +111,8 @@ reactlog_module_server <- function(
             (function() {
               var src =
                 'reactlog?w=' + window.escape(window.Shiny.shinyapp.config.workerId) +
-                '&s=' + window.escape(window.Shiny.shinyapp.config.sessionId);
+                '&s=' + window.escape(window.Shiny.shinyapp.config.sessionId) + '",
+                test_mode_txt, "';
               $('#", random_id, "').attr('src', src);
             })()
           ")))

@@ -13,7 +13,7 @@ ui <- fluidPage(
       numericInput(inputId = "obs", label = "Number of observations to view:", value = 10)
     ),
     mainPanel(
-      h3(textOutput("caption", container = span)),
+      h3(textOutput("caption_out", container = span)),
       verbatimTextOutput("summary"),
       tableOutput("view")
     )
@@ -27,7 +27,7 @@ server <- function(input, output) {
   datasetInput <- reactive({
     switch(input$dataset, "rock" = rock, "pressure" = pressure, "cars" = cars)
   })
-  output$caption <- renderText({ input$caption })
+  output$caption_out <- renderText({ input$caption })
   output$summary <- renderPrint({ summary(datasetInput()) })
   output$view <- renderTable({ head(datasetInput(), n = input$obs) })
 

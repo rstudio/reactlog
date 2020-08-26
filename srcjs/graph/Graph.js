@@ -550,7 +550,11 @@ class Graph {
 
       case LogStates.dependsOn: {
         let logEntry = ((data: LogEntryDependsOnType): Object);
-        if (!logEntry.reactId) {
+        if (
+          !logEntry.reactId ||
+          // if there is no context reactlog id to depend on, then there is no node to depend on
+          logEntry.reactId === "rNoCtxReactId"
+        ) {
           break;
         }
         edge = new Edge(logEntry);
