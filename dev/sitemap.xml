@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://rstudio.github.io/reactlog/index.html</loc>
+  </url>
+  <url>
+    <loc>https://rstudio.github.io/reactlog/reference/reactlog_module.html</loc>
+  </url>
+  <url>
+    <loc>https://rstudio.github.io/reactlog/reference/reactlog_show.html</loc>
+  </url>
+  <url>
+    <loc>https://rstudio.github.io/reactlog/reference/reactlog_write.html</loc>
+  </url>
+  <url>
+    <loc>https://rstudio.github.io/reactlog/reference/setReactLog.html</loc>
+  </url>
+  <url>
+    <loc>https://rstudio.github.io/reactlog/articles/reactlog.html</loc>
+  </url>
+</urlset>
