@@ -122,8 +122,10 @@
 <a href="#reactlog-1009000" class="anchor"></a>reactlog 1.0.0.9000<small> Unreleased </small>
 </h1>
 <ul>
-<li>Add <code><a href="../reference/setReactLog.html">reactlog_enable()</a></code>+<code><a href="../reference/setReactLog.html">reactlog_disable()</a></code> that replace the need to explicitly set R options (<a href='https://github.com/rstudio/reactlog/issues/61'>#61</a>)</li>
+<li>Added a shiny module to inline the current <code>reactlog</code>. See <code><a href="../reference/reactlog_module_ui.html">?reactlog_module_ui</a></code> for an example (<a href='https://github.com/rstudio/reactlog/issues/66'>#66</a>)</li>
+<li>Added <code><a href="../reference/setReactLog.html">reactlog_enable()</a></code> and <code><a href="../reference/setReactLog.html">reactlog_disable()</a></code> which replace the need to explicitly set R options (<a href='https://github.com/rstudio/reactlog/issues/61'>#61</a>)</li>
 <li>Use log entry for status bar instead of a final graph (<a href='https://github.com/rstudio/reactlog/issues/67'>#67</a>)</li>
+<li>Allow reactlog to handle isolate calls in a non-reactive context (<a href='https://github.com/rstudio/reactlog/issues/68'>#68</a>)</li>
 </ul>
 </div>
     <div id="reactlog-100" class="section level1">
