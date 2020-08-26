@@ -1,4 +1,4 @@
-# reactlog
+# reactlog <a href='https://rstudio.github.io/reactlog'><img src='man/figures/logo.svg' align="right" height="139" /></a>
 
 <!-- badges: start -->
 [![R build status](https://github.com/rstudio/reactlog/workflows/R-CMD-check/badge.svg)](https://github.com/rstudio/reactlog/actions)

@@ -1,3 +1,5 @@
+url: https://rstudio.github.io/reactlog
+
 template:
   assets:
     ## copy inst/reactlog/ to pkgdown/demo. This will be copied to ./demo to maintain live demo on github
