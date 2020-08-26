@@ -3,3 +3,6 @@ template:
     ## copy inst/reactlog/ to pkgdown/demo. This will be copied to ./demo to maintain live demo on github
     ## copy readme-images/ to pkgdown/readme-images. This will be copied to ./readme-images to host readme images
     - pkgdown
+
+development:
+  mode: auto
