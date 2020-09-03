@@ -15,7 +15,7 @@ reactlog_enable <- function() {
 #' @export
 #' @rdname setReactLog
 reactlog_disable <- function(warn = TRUE) {
-  if (!isTRUE(warn) && !isFALSE(warn)) {
+  if (!isTRUE(warn) && !identical(warn, FALSE)) {
     stop("'warn' must be either 'TRUE' or 'FALSE'")
   }
 
