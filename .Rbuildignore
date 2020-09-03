@@ -36,3 +36,4 @@
 ^\.github$
 ^logo
 ^pkgdown$
+^revdep$
