@@ -9,12 +9,12 @@
 <title>Page not found (404) • reactlog</title>
 
 <!-- favicons -->
-<link rel="icon" type="image/png" sizes="16x16" href="https://rstudio.github.io/reactlog/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://rstudio.github.io/reactlog/favicon-32x32.png">
-<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="https://rstudio.github.io/reactlog/apple-touch-icon.png" />
-<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="https://rstudio.github.io/reactlog/apple-touch-icon-120x120.png" />
-<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="https://rstudio.github.io/reactlog/apple-touch-icon-76x76.png" />
-<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="https://rstudio.github.io/reactlog/apple-touch-icon-60x60.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="https://rstudio.github.io/reactlog//favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://rstudio.github.io/reactlog//favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="https://rstudio.github.io/reactlog//apple-touch-icon.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="https://rstudio.github.io/reactlog//apple-touch-icon-120x120.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="https://rstudio.github.io/reactlog//apple-touch-icon-76x76.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="https://rstudio.github.io/reactlog//apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
@@ -25,8 +25,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
 <!-- bootstrap-toc -->
-<link rel="stylesheet" href="https://rstudio.github.io/reactlog/bootstrap-toc.css">
-<script src="https://rstudio.github.io/reactlog/bootstrap-toc.js"></script>
+<link rel="stylesheet" href="https://rstudio.github.io/reactlog//bootstrap-toc.css">
+<script src="https://rstudio.github.io/reactlog//bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
@@ -40,9 +40,15 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
-<link href="https://rstudio.github.io/reactlog/pkgdown.css" rel="stylesheet">
-<script src="https://rstudio.github.io/reactlog/pkgdown.js"></script>
+<link href="https://rstudio.github.io/reactlog//pkgdown.css" rel="stylesheet">
+<script src="https://rstudio.github.io/reactlog//pkgdown.js"></script>
 
+
+<!-- docsearch -->
+<script src="https://rstudio.github.io/reactlog//docsearch.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
+<link href="https://rstudio.github.io/reactlog//docsearch.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
 
@@ -78,7 +84,7 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="https://rstudio.github.io/reactlog/index.html">reactlog</a>
+        <a class="navbar-link" href="https://rstudio.github.io/reactlog//index.html">reactlog</a>
         <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">1.0.0.9000</span>
       </span>
     </div>
@@ -109,6 +115,12 @@
   </a>
 </li>
       </ul>
+      
+      <form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
+        <div class="form-group">
+          <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
+        </div>
+      </form>
       
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -151,6 +163,23 @@ Content not found. Please use links in the navbar.
    </div>
 
   
+<script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script>
+<script>
+  docsearch({
+    
+    
+    apiKey: '92ef29642e191511d07e46ef46619dd9',
+    indexName: 'rstudio_reactlog',
+    inputSelector: 'input#search-input.form-control',
+    transformData: function(hits) {
+      return hits.map(function (hit) {
+        hit.url = updateHitURL(hit);
+        return hit;
+      });
+    }
+  });
+</script>
+
 
 
   </body>

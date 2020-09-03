@@ -1,0 +1,14 @@
+url: https://rstudio.github.io/reactlog/
+
+template:
+  params:
+    docsearch:
+      api_key: 92ef29642e191511d07e46ef46619dd9
+      index_name: rstudio_reactlog
+  assets:
+    ## copy inst/reactlog/ to pkgdown/demo. This will be copied to ./demo to maintain live demo on github
+    ## copy readme-images/ to pkgdown/readme-images. This will be copied to ./readme-images to host readme images
+    - pkgdown
+
+development:
+  mode: auto
