@@ -15,7 +15,7 @@ reactlog_module_server(
 )
 }
 \arguments{
-\item{include_refresh}{should the ifram refresh button be included?}
+\item{include_refresh}{should the iframe refresh button be included?}
 
 \item{id}{\pkg{shiny} module id to use}
 

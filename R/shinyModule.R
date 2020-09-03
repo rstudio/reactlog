@@ -11,7 +11,7 @@
 #' @param id \pkg{shiny} module id to use
 #' @param ... parameters passed to [shiny::actionButton()]
 #' @param width,height HTML attributes to be applied to the reactlog iframe
-#' @param include_refresh should the ifram refresh button be included?
+#' @param include_refresh should the iframe refresh button be included?
 #' @seealso [shiny::moduleServer()]
 #' @rdname reactlog_module
 #' @export
