@@ -24,10 +24,22 @@ Barret
     * release
   * ubuntu16
     * 3.3, 3.4, 3.5, oldrel, release, devel
+0 errors ✔ | 0 warnings ✔ | 0 notes ✔
 
 * devtools::check_win_devel()
 
-0 errors ✔ | 0 warnings ✔ | 0 notes ✔
+  * checking CRAN incoming feasibility ... NOTE
+    Maintainer: 'Barret Schloerke <barret@rstudio.com>'
+
+    Possibly mis-spelled words in DESCRIPTION:
+      Reactivity (2:8)
+      Schloerke (15:4)
+      reactivity (16:29)
+  Status: 1 NOTE
+
+  * I believe spellings these are false positives.
+    * `Schloerke` is my last name
+    * `reactivity` is a word we use to describe how reactive values work within 'shiny'.
 
 ## revdepcheck results
 
