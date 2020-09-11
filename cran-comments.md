@@ -1,6 +1,6 @@
 ## CRAN comments
 
-#### 2019-9-3
+#### 2019-9-11
 
 I've added new features and bug fixes to reactlog.
 
