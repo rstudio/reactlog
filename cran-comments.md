@@ -1,5 +1,50 @@
 ## CRAN comments
 
+#### 2020-9-12
+
+I've updated the links. Thank you!
+
+Best,
+Barret
+
+
+#### 2020-9-12
+
+Thanks, we see:
+
+```
+   Found the following (possibly) invalid URLs:
+     URL: https://community.rstudio.com/c/shiny (moved to
+https://community.rstudio.com/c/shiny/8)
+       From: README.md
+       Status: 200
+       Message: OK
+     URL:
+https://resources.rstudio.com/rstudio-conf-2019/reactlog-2-0-debugging-the-state-of-shiny
+(moved to
+https://rstudio.com/resources/rstudioconf-2019/reactlog-2-0-debugging-the-state-of-shiny/)
+       From: inst/doc/reactlog.html
+       Status: 200
+       Message: OK
+     URL: https://yarnpkg.com/en/ (moved to https://classic.yarnpkg.com/en/)
+       From: README.md
+       Status: 200
+       Message: OK
+     URL: https://yarnpkg.com/en/docs/install (moved to
+https://classic.yarnpkg.com/en/docs/install)
+       From: README.md
+       Status: 200
+       Message: OK
+```
+
+Please change http --> https, add trailing slashes, or follow moved
+content as appropriate.
+
+Please fix and resubmit.
+
+Best,
+Uwe Ligges
+
 #### 2019-9-11
 
 I've added new features and bug fixes to reactlog.
