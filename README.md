@@ -88,24 +88,24 @@ For more examples and explanation, see the [**reactlog** vignette](https://rstud
 
 ## Community Support
 
-The best place to get help with Shiny and **reactlog** is [RStudio Community](https://community.rstudio.com/c/shiny).
+The best place to get help with Shiny and **reactlog** is [RStudio Community](https://community.rstudio.com/c/shiny/8).
 If you're having difficulties with **reactlog**, feel free to [ask questions here](https://community.rstudio.com/new-topic?title=&category_id=8&tags=reactlog&body=%0A%0A%0A%20%20--------%0A%20%20%0A%20%20%3Csup%3EReferred%20here%20by%20%60reactlog%60%27s%20README%3C/sup%3E%0A&u=barret).
 For bug reports, please use the **reactlog** [issue tracker](https://github.com/rstudio/reactlog/issues).
 
 
 ## Development
 
-[![node version: 11.x](https://img.shields.io/badge/node-11.x-brightgreen.svg)](https://nodejs.org/en/)
-[![yarn version: 1.13.0](https://img.shields.io/badge/yarn-1.13.0-257bac.svg)](https://yarnpkg.com/en/)
+[![node version: 12.x](https://img.shields.io/badge/node-12.x-brightgreen.svg)](https://nodejs.org/en/)
+[![yarn version: 1.x](https://img.shields.io/badge/yarn-1.x-257bac.svg)](https://classic.yarnpkg.com/lang/en/)
 [![JavaScript type: flow](https://img.shields.io/npm/types/flow-typed.svg)](https://github.com/flow-typed/flow-typed)
-[![cytoscape version: 1.13.0](https://img.shields.io/github/package-json/dependency-version/rstudio/reactlog/cytoscape.svg)](https://js.cytoscape.org/)
+[![cytoscape](https://img.shields.io/github/package-json/dependency-version/rstudio/reactlog/cytoscape.svg)](https://js.cytoscape.org/)
 [![@babel/preset-env](https://img.shields.io/github/package-json/dependency-version/rstudio/reactlog/dev/@babel/preset-env.svg)](https://babeljs.io/)
 [![webpack](https://img.shields.io/github/package-json/dependency-version/rstudio/reactlog/dev/webpack.svg)](https://webpack.js.org/)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 [![linter: eslint](https://img.shields.io/badge/linter-eslint-3524ca.svg)](https://eslint.org/)
 
 
-Please make sure you have [GitHub Large File Storage](https://git-lfs.github.com/), [Node.js](https://nodejs.org/en/) and [yarn](https://yarnpkg.com/en/docs/install) installed.
+Please make sure you have [GitHub Large File Storage](https://git-lfs.github.com/), [Node.js](https://nodejs.org/en/) and [yarn](https://classic.yarnpkg.com/en/docs/install) installed.
 
 Installation script:
 
