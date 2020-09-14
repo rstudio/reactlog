@@ -1,4 +1,4 @@
-reactlog 1.0.0.9000
+reactlog 1.1.0
 ==========================
 
 - Added a shiny module to inline the current `reactlog`. See `?reactlog_module_ui` for an example (#66)

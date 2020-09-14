@@ -1,4 +1,4 @@
-# reactlog <a href='https://rstudio.github.io/reactlog'><img src='man/figures/logo.svg' align="right" height="139" /></a>
+# reactlog <a href='https://rstudio.github.io/reactlog/'><img src='man/figures/logo.svg' align="right" height="139" /></a>
 
 <!-- badges: start -->
 [![R build status](https://github.com/rstudio/reactlog/workflows/R-CMD-check/badge.svg)](https://github.com/rstudio/reactlog/actions)
@@ -14,7 +14,7 @@
 
 <img src="http://rstudio.github.io/reactlog/readme-images/pythagoras.gif" style="border: 1px solid black; box-shadow: 5px 5px 5px #eee;" width="100%">
 
-[Shiny](http://shiny.rstudio.com/) is an R package from RStudio that makes it incredibly easy to build interactive web applications with R.  Behind the scenes, Shiny builds a reactive graph that can quickly become intertwined and difficult to debug. **reactlog** provides a visual insight into that _black box_ of Shiny reactivity.
+[Shiny](https://shiny.rstudio.com/) is an R package from RStudio that makes it incredibly easy to build interactive web applications with R.  Behind the scenes, Shiny builds a reactive graph that can quickly become intertwined and difficult to debug. **reactlog** provides a visual insight into that _black box_ of Shiny reactivity.
 
 After logging the reactive interactions of a Shiny application, **reactlog** constructs a directed dependency graph of the Shiny's reactive state at any time point in the record. The **reactlog** dependency graph provides users with the ability to visually see if reactive elements are:
 * Not utilized (never retrieved)
@@ -23,7 +23,7 @@ After logging the reactive interactions of a Shiny application, **reactlog** con
 * Invalidating all expected dependencies
 * Freezing (and thawing), preventing triggering of future reactivity
 
-<!-- For an introduction and examples, visit the [Shiny Dev Center](http://shiny.rstudio.com/). -->
+<!-- For an introduction and examples, visit the [Shiny Dev Center](https://shiny.rstudio.com/). -->
 
 
 ## Major Features
@@ -88,24 +88,24 @@ For more examples and explanation, see the [**reactlog** vignette](https://rstud
 
 ## Community Support
 
-The best place to get help with Shiny and **reactlog** is [RStudio Community](https://community.rstudio.com/c/shiny).
+The best place to get help with Shiny and **reactlog** is [RStudio Community](https://community.rstudio.com/c/shiny/8).
 If you're having difficulties with **reactlog**, feel free to [ask questions here](https://community.rstudio.com/new-topic?title=&category_id=8&tags=reactlog&body=%0A%0A%0A%20%20--------%0A%20%20%0A%20%20%3Csup%3EReferred%20here%20by%20%60reactlog%60%27s%20README%3C/sup%3E%0A&u=barret).
 For bug reports, please use the **reactlog** [issue tracker](https://github.com/rstudio/reactlog/issues).
 
 
 ## Development
 
-[![node version: 11.x](https://img.shields.io/badge/node-11.x-brightgreen.svg)](https://nodejs.org/en/)
-[![yarn version: 1.13.0](https://img.shields.io/badge/yarn-1.13.0-257bac.svg)](https://yarnpkg.com/en/)
+[![node version: 12.x](https://img.shields.io/badge/node-12.x-brightgreen.svg)](https://nodejs.org/en/)
+[![yarn version: 1.x](https://img.shields.io/badge/yarn-1.x-257bac.svg)](https://classic.yarnpkg.com/lang/en/)
 [![JavaScript type: flow](https://img.shields.io/npm/types/flow-typed.svg)](https://github.com/flow-typed/flow-typed)
-[![cytoscape version: 1.13.0](https://img.shields.io/github/package-json/dependency-version/rstudio/reactlog/cytoscape.svg)](http://js.cytoscape.org/)
+[![cytoscape](https://img.shields.io/github/package-json/dependency-version/rstudio/reactlog/cytoscape.svg)](https://js.cytoscape.org/)
 [![@babel/preset-env](https://img.shields.io/github/package-json/dependency-version/rstudio/reactlog/dev/@babel/preset-env.svg)](https://babeljs.io/)
 [![webpack](https://img.shields.io/github/package-json/dependency-version/rstudio/reactlog/dev/webpack.svg)](https://webpack.js.org/)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 [![linter: eslint](https://img.shields.io/badge/linter-eslint-3524ca.svg)](https://eslint.org/)
 
 
-Please make sure you have [GitHub Large File Storage](https://git-lfs.github.com/), [Node.js](https://nodejs.org/en/) and [yarn](https://yarnpkg.com/en/docs/install) installed.
+Please make sure you have [GitHub Large File Storage](https://git-lfs.github.com/), [Node.js](https://nodejs.org/en/) and [yarn](https://classic.yarnpkg.com/en/docs/install) installed.
 
 Installation script:
 
@@ -121,10 +121,3 @@ yarn watch
 ```
 
 By changing the file `'./inst/reactlog/defaultLog.js'` with the contents of any log file in `'./inst/log-files/'`, different default log files can be loaded.  Once the local JavaScript (`'./inst/reactlog/reactlogAsset/reactlog.js'`) has been built with `yarn build` or `yarn watch`, refresh `'./inst/reactlog/reactlog.html'` to avoid constantly spawning Shiny applications for testing.
-
-
-## Guidelines for contributing
-
-We welcome contributions to the **reactlog** package. Please see our [CONTRIBUTING.md](.github/CONTRIBUTING.md) file for detailed guidelines of how to contribute.
-
-Please note that the **reactlog** project is released with a [Contributor Code of Conduct](.github/CODE_OF_CONDUCT.md). By contributing to this project, you agree to abide by its terms.
