@@ -9,7 +9,7 @@
 <!-- badges: end -->
 
 <br><!-- space above image break only -->
-<!-- [![Coverage status](https://codecov.io/gh/rstudio/reactlog/branch/master/graph/badge.svg)](https://codecov.io/github/rstudio/reactlog?branch=master) -->
+<!-- [![Coverage status](https://codecov.io/gh/rstudio/reactlog/branch/main/graph/badge.svg)](https://codecov.io/github/rstudio/reactlog?branch=main) -->
 
 
 <img src="http://rstudio.github.io/reactlog/readme-images/pythagoras.gif" style="border: 1px solid black; box-shadow: 5px 5px 5px #eee;" width="100%">
