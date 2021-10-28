@@ -6,7 +6,7 @@ inst/doc
 .Rhistory
 .Rapp.history
 
-# pkgdown output. Covered by travis deploy on master branch
+# pkgdown output. Covered by GHA pkgdown
 docs/
 
 # Session Data files

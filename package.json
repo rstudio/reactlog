@@ -17,35 +17,18 @@
     "lint-staged": "lint-staged",
     "git_add_compiled": "git add inst/reactlog/reactlogAsset/reactlog.js && git add"
   },
-  "pre-commit": [
-    "lint-staged"
-  ],
+  "pre-commit": "lint-staged",
   "lint-staged": {
     "concurrent": false,
     "linters": {
-      "R/*.R": [
-        "Rscript -e \"devtools::load_all(); devtools::lint(cache = FALSE) -> lints; if(length(lints) > 0) print(lints); testthat::expect_equal(length(lints), 0)\""
-      ],
-      ".flowconfig": [
-        "yarn flow-report-and-echo"
-      ],
-      "srcjs/**/*.js": [
-        "yarn fix",
-        "yarn flow-report-and-echo",
-        "yarn git_add_compiled"
-      ]
+      "R/*.R": "Rscript -e \"devtools::load_all(); devtools::lint(cache = FALSE) -> lints; if(length(lints) > 0) print(lints); testthat::expect_equal(length(lints), 0)\"",
+      ".flowconfig": "yarn flow-report-and-echo",
+      "srcjs/**/*.js": ["yarn fix", "yarn flow-report-and-echo", "yarn git_add_compiled"]
     }
   },
   "flow-coverage-report": {
-    "globIncludePatterns": [
-      "srcjs/**/*.js"
-    ],
-    "globExcludeGlob": [
-      "srcjs/utils/Console.js",
-      "srcjs/cyto/layoutOptions.js",
-      "srcjs/log/initStep.js",
-      "srcjs/rlog.js"
-    ],
+    "globIncludePatterns": "srcjs/**/*.js",
+    "globExcludeGlob": ["srcjs/utils/Console.js", "srcjs/cyto/layoutOptions.js", "srcjs/log/initStep.js", "srcjs/rlog.js"],
     "threshold": 95,
     "reportType": "text"
   },
@@ -79,5 +62,7 @@
     "cytoscape-dagre": "2.x",
     "jquery": "3.x",
     "lodash": "4.x"
-  }
+  },
+  "version": "1.1.0",
+  "files": []
 }

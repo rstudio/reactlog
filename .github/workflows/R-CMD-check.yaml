@@ -1,100 +1,67 @@
 on:
   push:
-    branches:
-      - master
+    branches: [main, rc-**]
   pull_request:
-    branches:
-      - master
+    branches: [main]
   schedule:
     - cron:  '0 0 * * 0' # every sunday @ midnight
 
-
-name: R-CMD-check
+name: Package Checks
 
 jobs:
+  ## Need to copy over files
+  # pkgdown:
+  #   uses: rstudio/shinycoreci/.github/workflows/call-pkgdown.yaml@v1
+  Rituals:
+    uses: rstudio/shinycoreci/.github/workflows/call-rituals.yaml@v1
   R-CMD-check:
-    runs-on: ${{ matrix.config.os }}
-
-    name: ${{ matrix.config.os }} (${{ matrix.config.r }})
-
-    strategy:
-      fail-fast: false
-      matrix:
-        config:
-          - {os: macOS-latest,   r: 'devel'}
-          - {os: macOS-latest,   r: 'release'}
-          - {os: windows-latest, r: 'release'}
-          - {os: ubuntu-16.04,   r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
-          - {os: ubuntu-16.04,   r: 'oldrel',  rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
-          - {os: ubuntu-16.04,   r: '3.5',     rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
-          - {os: ubuntu-16.04,   r: '3.4',     rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
-          - {os: ubuntu-16.04,   r: '3.3',     rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
-
+    uses: rstudio/shinycoreci/.github/workflows/call-R-CMD-check.yaml@v1
+  pkgdown:
+    runs-on: ubuntu-latest
     env:
-      R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
-      RSPM: ${{ matrix.config.rspm }}
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-
     steps:
       - uses: actions/checkout@v2
 
-      - uses: r-lib/actions/setup-r@master
+      - uses: rstudio/shinycoreci/.github/composite/install-r-package@v1
         with:
-          r-version: ${{ matrix.config.r }}
+          pandoc-version: ${{ inputs.pandoc-version }}
+          cache-version: ${{ inputs.cache-version }}
+          needs: website
+          extra-packages: |
+            pkgdown
+            ${{ inputs.extra-packages }}
 
-      - uses: r-lib/actions/setup-pandoc@master
-
-      - name: Query dependencies
-        run: |
-          install.packages('remotes')
-          saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
-          writeLines(sprintf("R-%i.%i", getRversion()$major, getRversion()$minor), ".github/R-version")
+      - name: Copy github.io hosted files
         shell: Rscript {0}
-
-      - name: Cache R packages
-        if: runner.os != 'Windows'
-        uses: actions/cache@v1
-        with:
-          path: ${{ env.R_LIBS_USER }}
-          key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-${{ hashFiles('.github/depends.Rds') }}
-          restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-
-
-      - name: Install system dependencies
-        if: runner.os == 'Linux'
-        env:
-          RHUB_PLATFORM: linux-x86_64-ubuntu-gcc
         run: |
-          Rscript -e "remotes::install_github('r-hub/sysreqs')"
-          sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
-          sudo -s eval "$sysreqs"
+          # copy readme files
+          stopifnot(
+            file.copy("readme-images/", "pkgdown/", recursive = TRUE)
+          )
+          # copy demo files
+          stopifnot(
+            file.copy("inst/reactlog/", "pkgdown/", recursive = TRUE)
+          )
+          # rename to 'demo'
+          stopifnot(
+            file.rename("pkgdown/reactlog", "pkgdown/demo")
+          )
 
-      - name: Install dependencies
+      - name: Verify reference (PR)
+        if: github.event_name != 'push'
+        shell: Rscript {0}
         run: |
-          remotes::install_deps(dependencies = TRUE)
-          remotes::install_cran("rcmdcheck")
-        shell: Rscript {0}
+          pkgdown::build_site(new_process = FALSE)
+          if (!require("testthat")) pak::pkg_install("testthat")
+          testthat::expect_warning(
+            pkgdown::build_reference_index(),
+            NA
+          )
 
-      - name: Session info
+      - name: Build and deploy pkgdown site (push)
+        if: github.event_name == 'push'
         run: |
-          options(width = 100)
-          pkgs <- installed.packages()[, "Package"]
-          sessioninfo::session_info(pkgs, include_base = TRUE)
-        shell: Rscript {0}
-
-      - name: Check
-        env:
-          _R_CHECK_CRAN_INCOMING_: false
-        run: rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran"), error_on = "warning", check_dir = "check")
-        shell: Rscript {0}
-
-      - name: Show testthat output
-        if: always()
-        run: find check -name 'testthat.Rout*' -exec cat '{}' \; || true
-        shell: bash
-
-      - name: Upload check results
-        if: failure()
-        uses: actions/upload-artifact@master
-        with:
-          name: ${{ runner.os }}-r${{ matrix.config.r }}-results
-          path: check
+          git config --local user.name "$GITHUB_ACTOR"
+          git config --local user.email "$GITHUB_ACTOR@users.noreply.github.com"
+          Rscript -e 'pkgdown::deploy_to_branch(new_process = FALSE)'
