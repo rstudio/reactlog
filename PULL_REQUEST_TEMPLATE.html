@@ -93,7 +93,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -110,7 +110,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/rstudio/reactlog/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -169,30 +169,21 @@
 <div id="playback-issue-fixed" class="section level2">
 <h2 class="hasAnchor">
 <a href="#playback-issue-fixed" class="anchor"></a>Playback issue fixed</h2>
-<p>Brief description of the problem. Given that Shiny recorded it correctly, the reactlog provided by <code><a href="https://shiny.rstudio.com/reference/shiny/latest/reactlog.html">shiny::reactlog()</a></code> is not being displaying properly.</p>
+<p>Brief description of the problem. Given that Shiny recorded it correctly, the reactlog provided by <code><a href="https://rdrr.io/pkg/shiny/man/reactlog.html">shiny::reactlog()</a></code> is not being displaying properly.</p>
 <p>Please attach a screenshot of before and after if appropriate.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="kw">jsonlite</span>::<span class="fu"><a href="https://rdrr.io/pkg/jsonlite/man/fromJSON.html">toJSON</a></span>(<span class="kw">shiny</span>::<span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/reactlog.html">reactlog</a></span>(), pretty = <span class="fl">TRUE</span>, auto_unbox = <span class="fl">TRUE</span>)
-</pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">jsonlite</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jsonlite/man/fromJSON.html">toJSON</a></span><span class="op">(</span><span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactlog.html">reactlog</a></span><span class="op">(</span><span class="op">)</span>, pretty <span class="op">=</span> <span class="cn">TRUE</span>, auto_unbox <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <hr>
 </div>
 <div id="pr-task-list" class="section level2">
 <h2 class="hasAnchor">
 <a href="#pr-task-list" class="anchor"></a>PR task list:</h2>
 <ul>
-<li>
-<input type="checkbox" disabled>
-Passes <code>devtools::check()</code>
+<li>[ ] Passes <code>devtools::check()</code>
 </li>
-<li>
-<input type="checkbox" disabled>
-Add NEWS entry explaining change (reference username and PR#)</li>
-<li>
-<input type="checkbox" disabled>
-Add tests (if appropriate)</li>
-<li>
-<input type="checkbox" disabled>
-Update documentation with <code>devtools::document()</code>
+<li>[ ] Add NEWS entry explaining change (reference username and PR#)</li>
+<li>[ ] Add tests (if appropriate)</li>
+<li>[ ] Update documentation with <code>devtools::document()</code>
 </li>
 </ul>
 </div>
@@ -216,7 +207,7 @@ Update documentation with <code>devtools::document()</code>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

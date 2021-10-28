@@ -54,7 +54,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -71,7 +71,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/rstudio/reactlog/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -99,7 +99,7 @@
 </h1></div>
 <!-- badges: start -->
 
-<p><br><!-- space above image break only --><!-- [![Coverage status](https://codecov.io/gh/rstudio/reactlog/branch/master/graph/badge.svg)](https://codecov.io/github/rstudio/reactlog?branch=master) --></p>
+<p><br><!-- space above image break only --><!-- [![Coverage status](https://codecov.io/gh/rstudio/reactlog/branch/main/graph/badge.svg)](https://codecov.io/github/rstudio/reactlog?branch=main) --></p>
 <p><img src="http://rstudio.github.io/reactlog/readme-images/pythagoras.gif" style="border: 1px solid black; box-shadow: 5px 5px 5px #eee;" width="100%"></p>
 <p><a href="https://shiny.rstudio.com/">Shiny</a> is an R package from RStudio that makes it incredibly easy to build interactive web applications with R. Behind the scenes, Shiny builds a reactive graph that can quickly become intertwined and difficult to debug. <strong>reactlog</strong> provides a visual insight into that <em>black box</em> of Shiny reactivity.</p>
 <p>After logging the reactive interactions of a Shiny application, <strong>reactlog</strong> constructs a directed dependency graph of the Shiny’s reactive state at any time point in the record. The <strong>reactlog</strong> dependency graph provides users with the ability to visually see if reactive elements are:</p>
@@ -127,31 +127,28 @@
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>To install the stable version from CRAN, run the following from an R console:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"reactlog"</span>)
-</pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"reactlog"</span><span class="op">)</span></code></pre></div>
 <p>For the latest development version:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="kw">remotes</span>::<span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span>(<span class="st">"rstudio/reactlog"</span>)
-</pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"rstudio/reactlog"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="usage" class="section level2">
 <h2 class="hasAnchor">
 <a href="#usage" class="anchor"></a>Usage</h2>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="http://shiny.rstudio.com">shiny</a></span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://rstudio.github.io/reactlog">reactlog</a></span>)
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.rstudio.com/">shiny</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rstudio.github.io/reactlog/">reactlog</a></span><span class="op">)</span>
 
 <span class="co"># tell shiny to log all reactivity</span>
-<span class="fu"><a href="reference/setReactLog.html">reactlog_enable</a></span>()
+<span class="fu"><a href="reference/setReactLog.html">reactlog_enable</a></span><span class="op">(</span><span class="op">)</span>
 
 <span class="co"># run a shiny app</span>
-<span class="kw">app</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"examples/01_hello"</span>, package = <span class="st">"shiny"</span>)
-<span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/runApp.html">runApp</a></span>(<span class="kw">app</span>)
+<span class="va">app</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"examples/01_hello"</span>, package <span class="op">=</span> <span class="st">"shiny"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/shiny/man/runApp.html">runApp</a></span><span class="op">(</span><span class="va">app</span><span class="op">)</span>
 
 <span class="co"># once app has closed, display reactlog from shiny</span>
-<span class="kw">shiny</span>::<span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/reactlog.html">reactlogShow</a></span>()
-</pre></div>
+<span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactlog.html">reactlogShow</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p>Or while your Shiny app is running, press the key combination <code>Ctrl+F3</code> (Mac: <code>Cmd+F3</code>) to launch the <strong>reactlog</strong> application.</p>
 <p>To mark a specific execution time point within your Shiny app, press the key combination <code>Ctrl+Shift+F3</code> (Mac: <code>Cmd+Shift+F3</code>). This will highlight a specific point in time in your reactlog.</p>
 <div id="example" class="section level4">
@@ -173,14 +170,14 @@
 <p><a href="https://nodejs.org/en/"><img src="https://img.shields.io/badge/node-12.x-brightgreen.svg" alt="node version: 12.x"></a> <a href="https://classic.yarnpkg.com/lang/en/"><img src="https://img.shields.io/badge/yarn-1.x-257bac.svg" alt="yarn version: 1.x"></a> <a href="https://github.com/flow-typed/flow-typed"><img src="https://img.shields.io/npm/types/flow-typed.svg" alt="JavaScript type: flow"></a> <a href="https://js.cytoscape.org/"><img src="https://img.shields.io/github/package-json/dependency-version/rstudio/reactlog/cytoscape.svg" alt="cytoscape"></a> <a href="https://babeljs.io/"><img src="https://img.shields.io/github/package-json/dependency-version/rstudio/reactlog/dev/@babel/preset-env.svg" alt="@babel/preset-env"></a> <a href="https://webpack.js.org/"><img src="https://img.shields.io/github/package-json/dependency-version/rstudio/reactlog/dev/webpack.svg" alt="webpack"></a> <a href="https://github.com/prettier/prettier"><img src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square" alt="code style: prettier"></a> <a href="https://eslint.org/"><img src="https://img.shields.io/badge/linter-eslint-3524ca.svg" alt="linter: eslint"></a></p>
 <p>Please make sure you have <a href="https://git-lfs.github.com/">GitHub Large File Storage</a>, <a href="https://nodejs.org/en/">Node.js</a> and <a href="https://classic.yarnpkg.com/en/docs/install">yarn</a> installed.</p>
 <p>Installation script:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># install git lfs hooks</span></span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="fu">git</span> lfs install</span>
-<span id="cb4-3"><a href="#cb4-3"></a></span>
-<span id="cb4-4"><a href="#cb4-4"></a><span class="co"># install dependencies and build JavaScript</span></span>
-<span id="cb4-5"><a href="#cb4-5"></a><span class="ex">yarn</span> install</span>
-<span id="cb4-6"><a href="#cb4-6"></a></span>
-<span id="cb4-7"><a href="#cb4-7"></a><span class="co"># build on file change</span></span>
-<span id="cb4-8"><a href="#cb4-8"></a><span class="ex">yarn</span> watch</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" title="1"><span class="co"># install git lfs hooks</span></a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="fu">git</span> lfs install</a>
+<a class="sourceLine" id="cb4-3" title="3"></a>
+<a class="sourceLine" id="cb4-4" title="4"><span class="co"># install dependencies and build JavaScript</span></a>
+<a class="sourceLine" id="cb4-5" title="5"><span class="ex">yarn</span> install</a>
+<a class="sourceLine" id="cb4-6" title="6"></a>
+<a class="sourceLine" id="cb4-7" title="7"><span class="co"># build on file change</span></a>
+<a class="sourceLine" id="cb4-8" title="8"><span class="ex">yarn</span> watch</a></code></pre></div>
 <p>By changing the file <code>'./inst/reactlog/defaultLog.js'</code> with the contents of any log file in <code>'./inst/log-files/'</code>, different default log files can be loaded. Once the local JavaScript (<code>'./inst/reactlog/reactlogAsset/reactlog.js'</code>) has been built with <code>yarn build</code> or <code>yarn watch</code>, refresh <code>'./inst/reactlog/reactlog.html'</code> to avoid constantly spawning Shiny applications for testing.</p>
 </div>
 </div>
@@ -242,7 +239,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
