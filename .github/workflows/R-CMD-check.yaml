@@ -12,7 +12,7 @@ jobs:
   ## Need to copy over files
   # pkgdown:
   #   uses: rstudio/shinycoreci/.github/workflows/call-pkgdown.yaml@v1
-  Rituals:
+  rituals:
     uses: rstudio/shinycoreci/.github/workflows/call-rituals.yaml@v1
   R-CMD-check:
     uses: rstudio/shinycoreci/.github/workflows/call-R-CMD-check.yaml@v1
