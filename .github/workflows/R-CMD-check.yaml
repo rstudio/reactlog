@@ -4,64 +4,14 @@ on:
   pull_request:
     branches: [main]
   schedule:
-    - cron:  '0 0 * * 0' # every sunday @ midnight
+    - cron:  '0 8 * * 0' # every sunday
 
-name: Package Checks
+name: Package checks
 
 jobs:
-  ## Need to copy over files
-  # pkgdown:
-  #   uses: rstudio/shinycoreci/.github/workflows/call-pkgdown.yaml@v1
-  rituals:
-    uses: rstudio/shinycoreci/.github/workflows/call-rituals.yaml@v1
+  website:
+    uses: rstudio/shinycoreci/.github/workflows/call-website.yaml@v1
+  routine:
+    uses: rstudio/shinycoreci/.github/workflows/call-routine.yaml@v1
   R-CMD-check:
     uses: rstudio/shinycoreci/.github/workflows/call-R-CMD-check.yaml@v1
-  pkgdown:
-    runs-on: ubuntu-latest
-    env:
-      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-    steps:
-      - uses: actions/checkout@v2
-
-      - uses: rstudio/shinycoreci/.github/composite/install-r-package@v1
-        with:
-          pandoc-version: ${{ inputs.pandoc-version }}
-          cache-version: ${{ inputs.cache-version }}
-          needs: website
-          extra-packages: |
-            pkgdown
-            ${{ inputs.extra-packages }}
-
-      - name: Copy github.io hosted files
-        shell: Rscript {0}
-        run: |
-          # copy readme files
-          stopifnot(
-            file.copy("readme-images/", "pkgdown/", recursive = TRUE)
-          )
-          # copy demo files
-          stopifnot(
-            file.copy("inst/reactlog/", "pkgdown/", recursive = TRUE)
-          )
-          # rename to 'demo'
-          stopifnot(
-            file.rename("pkgdown/reactlog", "pkgdown/demo")
-          )
-
-      - name: Verify reference (PR)
-        if: github.event_name != 'push'
-        shell: Rscript {0}
-        run: |
-          pkgdown::build_site(new_process = FALSE)
-          if (!require("testthat")) pak::pkg_install("testthat")
-          testthat::expect_warning(
-            pkgdown::build_reference_index(),
-            NA
-          )
-
-      - name: Build and deploy pkgdown site (push)
-        if: github.event_name == 'push'
-        run: |
-          git config --local user.name "$GITHUB_ACTOR"
-          git config --local user.email "$GITHUB_ACTOR@users.noreply.github.com"
-          Rscript -e 'pkgdown::deploy_to_branch(new_process = FALSE)'
