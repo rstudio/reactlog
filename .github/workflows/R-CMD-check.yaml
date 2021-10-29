@@ -4,14 +4,14 @@ on:
   pull_request:
     branches: [main]
   schedule:
-    - cron:  '0 0 * * 0' # every sunday @ midnight
+    - cron:  '0 8 * * 0' # every sunday
 
-name: Package Checks
+name: Package checks
 
 jobs:
-  pkgdown:
-    uses: rstudio/shinycoreci/.github/workflows/call-pkgdown.yaml@v1
-  rituals:
-    uses: rstudio/shinycoreci/.github/workflows/call-rituals.yaml@v1
+  website:
+    uses: rstudio/shinycoreci/.github/workflows/call-website.yaml@v1
+  routine:
+    uses: rstudio/shinycoreci/.github/workflows/call-routine.yaml@v1
   R-CMD-check:
     uses: rstudio/shinycoreci/.github/workflows/call-R-CMD-check.yaml@v1
