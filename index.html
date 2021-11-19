@@ -170,14 +170,14 @@
 <p><a href="https://nodejs.org/en/"><img src="https://img.shields.io/badge/node-12.x-brightgreen.svg" alt="node version: 12.x"></a> <a href="https://classic.yarnpkg.com/lang/en/"><img src="https://img.shields.io/badge/yarn-1.x-257bac.svg" alt="yarn version: 1.x"></a> <a href="https://github.com/flow-typed/flow-typed"><img src="https://img.shields.io/npm/types/flow-typed.svg" alt="JavaScript type: flow"></a> <a href="https://js.cytoscape.org/"><img src="https://img.shields.io/github/package-json/dependency-version/rstudio/reactlog/cytoscape.svg" alt="cytoscape"></a> <a href="https://babeljs.io/"><img src="https://img.shields.io/github/package-json/dependency-version/rstudio/reactlog/dev/@babel/preset-env.svg" alt="@babel/preset-env"></a> <a href="https://webpack.js.org/"><img src="https://img.shields.io/github/package-json/dependency-version/rstudio/reactlog/dev/webpack.svg" alt="webpack"></a> <a href="https://github.com/prettier/prettier"><img src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square" alt="code style: prettier"></a> <a href="https://eslint.org/"><img src="https://img.shields.io/badge/linter-eslint-3524ca.svg" alt="linter: eslint"></a></p>
 <p>Please make sure you have <a href="https://git-lfs.github.com/">GitHub Large File Storage</a>, <a href="https://nodejs.org/en/">Node.js</a> and <a href="https://classic.yarnpkg.com/en/docs/install">yarn</a> installed.</p>
 <p>Installation script:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" title="1"><span class="co"># install git lfs hooks</span></a>
-<a class="sourceLine" id="cb4-2" title="2"><span class="fu">git</span> lfs install</a>
-<a class="sourceLine" id="cb4-3" title="3"></a>
-<a class="sourceLine" id="cb4-4" title="4"><span class="co"># install dependencies and build JavaScript</span></a>
-<a class="sourceLine" id="cb4-5" title="5"><span class="ex">yarn</span> install</a>
-<a class="sourceLine" id="cb4-6" title="6"></a>
-<a class="sourceLine" id="cb4-7" title="7"><span class="co"># build on file change</span></a>
-<a class="sourceLine" id="cb4-8" title="8"><span class="ex">yarn</span> watch</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># install git lfs hooks</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="fu">git</span> lfs install</span>
+<span id="cb4-3"><a href="#cb4-3"></a></span>
+<span id="cb4-4"><a href="#cb4-4"></a><span class="co"># install dependencies and build JavaScript</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a><span class="ex">yarn</span> install</span>
+<span id="cb4-6"><a href="#cb4-6"></a></span>
+<span id="cb4-7"><a href="#cb4-7"></a><span class="co"># build on file change</span></span>
+<span id="cb4-8"><a href="#cb4-8"></a><span class="ex">yarn</span> watch</span></code></pre></div>
 <p>By changing the file <code>'./inst/reactlog/defaultLog.js'</code> with the contents of any log file in <code>'./inst/log-files/'</code>, different default log files can be loaded. Once the local JavaScript (<code>'./inst/reactlog/reactlogAsset/reactlog.js'</code>) has been built with <code>yarn build</code> or <code>yarn watch</code>, refresh <code>'./inst/reactlog/reactlog.html'</code> to avoid constantly spawning Shiny applications for testing.</p>
 </div>
 </div>
@@ -223,7 +223,7 @@
   <div class="dev-status">
 <h2>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://github.com/rstudio/reactlog/actions"><img src="https://github.com/rstudio/reactlog/workflows/R-CMD-check/badge.svg" alt="R build status"></a></li>
+<li><a href="https://github.com/rstudio/reactlog/actions"><img src="https://github.com/rstudio/reactlog/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R build status"></a></li>
 <li><a href="https://cran.r-project.org/package=reactlog"><img src="http://www.r-pkg.org/badges/version/reactlog" alt="CRAN version"></a></li>
 <li><a href="http://www.rpackages.io/package/reactlog"><img src="http://cranlogs.r-pkg.org/badges/reactlog" alt="reactlog downloads per month"></a></li>
 <li><a href="https://zenodo.org/badge/latestdoi/137799634"><img src="https://zenodo.org/badge/137799634.svg" alt="DOI"></a></li>
