@@ -29,7 +29,7 @@ Suggests:
 License: GPL-3 | file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 URL: https://rstudio.github.io/reactlog/, https://github.com/rstudio/reactlog, https://community.rstudio.com/tags/reactlog
 BugReports: https://github.com/rstudio/reactlog/issues
 VignetteBuilder: knitr
