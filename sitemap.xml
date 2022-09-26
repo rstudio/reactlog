@@ -1,21 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://rstudio.github.io/reactlog//index.html</loc>
+    <loc>https://rstudio.github.io/reactlog/404.html</loc>
   </url>
   <url>
-    <loc>https://rstudio.github.io/reactlog//reference/reactlog_module.html</loc>
+    <loc>https://rstudio.github.io/reactlog/CODE_OF_CONDUCT.html</loc>
   </url>
   <url>
-    <loc>https://rstudio.github.io/reactlog//reference/reactlog_show.html</loc>
+    <loc>https://rstudio.github.io/reactlog/CONTRIBUTING.html</loc>
   </url>
   <url>
-    <loc>https://rstudio.github.io/reactlog//reference/reactlog_write.html</loc>
+    <loc>https://rstudio.github.io/reactlog/ISSUE_TEMPLATE.html</loc>
   </url>
   <url>
-    <loc>https://rstudio.github.io/reactlog//reference/setReactLog.html</loc>
+    <loc>https://rstudio.github.io/reactlog/LICENSE-text.html</loc>
   </url>
   <url>
-    <loc>https://rstudio.github.io/reactlog//articles/reactlog.html</loc>
+    <loc>https://rstudio.github.io/reactlog/PULL_REQUEST_TEMPLATE.html</loc>
+  </url>
+  <url>
+    <loc>https://rstudio.github.io/reactlog/articles/index.html</loc>
+  </url>
+  <url>
+    <loc>https://rstudio.github.io/reactlog/articles/reactlog.html</loc>
+  </url>
+  <url>
+    <loc>https://rstudio.github.io/reactlog/authors.html</loc>
+  </url>
+  <url>
+    <loc>https://rstudio.github.io/reactlog/index.html</loc>
+  </url>
+  <url>
+    <loc>https://rstudio.github.io/reactlog/news/index.html</loc>
+  </url>
+  <url>
+    <loc>https://rstudio.github.io/reactlog/reference/index.html</loc>
+  </url>
+  <url>
+    <loc>https://rstudio.github.io/reactlog/reference/reactlog_module.html</loc>
+  </url>
+  <url>
+    <loc>https://rstudio.github.io/reactlog/reference/reactlog_show.html</loc>
+  </url>
+  <url>
+    <loc>https://rstudio.github.io/reactlog/reference/reactlog_write.html</loc>
+  </url>
+  <url>
+    <loc>https://rstudio.github.io/reactlog/reference/setReactLog.html</loc>
   </url>
 </urlset>

@@ -28,6 +28,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -47,12 +49,6 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../articles/reactlog.html">Get started</a>
 </li>
 <li>
@@ -64,7 +60,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/rstudio/reactlog/">
+  <a href="https://github.com/rstudio/reactlog/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -89,180 +85,180 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Shiny Reactlog</h1>
-                        <h4 class="author">Carson Sievert, Joe Cheng, and Barret Schloerke</h4>
+                        <h4 data-toc-skip class="author">Carson Sievert, Joe Cheng, and Barret Schloerke</h4>
             
-            <h4 class="date">2019-03-14</h4>
+            <h4 data-toc-skip class="date">2019-03-14</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/rstudio/reactlog/blob/master/vignettes/reactlog.Rmd"><code>vignettes/reactlog.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/rstudio/reactlog/blob/HEAD/vignettes/reactlog.Rmd" class="external-link"><code>vignettes/reactlog.Rmd</code></a></small>
       <div class="hidden name"><code>reactlog.Rmd</code></div>
 
     </div>
 
     
     
-<div id="background" class="section level2">
-<h2 class="hasAnchor">
-<a href="#background" class="anchor"></a>Background</h2>
+<div class="section level2">
+<h2 id="background">Background<a class="anchor" aria-label="anchor" href="#background"></a>
+</h2>
 <p>With v0.14.0, the <strong>shiny</strong> R package introduced a way to investigate the activity and logic of a <strong>shiny</strong> application through a visualization of it’s reactive history. In version v1.3.0, <strong>shiny</strong> revamped this visual tool via the R package <strong>reactlog</strong>. The design and capabilities of this interactive visualization have vastly improved, especially for navigating large and complex reactive graphs. This vignette outlines the new design and helps explain how to navigate the new interface.</p>
-<p>To understand <strong>reactlog</strong>, it helps to have a basic understanding of <strong>shiny</strong>’s reactive programming model. If you’re fairly new to <strong>shiny</strong> and reactive programming, the next section, which has been modified from the <a href="https://mastering-shiny.org/"><em>Mastering Shiny</em> book by Hadley Wickham</a>, provides an overview of <strong>shiny</strong>’s reactivity model and is designed specifically for understanding <strong>reactlog</strong>. You’ll notice the terminology, concepts, and graphics are consistent with <strong>reactlog</strong>, which is introduced in the <a href="#reactlog">Hello Reactlog</a> section through code and video demonstrations. Heavy users of <strong>reactlog</strong> may find the <a href="#reactlog-in-detail">Reactlog in detail</a> section helpful to detailing all the individual components of the <strong>reactlog</strong> interface. Finally, the <a href="#learn-more">Learn more</a> section has links to more resources for learning even more about reactivity in <strong>shiny</strong>.</p>
+<p>To understand <strong>reactlog</strong>, it helps to have a basic understanding of <strong>shiny</strong>’s reactive programming model. If you’re fairly new to <strong>shiny</strong> and reactive programming, the next section, which has been modified from the <a href="https://mastering-shiny.org/" class="external-link"><em>Mastering Shiny</em> book by Hadley Wickham</a>, provides an overview of <strong>shiny</strong>’s reactivity model and is designed specifically for understanding <strong>reactlog</strong>. You’ll notice the terminology, concepts, and graphics are consistent with <strong>reactlog</strong>, which is introduced in the <a href="#reactlog">Hello Reactlog</a> section through code and video demonstrations. Heavy users of <strong>reactlog</strong> may find the <a href="#reactlog-in-detail">Reactlog in detail</a> section helpful to detailing all the individual components of the <strong>reactlog</strong> interface. Finally, the <a href="#learn-more">Learn more</a> section has links to more resources for learning even more about reactivity in <strong>shiny</strong>.</p>
 </div>
-<div id="reactivity" class="section level2">
-<h2 class="hasAnchor">
-<a href="#reactivity" class="anchor"></a>The reactive life cycle</h2>
-<div id="a-reactive-graph" class="section level3">
-<h3 class="hasAnchor">
-<a href="#a-reactive-graph" class="anchor"></a>A reactive graph</h3>
+<div class="section level2">
+<h2 id="reactivity">The reactive life cycle<a class="anchor" aria-label="anchor" href="#reactivity"></a>
+</h2>
+<div class="section level3">
+<h3 id="a-reactive-graph">A reactive graph<a class="anchor" aria-label="anchor" href="#a-reactive-graph"></a>
+</h3>
 <p>Below is a diagram of a reactive graph. The shapes on the left are reactive inputs (or values), the ones in the middle are reactive expressions, and on the right are observers (or outputs). The lines between the shapes are directional, with the arrows indicating the direction of their inter-dependencies. When a <strong>shiny</strong> app is loaded, this graph is discovered and formed. When a user interacts with the app and changes reactive input values, the graph is partially deconstructed and then reformed. The sub-sections that follow explain how this reactive life cycle works in detail. The <strong>reactlog</strong> visualization is designed to help you inspect each particular step in this reactive life cycle.</p>
 <p><img src="images/04-reactivity/reactivity-graph-00.png" width="80%" style="display: block; margin: auto;"></p>
 </div>
-<div id="a-session-begins" class="section level3">
-<h3 class="hasAnchor">
-<a href="#a-session-begins" class="anchor"></a>A session begins</h3>
+<div class="section level3">
+<h3 id="a-session-begins">A session begins<a class="anchor" aria-label="anchor" href="#a-session-begins"></a>
+</h3>
 <p>When you load a <strong>shiny</strong> app, all reactive expression and observers begin in an <em>invalidated</em> state (indicated in gray). Invalidated state essentially means that any code that the node depends upon needs to be re-executed.</p>
 <p><img src="images/04-reactivity/reactivity-graph-01.png" width="80%" style="display: block; margin: auto;"></p>
 </div>
-<div id="execution-begins" class="section level3">
-<h3 class="hasAnchor">
-<a href="#execution-begins" class="anchor"></a>Execution begins</h3>
+<div class="section level3">
+<h3 id="execution-begins">Execution begins<a class="anchor" aria-label="anchor" href="#execution-begins"></a>
+</h3>
 <p>After initializing a session, <strong>shiny</strong> picks an observer (<em>not</em> a reactive expression) and starts executing it.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> Reactlog uses an orange fill to indicate when a node is actively executing (i.e., calculating).</p>
 <p><img src="images/04-reactivity/reactivity-graph-02.png" width="80%" style="display: block; margin: auto;"></p>
 </div>
-<div id="reading-a-reactive-expression" class="section level3">
-<h3 class="hasAnchor">
-<a href="#reading-a-reactive-expression" class="anchor"></a>Reading a reactive expression</h3>
+<div class="section level3">
+<h3 id="reading-a-reactive-expression">Reading a reactive expression<a class="anchor" aria-label="anchor" href="#reading-a-reactive-expression"></a>
+</h3>
 <p>During an observer’s execution, it may read one or more reactive expressions. As soon as this occurs, the observer becomes dependent on the reactive expression, represented below by the new arrow.</p>
 <p>Remember that all reactive expressions start out in invalidated state (represented by the gray fill), including the one this observer is now trying to access. In order to return a value, the reactive expression needs to execute its code, which it starts doing now. We fill the reactive expression with orange to represent that it’s running.</p>
 <p>Note that the observer is still orange: just because the reactive expression is now running, doesn’t mean that the observer has finished. The observer is waiting on the reactive expression to return its value so its own execution can continue, just like a regular function call in R.</p>
 <p><img src="images/04-reactivity/reactivity-graph-03.png" width="80%" style="display: block; margin: auto;"></p>
 </div>
-<div id="reading-an-input" class="section level3">
-<h3 class="hasAnchor">
-<a href="#reading-an-input" class="anchor"></a>Reading an input</h3>
+<div class="section level3">
+<h3 id="reading-an-input">Reading an input<a class="anchor" aria-label="anchor" href="#reading-an-input"></a>
+</h3>
 <p>This particular reactive expression happens to read a reactive input. Therefore, the reactive expression depends on the input, represented below by the arrow.</p>
 <p>Unlike reactive expressions and observers, reactive inputs simply hold a value, so they don’t require an execution phase (i.e., their value is ready from the start).</p>
 <p><img src="images/04-reactivity/reactivity-graph-04.png" width="80%" style="display: block; margin: auto;"></p>
 </div>
-<div id="reactive-expression-completes" class="section level3">
-<h3 class="hasAnchor">
-<a href="#reactive-expression-completes" class="anchor"></a>Reactive expression completes</h3>
+<div class="section level3">
+<h3 id="reactive-expression-completes">Reactive expression completes<a class="anchor" aria-label="anchor" href="#reactive-expression-completes"></a>
+</h3>
 <p>In our example, the reactive expression reads another reactive expression, which in turn reads another input. We’ll skip over the blow-by-blow description of those steps, since they’re just a repeat of what we’ve already described.</p>
 <p>When the reactive expression has completed executing, it saves (caches) the resulting value internally before returning it to the observer that requested it. Now that the reactive expression has finished executing, it’s no longer in invalidated (gray) or running (orange) state; rather, it’s in idle/ready (green) state. When a reactive expression reaches this state, it means it’s up-to-date and will not re-execute its code even if other reactive expressions or observers request its value. Instead, it can instantly return the value it cached during its most recent execution.</p>
 <p><img src="images/04-reactivity/reactivity-graph-05.png" width="80%" style="display: block; margin: auto;"></p>
 </div>
-<div id="observer-completes" class="section level3">
-<h3 class="hasAnchor">
-<a href="#observer-completes" class="anchor"></a>Observer completes</h3>
+<div class="section level3">
+<h3 id="observer-completes">Observer completes<a class="anchor" aria-label="anchor" href="#observer-completes"></a>
+</h3>
 <p>Now that the reactive expression has returned its value to the observer, the observer can complete executing its code. When this has completed, it too enters the idle state, so we change its fill color to green.</p>
 <p><img src="images/04-reactivity/reactivity-graph-06.png" width="80%" style="display: block; margin: auto;"></p>
 </div>
-<div id="the-next-observer-executes" class="section level3">
-<h3 class="hasAnchor">
-<a href="#the-next-observer-executes" class="anchor"></a>The next observer executes</h3>
+<div class="section level3">
+<h3 id="the-next-observer-executes">The next observer executes<a class="anchor" aria-label="anchor" href="#the-next-observer-executes"></a>
+</h3>
 <p>Now that Shiny has completed execution of the first observer, it chooses a second one to execute. Again, it turns orange, and may read values from reactive expressions, which will turn orange, and so on. This cycle will repeat until every invalidated observer enters the idle/ready (green) state.</p>
 <p><img src="images/04-reactivity/reactivity-graph-07.png" width="80%" style="display: block; margin: auto;"></p>
 <blockquote>
 <p>As shown in the next diagram, the second observer in this particular graph depends on an idle reactive expression, so it can simply access it’s cached value without performing redundant and possibly costly re-execution.</p>
 </blockquote>
 </div>
-<div id="reactive-flush" class="section level3">
-<h3 class="hasAnchor">
-<a href="#reactive-flush" class="anchor"></a>Execution completes, outputs flushed</h3>
+<div class="section level3">
+<h3 id="reactive-flush">Execution completes, outputs flushed<a class="anchor" aria-label="anchor" href="#reactive-flush"></a>
+</h3>
 <p>At last, all of the observers have finished execution and are now idle. This round of reactive execution is complete, and nothing will happen with this session until some external force acts on the system (e.g. the user of the Shiny app moving a slider in the user interface). In reactive terms, this session is now at rest.</p>
 <p><img src="images/04-reactivity/reactivity-graph-08.png" width="80%" style="display: block; margin: auto;"></p>
 <p>Let’s stop here for just a moment and think about what we’ve done. We’ve read some inputs, calculated some values, and generated some outputs. But more importantly, in the course of doing that work, we also discovered the <em>relationships</em> between these different calculations and outputs. An arrow from a reactive input to a reactive expression tells us that if the reactive input’s value changes, the reactive expression’s result value can no longer be considered valid. And an arrow from a reactive expression to an output means that if the reactive expression’s result is no longer valid, then the output’s previous result needs to be refreshed.</p>
 <p>Just as important: we also know which nodes are <em>not</em> dependent on each other. If no path exists from a particular reactive input to a particular output (always traveling in the direction that the arrows are pointing), then a change to that input couldn’t possibly have an effect on that output. That gives us the ability to state with confidence that we don’t need to refresh that output when that input changes, which is great–the less work we need to do, the sooner we can get results back to the user.</p>
 </div>
-<div id="an-input-changes" class="section level3">
-<h3 class="hasAnchor">
-<a href="#an-input-changes" class="anchor"></a>An input changes</h3>
+<div class="section level3">
+<h3 id="an-input-changes">An input changes<a class="anchor" aria-label="anchor" href="#an-input-changes"></a>
+</h3>
 <p>The previous step left off with our Shiny session in a fully idle state. Now imagine that the user of the application changes the value of a slider. This causes the browser to send a message to their server, instructing Shiny to update the corresponding reactive input.</p>
 <p>When a reactive input or value is modified, it kicks off an <em>invalidation phase</em>, which we haven’t seen up to this point. The invalidation phase starts at the changed input/value, which we’ll fill with gray, our usual color for invalidation.</p>
 <p><img src="images/04-reactivity/reactivity-graph-09.png" width="80%" style="display: block; margin: auto;"></p>
 </div>
-<div id="notifying-dependents" class="section level3">
-<h3 class="hasAnchor">
-<a href="#notifying-dependents" class="anchor"></a>Notifying dependents</h3>
+<div class="section level3">
+<h3 id="notifying-dependents">Notifying dependents<a class="anchor" aria-label="anchor" href="#notifying-dependents"></a>
+</h3>
 <p>Now, we follow the arrows that we drew earlier. Each reactive expression and observer that we come across is put into invalidated state, then we continue following the arrows out of that node. As a refresher, for observers, the invalidated state means “should be executed as soon as Shiny gets a chance”, and for reactive expressions, it means “must execute the next time its value is requested”.</p>
 <p>In this diagram, the arrows in the lighter shade indicate the paths we took from the changed reactive input through the reactive graph. Note that we can only traverse the arrows in their indicated direction; it’s impossible to move from a reactive expression leftwards to a reactive input, for example.</p>
 <p><img src="images/04-reactivity/reactivity-graph-10.png" width="80%" style="display: block; margin: auto;"></p>
 </div>
-<div id="removing-relationships" class="section level3">
-<h3 class="hasAnchor">
-<a href="#removing-relationships" class="anchor"></a>Removing relationships</h3>
+<div class="section level3">
+<h3 id="removing-relationships">Removing relationships<a class="anchor" aria-label="anchor" href="#removing-relationships"></a>
+</h3>
 <p>Next, each invalidated reactive expression and observer “erases” all of the arrows coming in or out of it. You can think of each arrow as a one-shot notification that will fire the next time a value changes. Not <em>every</em> time, just <em>the next</em> time. So all of the arrows coming <em>out</em> of a reactive expression are safe to erase; like a used bottle rocket, they’ve fired their one shot.</p>
 <p>(Less obvious is why we erase the arrows coming <em>in</em> to an invalidated node, even if the node they’re coming from isn’t invalidated. While those arrows represent notifications that haven’t yet fired, the invalidated node no longer cares about them. The only reason nodes care about notifications is so they can be invalidated; well, that invalidation has already happened due to some other dependency.)</p>
 <p><img src="images/04-reactivity/reactivity-graph-11.png" width="80%" style="display: block; margin: auto;"></p>
 <p>It may seem perverse that we put so much value on those relationships, and now we’re going out of our way to erase them! But the truth is, though these particular arrows <em>were</em> important, they are now themselves out of date. The only way to ensure that our graph stays accurate is to erase arrows when they become stale, and let Shiny rediscover the relationships around these nodes as they re-execute.</p>
 <p>This marks the end of the invalidation phase.</p>
 </div>
-<div id="re-execution" class="section level3">
-<h3 class="hasAnchor">
-<a href="#re-execution" class="anchor"></a>Re-execution</h3>
+<div class="section level3">
+<h3 id="re-execution">Re-execution<a class="anchor" aria-label="anchor" href="#re-execution"></a>
+</h3>
 <p>Now we’re in a pretty similar situation to when the Shiny session first started; we have some invalidated reactive expressions and outputs, and we don’t have any arrows coming in or out of them. It’s time to do exactly what we did then: execute the invalidated outputs/observers, one at a time.</p>
 <p><img src="images/04-reactivity/reactivity-graph-12.png" width="80%" style="display: block; margin: auto;"></p>
 <p>What’s different this time, though, is that not all of the reactive expressions and outputs are starting out in the invalidated state. Some parts of the graph weren’t affected–neither directly nor indirectly–by the reactive input that had changed. That’s great, as we won’t need to re-execute those parts of the graph, even if they are used again by some of the invalidated parts!</p>
 </div>
 </div>
-<div id="reactlog" class="section level2">
-<h2 class="hasAnchor">
-<a href="#reactlog" class="anchor"></a>Hello Reactlog</h2>
+<div class="section level2">
+<h2 id="reactlog">Hello Reactlog<a class="anchor" aria-label="anchor" href="#reactlog"></a>
+</h2>
 <p>Consider the following <strong>shiny</strong> app with one reactive input and one output. It simply allows you to choose variables from the <code>diamonds</code> dataset to visualize that variable using <strong>plotly</strong>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.rstudio.com/">shiny</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rstudio.github.io/reactlog/">reactlog</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://plotly-r.com">plotly</a></span><span class="op">)</span>
-
-<span class="fu"><a href="../reference/setReactLog.html">reactlog_enable</a></span><span class="op">(</span><span class="op">)</span>
-
-<span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html">fluidPage</a></span><span class="op">(</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/selectInput.html">selectInput</a></span><span class="op">(</span><span class="st">"var"</span>, <span class="st">"Choose a variable"</span>, choices <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">diamonds</span><span class="op">)</span><span class="op">)</span>,
-  <span class="fu">plotlyOutput</span><span class="op">(</span><span class="st">"plot"</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="va">server</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">output</span><span class="op">$</span><span class="va">plot</span> <span class="op">&lt;-</span> <span class="fu">renderPlotly</span><span class="op">(</span><span class="op">{</span>
-    <span class="fu">plot_ly</span><span class="op">(</span>x <span class="op">=</span> <span class="va">diamonds</span><span class="op">[[</span><span class="va">input</span><span class="op">$</span><span class="va">var</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>
-  <span class="op">}</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.rstudio.com/" class="external-link">shiny</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rstudio.github.io/reactlog/">reactlog</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://plotly-r.com" class="external-link">plotly</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/setReactLog.html">reactlog_enable</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html" class="external-link">fluidPage</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/selectInput.html" class="external-link">selectInput</a></span><span class="op">(</span><span class="st">"var"</span>, <span class="st">"Choose a variable"</span>, choices <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">diamonds</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  <span class="fu">plotlyOutput</span><span class="op">(</span><span class="st">"plot"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">server</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">output</span><span class="op">$</span><span class="va">plot</span> <span class="op">&lt;-</span> <span class="fu">renderPlotly</span><span class="op">(</span><span class="op">{</span></span>
+<span>    <span class="fu">plot_ly</span><span class="op">(</span>x <span class="op">=</span> <span class="va">diamonds</span><span class="op">[[</span><span class="va">input</span><span class="op">$</span><span class="va">var</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span>  <span class="op">}</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html" class="external-link">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span></span></code></pre></div>
 <p>The following video demonstrates how one could run this application, interact with it (i.e., choose a different variable), then launch the reactlog by pressing <code>Ctrl + F3</code> (Mac: <code>Cmd + F3</code>). To start at the very beginning of the app’s life cycle, click the <img src="images/buttons/prev-mark.svg" width="20" style="vertical-align: middle"> button. You can then navigate through each step of the reactive life cycle by pressing the right arrow key or clicking <img src="images/buttons/next-step.svg" width="20" style="vertical-align: middle">. As you step through the life cycle, notice how the status of the graph is displayed above the dependency graph. A breakdown of all the components of the status bar is provided in the <a href="#status-bar">Status bar</a> section.</p>
-<p><iframe src="https://player.vimeo.com/video/321628235?title=0&amp;byline=0&amp;portrait=0" width="100%" height="400" frameborder="0" seamless="seamless" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></p>
-<p>For more complex graphs, like the one created by <a href="https://github.com/rstudio/cranwhales">Joe Cheng’s <strong>cranwhales</strong> app</a>, it’s convenient to have more advanced navigation through the time-dependent graph, like jumping to the next idle step using <img src="images/buttons/next-idle.svg" width="30" style="vertical-align: middle">, and querying sub-graphs by double-clicking and/or searching for graph components by name. Also, notice how, upon opening <strong>reactlog</strong>, it navigates to the first <a href="#reactive-flush">reactive flush</a> (i.e., completion of the first round of reactive execution). If there is a particular round of execution you’re primarily interested in, you can add user mark(s), and <strong>reactlog</strong> would open to that time point instead (see <a href="#navigation-buttons">Navigation</a> for more details on creating and navigating to user marks).</p>
+<iframe src="https://player.vimeo.com/video/321628235?title=0&amp;byline=0&amp;portrait=0" width="100%" height="400" frameborder="0" seamless="seamless" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+<p>For more complex graphs, like the one created by <a href="https://github.com/rstudio/cranwhales" class="external-link">Joe Cheng’s <strong>cranwhales</strong> app</a>, it’s convenient to have more advanced navigation through the time-dependent graph, like jumping to the next idle step using <img src="images/buttons/next-idle.svg" width="30" style="vertical-align: middle">, and querying sub-graphs by double-clicking and/or searching for graph components by name. Also, notice how, upon opening <strong>reactlog</strong>, it navigates to the first <a href="#reactive-flush">reactive flush</a> (i.e., completion of the first round of reactive execution). If there is a particular round of execution you’re primarily interested in, you can add user mark(s), and <strong>reactlog</strong> would open to that time point instead (see <a href="#navigation-buttons">Navigation</a> for more details on creating and navigating to user marks).</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">reactlog</span><span class="fu">::</span><span class="fu"><a href="../reference/setReactLog.html">reactlog_enable</a></span><span class="op">(</span><span class="op">)</span>
-<span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/runUrl.html">runGitHub</a></span><span class="op">(</span><span class="st">"cranwhales"</span>, <span class="st">"rstudio"</span>, ref <span class="op">=</span> <span class="st">"sync"</span><span class="op">)</span></code></pre></div>
-<p><iframe src="https://player.vimeo.com/video/321805975?title=0&amp;byline=0&amp;portrait=0" width="100%" height="400" frameborder="0" seamless="seamless" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></p>
+<code class="sourceCode R"><span><span class="fu">reactlog</span><span class="fu">::</span><span class="fu"><a href="../reference/setReactLog.html">reactlog_enable</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/runUrl.html" class="external-link">runGitHub</a></span><span class="op">(</span><span class="st">"cranwhales"</span>, <span class="st">"rstudio"</span>, ref <span class="op">=</span> <span class="st">"sync"</span><span class="op">)</span></span></code></pre></div>
+<iframe src="https://player.vimeo.com/video/321805975?title=0&amp;byline=0&amp;portrait=0" width="100%" height="400" frameborder="0" seamless="seamless" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
 <p>These two videos demonstrate basic navigation of the <strong>reactlog</strong> interface. Next we’ll explain all the components in detail.</p>
 </div>
-<div id="reactlog-in-detail" class="section level2">
-<h2 class="hasAnchor">
-<a href="#reactlog-in-detail" class="anchor"></a>Reactlog in detail</h2>
+<div class="section level2">
+<h2 id="reactlog-in-detail">Reactlog in detail<a class="anchor" aria-label="anchor" href="#reactlog-in-detail"></a>
+</h2>
 <p>The <strong>reactlog</strong> visualization consists of two main components: the <a href="#status-bar">status bar</a> and <a href="#dependency-graph">dependency graph</a>.</p>
 <p><img src="images/example_cranwhales.png" width="100%" style="display: block; margin: auto;"></p>
-<div id="status-bar" class="section level3">
-<h3 class="hasAnchor">
-<a href="#status-bar" class="anchor"></a>Status Bar</h3>
+<div class="section level3">
+<h3 id="status-bar">Status Bar<a class="anchor" aria-label="anchor" href="#status-bar"></a>
+</h3>
 <p>The status bar appears above the dependency graph and contains information about the current state of the graph. The status bar is comprised of the progress bar, current step information, navigation buttons, and a search bar.</p>
 <p><img src="images/status_bar.png" width="100%" style="display: block; margin: auto;"></p>
-<div id="progress-bar" class="section level4">
-<h4 class="hasAnchor">
-<a href="#progress-bar" class="anchor"></a>Progress Bar</h4>
+<div class="section level4">
+<h4 id="progress-bar">Progress Bar<a class="anchor" aria-label="anchor" href="#progress-bar"></a>
+</h4>
 <p>The progress bar is composed of four main components: the current progress location (dark gray rectangle), reactive endpoint marks (short green line), idle shiny application marks (tall green line), and user defined marks (tall gray line). Notice that the progress bar location reflects the current ‘step’ in the formation of the reactive graph which may or may not be in line with a endpoint/idle/user mark. You can navigate to any particular step of the progress bar by directly clicking or using the <a href="#navigation-buttons">navigation buttons</a> (or key-bindings).</p>
 <p><img src="images/progress_bar.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
-<div id="current-step" class="section level4">
-<h4 class="hasAnchor">
-<a href="#current-step" class="anchor"></a>Current step</h4>
+<div class="section level4">
+<h4 id="current-step">Current step<a class="anchor" aria-label="anchor" href="#current-step"></a>
+</h4>
 <p>Information about the current step appears above the progress bar and provides information about the current state of the reactive graph formation. The step description makes a direct reference to stages of the <a href="#reactivity">The reactive life cycle</a>. The time information displays the relative time difference between the current step and from the first recorded step.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> The Session will display the Shiny session ID that the current step is being executed in. The session ID can potentially be of interest if your shiny app is serving multiple users.</p>
 <p><img src="images/step_information.png" width="80%" style="display: block; margin: auto;"></p>
 <blockquote>
 <p>Pro tip: Press the ‘l’ key to display even more detailed information about the current step.</p>
 </blockquote>
 </div>
-<div id="navigation-buttons" class="section level4">
-<h4 class="hasAnchor">
-<a href="#navigation-buttons" class="anchor"></a>Navigation Buttons</h4>
+<div class="section level4">
+<h4 id="navigation-buttons">Navigation Buttons<a class="anchor" aria-label="anchor" href="#navigation-buttons"></a>
+</h4>
 <p>The navigation buttons are used to jump around the recorded timeline of the reactlog graph. There are four different ways to move time forwards and backwards within the reactlog.</p>
 <p><img src="images/navigation.png" width="80%" style="display: block; margin: auto;"></p>
 <ul>
@@ -286,9 +282,9 @@
 <blockquote>
 <p>Tip: Hold down the arrow keys to quickly iterate over all the steps of the displayed graph.</p>
 </blockquote>
-<div id="search-bar" class="section level5">
-<h5 class="hasAnchor">
-<a href="#search-bar" class="anchor"></a>Search Bar</h5>
+<div class="section level5">
+<h5 id="search-bar">Search Bar<a class="anchor" aria-label="anchor" href="#search-bar"></a>
+</h5>
 <p>The search bar matches the name or ID of each reactive graph element. All matching elements are increased in size to signify a match and all matching elements’ family trees are displayed. The search becomes active after three characters, and if no matches are found, the full graph is displayed.</p>
 <p><img src="images/search_bar.png" width="40%" style="display: block; margin: auto;"></p>
 <blockquote>
@@ -300,19 +296,19 @@
 </div>
 </div>
 </div>
-<div id="dependency-graph" class="section level3">
-<h3 class="hasAnchor">
-<a href="#dependency-graph" class="anchor"></a>Dependency Graph</h3>
-<p><strong>Reactlog</strong> always displays every dependency that was made at any point in time during the recorded life cycle. This helps maintain graph structure (i.e., <a href="https://bost.ocks.org/mike/constancy/">object constancy</a>) when stepping through the life cycle and also to identify which nodes will depend on other nodes. To reflect the current reactive state, <strong>reactlog</strong> color encodes each graph node as well as dimmed arrows to denote dependencies that are yet to be established.</p>
-<div id="reactive-states" class="section level4">
-<h4 class="hasAnchor">
-<a href="#reactive-states" class="anchor"></a>Reactive States</h4>
+<div class="section level3">
+<h3 id="dependency-graph">Dependency Graph<a class="anchor" aria-label="anchor" href="#dependency-graph"></a>
+</h3>
+<p><strong>Reactlog</strong> always displays every dependency that was made at any point in time during the recorded life cycle. This helps maintain graph structure (i.e., <a href="https://bost.ocks.org/mike/constancy/" class="external-link">object constancy</a>) when stepping through the life cycle and also to identify which nodes will depend on other nodes. To reflect the current reactive state, <strong>reactlog</strong> color encodes each graph node as well as dimmed arrows to denote dependencies that are yet to be established.</p>
+<div class="section level4">
+<h4 id="reactive-states">Reactive States<a class="anchor" aria-label="anchor" href="#reactive-states"></a>
+</h4>
 <p><img src="images/legend.png" width="15%" style="display: block; margin: auto;"></p>
 <p>At each stage of the reactlog, a reactive element can have one of the following states:</p>
 <ul>
 <li>Ready:
 <ul>
-<li>The reactive element has finished executing. For reactive conductors (such as the result of <code><a href="https://rdrr.io/pkg/shiny/man/reactive.html">reactive()</a></code>), a calculated value is available.</li>
+<li>The reactive element has finished executing. For reactive conductors (such as the result of <code><a href="https://rdrr.io/pkg/shiny/man/reactive.html" class="external-link">reactive()</a></code>), a calculated value is available.</li>
 </ul>
 </li>
 <li>Calculating:
@@ -332,7 +328,7 @@
 </li>
 <li>Frozen:
 <ul>
-<li>A visual display of a frozen <code>reactiveVal</code> or <code>reactiveValues</code> key. These elements behave as if their execution is done with <code>req(FALSE)</code>. Please see <a href="https://shiny.rstudio.com/reference/shiny/latest/freezeReactiveValue.html"><code>freezeReactiveValue</code></a> for more information.</li>
+<li>A visual display of a frozen <code>reactiveVal</code> or <code>reactiveValues</code> key. These elements behave as if their execution is done with <code>req(FALSE)</code>. Please see <a href="https://shiny.rstudio.com/reference/shiny/latest/freezeReactiveValue.html" class="external-link"><code>freezeReactiveValue</code></a> for more information.</li>
 </ul>
 </li>
 <li>Undefined:
@@ -345,56 +341,56 @@
 <p>Pro tip: <code>input</code> values are not defined until they are relied on. This may cause some <code>input</code> values to be defined later into the reactlog, even if the value was actually set at an earlier time point.</p>
 </blockquote>
 </div>
-<div id="highlighting-and-filtering" class="section level4">
-<h4 class="hasAnchor">
-<a href="#highlighting-and-filtering" class="anchor"></a>Highlighting and filtering</h4>
+<div class="section level4">
+<h4 id="highlighting-and-filtering">Highlighting and filtering<a class="anchor" aria-label="anchor" href="#highlighting-and-filtering"></a>
+</h4>
 <p>Hovering over a particular graph element (either a node or an edge) highlights that element’s family tree. A single click maintains that highlighting. Double-clicking filters the graph to that element’s family tree. To clear any highlight/filter selections, click/double-click the background of the graph or press the <code>Esc</code> key when the graph is in focus.</p>
-<p><iframe src="https://player.vimeo.com/video/321837450?title=0&amp;byline=0&amp;portrait=0" width="100%" height="400" frameborder="0" seamless="seamless" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></p>
+<iframe src="https://player.vimeo.com/video/321837450?title=0&amp;byline=0&amp;portrait=0" width="100%" height="400" frameborder="0" seamless="seamless" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
 </div>
-<div id="zooming" class="section level4">
-<h4 class="hasAnchor">
-<a href="#zooming" class="anchor"></a>Zooming</h4>
+<div class="section level4">
+<h4 id="zooming">Zooming<a class="anchor" aria-label="anchor" href="#zooming"></a>
+</h4>
 <p>When the graph is in focus, you can scroll the mouse to zoom in on the graph – also, press the ‘f’ key to alter the zoom so that the current graph fits the screen.</p>
 </div>
-<div id="labeling-nodes" class="section level4">
-<h4 class="hasAnchor">
-<a href="#labeling-nodes" class="anchor"></a>Labeling nodes</h4>
+<div class="section level4">
+<h4 id="labeling-nodes">Labeling nodes<a class="anchor" aria-label="anchor" href="#labeling-nodes"></a>
+</h4>
 <p>Recall from <a href="#reactivity">the reactive life cycle</a> that nodes in a reactive graph encode reactive inputs, expressions, and outputs (or observers). Labeling inputs and outputs is relatively straight-forward since they already have an associated ID. Reactive expression and observers, on the other hand, don’t have an associated ID – <strong>reactlog</strong>, by default, will use the body of the expression to label these nodes.</p>
 <p><img src="images/elements.png" width="80%" style="display: block; margin: auto;"></p>
-<p>Fortunately, <strong>shiny</strong>’s <code><a href="https://rdrr.io/pkg/shiny/man/reactive.html">reactive()</a></code> and <code><a href="https://rdrr.io/pkg/shiny/man/observe.html">observe()</a></code> functions have a <code>label</code> argument. If provided, <strong>reactlog</strong> will use this value to label the corresponding nodes.</p>
+<p>Fortunately, <strong>shiny</strong>’s <code><a href="https://rdrr.io/pkg/shiny/man/reactive.html" class="external-link">reactive()</a></code> and <code><a href="https://rdrr.io/pkg/shiny/man/observe.html" class="external-link">observe()</a></code> functions have a <code>label</code> argument. If provided, <strong>reactlog</strong> will use this value to label the corresponding nodes.</p>
 </div>
 </div>
 </div>
-<div id="learn-more" class="section level2">
-<h2 class="hasAnchor">
-<a href="#learn-more" class="anchor"></a>Learn more</h2>
+<div class="section level2">
+<h2 id="learn-more">Learn more<a class="anchor" aria-label="anchor" href="#learn-more"></a>
+</h2>
 <p>This vignette explains the <strong>reactlog</strong> interface, which requires a basic understanding of <strong>shiny</strong> and reactive programming. There are many other useful existing articles and resources that may help advance your understanding of <strong>reactlog</strong> and <strong>shiny</strong>, including but not limited to:</p>
 <ul>
-<li>The core <strong>shiny</strong> articles under <a href="https://shiny.rstudio.com/articles/#reactivity">Build Reactivity</a>, these articles help explain:
+<li>The core <strong>shiny</strong> articles under <a href="https://shiny.rstudio.com/articles/#reactivity" class="external-link">Build Reactivity</a>, these articles help explain:
 <ul>
 <li>How reactive elements know about each other</li>
 <li>When elements are calculated</li>
 <li>Why a <code>clientData</code> is randomly appearing in the reactive graph</li>
-<li>How to prevent reactivity from executing using <code><a href="https://rdrr.io/pkg/shiny/man/isolate.html">isolate()</a></code>
+<li>How to prevent reactivity from executing using <code><a href="https://rdrr.io/pkg/shiny/man/isolate.html" class="external-link">isolate()</a></code>
 </li>
 </ul>
 </li>
-<li>The <strong>shiny</strong> <a href="https://shiny.rstudio.com/tutorial/">tutorials</a>, which provides many great instructional videos and various learning resources.</li>
-<li>The <code>rstudio::conf2019</code> talk by Barret Schloerke: <em>Reactlog 2.0: Debugging the State of Shiny</em> (<a href="https://rstudio.com/resources/rstudioconf-2019/reactlog-2-0-debugging-the-state-of-shiny/">Video</a> / <a href="https://github.com/schloerke/presentation-2019-01-18-reactlog/blob/master/rstudio-conf-2019-reactlog.pdf">Slides</a>).</li>
-<li>Effective Reactive Programming <a href="https://rstudio.com/resources/shiny-dev-con/reactivity-pt-1-joe-cheng/">Part 1</a> <a href="https://rstudio.com/resources/shiny-dev-con/reactivity-pt-2/">Part 2</a>:
+<li>The <strong>shiny</strong> <a href="https://shiny.rstudio.com/tutorial/" class="external-link">tutorials</a>, which provides many great instructional videos and various learning resources.</li>
+<li>The <code>rstudio::conf2019</code> talk by Barret Schloerke: <em>Reactlog 2.0: Debugging the State of Shiny</em> (<a href="https://rstudio.com/resources/rstudioconf-2019/reactlog-2-0-debugging-the-state-of-shiny/" class="external-link">Video</a> / <a href="https://github.com/schloerke/presentation-2019-01-18-reactlog/blob/master/rstudio-conf-2019-reactlog.pdf" class="external-link">Slides</a>).</li>
+<li>Effective Reactive Programming <a href="https://rstudio.com/resources/shiny-dev-con/reactivity-pt-1-joe-cheng/" class="external-link">Part 1</a> <a href="https://rstudio.com/resources/shiny-dev-con/reactivity-pt-2/" class="external-link">Part 2</a>:
 <ul>
 <li>“This tutorial will go beyond the basics, explaining the philosophy behind Shiny’s reactive programming framework and exploring patterns and techniques for using it well.”</li>
 </ul>
 </li>
 <li>
-<a href="https://mastering-shiny.org">Mastering Shiny</a> by Hadley Wickham</li>
+<a href="https://mastering-shiny.org" class="external-link">Mastering Shiny</a> by Hadley Wickham</li>
 </ul>
 </div>
 <div class="footnotes">
 <hr>
 <ol>
-<li id="fn1"><p>You may wonder how Shiny decides which of the several invalidated observers/outputs to execute. The short answer is that you should act as if it’s random. Ideally, your observers and especially outputs won’t care what order they execute in, as each will function independently from the others. However, if you do have observers whose side effects must always happen in a certain relative order, you can use the <code>observe</code> function’s <code>priority</code> argument to dictate that order for observers. You can also control the priority of outputs by calling the <code><a href="https://rdrr.io/pkg/shiny/man/outputOptions.html">outputOptions()</a></code> function with a <code>priority</code> argument.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
-<li id="fn2"><p><strong>reactlog</strong> is not designed to be a code profiling tool. If you are curious why your app is slow, use <a href="https://rstudio.github.io/profvis/">the <strong>profvis</strong> package</a> to identify and address slow R code.<a href="#fnref2" class="footnote-back">↩︎</a></p></li>
+<li id="fn1"><p>You may wonder how Shiny decides which of the several invalidated observers/outputs to execute. The short answer is that you should act as if it’s random. Ideally, your observers and especially outputs won’t care what order they execute in, as each will function independently from the others. However, if you do have observers whose side effects must always happen in a certain relative order, you can use the <code>observe</code> function’s <code>priority</code> argument to dictate that order for observers. You can also control the priority of outputs by calling the <code><a href="https://rdrr.io/pkg/shiny/man/outputOptions.html" class="external-link">outputOptions()</a></code> function with a <code>priority</code> argument.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn2"><p><strong>reactlog</strong> is not designed to be a code profiling tool. If you are curious why your app is slow, use <a href="https://rstudio.github.io/profvis/" class="external-link">the <strong>profvis</strong> package</a> to identify and address slow R code.<a href="#fnref2" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
   </div>
@@ -410,11 +406,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Barret Schloerke, <a href="https://www.rstudio.com"><img src="https://www.tidyverse.org/rstudio-logo.svg" alt="RStudio" height="24"></a>.</p>
+  <p></p>
+<p>Developed by Barret Schloerke, RStudio.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>
