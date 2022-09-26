@@ -62,7 +62,7 @@ reactlog_module_ui <- function(include_refresh = TRUE, id = "reactlog_module") {
       shiny::actionButton(
         ns("refresh"),
         "",
-        icon = shiny::icon("refresh"),
+        icon = shiny::icon("arrows-rotate", lib = "font-awesome"),
         class = "btn-sm btn-warning"
       ),
     shiny::uiOutput(ns("iframe"))
