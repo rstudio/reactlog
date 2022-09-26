@@ -22,6 +22,7 @@ Imports:
     jsonlite (>= 0.9.16),
 Suggests:
     shiny (>= 1.5.0),
+    fontawesome (>= 0.3.0),
     knitr,
     rmarkdown,
     htmltools,
