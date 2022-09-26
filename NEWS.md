@@ -1,7 +1,8 @@
 # reactlog 1.1.1
 
-reactlog 1.1.0
-==========================
+- Fixed Font Awesome icon warning about `refresh` icon (#87)
+
+# reactlog 1.1.0
 
 - Added a shiny module to inline the current `reactlog`. See `?reactlog_module_ui` for an example (#66)
 - Added `reactlog_enable()` and `reactlog_disable()` which replace the need to explicitly set R options (#61)
@@ -9,7 +10,6 @@ reactlog 1.1.0
 - Allow reactlog to handle isolate calls in a non-reactive context (#68)
 
 
-reactlog 1.0.0
-==========================
+# reactlog 1.0.0
 
 Initialize package
