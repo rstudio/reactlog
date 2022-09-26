@@ -2,7 +2,8 @@
 
 #### 2022-09-19
 
-Fixed a `{fontawesome}` bug.
+* Fixed a `{fontawesome}` bug.
+* Removed `LazyData: true` from DESCRIPTION.
 
 Please let me know if there is anything else I can provide.
 
