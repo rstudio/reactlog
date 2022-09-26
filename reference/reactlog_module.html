@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">reactlog</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.1</span>
       </span>
     </div>
 
@@ -122,9 +122,6 @@ with <code>Cmd+Shift+F3</code> (Windows: <code>Ctrl+Shift+F3</code>)</p>
 <span class="r-in"><span>  <span class="fu">reactlog_module_ui</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co">### end ui module</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The `name` provided ('refresh') is deprecated in Font Awesome 6:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> * please consider using 'arrows-rotate' or 'fas fa-arrows-rotate' instead</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> * use the `verify_fa = FALSE` to deactivate these messages</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">server</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span>  <span class="va">a2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html" class="external-link">reactive</a></span><span class="op">(</span><span class="op">{</span><span class="va">a</span> <span class="op">&lt;-</span> <span class="va">input</span><span class="op">$</span><span class="va">a</span>; <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/req.html" class="external-link">req</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span>; <span class="va">a</span> <span class="op">*</span> <span class="va">a</span><span class="op">}</span>, label <span class="op">=</span> <span class="st">"a^2"</span><span class="op">)</span></span></span>
