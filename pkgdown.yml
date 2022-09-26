@@ -3,7 +3,7 @@ pkgdown: 2.0.6
 pkgdown_sha: ~
 articles:
   reactlog: reactlog.html
-last_built: 2022-09-26T15:18Z
+last_built: 2022-09-26T15:44Z
 urls:
   reference: https://rstudio.github.io/reactlog/reference
   article: https://rstudio.github.io/reactlog/articles
