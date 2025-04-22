@@ -1,3 +1,7 @@
+# reactlog 2.0.0
+
+- Migrated project license from GPL-3 to the MIT License.
+
 # reactlog 1.1.1
 
 - Fixed Font Awesome icon warning about `refresh` icon (#87)
