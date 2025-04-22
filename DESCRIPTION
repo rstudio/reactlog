@@ -27,7 +27,7 @@ Suggests:
     rmarkdown,
     htmltools,
     testthat
-License: GPL-3 | file LICENSE
+License: MIT + file LICENSE
 Encoding: UTF-8
 RoxygenNote: 7.2.1
 URL: https://rstudio.github.io/reactlog/, https://github.com/rstudio/reactlog, https://community.rstudio.com/tag/reactlog
