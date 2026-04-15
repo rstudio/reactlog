@@ -32,6 +32,6 @@ Encoding: UTF-8
 RoxygenNote: 7.2.1
 URL: https://rstudio.github.io/reactlog/, https://github.com/rstudio/reactlog, https://community.rstudio.com/tag/reactlog
 BugReports: https://github.com/rstudio/reactlog/issues
-VignetteBuilder: knitr
+VignetteBuilder: knitr, rmarkdown
 Language: en-US
 Roxygen: list(markdown = TRUE)
