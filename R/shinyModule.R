@@ -16,44 +16,41 @@
 #' @rdname reactlog_module
 #' @export
 #' @examples
-#' if (!require("shiny")) {
-#'   message("`shiny` required to run example")
-#'   return()
-#' }
+#' if (requireNamespace("shiny", quietly = TRUE)) {
+#'   library(shiny)
+#'   # Enable reactlog
+#'   reactlog_enable()
 #'
-#' library(shiny)
-#' # Enable reactlog
-#' reactlog_enable()
-#'
-#' # Define UI for app that draws a histogram ----
-#' ui <- fluidPage(
-#'   tags$h1("Pythagorean theorem"),
-#'   numericInput("a", "A", 3),
-#'   numericInput("b", "B", 4),
-#'   "C:", verbatimTextOutput("c"),
+#'   # Define UI for app that draws a histogram ----
+#'   ui <- fluidPage(
+#'     tags$h1("Pythagorean theorem"),
+#'     numericInput("a", "A", 3),
+#'     numericInput("b", "B", 4),
+#'     "C:", verbatimTextOutput("c"),
 #' ### start ui module
-#'   reactlog_module_ui()
+#'     reactlog_module_ui()
 #' ### end ui module
-#' )
+#'   )
 #'
-#' server <- function(input, output, session) {
-#'   a2 <- reactive({a <- input$a; req(a); a * a}, label = "a^2")
-#'   b2 <- reactive({b <- input$b; req(b); b * b}, label = "b^2")
-#'   c2 <- reactive({a2() + b2()}, label = "c^2")
-#'   c_val <- reactive({sqrt(c2())}, label = "c")
+#'   server <- function(input, output, session) {
+#'     a2 <- reactive({a <- input$a; req(a); a * a}, label = "a^2")
+#'     b2 <- reactive({b <- input$b; req(b); b * b}, label = "b^2")
+#'     c2 <- reactive({a2() + b2()}, label = "c^2")
+#'     c_val <- reactive({sqrt(c2())}, label = "c")
 #'
-#'   output$c <- renderText({
-#'     c_val()
-#'   })
+#'     output$c <- renderText({
+#'       c_val()
+#'     })
 #'
 #' ### start server module
-#'   reactlog_module_server()
+#'     reactlog_module_server()
 #' ### end server module
 #'
-#' }
+#'   }
 #'
-#' if (interactive()) {
-#'   shinyApp(ui = ui, server = server)
+#'   if (interactive()) {
+#'     shinyApp(ui = ui, server = server)
+#'   }
 #' }
 reactlog_module_ui <- function(include_refresh = TRUE, id = "reactlog_module") {
   ns <- shiny::NS(id)
@@ -135,13 +132,13 @@ shiny_version_required <- function() {
 test_shiny_version <- function() {
   tryCatch({
     utils::packageVersion("shiny") >= shiny_version_required()
-  }, error = function() {
+  }, error = function(e) {
     # package not found
     FALSE
   })
 }
 assert_shiny_version <- function() {
   if (!test_shiny_version()) {
-    stop("`shiny` v", shiny_version_required, " or greater must be installed")
+    stop("`shiny` v", shiny_version_required(), " or greater must be installed")
   }
 }
