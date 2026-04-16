@@ -132,7 +132,7 @@ shiny_version_required <- function() {
 test_shiny_version <- function() {
   tryCatch({
     utils::packageVersion("shiny") >= shiny_version_required()
-  }, error = function(e) {
+  }, error = function(...) {
     # package not found
     FALSE
   })
