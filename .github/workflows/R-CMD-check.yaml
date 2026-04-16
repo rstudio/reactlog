@@ -7,8 +7,8 @@ on:
     branches: [main, rc-**]
   pull_request:
     branches: [main]
-  schedule:
-    - cron: '0 8 * * 1' # every monday
+# Triggered remotely from rstudio/shinycoreci.
+  workflow_dispatch:
 
 name: Package checks
 
