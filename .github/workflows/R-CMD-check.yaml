@@ -7,7 +7,7 @@ on:
     branches: [main, rc-**]
   pull_request:
     branches: [main]
-# Triggered remotely from rstudio/shinycoreci.
+  # Triggered remotely from rstudio/shinycoreci.
   workflow_dispatch:
 
 name: Package checks
