@@ -19,3 +19,6 @@ jobs:
     uses: rstudio/shiny-workflows/.github/workflows/routine.yaml@v1
   R-CMD-check:
     uses: rstudio/shiny-workflows/.github/workflows/R-CMD-check.yaml@v1
+    with:
+      # R 4.6.0 binary is not yet available for macOS; re-enable once available
+      macOS: false
