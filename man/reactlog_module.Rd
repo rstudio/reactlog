@@ -32,11 +32,7 @@ To open the reactlog at a particular step, be sure to mark your time points
 with \code{Cmd+Shift+F3} (Windows: \code{Ctrl+Shift+F3})
 }
 \examples{
-if (!require("shiny")) {
-  message("`shiny` required to run example")
-  return()
-}
-
+if (requireNamespace("shiny", quietly = TRUE)) {
 library(shiny)
 # Enable reactlog
 reactlog_enable()
@@ -70,6 +66,7 @@ server <- function(input, output, session) {
 
 if (interactive()) {
   shinyApp(ui = ui, server = server)
+}
 }
 }
 \seealso{

@@ -16,11 +16,7 @@
 #' @rdname reactlog_module
 #' @export
 #' @examples
-#' if (!require("shiny")) {
-#'   message("`shiny` required to run example")
-#'   return()
-#' }
-#'
+#' if (requireNamespace("shiny", quietly = TRUE)) {
 #' library(shiny)
 #' # Enable reactlog
 #' reactlog_enable()
@@ -54,6 +50,7 @@
 #'
 #' if (interactive()) {
 #'   shinyApp(ui = ui, server = server)
+#' }
 #' }
 reactlog_module_ui <- function(include_refresh = TRUE, id = "reactlog_module") {
   ns <- shiny::NS(id)
@@ -135,7 +132,7 @@ shiny_version_required <- function() {
 test_shiny_version <- function() {
   tryCatch({
     utils::packageVersion("shiny") >= shiny_version_required()
-  }, error = function() {
+  }, error = function(e) {
     # package not found
     FALSE
   })
