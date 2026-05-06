@@ -18,7 +18,7 @@ jobs:
   routine:
     uses: rstudio/shiny-workflows/.github/workflows/routine.yaml@v1
     with:
-      node-version: "20"
+      node-version: "16"
   R-CMD-check:
     uses: rstudio/shiny-workflows/.github/workflows/R-CMD-check.yaml@v1
     with:
