@@ -1,4 +1,4 @@
-# reactlog 2.0.0
+# reactlog (development)
 
 - Migrated project license from GPL-3 to the MIT License.
 
