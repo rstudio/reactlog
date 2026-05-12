@@ -2,21 +2,21 @@
   "index_name": "rstudio_reactlog",
   "start_urls": [
     {
-      "url": "https://rstudio.github.io/reactlog//index.html",
+      "url": "https://rstudio.github.io/reactlog/index.html",
       "selectors_key": "homepage",
       "tags": [
         "homepage"
       ]
     },
     {
-      "url": "https://rstudio.github.io/reactlog//reference",
+      "url": "https://rstudio.github.io/reactlog/reference",
       "selectors_key": "reference",
       "tags": [
         "reference"
       ]
     },
     {
-      "url": "https://rstudio.github.io/reactlog//articles",
+      "url": "https://rstudio.github.io/reactlog/articles",
       "selectors_key": "articles",
       "tags": [
         "articles"
@@ -30,7 +30,7 @@
     "/articles/index.html"
   ],
   "sitemap_urls": [
-    "https://rstudio.github.io/reactlog//sitemap.xml"
+    "https://rstudio.github.io/reactlog/sitemap.xml"
   ],
   "selectors": {
     "homepage": {
