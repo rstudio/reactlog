@@ -4,4 +4,4 @@
 # ignore dev dependencies
 yarn flow-typed install --skip true --ignoreDeps dev || true
 
-yarn build-only
+NODE_OPTIONS=--openssl-legacy-provider yarn build-only
