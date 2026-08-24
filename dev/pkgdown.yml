@@ -1,9 +1,9 @@
 pandoc: 3.8.3
-pkgdown: 2.2.0
+pkgdown: 2.2.1
 pkgdown_sha: ~
 articles:
   reactlog: reactlog.html
-last_built: 2026-05-14T17:41Z
+last_built: 2026-08-24T08:21Z
 urls:
   reference: https://rstudio.github.io/reactlog/reference
   article: https://rstudio.github.io/reactlog/articles
