@@ -595,6 +595,9 @@ class Graph {
       case LogStates.asyncStart:
       case LogStates.asyncStop:
       case LogStates.userMark:
+      // shown in the status bar only. Its `ctxId` has no "ctx" prefix, but
+      // nothing here reads it
+      case LogStates.invalidateLater:
         // do nothing
         // this[data.action] = data.step;
         break;

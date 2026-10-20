@@ -239,9 +239,9 @@ layout. `resize()` calls `atTick(curTick, {fit: true, forceRedraw: true})`.
   `filteredGraphAtStep()` runs once per entry per redraw. Keep it cheap.
 - **`expectPrevStatus()` throws.** An end action without its matching start
   (same `ctxId`) on top of `statusArr` stops the replay.
-- **Unknown actions only log.** `invalidateLater` is in `LogStates` but has no
-  `case` in `addEntry()`, so it logs `console.error` on every replay that
-  passes it. Add a `case` when adding a new log action, and also update
+- **Unknown actions only log.** An action with no `case` in `addEntry()` logs
+  `console.error` on every replay that passes it. Add a `case` when adding a
+  new log action, and also update
   `initStepInfo()` and `updateFilteredStepsVisible()` (the latter throws on
   unknown actions).
 - **Layout skip uses counts only.** Swapping one edge for another (new
