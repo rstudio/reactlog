@@ -1,17 +1,14 @@
 {
   "private": true,
   "scripts": {
-    "flow-report": "flow-coverage-report",
-    "flow-report-and-echo": "./bin/flow_report.sh",
-    "flow-status": "flow status",
-    "flow-stop": "flow stop",
     "lint": "./bin/lint_file.sh",
     "fix": "./bin/clean_rlog_file.sh",
-    "fix-all": "npm run fix -- srcjs/*.js srcjs/**/*.js",
-    "lint-all": "npm run lint -- srcjs/*.js srcjs/**/*.js",
-    "build": "npm run lint-all && npm run build-only",
-    "build-only": "NODE_OPTIONS=--openssl-legacy-provider grunt",
-    "watch": "npm run lint-all && NODE_OPTIONS=--openssl-legacy-provider grunt webpackSetWatch default",
+    "fix-all": "npm run fix -- srcjs/*.ts srcjs/**/*.ts",
+    "lint-all": "npm run lint -- srcjs/*.ts srcjs/**/*.ts",
+    "typecheck": "tsc -p .",
+    "build": "npm run typecheck && npm run build-only",
+    "build-only": "esbuild srcjs/index.ts --bundle --minify --sourcemap --target=es2017 --outfile=inst/reactlog/reactlogAsset/reactlog.js",
+    "watch": "npm run build-only -- --watch",
     "update-license": "node ./bin/update-license.js > LICENSE.note",
     "postinstall": "./bin/postinstall.sh",
     "lint-staged": "lint-staged",
@@ -22,42 +19,27 @@
     "concurrent": false,
     "linters": {
       "R/*.R": "Rscript -e \"devtools::load_all(); devtools::lint(cache = FALSE) -> lints; if(length(lints) > 0) print(lints); testthat::expect_equal(length(lints), 0)\"",
-      ".flowconfig": "npm run flow-report-and-echo",
-      "srcjs/**/*.js": ["npm run fix --", "npm run flow-report-and-echo", "npm run git_add_compiled --"]
+      "srcjs/**/*.ts": [
+        "npm run fix --",
+        "npm run git_add_compiled --"
+      ]
     }
-  },
-  "flow-coverage-report": {
-    "globIncludePatterns": "srcjs/**/*.js",
-    "globExcludeGlob": ["srcjs/utils/Console.js", "srcjs/cyto/layoutOptions.js", "srcjs/log/initStep.js", "srcjs/rlog.js"],
-    "threshold": 95,
-    "reportType": "text"
   },
   "devDependencies": {
     "@babel/core": "7.x",
-    "@babel/plugin-proposal-class-properties": "7.x",
-    "@babel/preset-env": "7.x",
-    "@babel/preset-flow": "7.x",
+    "@types/jquery": "^3.5.34",
+    "@types/lodash": "^4.17.26",
     "babel-eslint": "10.x",
-    "babel-loader": "8.x",
-    "duplicate-package-checker-webpack-plugin": "3.x",
+    "esbuild": "^0.28.2",
     "eslint": "5.x",
     "eslint-plugin-flowtype": "3.x",
-    "flow-bin": "^0.86.0",
-    "flow-coverage-report": "0.6.x",
-    "flow-typed": "^2.5.1",
-    "grunt": "1.x",
-    "grunt-cli": "1.x",
-    "grunt-webpack": "3.x",
     "license-checker": "^25.0.1",
     "lint-staged": "8.x",
     "pre-commit": "^1.2.2",
     "prettier": "1.x",
-    "webpack": "4.x",
-    "webpack-bundle-analyzer": "3.x"
+    "typescript": "^7.0.2"
   },
   "dependencies": {
-    "@babel/polyfill": "^7.2.5",
-    "core-js": "2",
     "cytoscape": "3.x",
     "cytoscape-dagre": "2.x",
     "jquery": "3.x",
