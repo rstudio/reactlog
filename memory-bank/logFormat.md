@@ -168,9 +168,6 @@ loaded (after session filtering). `GraphAtStep` depends on that: it reads
   `window.log = [...]` form. Copy one over `defaultLog.js` to try it. Only
   `crandash` has `createContext` entries. None has `invalidateLater` or
   `updateNodeLabel`.
-- `inst/log-files/old_log.js` is a pre-version-1 log (`let log = ...`, actions
-  like `ctx`, `dep`, `invalidate`, `id` instead of `reactId`). The current app
-  cannot read it. No code uses it.
 
 ## Adding a new action
 
