@@ -189,7 +189,7 @@ This keeps snapshots stable. `reactlog_module_server()` (`R/shinyModule.R`) adds
 
 ## Pitfalls
 
-- `atTick` does not clamp. `tick.js` `nextTick` allows `curTick + 1 === log.length`, which reads past the end of the log.
+- `atTick` does not clamp, so callers must keep `curTick` within `0` to `log.length - 1` (`tick.js` does).
 - Keys use the old `e.which` codes (for example `83` for `s`). Use the same style for new branches so the handler stays readable as one list.
 - Letter shortcuts do not check modifiers, so Ctrl/Cmd + `s`, `l` or `f` also run them.
 - Moves that use `filteredStepsVisible` (step, idle, output calc) respect the search filter; user marks, ticks, the timeline and `firstStep`/`lastStep` do not.
