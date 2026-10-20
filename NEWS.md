@@ -4,6 +4,8 @@
 
 - Documented that `reactlog_show()` passes `...` on to `reactlog_render()`, so `session_token` can be set from `reactlog_show()`. The docs used to say `...` was ignored (#120)
 
+- Fixed `reactlog_render()` printing "Loading required namespace: shiny" (#120)
+
 # reactlog 1.1.1
 
 - Fixed Font Awesome icon warning about `refresh` icon (#87)
