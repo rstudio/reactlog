@@ -37,7 +37,7 @@
     "lint-staged": "8.x",
     "pre-commit": "^1.2.2",
     "prettier": "1.x",
-    "typescript": "^7.0.2"
+    "typescript": "~6.0.3"
   },
   "dependencies": {
     "cytoscape": "3.x",
