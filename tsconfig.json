@@ -10,5 +10,6 @@
     "isolatedModules": true,
     "esModuleInterop": true
   },
-  "include": ["srcts"]
+  "include": ["srcts"],
+  "exclude": ["srcts/__tests__"]
 }

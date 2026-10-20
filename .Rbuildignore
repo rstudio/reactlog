@@ -12,6 +12,7 @@
 ^prettier\.config\.js$
 ^package-lock\.json$
 ^tsconfig\.json$
+^tsconfig\.test\.json$
 ^CODE_OF_CONDUCT\.md$
 ^node_modules
 ^bin
