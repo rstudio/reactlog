@@ -1,6 +1,6 @@
 ---
 title: "CI, website, and release"
-description: "How reactlog's GitHub Actions work (the reusable rstudio/shiny-workflows jobs, what `routine` auto-commits, remote runs from rstudio/shinycoreci), how the pkgdown site gets the live demo and readme gifs, and the files used for a CRAN release (DESCRIPTION version, NEWS.md, cran-comments.md, revdep/, scripts/rhub.R, .Rbuildignore). Read before changing CI, the website, docs, or cutting a release."
+description: "How reactlog's GitHub Actions work (the reusable rstudio/shiny-workflows jobs, what `routine` auto-commits, remote runs from rstudio/shinycoreci), how the pkgdown site gets the live demo and readme gifs, and the files used for a CRAN release (DESCRIPTION version, NEWS.md, cran-comments.md, revdep/, .Rbuildignore). Read before changing CI, the website, docs, or cutting a release."
 ---
 
 # CI, website, and release
@@ -24,8 +24,7 @@ Key files:
 | `NEWS.md` | Changelog. Top heading is `# reactlog (development)` |
 | `cran-comments.md` | Notes sent with the last CRAN submission (1.1.1, 2022) |
 | `revdep/` | Saved `revdepcheck` results from the 1.1.1 release |
-| `scripts/rhub.R` | Old helper that sends a build to R-hub CRAN platforms |
-| `.Rbuildignore` | Keeps JS sources, site files, scripts, agent docs out of the CRAN tarball |
+| `.Rbuildignore` | Keeps JS sources, site files, agent docs out of the CRAN tarball |
 | `.lintr` | lintr config used by `routine` and the pre-commit hook |
 | `vignettes/reactlog.Rmd`, `vignettes/images/` | The one vignette and its committed images |
 
@@ -152,8 +151,8 @@ will otherwise keep rewriting.
   which checks the log format version (only `"1"`).
 - `NEWS.md` starts with `# reactlog (development)`. CONTRIBUTING asks for a
   NEWS entry per user-facing change.
-- `cran-comments.md`, `revdep/*.md` and `scripts/rhub.R` are left over from the
-  1.1.1 release and are not run by CI.
+- `cran-comments.md` and `revdep/*.md` are left over from the 1.1.1 release;
+  refresh them at the next release.
 
 ### Release steps (from the files above)
 
@@ -163,7 +162,7 @@ will otherwise keep rewriting.
 2. Rename `# reactlog (development)` in `NEWS.md` if `routine` added a new heading above it.
 3. Make sure the committed JS bundle is current ([jsBuild.md](jsBuild.md)).
 4. Run reverse dependency checks (shiny is the only revdep) and refresh `revdep/`.
-5. Optionally run `scripts/rhub.R`; check with win-builder.
+5. Optionally run `rhub::rhub_check()` (rhub 2.x, GitHub Actions based); check with win-builder.
 6. Update `cran-comments.md` (date, environments, results) and submit.
 7. After acceptance, tag `vX.Y.Z`, make a GitHub release, and bump
    `DESCRIPTION` to `X.Y.Z.9000` with a new `# reactlog (development)` heading.
@@ -172,7 +171,7 @@ will otherwise keep rewriting.
 
 Keeps out of the tarball: `srcjs`, `bin`, `node_modules`, JS config files,
 `package.json`/`package-lock.json`, `*.js.map`, `inst/log-files`, `inst/gantt`,
-`readme-images`, `logo`, `pkgdown`, `revdep`, `scripts`, `.github`,
+`readme-images`, `logo`, `pkgdown`, `revdep`, `.github`,
 `cran-comments.md`, `AGENTS.md`, `.agents`, `.claude`, `memory-bank`,
 `.context` (Conductor workspace files) and `.git` (a worktree's `.git` is a
 file, which R CMD build does not skip on its own). Add new top-level dev files
@@ -195,6 +194,3 @@ here.
   roxygen docs and check `pkgdown::build_reference_index()`.
 - Keep the `shiny` version in `DESCRIPTION` `Suggests` correct: the depends-only
   job checks without it, and `shiny_version_required()` reads it at runtime.
-- `scripts/rhub.R` uses the old rhub v1 API (`rhub::check_for_cran()`,
-  `rhub:::build_package()`). rhub 2.x moved to GitHub Actions based checks
-  (`rhub::rhub_check()`), so expect to rewrite it.

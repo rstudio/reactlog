@@ -131,7 +131,7 @@ on unchanged sources gives a byte-identical bundle, so a diff in `inst/` after
 building means the sources or the installed packages changed.
 
 `.Rbuildignore` keeps the JS toolchain out of the R tarball: `^srcjs`,
-`^node_modules`, `^bin`, `^scripts`, `^flow-typed`, `^package\.json$`,
+`^node_modules`, `^bin`, `^flow-typed`, `^package\.json$`,
 `^package-lock\.json$`, `^Gruntfile\.js$`, `^\.babelrc$`, `^\.eslintrc\.js$`,
 `^\.flowconfig$`, `^prettier\.config\.js$`, `^inst/log-files`, and
 `.*\.js\.map$`. The last one means the source map is in git but not in the R
