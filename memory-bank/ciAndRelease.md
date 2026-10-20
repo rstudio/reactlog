@@ -15,7 +15,8 @@ Key files:
 
 | File | Role |
 | --- | --- |
-| `.github/workflows/R-CMD-check.yaml` | The only workflow ("Package checks"). Calls `website`, `routine`, `R-CMD-check` from shiny-workflows `@v1` |
+| `.github/workflows/R-CMD-check.yaml` | "Package checks". Calls `website`, `routine`, `R-CMD-check` from shiny-workflows `@v1` |
+| `.github/workflows/shiny-target.yaml` | "Shiny build target". Runs `npm run check-shiny-target` on build-config PRs and weekly (see [jsBuild.md](jsBuild.md)) |
 | `.github/shiny-workflows/website.R` | Hook run by the `website` job before pkgdown builds. Copies the demo and readme gifs into `pkgdown/assets/` |
 | `pkgdown/_pkgdown.yml` | pkgdown config: site URL, docsearch, `development: mode: auto` |
 | `pkgdown/favicon/` | Site favicons |

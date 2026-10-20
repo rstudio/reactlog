@@ -31,13 +31,14 @@ blank lines.
 | File | Role |
 | --- | --- |
 | `package.json` | npm scripts, `pre-commit` / `lint-staged` hook config, dependencies |
-| `tsconfig.json` | `tsc` settings: `noEmit`, `target` es2017, `moduleResolution` bundler, `strict` off |
+| `tsconfig.json` | `tsc` settings: `noEmit`, `target` es2021, `moduleResolution` bundler, `strict` off |
 | `srcts/modules.d.ts` | `declare module` for untyped `cytoscape` / `cytoscape-dagre`, and the `window` globals |
 | `srcts/cyto/cytoFlowType.ts` | Hand-written types for the parts of cytoscape the app uses |
 | `eslint.config.mjs` / `prettier.config.js` | Lint and format rules |
 | `bin/lint_file.sh` | `eslint --fix` then `prettier --write` on the given files |
 | `bin/clean_rlog_file.sh` | Lint the given files, `typecheck`, then `build-only` |
 | `bin/postinstall.sh` | Runs `npm run build-only` |
+| `bin/check_shiny_target.js` | Fails if our tsc / esbuild target differs from rstudio/shiny's |
 | `bin/update-license.js` | Prints a third-party license list (not used today, see below) |
 | `inst/reactlog/reactlogAsset/reactlog.js` (+ `.map`) | The committed build output |
 | `inst/reactlog/reactlog.html`, `inst/reactlog/defaultLog.js` | Page and sample log for the local dev loop |
@@ -45,7 +46,7 @@ blank lines.
 ## npm scripts
 
 - `build-only`: `esbuild srcts/index.ts --bundle --minify --sourcemap
-  --target=es2017 --outfile=inst/reactlog/reactlogAsset/reactlog.js`. Takes
+  --target=es2021 --outfile=inst/reactlog/reactlogAsset/reactlog.js`. Takes
   well under a second. esbuild strips types without checking them.
 - `typecheck`: `tsc -p .`. Writes nothing.
 - `build`: `lint-all`, then `typecheck`, then `build-only`. `lint-all` runs
@@ -57,6 +58,8 @@ blank lines.
 - `lint` / `fix`: `bin/lint_file.sh` / `bin/clean_rlog_file.sh` on files you
   pass after `--`. `lint` with no files exits with an error.
 - `fix-all`: `fix` on every `srcts` file.
+- `check-shiny-target`: `bin/check_shiny_target.js` (see below). Needs
+  network access.
 - `postinstall`: `bin/postinstall.sh`, so `npm install` / `npm ci` also builds.
 - `update-license`, `lint-staged`, `git_add_compiled`: used by the license
   script and the commit hook below.
@@ -75,8 +78,24 @@ blank lines.
   changes the runtime.
 - jQuery and lodash use `@types/jquery` (v3, to match jQuery 3) and
   `@types/lodash`.
-- No polyfills. The old build added `@babel/polyfill` / core-js 2; the target
-  is now es2017, which RStudio and every current browser support.
+- No polyfills, like rstudio/shiny. The old build added `@babel/polyfill` /
+  core-js 2.
+
+## Matching rstudio/shiny's target
+
+The tsc `target` (and `lib`) in `tsconfig.json` and esbuild's `--target` in the
+`build-only` script match rstudio/shiny: es2021 in shiny's `tsconfig.json` and
+`srcts/build/_build.ts`. The viewer only opens from a Shiny app, so its browser
+already runs Shiny's code; an older target gains nothing.
+
+`npm run check-shiny-target` fetches those two shiny files from GitHub (`main`,
+or pass a ref: `node bin/check_shiny_target.js v1.11.0`), prints all four
+targets, and exits 1 if any differ. `.github/workflows/shiny-target.yaml` runs
+it on PRs that touch `tsconfig.json`, `package.json`, the script, or the
+workflow, every Monday, and on demand. When it fails because shiny moved,
+update `target` and `lib` in `tsconfig.json` and `--target` in `build-only`,
+run `npm run build`, and check the viewer in a browser. It does not compare
+`lib`, so keep that in step by hand.
 
 ## eslint and prettier
 

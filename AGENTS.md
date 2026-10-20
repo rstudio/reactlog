@@ -19,6 +19,7 @@ npm run typecheck              # tsc, no output files
 npm run build                  # eslint --fix + prettier on srcts, typecheck, then build
 npm run watch                  # lint, then rebuild on change (no type check)
 npm run lint -- srcts/foo.ts   # eslint --fix + prettier on given files
+npm run check-shiny-target     # fail if tsc/esbuild target differs from rstudio/shiny (needs network)
 ```
 
 R:
