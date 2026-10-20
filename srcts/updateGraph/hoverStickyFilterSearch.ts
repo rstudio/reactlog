@@ -8,52 +8,52 @@ import type { SomeGraphData } from "../graph/Graph";
 
 import type { CytoscapeOptions } from "../cyto/cytoFlowType";
 
-let hoverData = function(
+let hoverData = function (
   data: SomeGraphData,
   cytoOptions: CytoscapeOptions = {}
 ) {
   rlog.getGraph.updateHoverData(data);
   return updateGraph(rlog.curTick, cytoOptions);
 };
-let hoverDataReset = function(cytoOptions: CytoscapeOptions = {}) {
+let hoverDataReset = function (cytoOptions: CytoscapeOptions = {}) {
   rlog.getGraph.updateHoverDataReset();
   return updateGraph(rlog.curTick, cytoOptions);
 };
-let stickyDatas = function(
+let stickyDatas = function (
   datas: Array<SomeGraphData>,
   cytoOptions: CytoscapeOptions = {}
 ) {
   rlog.getGraph.updateStickyDatas(datas);
   return updateGraph(rlog.curTick, cytoOptions);
 };
-let stickyDatasReset = function(cytoOptions: CytoscapeOptions = {}) {
+let stickyDatasReset = function (cytoOptions: CytoscapeOptions = {}) {
   rlog.getGraph.updateStickyDatasReset();
   return updateGraph(rlog.curTick, cytoOptions);
 };
-let filterDatas = function(
+let filterDatas = function (
   datas: Array<SomeGraphData>,
   cytoOptions: CytoscapeOptions = {}
 ) {
   rlog.getGraph.updateFilterDatas(datas);
   return updateGraph(rlog.curTick, _assign({ fit: true }, cytoOptions));
 };
-let filterDatasReset = function(cytoOptions: CytoscapeOptions = {}) {
+let filterDatasReset = function (cytoOptions: CytoscapeOptions = {}) {
   rlog.getGraph.updateFilterDatasReset();
   return updateGraph(rlog.curTick, _assign({ fit: true }, cytoOptions));
 };
-let searchRegex = function(
+let searchRegex = function (
   searchRegex: RegExp,
   cytoOptions: CytoscapeOptions = {}
 ) {
   rlog.getGraph.updateSearchRegex(searchRegex);
   return updateGraph(rlog.curTick, _assign({ fit: true }, cytoOptions));
 };
-let searchRegexReset = function(cytoOptions: CytoscapeOptions = {}) {
+let searchRegexReset = function (cytoOptions: CytoscapeOptions = {}) {
   $("#search").val("");
   rlog.getGraph.updateSearchRegexReset();
   return updateGraph(rlog.curTick, _assign({ fit: true }, cytoOptions));
 };
-let resetHoverStickyFilterData = function(cytoOptions: CytoscapeOptions = {}) {
+let resetHoverStickyFilterData = function (cytoOptions: CytoscapeOptions = {}) {
   rlog.getGraph.resetHoverStickyFilterSearch();
   return updateGraph(rlog.curTick, _assign({ fit: true }, cytoOptions));
 };

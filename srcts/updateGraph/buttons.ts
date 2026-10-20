@@ -5,31 +5,31 @@ import * as idle from "./idle";
 
 import type { CytoscapeOptions } from "../cyto/cytoFlowType";
 
-let buttonPrevMark = function(cytoOptions: CytoscapeOptions = {}) {
+let buttonPrevMark = function (cytoOptions: CytoscapeOptions = {}) {
   return userMarks.prevUserMark() || step.firstStep();
 };
-let buttonNextMark = function(cytoOptions: CytoscapeOptions = {}) {
+let buttonNextMark = function (cytoOptions: CytoscapeOptions = {}) {
   return userMarks.nextUserMark() || step.lastStep();
 };
 
-let buttonPrevIdle = function(cytoOptions: CytoscapeOptions = {}) {
+let buttonPrevIdle = function (cytoOptions: CytoscapeOptions = {}) {
   return idle.prevIdle() || step.firstStep();
 };
-let buttonNextIdle = function(cytoOptions: CytoscapeOptions = {}) {
+let buttonNextIdle = function (cytoOptions: CytoscapeOptions = {}) {
   return idle.nextIdle() || step.lastStep();
 };
 
-let buttonPrevOutputCalc = function(cytoOptions: CytoscapeOptions = {}) {
+let buttonPrevOutputCalc = function (cytoOptions: CytoscapeOptions = {}) {
   return outputCalc.prevOutputCalc() || step.firstStep();
 };
-let buttonNextOutputCalc = function(cytoOptions: CytoscapeOptions = {}) {
+let buttonNextOutputCalc = function (cytoOptions: CytoscapeOptions = {}) {
   return outputCalc.nextOutputCalc() || step.lastStep();
 };
 
-let buttonPrevStep = function(cytoOptions: CytoscapeOptions = {}) {
+let buttonPrevStep = function (cytoOptions: CytoscapeOptions = {}) {
   return step.prevStep(cytoOptions) || step.firstStep();
 };
-let buttonNextStep = function(cytoOptions: CytoscapeOptions = {}) {
+let buttonNextStep = function (cytoOptions: CytoscapeOptions = {}) {
   return step.nextStep(cytoOptions) || step.lastStep();
 };
 

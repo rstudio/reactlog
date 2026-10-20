@@ -33,18 +33,18 @@ import type {
 import { inTestMode, shinytest } from "../utils/shinytest";
 
 let containers: {
-  container: JQuery,
-  time: JQuery,
-  session: JQuery,
-  step: JQuery,
-  status: JQuery,
+  container: JQuery;
+  time: JQuery;
+  session: JQuery;
+  step: JQuery;
+  status: JQuery;
 };
 let timeDecimalDigits = 4;
 let logInfo: {
-  logLength: number,
-  firstTime: number,
-  lastTimeCharLength: number,
-  maxSessionCharLength: number,
+  logLength: number;
+  firstTime: number;
+  lastTimeCharLength: number;
+  maxSessionCharLength: number;
 } = {
   logLength: 0,
   firstTime: 0,
@@ -52,7 +52,7 @@ let logInfo: {
   maxSessionCharLength: 0,
 };
 
-let updateLogEntry = function(): void {
+let updateLogEntry = function (): void {
   if (logInfo.logLength === 0) return;
 
   let curEntry = rlog.log[rlog.curTick];
@@ -79,7 +79,7 @@ let updateLogEntry = function(): void {
     }
   }
 
-  let stepDisplayValPadding = function(i) {
+  let stepDisplayValPadding = function (i) {
     return `${i}`.padStart(`${logInfo.logLength}`.length, " ");
   };
 
@@ -113,7 +113,7 @@ let updateLogEntry = function(): void {
   containers.container.text(JSON.stringify(rlog.log[rlog.curTick], null, "  "));
 };
 
-let setContainers = function(
+let setContainers = function (
   time: JQuery,
   session: JQuery,
   step: JQuery,
@@ -154,7 +154,7 @@ let setContainers = function(
   };
 };
 
-let getLabel = function(reactId: ReactIdType): string {
+let getLabel = function (reactId: ReactIdType): string {
   let node = rlog.graph.nodes.get(reactId);
   if (node) {
     return node.label;
@@ -162,23 +162,23 @@ let getLabel = function(reactId: ReactIdType): string {
     return reactId;
   }
 };
-let getReactIdLabel = function(entry: LogEntryHasReactId) {
+let getReactIdLabel = function (entry: LogEntryHasReactId) {
   return getLabel(entry.reactId);
 };
-let getEntryValue = function(entry: LogEntryValueChangeType) {
+let getEntryValue = function (entry: LogEntryValueChangeType) {
   return entry.value;
 };
-let getContextId = function(entry: LogEntryCreateContextType) {
+let getContextId = function (entry: LogEntryCreateContextType) {
   return entry.ctxId;
 };
 
-let monospaced = function(txt: string | number) {
+let monospaced = function (txt: string | number) {
   return `<span class="monospaced">${txt}</span>`;
 };
-let statusForEntry = function(entry: LogEntryAnyType): string {
+let statusForEntry = function (entry: LogEntryAnyType): string {
   switch (entry.action) {
     case LogStates.createContext: {
-      let contextEntry = (entry as LogEntryCreateContextType);
+      let contextEntry = entry as LogEntryCreateContextType;
       return `Create Context: ${monospaced(getContextId(contextEntry))}`;
     }
     case LogStates.asyncStart: {
@@ -188,17 +188,17 @@ let statusForEntry = function(entry: LogEntryAnyType): string {
       return "Stop asynchronous calculations";
     }
     case LogStates.define: {
-      let defineEntry = (entry as LogEntryDefineType);
+      let defineEntry = entry as LogEntryDefineType;
       return `Defined ${monospaced(getReactIdLabel(defineEntry))}`;
     }
     case LogStates.dependsOn: {
-      let dependsOnEntry = (entry as LogEntryDependsOnType);
+      let dependsOnEntry = entry as LogEntryDependsOnType;
       return `${monospaced(
         getReactIdLabel(dependsOnEntry)
       )} depends on ${monospaced(getLabel(dependsOnEntry.depOnReactId))}`;
     }
     case LogStates.dependsOnRemove: {
-      let dependsOnRemoveEntry = (entry as LogEntryDependsOnRemoveType);
+      let dependsOnRemoveEntry = entry as LogEntryDependsOnRemoveType;
       return `${monospaced(
         getReactIdLabel(dependsOnRemoveEntry)
       )} removes dependency on ${monospaced(
@@ -206,55 +206,56 @@ let statusForEntry = function(entry: LogEntryAnyType): string {
       )}`;
     }
     case LogStates.enter: {
-      let enterEntry = (entry as LogEntryEnterType);
+      let enterEntry = entry as LogEntryEnterType;
       return `${monospaced(getReactIdLabel(enterEntry))} started calculating`;
     }
     case LogStates.exit: {
-      let exitEntry = (entry as LogEntryExitType);
+      let exitEntry = entry as LogEntryExitType;
       return `${monospaced(getReactIdLabel(exitEntry))} stopped calculating`;
     }
     case LogStates.freeze: {
-      let frozenEntry = (entry as LogEntryFreezeType);
+      let frozenEntry = entry as LogEntryFreezeType;
       return `${monospaced(getReactIdLabel(frozenEntry))} froze`;
     }
     case LogStates.invalidateLater: {
-      let invalidateLaterEntry = (entry as LogEntryInvalidateLaterType);
+      let invalidateLaterEntry = entry as LogEntryInvalidateLaterType;
       return `${monospaced(
         getReactIdLabel(invalidateLaterEntry)
       )} will invalidate in ${monospaced(invalidateLaterEntry.millis)}ms`;
     }
     case LogStates.invalidateEnd: {
-      let invalidateEndEntry = (entry as LogEntryInvalidateEndType);
+      let invalidateEndEntry = entry as LogEntryInvalidateEndType;
       return `${monospaced(
         getReactIdLabel(invalidateEndEntry)
       )} has invalidated`;
     }
     case LogStates.invalidateStart: {
-      let invalidateStartEntry = (entry as LogEntryInvalidateStartType);
+      let invalidateStartEntry = entry as LogEntryInvalidateStartType;
       return `${monospaced(
         getReactIdLabel(invalidateStartEntry)
       )} is invalidating`;
     }
     case LogStates.isolateEnter: {
-      let isolateEnterEntry = (entry as LogEntryIsolateEnterType);
+      let isolateEnterEntry = entry as LogEntryIsolateEnterType;
       return `${monospaced(
         getReactIdLabel(isolateEnterEntry)
       )} is isolating future dependencies`;
     }
     case LogStates.isolateExit: {
-      let isolateExitEntry = (entry as LogEntryIsolateExitType);
+      let isolateExitEntry = entry as LogEntryIsolateExitType;
       return `${monospaced(
         getReactIdLabel(isolateExitEntry)
       )} stopped isolating future dependencies`;
     }
     case LogStates.isolateInvalidateEnd: {
-      let isolateInvalidateEndEntry = (entry as LogEntryIsolateInvalidateEndType);
+      let isolateInvalidateEndEntry = entry as LogEntryIsolateInvalidateEndType;
       return `${monospaced(
         getReactIdLabel(isolateInvalidateEndEntry)
       )} invalidated during an isolate call`;
     }
     case LogStates.isolateInvalidateStart: {
-      let isolateInvalidateStartEntry = (entry as LogEntryIsolateInvalidateStartType);
+      let isolateInvalidateStartEntry =
+        entry as LogEntryIsolateInvalidateStartType;
       return `${monospaced(
         getReactIdLabel(isolateInvalidateStartEntry)
       )} is invalidating during an isolate call`;
@@ -266,17 +267,17 @@ let statusForEntry = function(entry: LogEntryAnyType): string {
       return `Shiny App idle`;
     }
     case LogStates.thaw: {
-      let thawEntry = (entry as LogEntryThawType);
+      let thawEntry = entry as LogEntryThawType;
       return `${monospaced(getReactIdLabel(thawEntry))} has thawed`;
     }
     case LogStates.updateNodeLabel: {
-      let updateNodeLabelEntry = (entry as LogEntryUpdateNodeLabelType);
+      let updateNodeLabelEntry = entry as LogEntryUpdateNodeLabelType;
       return `Set label to ${monospaced(
         getReactIdLabel(updateNodeLabelEntry)
       )}`;
     }
     case LogStates.valueChange: {
-      let valueChangeEntry = (entry as LogEntryValueChangeType);
+      let valueChangeEntry = entry as LogEntryValueChangeType;
       return `${monospaced(
         getReactIdLabel(valueChangeEntry)
       )} has a new value: ${monospaced(getEntryValue(valueChangeEntry))}`;

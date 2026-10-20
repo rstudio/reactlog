@@ -43,22 +43,22 @@ import type { CytoscapeType, CytoEvent } from "./cytoFlowType";
 //   return familyEles;
 // }
 
-let isCore = function(
+let isCore = function (
   target: CytoEvent["target"],
   cyto: CytoscapeType
 ): target is CytoscapeType {
   return target === cyto;
 };
 
-let onMouseOver = function(cyto: CytoscapeType) {
-  return function(evt: CytoEvent) {
+let onMouseOver = function (cyto: CytoscapeType) {
+  return function (evt: CytoEvent) {
     let target = evt.target;
     if (isCore(target, cyto)) return;
 
     // highlight all outgoer's outgoers and all incomer's incomers and self
 
     let hasCalled = false;
-    let debounced = _debounce(function() {
+    let debounced = _debounce(function () {
       hasCalled = true;
       updateGraph.hoverData(target.data());
     }, 200);
@@ -66,7 +66,7 @@ let onMouseOver = function(cyto: CytoscapeType) {
 
     // if a mouseout occurs before the function is executed, cancel it
     // works as mouseout is always called before mouseover
-    target.once("mouseout", function(evtOut) {
+    target.once("mouseout", function (evtOut) {
       debounced.cancel();
       if (hasCalled) {
         // only remove hover if hover added
@@ -76,10 +76,10 @@ let onMouseOver = function(cyto: CytoscapeType) {
   };
 };
 
-let onClick = function(cyto: CytoscapeType) {
+let onClick = function (cyto: CytoscapeType) {
   let cytoClickedBefore, cytoClickedTimeout;
 
-  return function(evt: CytoEvent) {
+  return function (evt: CytoEvent) {
     // remove focus on search
     $("#search").blur();
 
@@ -97,7 +97,7 @@ let onClick = function(cyto: CytoscapeType) {
       cytoClickedBefore = null;
       return;
     } else {
-      cytoClickedTimeout = setTimeout(function() {
+      cytoClickedTimeout = setTimeout(function () {
         cytoClickedBefore = null;
       }, 400);
       cytoClickedBefore = target;
@@ -116,8 +116,8 @@ let onClick = function(cyto: CytoscapeType) {
   };
 };
 
-let onDblClick = function(cyto: CytoscapeType) {
-  return function(evt: CytoEvent) {
+let onDblClick = function (cyto: CytoscapeType) {
+  return function (evt: CytoEvent) {
     //, originalEvt: Event) {
     // console.log("dbl click!!");
     // console.log("dbl click!!", evt, originalEvt);
@@ -153,7 +153,7 @@ let onDblClick = function(cyto: CytoscapeType) {
   };
 };
 
-let addOnMethods = function(cyto: CytoscapeType) {
+let addOnMethods = function (cyto: CytoscapeType) {
   cyto.on("mouseover", onMouseOver(cyto));
 
   // "normalised tap event (either click, or touchstart followed by touchend without touchmove)"

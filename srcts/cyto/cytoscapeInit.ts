@@ -7,7 +7,7 @@ import layoutOptions from "./layoutOptions";
 // // TODO-barret use cytoClasses
 import cytoClasses from "./cytoClasses";
 
-let withContainer = function(container: JQuery) {
+let withContainer = function (container: JQuery) {
   let cyto = cytoscape({
     container: container,
     boxSelectionEnabled: false,

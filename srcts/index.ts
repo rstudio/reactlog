@@ -45,10 +45,10 @@ import "./log/initStep";
 // should filtering be done with the full layout?
 //
 
-$(function() {
+$(function () {
   window._reactlog = rlog;
 
-  rlog.log = (window.log as LogType);
+  rlog.log = window.log as LogType;
   rlog.cyto = cytoscapeInit.withContainer($("#cyto"));
 
   rlog.getGraph = new GraphAtStep(rlog.log);
@@ -116,7 +116,7 @@ $(function() {
   window.addEventListener(
     "resize",
     _debounce(
-      function(e) {
+      function (e) {
         updateGraph.resize();
       },
       250,
@@ -136,7 +136,7 @@ $(function() {
   {
     let cytoOpts = {
       fit: true,
-      stop: function() {
+      stop: function () {
         let zoomLevel = rlog.cyto.zoom();
         let logZoomLevel = Math.log2(zoomLevel);
 

@@ -28,8 +28,6 @@ import type {
   LogEntryIsolateInvalidateStartType,
   LogEntryIsolateEnterType,
   LogEntryEnterType,
-  LogEntryDependsOnType,
-  LogEntryDependsOnRemoveType,
   LogEntryExitType,
   LogEntryIsolateExitType,
   LogEntryInvalidateEndType,
@@ -108,8 +106,8 @@ class Graph {
 
       let reactId = data.reactId;
       let depOnReactId = data.depOnReactId;
-      let hasMatchingEdge = function(edges) {
-        return _some(edges, function(edge) {
+      let hasMatchingEdge = function (edges) {
+        return _some(edges, function (edge) {
           if (edge.reactId === reactId && edge.depOnReactId === depOnReactId) {
             return true;
           }
@@ -126,7 +124,10 @@ class Graph {
     }
   }
 
-  highlightSelected(data: SomeGraphData | null | undefined, hoverKey: "selected" | "filtered") {
+  highlightSelected(
+    data: SomeGraphData | null | undefined,
+    hoverKey: "selected" | "filtered"
+  ) {
     if (!data) return;
     let onFn = HoverStatus.onFn(hoverKey);
     if (data instanceof Node) {
@@ -147,7 +148,7 @@ class Graph {
       // highlight all the edges (and ghost edges) that have the same source and target
       let reactId = data.reactId;
       let depOnReactId = data.depOnReactId;
-      let selectMatchingEdges = function(edge) {
+      let selectMatchingEdges = function (edge) {
         if (edge.reactId === reactId && edge.depOnReactId === depOnReactId) {
           onFn(edge);
         }
@@ -186,7 +187,9 @@ class Graph {
   }
 
   // return array of node 'reactId's
-  parentNodeIds(data: SomeGraphData | ReactIdType | null | undefined): Array<ReactIdType> {
+  parentNodeIds(
+    data: SomeGraphData | ReactIdType | null | undefined
+  ): Array<ReactIdType> {
     if (data === null) {
       throw "Graph.prototype.parentNodeIds(data) must submit non null data";
     }
@@ -197,16 +200,18 @@ class Graph {
       let reactId;
       reactId = this.reactIdFromData(data, true);
       if (_isNil(reactId)) return [];
-      return _filter(mapValues(this.edgesUnique), function(edge) {
+      return _filter(mapValues(this.edgesUnique), function (edge) {
         // if the target is the reactId
         return edge.reactId === reactId;
-      }).map(function(edge) {
+      }).map(function (edge) {
         // return the source
         return edge.depOnReactId;
       });
     }
   }
-  childrenNodeIds(data: SomeGraphData | ReactIdType | null | undefined): Array<ReactIdType> {
+  childrenNodeIds(
+    data: SomeGraphData | ReactIdType | null | undefined
+  ): Array<ReactIdType> {
     if (data === null) {
       throw "Graph.prototype.childrenNodeIds(data) must submit non null data";
     }
@@ -216,10 +221,10 @@ class Graph {
     } else {
       let reactId = this.reactIdFromData(data, false);
       if (_isNil(reactId)) return [];
-      return _filter(mapValues(this.edgesUnique), function(edge) {
+      return _filter(mapValues(this.edgesUnique), function (edge) {
         // if the source is the reactId
         return edge.depOnReactId === reactId;
-      }).map(function(edge) {
+      }).map(function (edge) {
         // return the target
         return edge.reactId;
       });
@@ -237,7 +242,7 @@ class Graph {
       while (reactIdArr.length > 0) {
         reactId = reactIdArr.pop();
         if (!seenMap.has(reactId)) {
-          this.parentNodeIds(reactId).forEach(function(parentReactId) {
+          this.parentNodeIds(reactId).forEach(function (parentReactId) {
             if (parentReactId) {
               reactIdArr.push(parentReactId);
             }
@@ -289,7 +294,7 @@ class Graph {
   familyTreeNodeIdsForDatas(datas: Array<SomeGraphData>): Array<ReactIdType> {
     let self = this;
     return _union(
-      flatMap(datas, function(data) {
+      flatMap(datas, function (data) {
         return self.familyTreeNodeIds(data);
       })
     );
@@ -297,7 +302,7 @@ class Graph {
   decendentNodeIdsForDatas(datas: Array<SomeGraphData>): Array<ReactIdType> {
     let self = this;
     return _union(
-      flatMap(datas, function(data: SomeGraphData) {
+      flatMap(datas, function (data: SomeGraphData) {
         return self.decendentNodeIds(data);
       })
     );
@@ -305,7 +310,7 @@ class Graph {
   ancestorNodeIdsForDatas(datas: Array<SomeGraphData>): Array<ReactIdType> {
     let self = this;
     return _union(
-      flatMap(datas, function(data) {
+      flatMap(datas, function (data) {
         return self.ancestorNodeIds(data);
       })
     );
@@ -320,7 +325,7 @@ class Graph {
     let offFn = HoverStatus.offFn(hoverKey);
 
     // highlight nodes
-    mapValues(this.nodes).map(function(node) {
+    mapValues(this.nodes).map(function (node) {
       if (nodeSet.has(node.reactId)) {
         onFn(node);
       } else {
@@ -328,7 +333,7 @@ class Graph {
       }
     });
     // highlight edges
-    mapValues(this.edges).map(function(edge) {
+    mapValues(this.edges).map(function (edge) {
       if (nodeSet.has(edge.reactId) && nodeSet.has(edge.depOnReactId)) {
         onFn(edge);
       } else {
@@ -336,7 +341,7 @@ class Graph {
       }
     });
     // highlight unique edges
-    mapValues(this.edgesUnique).map(function(edge) {
+    mapValues(this.edgesUnique).map(function (edge) {
       if (nodeSet.has(edge.reactId) && nodeSet.has(edge.depOnReactId)) {
         onFn(edge);
       } else {
@@ -379,15 +384,15 @@ class Graph {
         return;
       }
     }
-    data = (data as LogEntryHasReactId);
+    data = data as LogEntryHasReactId;
 
     let node, lastNodeId, edge;
 
     switch (data.action) {
       // {"action": "define", "reactId": "r3", "label": "plotObj", "type": "observable", "session": "fa3c747a6121aec5baa682cc3970b811", "time": 1524581676.5841},
       case LogStates.define: {
-        let logEntry = (data as LogEntryDefineType);
-        this.nodes.set(data.reactId, new Node((logEntry as any)));
+        let logEntry = data as LogEntryDefineType;
+        this.nodes.set(data.reactId, new Node(logEntry as any));
         break;
       }
 
@@ -408,7 +413,7 @@ class Graph {
         break;
 
       case LogStates.invalidateStart: {
-        let logEntry = (data as LogEntryInvalidateStartType);
+        let logEntry = data as LogEntryInvalidateStartType;
         node = this.nodes.get(logEntry.reactId);
         lastNodeId = _last(this.activeInvalidateEnter);
         if (lastNodeId) {
@@ -425,12 +430,12 @@ class Graph {
               node.invalidateStatus.setActiveAtStep(logEntry.step);
               break;
           }
-          node.statusAdd((logEntry as any));
+          node.statusAdd(logEntry as any);
         }
         break;
       }
       case LogStates.enter: {
-        let logEntry = (data as LogEntryEnterType);
+        let logEntry = data as LogEntryEnterType;
         lastNodeId = _last(this.activeNodeEnter);
         if (lastNodeId) {
           let lastNode = this.nodes.get(lastNodeId);
@@ -447,7 +452,7 @@ class Graph {
             case "observable":
               node.invalidateStatus.reset();
           }
-          node.statusAdd((logEntry as any));
+          node.statusAdd(logEntry as any);
         }
         break;
       }
@@ -455,11 +460,10 @@ class Graph {
       case LogStates.isolateInvalidateStart:
       case LogStates.isolateEnter: {
         let logEntry = data as
-          | LogEntryIsolateInvalidateStartType
-          | LogEntryIsolateEnterType;
+          LogEntryIsolateInvalidateStartType | LogEntryIsolateEnterType;
         node = this.nodes.get(logEntry.reactId);
         if (node) {
-          node.statusAdd((logEntry as any));
+          node.statusAdd(logEntry as any);
         }
         break;
       }
@@ -540,15 +544,15 @@ class Graph {
               | LogEntryIsolateExitType
               | LogEntryInvalidateEndType
               | LogEntryIsolateInvalidateEndType;
-            expectPrevStatus((logEntry as any), prevData, expectedAction);
-            node.statusRemove((logEntry as any));
+            expectPrevStatus(logEntry as any, prevData, expectedAction);
+            node.statusRemove(logEntry as any);
           }
         }
         break;
       }
 
       case LogStates.dependsOn: {
-        let logEntry = (data as any);
+        let logEntry = data as any;
         if (!logEntry.reactId) {
           break;
         }
@@ -578,7 +582,7 @@ class Graph {
       }
 
       case LogStates.dependsOnRemove: {
-        let logEntry = (data as any);
+        let logEntry = data as any;
         edge = new Edge(logEntry);
         // remove the edge
         this.edges.delete(edge.key);

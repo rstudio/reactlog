@@ -6,7 +6,7 @@ import { updateGraph } from "../updateGraph";
 
 import type { CytoscapeOptions } from "../cyto/cytoFlowType";
 
-let nextStepInArr = function(
+let nextStepInArr = function (
   arr: Array<number>,
   cytoOptions: CytoscapeOptions = {}
 ) {
@@ -33,7 +33,7 @@ let nextStepInArr = function(
   return false;
 };
 
-let prevStepInArr = function(
+let prevStepInArr = function (
   arr: Array<number>,
   cytoOptions: CytoscapeOptions = {}
 ) {
@@ -61,21 +61,21 @@ let prevStepInArr = function(
   return false;
 };
 
-let nextOutputCalc = function(cytoOptions: CytoscapeOptions = {}) {
+let nextOutputCalc = function (cytoOptions: CytoscapeOptions = {}) {
   return nextStepInArr(rlog.getGraph.stepsOutputCalc, cytoOptions);
 };
 
-let prevOutputCalc = function(cytoOptions: CytoscapeOptions = {}) {
+let prevOutputCalc = function (cytoOptions: CytoscapeOptions = {}) {
   return prevStepInArr(rlog.getGraph.stepsOutputCalc, cytoOptions);
 };
 
-let lastOutputCalc = function(cytoOptions: CytoscapeOptions = {}) {
+let lastOutputCalc = function (cytoOptions: CytoscapeOptions = {}) {
   let nextTick =
     rlog.getGraph.stepsOutputCalc[rlog.getGraph.stepsOutputCalc.length - 1] ||
     0;
   return updateGraph(nextTick, cytoOptions);
 };
-let firstOutputCalc = function(cytoOptions: CytoscapeOptions = {}) {
+let firstOutputCalc = function (cytoOptions: CytoscapeOptions = {}) {
   let nextTick = rlog.getGraph.stepsOutputCalc[0] || 0;
   return updateGraph(nextTick, cytoOptions);
 };

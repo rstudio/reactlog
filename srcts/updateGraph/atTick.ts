@@ -5,7 +5,7 @@ import * as progressBar from "../layout/progressBar";
 
 import type { CytoscapeOptions } from "../cyto/cytoFlowType";
 
-let atTick = function(
+let atTick = function (
   nextTick: number = rlog.curTick,
   cytoOptions: CytoscapeOptions = {}
 ): boolean {

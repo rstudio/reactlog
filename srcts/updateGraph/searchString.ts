@@ -15,7 +15,7 @@ let startsWithR = /^r\d/;
 // when str length = 0, reset filter
 // when str length >= 3, set filter to all elements that match
 // when exact, only match the whole label or key
-let searchStringWith = function(str: string, exact: boolean = false) {
+let searchStringWith = function (str: string, exact: boolean = false) {
   // if less than three chars...
   if (str.length < 3) {
     if (str.length === 0) {
@@ -33,7 +33,7 @@ let searchStringWith = function(str: string, exact: boolean = false) {
   }
   // escape the string
   // https://stackoverflow.com/a/17606289
-  let escapeRegExp = function(str) {
+  let escapeRegExp = function (str) {
     return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // $& means the whole matched string
   };
   let pattern = escapeRegExp(str);
@@ -41,18 +41,18 @@ let searchStringWith = function(str: string, exact: boolean = false) {
   return updateGraph.searchRegex(searchRegex);
 };
 
-let searchStringSet = function(str: string, exact: boolean = false) {
+let searchStringSet = function (str: string, exact: boolean = false) {
   searchElement.val(str);
   return searchStringWith(str, exact);
 };
-let searchStringClear = function() {
+let searchStringClear = function () {
   return searchStringSet("");
 };
-let searchStringClearNoUpdate = function() {
+let searchStringClearNoUpdate = function () {
   searchElement.val("");
 };
 
-let searchStringWithData = function(obj: Node | Edge | GhostEdge) {
+let searchStringWithData = function (obj: Node | Edge | GhostEdge) {
   // update the graph by searching for the key
   if (obj instanceof Edge) {
     return searchStringSet(obj.ghostKey, true);
@@ -60,14 +60,10 @@ let searchStringWithData = function(obj: Node | Edge | GhostEdge) {
   return searchStringSet(obj.key, true);
 };
 
-let searchStringContainer = function(searchElement_: JQuery) {
+let searchStringContainer = function (searchElement_: JQuery) {
   searchElement = searchElement_;
-  searchElement.on("input", function(e) {
-    searchStringWith(
-      $(e.target)
-        .val()
-        .toString()
-    );
+  searchElement.on("input", function (e) {
+    searchStringWith($(e.target).val().toString());
   });
 };
 

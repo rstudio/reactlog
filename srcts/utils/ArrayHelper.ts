@@ -14,7 +14,7 @@ import _map from "lodash/map";
 //   iteratee?: OFlatMapIteratee<T, U>
 // ): Array<U>;
 
-let flatMap = function<T, U>(
+let flatMap = function <T, U>(
   array: ReadonlyArray<T> | null | undefined,
   iteratee: (
     item: T,

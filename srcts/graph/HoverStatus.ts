@@ -15,48 +15,48 @@ class HoverStatus {
   static valFiltered = true;
   static valNotFiltered = false;
 
-  static onFn = function(
+  static onFn = function (
     hoverKey: "state" | "sticky" | "selected" | "filtered"
   ) {
     switch (hoverKey) {
       case "state":
-        return function(x: Node | Edge | GhostEdge) {
+        return function (x: Node | Edge | GhostEdge) {
           x.hoverStatus.toFocused();
         };
       case "sticky":
-        return function(x: Node | Edge | GhostEdge) {
+        return function (x: Node | Edge | GhostEdge) {
           x.hoverStatus.toSticky();
         };
       case "selected":
-        return function(x: Node | Edge | GhostEdge) {
+        return function (x: Node | Edge | GhostEdge) {
           x.hoverStatus.toSelected();
         };
       case "filtered":
-        return function(x: Node | Edge | GhostEdge) {
+        return function (x: Node | Edge | GhostEdge) {
           x.hoverStatus.toFiltered();
         };
       default:
         throw `hoverKey: ${hoverKey} provided is not found`;
     }
   };
-  static offFn = function(
+  static offFn = function (
     hoverKey: "state" | "sticky" | "selected" | "filtered"
   ) {
     switch (hoverKey) {
       case "state":
-        return function(x: Node | Edge | GhostEdge) {
+        return function (x: Node | Edge | GhostEdge) {
           x.hoverStatus.toNotFocused();
         };
       case "sticky":
-        return function(x: Node | Edge | GhostEdge) {
+        return function (x: Node | Edge | GhostEdge) {
           x.hoverStatus.toNotSticky();
         };
       case "selected":
-        return function(x: Node | Edge | GhostEdge) {
+        return function (x: Node | Edge | GhostEdge) {
           x.hoverStatus.toNotSelected();
         };
       case "filtered":
-        return function(x: Node | Edge | GhostEdge) {
+        return function (x: Node | Edge | GhostEdge) {
           x.hoverStatus.toNotFiltered();
         };
       default:

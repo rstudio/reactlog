@@ -8,7 +8,7 @@ import { updateGraph } from "../updateGraph";
 import { colors } from "../style/colors";
 
 let fillContainer: JQuery;
-let updateProgressBar = function(): void {
+let updateProgressBar = function (): void {
   // fillContainer.width((rlog.curTick / rlog.log.length) * 100 + "%");
   let stepsToPresent = rlog.getGraph.stepsVisible;
   let tickPos = _sortedIndexOf(stepsToPresent, rlog.curTick);
@@ -19,7 +19,7 @@ let updateProgressBar = function(): void {
   fillContainer.width(`${(tickPos / (stepsToPresent.length - 1)) * 100}%`);
 };
 
-let setContainers = function(
+let setContainers = function (
   fullContainerVal: JQuery,
   fillContainerVal: JQuery
 ): void {
@@ -34,7 +34,7 @@ let setContainers = function(
   fullContainerVal.on("mousedown mousemove", updateFromProgressBar);
 };
 
-let updateFromProgressBar = function(e: JQuery.TriggeredEvent): void {
+let updateFromProgressBar = function (e: JQuery.TriggeredEvent): void {
   // Make sure only the left mouse button is down.
   // e.which is always 1 on mousemove events in Firefox, even when no button
   // is down, so read e.originalEvent.buttons.
@@ -61,7 +61,7 @@ let updateFromProgressBar = function(e: JQuery.TriggeredEvent): void {
   return;
 };
 
-let addTimelineTicks = function(
+let addTimelineTicks = function (
   jqueryContainer: JQuery,
   backgroundColor: string,
   stepArr: Array<number>,
@@ -73,7 +73,7 @@ let addTimelineTicks = function(
     top === 0
       ? `top: 0; height: ${timelineHeight}px;`
       : `top: ${top}px; height: ${timelineHeight - 2 * top}px`;
-  stepArr.map(function(step) {
+  stepArr.map(function (step) {
     let stepPos = _sortedIndex(visibleSteps, step);
     // add an extra step to show that it is completed
     // i = i + 1;
