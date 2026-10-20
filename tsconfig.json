@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
-    "target": "es2017",
+    "target": "es2021",
     "module": "esnext",
     "moduleResolution": "bundler",
-    "lib": ["es2017", "dom"],
+    "lib": ["es2021", "dom"],
     "types": ["jquery"],
     "strict": false,
     "noEmit": true,

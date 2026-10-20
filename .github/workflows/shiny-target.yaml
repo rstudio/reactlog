@@ -1,0 +1,24 @@
+# Keep the JS build target in step with rstudio/shiny.
+# Runs weekly too, because shiny can change without a reactlog PR.
+on:
+  pull_request:
+    paths:
+      - "tsconfig.json"
+      - "package.json"
+      - "bin/check_shiny_target.js"
+      - ".github/workflows/shiny-target.yaml"
+  schedule:
+    - cron: "0 9 * * 1"
+  workflow_dispatch:
+
+name: Shiny build target
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - run: npm run check-shiny-target
