@@ -57,3 +57,4 @@ _ignore
 !/.agents/skills/
 /.agents/skills/*
 !/.agents/skills/memory-bank/
+.playwright-mcp/

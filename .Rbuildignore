@@ -33,3 +33,4 @@
 ^\.context$
 ^\.git$
 ^\.conductor$
+^\.playwright-mcp$
