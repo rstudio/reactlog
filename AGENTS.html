@@ -59,19 +59,20 @@
 <p>This file provides guidance to AI coding agents (Claude Code, etc.) when working with code in this repository.</p>
 <div class="section level2">
 <h2 id="what-this-is">What this is<a class="anchor" aria-label="anchor" href="#what-this-is"></a></h2>
-<p><code>reactlog</code> is an R package that visualizes Shiny’s reactive dependency graph. A small R side (<code>R/</code>) injects Shiny’s recorded log into an HTML page; a Flow-typed JavaScript app (<code>srcjs/</code>) replays it as a cytoscape graph.</p>
-<p>The built bundle <code>inst/reactlog/reactlogAsset/reactlog.js</code> (and its <code>.map</code>) <strong>is committed</strong>. CRAN and <code>R-CMD-check</code> never run Node. If you change anything in <code>srcjs/</code>, rebuild and commit the bundle with your change (the shared <code>routine</code> CI job also runs <code>npm ci</code> + <code>npm run build</code> and pushes any bundle changes back to same-repo PRs).</p>
+<p><code>reactlog</code> is an R package that visualizes Shiny’s reactive dependency graph. A small R side (<code>R/</code>) injects Shiny’s recorded log into an HTML page; a TypeScript app (<code>srcts/</code>) replays it as a cytoscape graph.</p>
+<p>The built bundle <code>inst/reactlog/reactlogAsset/reactlog.js</code> (and its <code>.map</code>) <strong>is committed</strong>. CRAN and <code>R-CMD-check</code> never run Node. If you change anything in <code>srcts/</code>, rebuild and commit the bundle with your change (the shared <code>routine</code> CI job also runs <code>npm ci</code> + <code>npm run build</code> and pushes any bundle changes back to same-repo PRs).</p>
 </div>
 <div class="section level2">
 <h2 id="commands">Commands<a class="anchor" aria-label="anchor" href="#commands"></a></h2>
 <p>JavaScript (npm; Node 22 works):</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="ex">npm</span> ci                         <span class="co"># install; postinstall also runs the build</span></span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="ex">npm</span> run build-only             <span class="co"># webpack build via grunt -&gt; inst/reactlog/reactlogAsset/reactlog.js</span></span>
-<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="ex">npm</span> run build                  <span class="co"># eslint --fix + prettier on srcjs, then build</span></span>
-<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="ex">npm</span> run watch                  <span class="co"># lint, then rebuild on change</span></span>
-<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="ex">npm</span> run lint <span class="at">--</span> srcjs/foo.js   <span class="co"># eslint --fix + prettier on given files</span></span>
-<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="ex">npm</span> run flow-report            <span class="co"># flow type coverage (95% threshold, see package.json)</span></span></code></pre></div>
-<p><code>build-only</code> and <code>watch</code> set <code>NODE_OPTIONS=--openssl-legacy-provider</code> because webpack 4 needs it on Node 17+.</p>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="ex">npm</span> run build-only             <span class="co"># esbuild -&gt; inst/reactlog/reactlogAsset/reactlog.js (no type check)</span></span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="ex">npm</span> run typecheck              <span class="co"># tsc for app code, then for tests (tsconfig.test.json); no output files</span></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="ex">npm</span> test                       <span class="co"># replay the sample logs in inst/log-files/ (node:test)</span></span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="ex">npm</span> run build                  <span class="co"># eslint --fix + prettier on srcts, typecheck, test, then build</span></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="ex">npm</span> run watch                  <span class="co"># lint, then rebuild on change (no type check)</span></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="ex">npm</span> run lint <span class="at">--</span> srcts/foo.ts   <span class="co"># eslint --fix + prettier on given files</span></span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a><span class="ex">npm</span> run check-shiny-target     <span class="co"># fail if tsc/esbuild target differs from rstudio/shiny (needs network)</span></span></code></pre></div>
 <p>R:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">load_all</span><span class="op">(</span><span class="op">)</span></span>
@@ -80,7 +81,7 @@
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">lint</span><span class="op">(</span><span class="op">)</span>                                   <span class="co"># lintr, line length 100 (.lintr)</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">document</span><span class="op">(</span><span class="op">)</span>                               <span class="co"># regenerate man/ and NAMESPACE (roxygen, markdown on)</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">check</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><code>npm ci</code> installs a git pre-commit hook (<code>pre-commit</code> + <code>lint-staged</code>, config in <code>package.json</code>). On commit it lints staged <code>R/*.R</code> with <code>devtools::lint()</code> (needs the <code>lintr</code> R package) and, for staged <code>srcjs/**/*.js</code>, runs lint + build, the flow report, and <code>git add</code>s the rebuilt bundle.</p>
+<p><code>npm ci</code> installs a git pre-commit hook (<code>pre-commit</code> + <code>lint-staged</code>, config in <code>package.json</code>). On commit it lints staged <code>R/*.R</code> with <code>devtools::lint()</code> (needs the <code>lintr</code> R package) and, for staged <code>srcts/**/*.ts</code>, runs lint, typecheck, and build, then <code>git add</code>s the rebuilt bundle.</p>
 </div>
 <div class="section level2">
 <h2 id="memory-bank">Memory Bank<a class="anchor" aria-label="anchor" href="#memory-bank"></a></h2>
@@ -89,11 +90,11 @@
 </div>
 <div class="section level2">
 <h2 id="architecture">Architecture<a class="anchor" aria-label="anchor" href="#architecture"></a></h2>
-<p><code>memory-bank/architecture.md</code> explains how the R side, the HTML template, and the JavaScript app connect, plus how to work on the JS without running Shiny. Read it before working in <code>R/</code> or <code>srcjs/</code>.</p>
+<p><code>memory-bank/architecture.md</code> explains how the R side, the HTML template, and the JavaScript app connect, plus how to work on the JS without running Shiny. Read it before working in <code>R/</code> or <code>srcts/</code>.</p>
 </div>
 <div class="section level2">
 <h2 id="conventions">Conventions<a class="anchor" aria-label="anchor" href="#conventions"></a></h2>
-<ul><li>JS files start with <code>// @flow</code>. Lint is eslint 5 + prettier 1 (<code>.eslintrc.js</code>, <code>prettier.config.js</code>).</li>
+<ul><li>Source is TypeScript (<code>tsconfig.json</code>, <code>strict</code> on). Lint is eslint 10 + typescript-eslint + prettier 3 (<code>eslint.config.mjs</code>, <code>prettier.config.js</code>).</li>
 <li>Add a NEWS.md entry for user-facing changes (CONTRIBUTING.md).</li>
 <li>New top-level files need an entry in <code>.Rbuildignore</code>, or R CMD check will warn.</li>
 </ul></div>
