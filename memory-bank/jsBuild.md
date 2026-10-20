@@ -89,7 +89,9 @@ with `Fatal error: error:0308010C:digital envelope routines::unsupported`. Only
   `log/initStep.js`, `rlog.js`), threshold 95%, text output.
 - `flow-bin` is pinned to `^0.86.0`. Its macOS binary is x86_64 only. On Apple
   Silicon without Rosetta, `flow-report` fails right away with
-  `spawn Unknown system error -86`.
+  `spawn Unknown system error -86`. Newer `flow-bin` releases have an arm64
+  binary, but report hundreds of errors on `srcjs/`, so that upgrade is its
+  own project.
 - `.eslintrc.js`: `babel-eslint` parser, `flowtype` plugin, extends
   `plugin:flowtype/recommended` and `eslint:recommended`. Notable rules:
   `no-console` and `no-var` are errors, `eqeqeq`, `semi`, `guard-for-in`.
@@ -106,13 +108,15 @@ a time (`concurrent: false`), adding the staged file names to each command:
 - `R/*.R`: `Rscript` runs `devtools::load_all()` and `devtools::lint()` on the
   whole package and fails if any lint is found. Needs R with `devtools`,
   `lintr` and `testthat`.
-- `.flowconfig`: `npm run flow-report-and-echo`.
+- `.flowconfig`: `npm run flow-report-and-echo`, which runs
+  `bin/flow_report.sh`. That script skips the report with a warning when the
+  Flow binary cannot run (Apple Silicon without Rosetta).
 - `srcjs/**/*.js`: `npm run fix --` (lint those files, then build),
   `npm run flow-report-and-echo`, then `npm run git_add_compiled --`, which runs
   `git add inst/reactlog/reactlogAsset/reactlog.js` and `git add` on the files.
 
-So a JS commit rebuilds and stages the bundle for you, but only if Flow can run
-on your machine.
+So a JS commit rebuilds and stages the bundle for you. Where Flow cannot run,
+the Flow coverage check is skipped.
 
 ## Committed bundle and the R package
 
@@ -164,9 +168,9 @@ says the package is GPL-3, but the package is now MIT (`DESCRIPTION`,
   17+; use `npm run build-only`.
 - `git_add_compiled` stages `reactlog.js` but not `reactlog.js.map`. Stage the
   map yourself or it falls out of sync with the bundle.
-- On Apple Silicon without Rosetta, Flow cannot run, so `flow-report` and the
-  `srcjs/` and `.flowconfig` commit hooks fail. Install Rosetta or skip the
-  hook with `git commit --no-verify`, then build and stage by hand.
+- On Apple Silicon without Rosetta, Flow cannot run. `npm run flow-report`
+  fails, and the commit hook skips the Flow check. Install Rosetta to get the
+  coverage check back.
 - `npm install` / `npm ci` rebuilds the bundle. If `inst/` changes afterwards,
   check whether you meant it; restore with `git checkout -- inst/`.
 - The `R/*.R` hook lints the whole package, not just your staged files, and
