@@ -43,10 +43,17 @@ import type { CytoscapeType, CytoEvent } from "./cytoFlowType";
 //   return familyEles;
 // }
 
+let isCore = function(
+  target: CytoEvent["target"],
+  cyto: CytoscapeType
+): target is CytoscapeType {
+  return target === cyto;
+};
+
 let onMouseOver = function(cyto: CytoscapeType) {
   return function(evt: CytoEvent) {
     let target = evt.target;
-    if ((target as unknown) === cyto) return;
+    if (isCore(target, cyto)) return;
 
     // highlight all outgoer's outgoers and all incomer's incomers and self
 
@@ -98,7 +105,7 @@ let onClick = function(cyto: CytoscapeType) {
       // console.log("click!!", evt);
     }
 
-    if ((target as unknown) === rlog.cyto) {
+    if (isCore(target, rlog.cyto)) {
       // remove sticky focus class
       updateGraph.stickyDatasReset();
       return;
@@ -116,7 +123,7 @@ let onDblClick = function(cyto: CytoscapeType) {
     // console.log("dbl click!!", evt, originalEvt);
     let target = evt.target;
 
-    if ((target as unknown) === rlog.cyto) {
+    if (isCore(target, rlog.cyto)) {
       // go back to full graph
       updateGraph.resetHoverStickyFilterData();
       return;

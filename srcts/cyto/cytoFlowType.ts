@@ -73,10 +73,12 @@ type CytoscapeType = {
   minZoom: (zoomLevel?: number) => number,
   maxZoom: (zoomLevel?: number) => number,
   resize: () => void,
+  trigger: (event: string, evt: CytoEvent) => any,
 };
 
 type CytoEvent = {
-  target: CytoEventTarget,
+  // the core itself when the background is the target
+  target: CytoEventTarget | CytoscapeType,
 };
 
 type CytoEventTarget = EventTarget & {

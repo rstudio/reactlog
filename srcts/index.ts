@@ -54,14 +54,14 @@ $(function() {
   rlog.getGraph = new GraphAtStep(rlog.log);
   rlog.graph = rlog.getGraph.finalCompleteGraph;
 
-  $("#prevUserMarkButton").click(updateGraph.buttonPrevMark as any);
-  $("#nextUserMarkButton").click(updateGraph.buttonNextMark as any);
-  $("#prevOutputCalcButton").click(updateGraph.buttonPrevOutputCalc as any);
-  $("#nextOutputCalcButton").click(updateGraph.buttonNextOutputCalc as any);
-  $("#prevIdleButton").click(updateGraph.buttonPrevIdle as any);
-  $("#nextIdleButton").click(updateGraph.buttonNextIdle as any);
-  $("#prevStepButton").click(updateGraph.buttonPrevStep as any);
-  $("#nextStepButton").click(updateGraph.buttonNextStep as any);
+  $("#prevUserMarkButton").click(() => updateGraph.buttonPrevMark());
+  $("#nextUserMarkButton").click(() => updateGraph.buttonNextMark());
+  $("#prevOutputCalcButton").click(() => updateGraph.buttonPrevOutputCalc());
+  $("#nextOutputCalcButton").click(() => updateGraph.buttonNextOutputCalc());
+  $("#prevIdleButton").click(() => updateGraph.buttonPrevIdle());
+  $("#nextIdleButton").click(() => updateGraph.buttonNextIdle());
+  $("#prevStepButton").click(() => updateGraph.buttonPrevStep());
+  $("#nextStepButton").click(() => updateGraph.buttonNextStep());
 
   $("#legendInvalidating").css("background-color", colors.nodes.invalidating);
   $("#legendInvalidated").css("background-color", colors.nodes.invalidated);

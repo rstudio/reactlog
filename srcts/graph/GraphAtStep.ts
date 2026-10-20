@@ -738,8 +738,8 @@ class GraphAtStep {
   }
 }
 
-function hasLength(x: Array<any>): boolean {
-  return x && x.length > 0;
+function hasLength(x: ReadonlyArray<unknown> | null | undefined): boolean {
+  return !!x && x.length > 0;
 }
 
 export { GraphAtStep, hasLength };
