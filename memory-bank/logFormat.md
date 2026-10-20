@@ -211,8 +211,6 @@ In reactlog (`srcjs/`), then rebuild the bundle (`npm run build`) and commit
 - **Session filtering keeps all global entries.** Entries with `session: null`
   (every `idle`, and anything made outside a session) stay in every
   per-session log.
-- **The `rNoCtx` check in `addEntry()` does not match Shiny's id**, which is
-  `rNoCtxReactId`. Only `dependsOn` skips `rNoCtxReactId` on its own.
 - **`value` is text from `str()`**, cut to 200 characters, not the real value.
   When logging is off it is `"<reactlog is turned off>"`.
 - **The log only grows.** Shiny keeps every entry in memory until

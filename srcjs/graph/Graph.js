@@ -376,7 +376,8 @@ class Graph {
 
   addEntry(data: any) {
     if (!_isNil(data.reactId)) {
-      if (data.reactId === "rNoCtx") {
+      // shiny's id for "no current context"; there is no node for it
+      if (data.reactId === "rNoCtxReactId") {
         return;
       }
     }
@@ -550,11 +551,7 @@ class Graph {
 
       case LogStates.dependsOn: {
         let logEntry = ((data: LogEntryDependsOnType): Object);
-        if (
-          !logEntry.reactId ||
-          // if there is no context reactlog id to depend on, then there is no node to depend on
-          logEntry.reactId === "rNoCtxReactId"
-        ) {
+        if (!logEntry.reactId) {
           break;
         }
         edge = new Edge(logEntry);

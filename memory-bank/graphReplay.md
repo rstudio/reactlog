@@ -52,7 +52,7 @@ navigation / hover / search  ->  atTick(k, cytoOptions)            (updateGraph/
 
 ## `Graph.addEntry()` per action
 
-Entries with `reactId === "rNoCtx"` are skipped first.
+Entries with `reactId === "rNoCtxReactId"` (Shiny's "no current context" id) are skipped first.
 
 | Action | Effect |
 | --- | --- |
