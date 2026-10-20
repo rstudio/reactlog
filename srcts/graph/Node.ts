@@ -82,7 +82,7 @@ class Node {
     }
   }
 
-  get calculationTimeStr(): string {
+  get calculationTimeStr(): string | null {
     if (_isNil(this.calculationTime)) {
       return null;
     }
@@ -115,7 +115,7 @@ class Node {
     this.statusArr.add(logEntry as StatusEntry);
     return this.statusArr;
   }
-  statusRemove(logEntry: LogEntryAnyType): StatusEntry {
+  statusRemove(logEntry: LogEntryAnyType): StatusEntry | undefined {
     if (logEntry.action === LogStates.exit) {
       let startEntryTime = this.calculationStartMap.get(logEntry.ctxId);
       if (!_isNil(startEntryTime)) {
@@ -125,7 +125,7 @@ class Node {
     }
     return this.statusArr.remove();
   }
-  statusLast(): StatusEntry {
+  statusLast(): StatusEntry | undefined {
     return this.statusArr.last();
   }
   get inEnter(): boolean {

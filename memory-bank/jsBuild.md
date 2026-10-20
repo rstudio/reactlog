@@ -31,7 +31,7 @@ blank lines.
 | File | Role |
 | --- | --- |
 | `package.json` | npm scripts, `pre-commit` / `lint-staged` hook config, dependencies |
-| `tsconfig.json` | `tsc` settings: `noEmit`, `target` es2021, `moduleResolution` bundler, `strict` off |
+| `tsconfig.json` | `tsc` settings: `noEmit`, `target` es2021, `moduleResolution` bundler, `strict` on |
 | `srcts/modules.d.ts` | `declare module` for untyped `cytoscape` / `cytoscape-dagre`, and the `window` globals |
 | `srcts/cyto/cytoFlowType.ts` | Hand-written types for the parts of cytoscape the app uses |
 | `eslint.config.mjs` / `prettier.config.js` | Lint and format rules |
@@ -68,9 +68,9 @@ blank lines.
 - `typescript` is pinned to `~6.0`. TypeScript 7 (the Go port) does not offer
   the JS API that `typescript-eslint` needs, and `typescript-eslint` 8 lists
   `typescript <6.1` as its peer.
-- `strict` is off. `npx tsc -p . --strict` reports about 40 errors, mostly
-  missing null checks, implicit `any`, and class fields that are set outside
-  the constructor. Fix those in their own change.
+- `strict` is on. `GraphAtStep` fields filled by `initStepInfo()` and
+  `updateFinalFilteredGraph()` (called from the constructor) are marked with
+  `!`. `no-explicit-any` is still off, so `any` still skips checks.
 - cytoscape 3.15 (the locked version) has no bundled types, so it is declared
   as an untyped module and the app uses the hand-written types in
   `cyto/cytoFlowType.ts`. Newer cytoscape ships `index.d.ts`, but upgrading it

@@ -47,22 +47,22 @@ class GraphAtStep {
   hoverData: SomeGraphData | null | undefined;
   stickyDatas: Array<SomeGraphData>;
 
-  finalFilteredGraph: Graph;
+  finalFilteredGraph!: Graph;
   finalCompleteGraph: Graph;
   finalCyto: any;
 
   cytoLayout: any;
 
-  steps: Array<number>;
-  stepsVisible: Array<number>;
-  filteredStepsVisible: Array<number>;
-  stepsAsyncStart: Array<number>;
-  stepsAsyncStop: Array<number>;
-  stepsIdle: Array<number>;
-  stepsOutputCalc: Array<number>;
-  stepsUserMark: Array<number>;
-  minStep: number;
-  maxStep: number;
+  steps!: Array<number>;
+  stepsVisible!: Array<number>;
+  filteredStepsVisible!: Array<number>;
+  stepsAsyncStart!: Array<number>;
+  stepsAsyncStop!: Array<number>;
+  stepsIdle!: Array<number>;
+  stepsOutputCalc!: Array<number>;
+  stepsUserMark!: Array<number>;
+  minStep!: number;
+  maxStep!: number;
 
   constructor(log: LogType) {
     this.originalLog = log;
@@ -557,7 +557,7 @@ class GraphAtStep {
     let nodesLRB = cyNodes.diff(graphNodes);
     // .removeStyle()
 
-    let onLayoutReady = [];
+    let onLayoutReady: Array<() => void> = [];
     let someNodeHasNewLabel = false;
 
     // enter visible nodes

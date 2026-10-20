@@ -1,6 +1,5 @@
-import { parseQuery } from "./queryString";
-
-let inTestMode = parseQuery().test === "1";
+let inTestMode =
+  new URLSearchParams(window.location.search).get("test") === "1";
 
 const shinytest = "(shinytest)";
 

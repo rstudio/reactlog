@@ -77,7 +77,8 @@ let onMouseOver = function (cyto: CytoscapeType) {
 };
 
 let onClick = function (cyto: CytoscapeType) {
-  let cytoClickedBefore, cytoClickedTimeout;
+  let cytoClickedBefore: CytoEvent["target"] | null = null;
+  let cytoClickedTimeout: ReturnType<typeof setTimeout> | undefined;
 
   return function (evt: CytoEvent) {
     // remove focus on search

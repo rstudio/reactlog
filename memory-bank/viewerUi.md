@@ -24,7 +24,7 @@ Key files:
 | `srcts/layout/progressBar.ts` | Timeline fill, ticks, click/drag to seek |
 | `srcts/layout/logEntry.ts` | Step / time / session / status text and the raw JSON panel |
 | `srcts/cyto/cytoOn.ts` | Mouse events on the graph (hover, tap, double click) |
-| `srcts/utils/queryString.ts`, `srcts/utils/shinytest.ts` | Read `?test=1` |
+| `srcts/utils/shinytest.ts` | Read `?test=1` |
 | `inst/reactlog/reactlogAsset/` | `reactlog.css`, font CSS, `images/*.svg`, built `reactlog.js` |
 
 ## The HTML template
@@ -157,7 +157,7 @@ Node time labels are separate: `rlog.displayTimeOnNodes` is true unless `window.
 
 ## Query params and test mode
 
-`parseQuery()` (`srcts/utils/queryString.ts`) turns `window.location.search` into an object. The only key read is `test`: `inTestMode = parseQuery().test === "1"` (`srcts/utils/shinytest.ts`). In test mode:
+`srcts/utils/shinytest.ts` reads the `test` query parameter with `URLSearchParams`: `inTestMode` is true when the URL has `?test=1`. In test mode:
 
 - the header time and session show `(shinytest)` (`logEntry.ts`),
 - `Node.calculationTimeStr` returns `(shinytest)`.

@@ -33,7 +33,7 @@ let searchStringWith = function (str: string, exact: boolean = false) {
   }
   // escape the string
   // https://stackoverflow.com/a/17606289
-  let escapeRegExp = function (str) {
+  let escapeRegExp = function (str: string) {
     return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // $& means the whole matched string
   };
   let pattern = escapeRegExp(str);
@@ -63,7 +63,7 @@ let searchStringWithData = function (obj: Node | Edge | GhostEdge) {
 let searchStringContainer = function (searchElement_: JQuery) {
   searchElement = searchElement_;
   searchElement.on("input", function (e) {
-    searchStringWith($(e.target).val().toString());
+    searchStringWith(`${$(e.target).val() ?? ""}`);
   });
 };
 

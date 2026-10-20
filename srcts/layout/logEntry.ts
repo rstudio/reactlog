@@ -79,7 +79,7 @@ let updateLogEntry = function (): void {
     }
   }
 
-  let stepDisplayValPadding = function (i) {
+  let stepDisplayValPadding = function (i: number) {
     return `${i}`.padStart(`${logInfo.logLength}`.length, " ");
   };
 

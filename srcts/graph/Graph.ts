@@ -14,7 +14,6 @@ import { GhostEdge } from "./GhostEdge";
 import { HoverStatus } from "./HoverStatus";
 import { expectPrevStatus } from "./StatusArr";
 
-import { flatMap } from "../utils/ArrayHelper";
 import console from "../utils/console";
 
 import type { CytoscapeType } from "../cyto/cytoFlowType";
@@ -106,7 +105,7 @@ class Graph {
 
       let reactId = data.reactId;
       let depOnReactId = data.depOnReactId;
-      let hasMatchingEdge = function (edges) {
+      let hasMatchingEdge = function (edges: Array<Edge | GhostEdge>) {
         return _some(edges, function (edge) {
           if (edge.reactId === reactId && edge.depOnReactId === depOnReactId) {
             return true;
@@ -148,7 +147,7 @@ class Graph {
       // highlight all the edges (and ghost edges) that have the same source and target
       let reactId = data.reactId;
       let depOnReactId = data.depOnReactId;
-      let selectMatchingEdges = function (edge) {
+      let selectMatchingEdges = function (edge: Edge | GhostEdge) {
         if (edge.reactId === reactId && edge.depOnReactId === depOnReactId) {
           onFn(edge);
         }
@@ -239,15 +238,15 @@ class Graph {
       let originalReactId = reactId;
       let seenMap = new Set<ReactIdType>();
       let reactIdArr = [reactId];
-      while (reactIdArr.length > 0) {
-        reactId = reactIdArr.pop();
-        if (!seenMap.has(reactId)) {
-          this.parentNodeIds(reactId).forEach(function (parentReactId) {
+      let curId: ReactIdType | undefined;
+      while ((curId = reactIdArr.pop()) !== undefined) {
+        if (!seenMap.has(curId)) {
+          this.parentNodeIds(curId).forEach(function (parentReactId) {
             if (parentReactId) {
               reactIdArr.push(parentReactId);
             }
           });
-          seenMap.add(reactId);
+          seenMap.add(curId);
         }
       }
       seenMap.delete(originalReactId);
@@ -260,11 +259,11 @@ class Graph {
     let originalReactId = reactId;
     let seenMap = new Set<ReactIdType>();
     let reactIdArr = [reactId];
-    while (reactIdArr.length > 0) {
-      reactId = reactIdArr.pop();
-      if (!seenMap.has(reactId)) {
-        reactIdArr = reactIdArr.concat(this.childrenNodeIds(reactId));
-        seenMap.add(reactId);
+    let curId: ReactIdType | undefined;
+    while ((curId = reactIdArr.pop()) !== undefined) {
+      if (!seenMap.has(curId)) {
+        reactIdArr = reactIdArr.concat(this.childrenNodeIds(curId));
+        seenMap.add(curId);
       }
     }
     seenMap.delete(originalReactId);
@@ -294,7 +293,7 @@ class Graph {
   familyTreeNodeIdsForDatas(datas: Array<SomeGraphData>): Array<ReactIdType> {
     let self = this;
     return _union(
-      flatMap(datas, function (data) {
+      datas.flatMap(function (data) {
         return self.familyTreeNodeIds(data);
       })
     );
@@ -302,7 +301,7 @@ class Graph {
   decendentNodeIdsForDatas(datas: Array<SomeGraphData>): Array<ReactIdType> {
     let self = this;
     return _union(
-      flatMap(datas, function (data: SomeGraphData) {
+      datas.flatMap(function (data) {
         return self.decendentNodeIds(data);
       })
     );
@@ -310,7 +309,7 @@ class Graph {
   ancestorNodeIdsForDatas(datas: Array<SomeGraphData>): Array<ReactIdType> {
     let self = this;
     return _union(
-      flatMap(datas, function (data) {
+      datas.flatMap(function (data) {
         return self.ancestorNodeIds(data);
       })
     );
@@ -475,7 +474,8 @@ class Graph {
         node = this.nodes.get(data.reactId);
         switch (data.action) {
           case LogStates.exit: {
-            let activeEnterNode = this.nodes.get(_last(this.activeNodeEnter));
+            lastNodeId = _last(this.activeNodeEnter);
+            let activeEnterNode = lastNodeId && this.nodes.get(lastNodeId);
             if (activeEnterNode) {
               activeEnterNode.enterStatus.reset();
             }
@@ -491,9 +491,8 @@ class Graph {
           }
           case LogStates.invalidateEnd: {
             // turn off the previously active node
-            let curActiveNode = this.nodes.get(
-              _last(this.activeInvalidateEnter)
-            );
+            lastNodeId = _last(this.activeInvalidateEnter);
+            let curActiveNode = lastNodeId && this.nodes.get(lastNodeId);
             if (curActiveNode) {
               curActiveNode.invalidateStatus.resetActive();
             }
@@ -572,7 +571,7 @@ class Graph {
 
         if (edge) {
           node = this.nodes.get(edge.reactId);
-          if (node && node.statusLast().action === LogStates.isolateEnter) {
+          if (node && node.statusLast()?.action === LogStates.isolateEnter) {
             edge.status = "isolate";
           } else {
             edge.status = "normal";
