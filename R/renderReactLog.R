@@ -38,7 +38,7 @@ reactlog_render <- function(log, session_token = NULL, time = TRUE) {
   )
 
   # check if shiny is even available
-  if (requireNamespace("shiny")) {
+  if (requireNamespace("shiny", quietly = TRUE)) {
     # add resource path to pkg files for shiny
     # (avoids warning of tmp folder moving around)
     shiny::addResourcePath(
