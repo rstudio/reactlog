@@ -50,7 +50,9 @@ blank lines.
   well under a second. esbuild strips types without checking them.
 - `typecheck`: `tsc -p .`. Writes nothing.
 - `test`: bundles `srcts/__tests__/graphReplay.test.ts` for Node with esbuild
-  (into `node_modules/.cache/reactlog-test/`) and runs it with `node --test`.
+  (into `node_modules/.cache/reactlog-test/`) and runs it with plain `node`
+  (`node:test` still reports and sets the exit code). Not `node --test`:
+  newer Node treats its arguments as globs, which skip `node_modules/`.
   See "Tests" below.
 - `build`: `lint-all`, then `typecheck`, then `test`, then `build-only`. `lint-all` runs
   `bin/lint_file.sh` on the `srcts` folder.

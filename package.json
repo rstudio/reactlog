@@ -6,7 +6,7 @@
     "fix-all": "npm run fix -- srcts",
     "lint-all": "npm run lint -- srcts",
     "typecheck": "tsc -p .",
-    "test": "esbuild srcts/__tests__/graphReplay.test.ts --bundle --platform=node --log-level=warning --outfile=node_modules/.cache/reactlog-test/graphReplay.test.cjs && node --test node_modules/.cache/reactlog-test/graphReplay.test.cjs",
+    "test": "esbuild srcts/__tests__/graphReplay.test.ts --bundle --platform=node --log-level=warning --outfile=node_modules/.cache/reactlog-test/graphReplay.test.cjs && node node_modules/.cache/reactlog-test/graphReplay.test.cjs",
     "build": "npm run lint-all && npm run typecheck && npm test && npm run build-only",
     "build-only": "esbuild srcts/index.ts --bundle --minify --sourcemap --target=es2021 --outfile=inst/reactlog/reactlogAsset/reactlog.js",
     "check-shiny-target": "node bin/check_shiny_target.js",
