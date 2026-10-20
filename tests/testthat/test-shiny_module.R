@@ -37,5 +37,11 @@ test_that("iframe is displayed immediately", {
 })
 
 test_that("shiny version is read from Suggests", {
-  expect_s3_class(shiny_version_required(), "package_version")
+  expect_equal(shiny_version_required("knitr, shiny (>= 1.5.0)"), package_version("1.5.0"))
+  expect_equal(shiny_version_required("knitr, shiny(>= 1.5.0)"), package_version("1.5.0"))
+  expect_equal(
+    shiny_version_required("shinytest, shiny.i18n (>= 9.9), shiny (>= 1.5.0)"),
+    package_version("1.5.0")
+  )
+  expect_length(shiny_version_required(), 1)
 })
