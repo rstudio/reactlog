@@ -137,7 +137,7 @@ Esc order: if there is sticky data and a filter, and both hold the same react id
 ## Timeline (`srcjs/layout/progressBar.js`)
 
 - `setContainers(timeline, fill)`: sets height (`timelineHeight` = 20 px), colors from `colors.progressBar`, fill top/bottom padding (`timelinePadding` = 3 px), and binds `mousedown mousemove` to `updateFromProgressBar`.
-- `updateFromProgressBar`: only left button. Maps `e.pageX / offsetWidth` to an index in `stepsVisible` and calls `updateGraph(step)` if it changed. Dragging works because `mousemove` with the button held also seeks.
+- `updateFromProgressBar`: only when `buttons === 1` (left button alone). Maps the x position inside the timeline over `offsetWidth`, times `length - 1` (the same scale as the fill), to an index in `stepsVisible` and calls `updateGraph(step)` if it changed. Dragging works because `mousemove` with the button held also seeks.
 - `update()` (called by `atTick`): fill width is the position of `curTick` in `stepsVisible` (or the visible step before it) divided by `length - 1`. CSS animates width over 250 ms.
 - `addTimelineTicks(container, color, steps, top)`: one absolutely placed `div.timeline-tick` per step. `index.js` adds output calc ticks (`colors.nodes.ready`, short: `top = 2 * timelinePadding`), idle ticks (`colors.progressBar.idle`, full height), and user mark ticks (`colors.progressBar.userMark`, full height) only if marks exist. Output calc and idle share the same green.
 
@@ -192,6 +192,6 @@ This keeps snapshots stable. `reactlog_module_server()` (`R/shinyModule.R`) adds
 - `atTick` does not clamp, so callers must keep `curTick` within `0` to `log.length - 1` (`tick.js` does).
 - Keys use the old `e.which` codes (for example `83` for `s`). Use the same style for new branches so the handler stays readable as one list.
 - Letter shortcuts do not check modifiers, so Ctrl/Cmd + `s`, `l` or `f` also run them.
-- Moves that use `filteredStepsVisible` (step, idle, output calc) respect the search filter; user marks are always kept by the filter; ticks, the timeline and `firstStep`/`lastStep` ignore it.
+- Moves that use `filteredStepsVisible` (step, idle, output calc) respect the search filter; user marks are always kept by the filter; ticks, the timeline and `firstStep`/`lastStep` ignore it. The timeline ignores it on purpose: a click goes to the step under the pointer, even if the filtered graph does not show that step's action.
 - The search box is cleared in two places (`searchRegexReset` and `GraphAtStep.resetHoverStickyFilterSearch`). Any reset clears the text the user typed.
 - After editing `srcjs/`, rebuild. The page loads only the committed `reactlogAsset/reactlog.js`.
