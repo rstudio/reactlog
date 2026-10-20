@@ -1,4 +1,4 @@
-// node ./scripts/license_checker.js > LICENSE.note
+// npm run update-license  (writes LICENSE.note)
 
 var checker = require('license-checker');
 var fs = require('fs');
@@ -28,7 +28,7 @@ checker.init(
       }
     }
 
-    console.log("The reactlog package as a whole is distributed under GPL-3 (GNU GENERAL PUBLIC LICENSE version 3).\n\nThe reactlog package includes other open source software components. The following\nis a list of these components (full copies of the license agreements used by\nthese components are included below):");
+    console.log("The reactlog package as a whole is distributed under the MIT License.\n\nThe reactlog package includes other open source software components. The following\nis a list of these components (full copies of the license agreements used by\nthese components are included below):");
     console.log("");
 
     //The sorted json data
