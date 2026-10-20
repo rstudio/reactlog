@@ -4,9 +4,9 @@ This file provides guidance to AI coding agents (Claude Code, etc.) when working
 
 ## What this is
 
-`reactlog` is an R package that visualizes Shiny's reactive dependency graph. A small R side (`R/`) injects Shiny's recorded log into an HTML page; a Flow-typed JavaScript app (`srcjs/`) replays it as a cytoscape graph.
+`reactlog` is an R package that visualizes Shiny's reactive dependency graph. A small R side (`R/`) injects Shiny's recorded log into an HTML page; a TypeScript app (`srcts/`) replays it as a cytoscape graph.
 
-The built bundle `inst/reactlog/reactlogAsset/reactlog.js` (and its `.map`) **is committed**. CRAN and `R-CMD-check` never run Node. If you change anything in `srcjs/`, rebuild and commit the bundle with your change (the shared `routine` CI job also runs `npm ci` + `npm run build` and pushes any bundle changes back to same-repo PRs).
+The built bundle `inst/reactlog/reactlogAsset/reactlog.js` (and its `.map`) **is committed**. CRAN and `R-CMD-check` never run Node. If you change anything in `srcts/`, rebuild and commit the bundle with your change (the shared `routine` CI job also runs `npm ci` + `npm run build` and pushes any bundle changes back to same-repo PRs).
 
 ## Commands
 
@@ -14,14 +14,12 @@ JavaScript (npm; Node 22 works):
 
 ```bash
 npm ci                         # install; postinstall also runs the build
-npm run build-only             # webpack build via grunt -> inst/reactlog/reactlogAsset/reactlog.js
-npm run build                  # eslint --fix + prettier on srcjs, then build
-npm run watch                  # lint, then rebuild on change
-npm run lint -- srcjs/foo.js   # eslint --fix + prettier on given files
-npm run flow-report            # flow type coverage (95% threshold, see package.json)
+npm run build-only             # esbuild -> inst/reactlog/reactlogAsset/reactlog.js (no type check)
+npm run typecheck              # tsc, no output files
+npm run build                  # eslint --fix + prettier on srcts, typecheck, then build
+npm run watch                  # lint, then rebuild on change (no type check)
+npm run lint -- srcts/foo.ts   # eslint --fix + prettier on given files
 ```
-
-`build-only` and `watch` set `NODE_OPTIONS=--openssl-legacy-provider` because webpack 4 needs it on Node 17+.
 
 R:
 
@@ -34,7 +32,7 @@ devtools::document()                               # regenerate man/ and NAMESPA
 devtools::check()
 ```
 
-`npm ci` installs a git pre-commit hook (`pre-commit` + `lint-staged`, config in `package.json`). On commit it lints staged `R/*.R` with `devtools::lint()` (needs the `lintr` R package) and, for staged `srcjs/**/*.js`, runs lint + build, the flow report, and `git add`s the rebuilt bundle.
+`npm ci` installs a git pre-commit hook (`pre-commit` + `lint-staged`, config in `package.json`). On commit it lints staged `R/*.R` with `devtools::lint()` (needs the `lintr` R package) and, for staged `srcts/**/*.ts`, runs lint, typecheck, and build, then `git add`s the rebuilt bundle.
 
 ## Memory Bank
 
@@ -52,10 +50,10 @@ the `!/.agents/skills/<name>/` lines in `.gitignore` to match.
 
 `memory-bank/architecture.md` explains how the R side, the HTML template, and
 the JavaScript app connect, plus how to work on the JS without running Shiny.
-Read it before working in `R/` or `srcjs/`.
+Read it before working in `R/` or `srcts/`.
 
 ## Conventions
 
-- JS files start with `// @flow`. Lint is eslint 5 + prettier 1 (`.eslintrc.js`, `prettier.config.js`).
+- Source is TypeScript (`tsconfig.json`, `strict` off for now). Lint is eslint 10 + typescript-eslint + prettier 3 (`eslint.config.mjs`, `prettier.config.js`).
 - Add a NEWS.md entry for user-facing changes (CONTRIBUTING.md).
 - New top-level files need an entry in `.Rbuildignore`, or R CMD check will warn.

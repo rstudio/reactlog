@@ -1,6 +1,6 @@
 ---
 title: "Graph replay"
-description: "How the JS app turns the log into a graph at any step: Graph.addEntry() per action, Node/Edge/GhostEdge, status objects and how they map to cytoscape classes and colors, GraphAtStep step indexes, hover/sticky/filter/search, and displayAtStep() diffing plus the dagre layout. Read before touching srcjs/graph/, srcjs/cyto/, or anything that changes what the graph shows at a step."
+description: "How the JS app turns the log into a graph at any step: Graph.addEntry() per action, Node/Edge/GhostEdge, status objects and how they map to cytoscape classes and colors, GraphAtStep step indexes, hover/sticky/filter/search, and displayAtStep() diffing plus the dagre layout. Read before touching srcts/graph/, srcts/cyto/, or anything that changes what the graph shows at a step."
 ---
 
 # Graph replay
@@ -19,24 +19,24 @@ entry panel.
 
 | File | Role |
 | --- | --- |
-| `srcjs/updateGraph/atTick.js` | `atTick()` (also exported as `updateGraph`): sets `rlog.curTick`, calls `displayAtStep()`, updates progress bar and log entry |
-| `srcjs/graph/GraphAtStep.js` | `GraphAtStep`: step indexes, `rawGraphAtStep()`, hover/sticky/filter state, `displayAtStep()` |
-| `srcjs/graph/Graph.js` | `Graph`: `nodes`, `edges`, `edgesUnique`, `addEntry()`, family-tree queries, `filterGraphOnNodeIds()`, `cytoGraph` |
-| `srcjs/graph/Node.js` | `Node`: statuses, labels, `cytoClasses` |
-| `srcjs/graph/Edge.js`, `GhostEdge.js` | Live dependency edges and "ever existed" edges |
-| `srcjs/graph/StatusArr.js` | Per-node stack of open enter/invalidate/isolate entries, `expectPrevStatus()` |
-| `srcjs/graph/ActiveStateStatus.js` | `off` / `on` / `finished` state plus `activeStep` |
-| `srcjs/graph/HoverStatus.js` | `state` (focused / notFocused), `sticky`, `selected`, `filtered` flags |
-| `srcjs/updateGraph/hoverStickyFilterSearch.js`, `searchString.js` | Entry points that set hover/sticky/filter/search, then call `updateGraph()` |
-| `srcjs/cyto/cytoOn.js` | Mouse events: hover, click (sticky), double click (filter) |
-| `srcjs/cyto/cytoscapeInit.js` | Creates cytoscape with the ordered style list |
-| `srcjs/cyto/cytoClasses.js`, `cytoStyle.js`, `srcjs/style/colors.js` | Class selectors, style objects, color values |
-| `srcjs/cyto/layoutOptions.js` | dagre layout options |
+| `srcts/updateGraph/atTick.ts` | `atTick()` (also exported as `updateGraph`): sets `rlog.curTick`, calls `displayAtStep()`, updates progress bar and log entry |
+| `srcts/graph/GraphAtStep.ts` | `GraphAtStep`: step indexes, `rawGraphAtStep()`, hover/sticky/filter state, `displayAtStep()` |
+| `srcts/graph/Graph.ts` | `Graph`: `nodes`, `edges`, `edgesUnique`, `addEntry()`, family-tree queries, `filterGraphOnNodeIds()`, `cytoGraph` |
+| `srcts/graph/Node.ts` | `Node`: statuses, labels, `cytoClasses` |
+| `srcts/graph/Edge.ts`, `GhostEdge.ts` | Live dependency edges and "ever existed" edges |
+| `srcts/graph/StatusArr.ts` | Per-node stack of open enter/invalidate/isolate entries, `expectPrevStatus()` |
+| `srcts/graph/ActiveStateStatus.ts` | `off` / `on` / `finished` state plus `activeStep` |
+| `srcts/graph/HoverStatus.ts` | `state` (focused / notFocused), `sticky`, `selected`, `filtered` flags |
+| `srcts/updateGraph/hoverStickyFilterSearch.ts`, `searchString.ts` | Entry points that set hover/sticky/filter/search, then call `updateGraph()` |
+| `srcts/cyto/cytoOn.ts` | Mouse events: hover, click (sticky), double click (filter) |
+| `srcts/cyto/cytoscapeInit.ts` | Creates cytoscape with the ordered style list |
+| `srcts/cyto/cytoClasses.ts`, `cytoStyle.ts`, `srcts/style/colors.ts` | Class selectors, style objects, color values |
+| `srcts/cyto/layoutOptions.ts` | dagre layout options |
 
 ## Data flow
 
 ```
-navigation / hover / search  ->  atTick(k, cytoOptions)            (updateGraph/atTick.js)
+navigation / hover / search  ->  atTick(k, cytoOptions)            (updateGraph/atTick.ts)
   rlog.curTick = k
   rlog.getGraph.displayAtStep(k, rlog.cyto, cytoOptions)
     fullFilteredGraphAtStep(k)
@@ -116,10 +116,10 @@ observers and observables when `rlog.displayTimeOnNodes` is true
 ## Status to class to color
 
 `Node.cytoClasses` builds the class string. Styles are applied in the order
-listed in `cytoscapeInit.js`, so later entries win (for example `nodeFrozen`
+listed in `cytoscapeInit.ts`, so later entries win (for example `nodeFrozen`
 and `nodeHidden` override the fill colors).
 
-| Class | When | Look (`cytoStyle.js`, `colors.js`) |
+| Class | When | Look (`cytoStyle.ts`, `colors.ts`) |
 | --- | --- | --- |
 | (default) | every node | fill `colors.nodes.ready` `#a3c586` (green) |
 | `nodeStart` / `nodeMiddle` / `nodeEnd` | type is not observer/observable / `observable` / `observer` | polygon shape |
@@ -168,7 +168,7 @@ Then for each remaining entry:
 `depOnReactId` for edges) is in `finalFilteredGraph`, keeps `userMark`s, and
 keeps an `idle` only if the last kept step is not an `idle`. `nextStep()` /
 `prevStep()` move through `filteredStepsVisible`. Steps equal log indexes
-(`log/initStep.js`), so `this.log[step]` is valid.
+(`log/initStep.ts`), so `this.log[step]` is valid.
 
 ## Hover, sticky, filter, search
 
@@ -179,7 +179,7 @@ only by `updateFilterDatas()`).
 
 In `filteredGraphAtStep(k)`:
 
-1. **Hover** (mouseover after 200 ms in `cytoOn.js`): if the hovered item
+1. **Hover** (mouseover after 200 ms in `cytoOn.ts`): if the hovered item
    exists at step `k`, its family tree from `finalFilteredGraph` is set focused
    and everything else notFocused; the item itself gets `selected`.
 2. **Sticky** (single click; click on background clears): if any sticky item
@@ -191,7 +191,7 @@ In `filteredGraphAtStep(k)`:
 Family trees come from the whole-log graph, so hovering highlights nodes that
 are related at any time, not only at step `k`.
 
-**Search** (`searchString.js`): an empty string resets everything; 1-2
+**Search** (`searchString.ts`): an empty string resets everything; 1-2
 characters are ignored unless they look like `r<digit>`; otherwise the text is
 escaped into a `RegExp` and `updateSearchRegex()` tests it against node
 `label` and `key` in `finalCompleteGraph`, then edge `ghostKey`, then ghost
@@ -256,7 +256,7 @@ layout. `resize()` calls `atTick(curTick, {fit: true, forceRedraw: true})`.
 - **Copied nodes share `ActiveStateStatus`.** `new Graph(prior)` clones
   `statusArr` and `hoverStatus`, but the three `ActiveStateStatus` objects are
   shared, so mutating them on the copy also changes the source.
-- **Style order matters.** A new class needs `cytoClasses.js`, `cytoStyle.js`,
-  and a line at the right position in `cytoscapeInit.js`.
+- **Style order matters.** A new class needs `cytoClasses.ts`, `cytoStyle.ts`,
+  and a line at the right position in `cytoscapeInit.ts`.
 - **Search matches are substrings.** The regex is not anchored, so searching
   `r1` also matches `r10`, `r12`, and labels containing `r1`.

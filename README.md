@@ -96,10 +96,9 @@ For bug reports, please use the **reactlog** [issue tracker](https://github.com/
 ## Development
 
 [![node version: 22.x](https://img.shields.io/badge/node-22.x-brightgreen.svg)](https://nodejs.org/en/)
-[![JavaScript type: flow](https://img.shields.io/npm/types/flow-typed.svg)](https://github.com/flow-typed/flow-typed)
+[![language: TypeScript](https://img.shields.io/badge/language-TypeScript-3178c6.svg)](https://www.typescriptlang.org/)
 [![cytoscape](https://img.shields.io/github/package-json/dependency-version/rstudio/reactlog/cytoscape.svg)](https://js.cytoscape.org/)
-[![@babel/preset-env](https://img.shields.io/github/package-json/dependency-version/rstudio/reactlog/dev/@babel/preset-env.svg)](https://babeljs.io/)
-[![webpack](https://img.shields.io/github/package-json/dependency-version/rstudio/reactlog/dev/webpack.svg)](https://webpack.js.org/)
+[![esbuild](https://img.shields.io/github/package-json/dependency-version/rstudio/reactlog/dev/esbuild.svg)](https://esbuild.github.io/)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 [![linter: eslint](https://img.shields.io/badge/linter-eslint-3524ca.svg)](https://eslint.org/)
 

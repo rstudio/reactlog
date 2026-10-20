@@ -1,6 +1,6 @@
 ---
 title: "Architecture"
-description: "How reactlog fits together: Shiny's recorded log, the R functions that inject it into an HTML template, and the JavaScript app that replays it as a cytoscape graph. Start here before working in R/ or srcjs/."
+description: "How reactlog fits together: Shiny's recorded log, the R functions that inject it into an HTML template, and the JavaScript app that replays it as a cytoscape graph. Start here before working in R/ or srcts/."
 ---
 
 # Architecture
@@ -8,7 +8,7 @@ description: "How reactlog fits together: Shiny's recorded log, the R functions 
 `reactlog` has two halves:
 
 - **R package** (`R/`): small. It takes the log that Shiny records while `options(shiny.reactlog = TRUE)` is set, turns it into JSON, and injects it into an HTML page.
-- **JavaScript app** (`srcjs/`): most of the code. A Flow-typed, webpack-bundled single page app that replays the log step by step and draws the reactive graph with cytoscape + dagre.
+- **JavaScript app** (`srcts/`): most of the code. A TypeScript single page app, bundled with esbuild, that replays the log step by step and draws the reactive graph with cytoscape + dagre.
 
 The built bundle `inst/reactlog/reactlogAsset/reactlog.js` (and its `.map`) is committed. CRAN and `R-CMD-check` never run Node; the shared `routine` CI job runs `npm ci` + `npm run build` and commits any bundle changes back to the PR.
 
@@ -23,14 +23,14 @@ The built bundle `inst/reactlog/reactlogAsset/reactlog.js` (and its `.map`) is c
 3. `reactlog_show()` opens that file in a browser.
 4. `reactlog_module_ui()` / `reactlog_module_server()` (`R/shinyModule.R`) embed the viewer as an iframe that points at Shiny's own `reactlog?w=...&s=...` endpoint. The module needs the shiny version listed in DESCRIPTION `Suggests`, which `shiny_version_required()` reads at runtime, so keep that field accurate.
 
-## Browser side (`srcjs/`)
+## Browser side (`srcts/`)
 
-Entry point is `srcjs/index.js`, which wires DOM elements from `reactlog.html` to the modules below on page load.
+Entry point is `srcts/index.ts`, which wires DOM elements from `reactlog.html` to the modules below on page load.
 
-- `log/initStep.js` runs first on import. It takes `window.__APP_DATA__` (or `window.log` from `defaultLog.js`) and gives each entry `step = index`. `log/logStates.js` lists every log `action` and its Flow types.
-- `rlog.js` is a shared mutable singleton (also `window._reactlog`) holding the log, the cytoscape instance, the `GraphAtStep`, and `curTick`. Most modules read and write state through it.
-- `graph/Graph.js` is the graph state built by applying log entries in order with `addEntry()`: nodes, edges, ghost edges, statuses, family-tree queries, filtering.
-- `graph/GraphAtStep.js` is the time-travel layer. It indexes special steps (idle, output calc, user marks, async) and rebuilds a `Graph` for any step by replaying the log from the start (`rawGraphAtStep`; the cache is commented out). `displayAtStep()` pushes the result into cytoscape.
+- `log/initStep.ts` runs first on import. It takes `window.__APP_DATA__` (or `window.log` from `defaultLog.js`) and gives each entry `step = index`. `log/logStates.ts` lists every log `action` and its TypeScript types.
+- `rlog.ts` is a shared mutable singleton (also `window._reactlog`) holding the log, the cytoscape instance, the `GraphAtStep`, and `curTick`. Most modules read and write state through it.
+- `graph/Graph.ts` is the graph state built by applying log entries in order with `addEntry()`: nodes, edges, ghost edges, statuses, family-tree queries, filtering.
+- `graph/GraphAtStep.ts` is the time-travel layer. It indexes special steps (idle, output calc, user marks, async) and rebuilds a `Graph` for any step by replaying the log from the start (`rawGraphAtStep`; the cache is commented out). `displayAtStep()` pushes the result into cytoscape.
 - `updateGraph/` holds the navigation actions (next/prev step, idle, output calc, user mark, search, hover/sticky filter). They all end in `atTick()`, which redraws the graph, progress bar and log entry panel.
 - `cyto/` has cytoscape setup, styles and event handlers. `layout/` has DOM pieces (keyboard shortcuts, progress bar, log entry panel).
 
@@ -50,5 +50,5 @@ The pkgdown site (`pkgdown/`, built by `.github/shiny-workflows/website.R`) copi
 | [graphReplay.md](graphReplay.md) | `Graph` / `GraphAtStep`, node and edge status, filtering, the cytoscape diff and layout |
 | [viewerUi.md](viewerUi.md) | Page DOM, navigation actions, keyboard shortcuts, timeline, status panel |
 | [shinyIntegration.md](shinyIntegration.md) | How shiny calls reactlog, the `/reactlog` endpoint, the module, tests |
-| [jsBuild.md](jsBuild.md) | npm / grunt / webpack 4 toolchain, Flow, lint, the pre-commit hook |
+| [jsBuild.md](jsBuild.md) | npm / esbuild / TypeScript toolchain, lint, the pre-commit hook |
 | [ciAndRelease.md](ciAndRelease.md) | GitHub Actions, the pkgdown site, CRAN release files |

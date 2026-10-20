@@ -149,9 +149,9 @@ If `getOption("shiny.testmode")` is `TRUE` when the iframe renders,
 an app runs under shinytest or shinytest2 (`test.mode` in
 `rstudio/shiny:R/runapp.R`).
 
-On the JS side, `srcjs/utils/shinytest.js` sets `inTestMode` when the page's
-query has `test=1`. Then `srcjs/layout/logEntry.js` shows `(shinytest)` instead
-of the time and session, and `Node.calculationTimeStr` in `srcjs/graph/Node.js`
+On the JS side, `srcts/utils/shinytest.ts` sets `inTestMode` when the page's
+query has `test=1`. Then `srcts/layout/logEntry.ts` shows `(shinytest)` instead
+of the time and session, and `Node.calculationTimeStr` in `srcts/graph/Node.ts`
 returns `(shinytest)` instead of milliseconds. This keeps screenshots stable
 between runs.
 
@@ -208,10 +208,10 @@ Run with `Rscript -e 'devtools::test()'` from the repo root.
 
 | Change | reactlog | shiny |
 | --- | --- | --- |
-| New or changed log action or field | Update `srcjs/` (see [logFormat.md](logFormat.md)), rebuild and commit the bundle | Update `RLog` in `rstudio/shiny:R/graph.R` |
+| New or changed log action or field | Update `srcts/` (see [logFormat.md](logFormat.md)), rebuild and commit the bundle | Update `RLog` in `rstudio/shiny:R/graph.R` |
 | Breaking log format change | Add the new version to `reactlog_upgrade()`; teach the JS to read it | Change `attr(, "version")` in `RLog$asList()`; raise `reactlog_min_version` and `Suggests` |
 | Rename or change args of `reactlog_render()` / `reactlog_show()` | Keep old names working; release first | Update `reactlogShow()` and `renderReactlog()`; raise `reactlog_min_version` |
-| New query parameter on `/reactlog` | Read it in `srcjs/` (like `utils/shinytest.js`) or in `reactlog_render()` | Read it in `reactLogHandler()` and pass it through `renderReactlog()` |
+| New query parameter on `/reactlog` | Read it in `srcts/` (like `utils/shinytest.ts`) or in `reactlog_render()` | Read it in `reactLogHandler()` and pass it through `renderReactlog()` |
 | New keyboard shortcut | Update the docs in `R/showReactLog.R` and `R/shinyModule.R` | Add it in `rstudio/shiny:srcts/src/shiny/reactlog.ts` |
 | Module needs a newer shiny | Raise `shiny (>= ...)` in DESCRIPTION `Suggests` | Nothing |
 | Template placeholders | Update `reactlog.html` and `reactlog_render()` together | Nothing |
