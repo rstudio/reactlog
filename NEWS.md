@@ -10,6 +10,8 @@
 
 - Fixed the status text for `asyncStop` entries, which said "Start asynchronous calculations" (#120)
 
+- Fixed `Shift+Right` moving past the last log entry (#120)
+
 # reactlog 1.1.1
 
 - Fixed Font Awesome icon warning about `refresh` icon (#87)
