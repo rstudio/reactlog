@@ -38,7 +38,7 @@
 #' @param log Log produced by shiny to be processed
 #' @param time A boolean that specifies whether or not to display the
 #' time that each reactive takes to calculate a result.
-#' @param ... Future parameter expansion. Currently ignored
+#' @param ... Arguments passed on to `reactlog_render()`, such as `session_token`.
 #' @seealso [shiny::reactlogShow()] and
 #' [reactlog::reactlog_enable()]
 #' @export
