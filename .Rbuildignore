@@ -7,7 +7,6 @@
 ^\.Rproj\.user$
 ^LICENSE\.md$
 ^srcts
-^\.eslintrc\.js$
 ^package\.json$
 ^prettier\.config\.js$
 ^package-lock\.json$

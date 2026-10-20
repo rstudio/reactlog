@@ -27,13 +27,10 @@
     }
   },
   "devDependencies": {
-    "@babel/core": "7.x",
     "@types/jquery": "^3.5.34",
     "@types/lodash": "^4.17.26",
-    "babel-eslint": "10.x",
     "esbuild": "^0.28.2",
     "eslint": "5.x",
-    "eslint-plugin-flowtype": "3.x",
     "license-checker": "^25.0.1",
     "lint-staged": "8.x",
     "pre-commit": "^1.2.2",
