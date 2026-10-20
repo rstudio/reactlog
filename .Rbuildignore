@@ -20,7 +20,6 @@
 ^inst/reactlog/reactlogAsset/report\.html$
 ^flow-typed
 ^_ignore
-^index\.html$
 ^\.lintr$
 ^scripts
 .*\.js\.map$
