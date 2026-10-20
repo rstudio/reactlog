@@ -91,7 +91,7 @@ Steps that may auto-commit, in order:
 | `usethis::use_tidy_description()` | Reorders and reformats `DESCRIPTION` |
 | `devtools::document()` | `DESCRIPTION`, `NAMESPACE`, `man/` |
 | `oxipng` | Lossless PNG shrink on `man/figures/*.png` and `vignettes/*.png`. Git pathspec `*` also matches `/`, so this hits all 22 PNGs under `vignettes/images/` |
-| `npm ci` + `npm run build` | Uses Node `current`. `package.json` has a `build` script, so this runs (`npm ci` also runs `postinstall`, which builds). `build` runs `lint-all` (eslint `--fix` + prettier on `srcts/`), `typecheck` (tsc), then esbuild. Commits changes under `inst/` and `srcts/` plus `package-lock.json` |
+| `npm ci` + `npm run build` | Uses Node `current`. `package.json` has a `build` script, so this runs (`npm ci` also runs `postinstall`, which builds). `build` runs `lint-all` (eslint `--fix` + prettier on `srcts/`), `typecheck` (tsc), `test` (graph replay), then esbuild. Commits changes under `inst/` and `srcts/` plus `package-lock.json` |
 
 There is no `README.Rmd`, `codecov.yml`, or `# @staticimports`, so those steps skip.
 After pushing, it runs `devtools::lint()` (because `.lintr` exists) and fails on

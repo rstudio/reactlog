@@ -49,7 +49,10 @@ blank lines.
   --target=es2021 --outfile=inst/reactlog/reactlogAsset/reactlog.js`. Takes
   well under a second. esbuild strips types without checking them.
 - `typecheck`: `tsc -p .`. Writes nothing.
-- `build`: `lint-all`, then `typecheck`, then `build-only`. `lint-all` runs
+- `test`: bundles `srcts/__tests__/graphReplay.test.ts` for Node with esbuild
+  (into `node_modules/.cache/reactlog-test/`) and runs it with `node --test`.
+  See "Tests" below.
+- `build`: `lint-all`, then `typecheck`, then `test`, then `build-only`. `lint-all` runs
   `bin/lint_file.sh` on the `srcts` folder.
 - `watch`: `lint-all` once, then `build-only -- --watch`. No type check while
   watching; run `npm run typecheck` (or an editor) for that.
@@ -176,7 +179,28 @@ with their license text, under a header saying the package is MIT.
 To check that a build change did not change behavior, load the old and new
 bundle in turn and compare `window._reactlog.curTick`,
 `window._reactlog.cyto.nodes().length` and the `#logEntry` text after the same
-button clicks and key presses. There are no JS unit tests.
+button clicks and key presses.
+
+## Tests
+
+`srcts/__tests__/graphReplay.test.ts` replays every log in `inst/log-files/`
+through `GraphAtStep` and checks the step lists (visible, idle, output calc,
+user mark) and the node and edge counts at the first, middle, and last visible
+step. It runs in about 0.2 seconds, and `npm run build` runs it, so CI's
+`routine` job does too. Adding a log file without adding its counts fails the
+test.
+
+- The graph modules read `window` when they load, and `rlog.ts` and
+  `GraphAtStep.ts` import each other. So the test imports `./setupWindow`
+  (a minimal `window` stub) first, then `../rlog`, then `GraphAtStep`. jQuery
+  and cytoscape load fine in Node without a DOM.
+- The counts are recorded from the code, not worked out by hand. If a change
+  moves them on purpose, check the viewer in a browser, then update the table.
+- The file has `/// <reference types="node" />` so `tsc` knows the `node:`
+  modules. That reference adds Node's globals to the whole `tsc` run, not
+  just the test, so `tsc` will not flag Node-only APIs in app code.
+- Nothing tests the DOM or cytoscape drawing; use the browser comparison
+  above for that.
 
 ## Pitfalls
 
