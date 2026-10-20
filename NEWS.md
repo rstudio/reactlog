@@ -8,6 +8,8 @@
 
 - Fixed an "unknown data.action" browser console error for every `invalidateLater` entry during replay (#120)
 
+- Fixed the status text for `asyncStop` entries, which said "Start asynchronous calculations" (#120)
+
 # reactlog 1.1.1
 
 - Fixed Font Awesome icon warning about `refresh` icon (#87)
