@@ -728,13 +728,14 @@ class GraphAtStep {
           // {animate: true}
         )
       );
-      // remove the layout once it's finished
-      this.cytoLayout.one("layoutstop", function(evt: any) {
-        if (this.cytoLayout) {
+      // remove the layout once it's finished, unless a newer one replaced it
+      let cytoLayout = this.cytoLayout;
+      cytoLayout.one("layoutstop", () => {
+        if (this.cytoLayout === cytoLayout) {
           this.cytoLayout = null;
         }
       });
-      this.cytoLayout.run();
+      cytoLayout.run();
     }
   }
 }
