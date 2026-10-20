@@ -128,7 +128,7 @@ shiny_version_required <- function() {
   desc_file <- system.file("DESCRIPTION", package = "reactlog")
   suggests <- read.dcf(desc_file)[1, "Suggests"]
   pkgs <- trimws(strsplit(suggests, ",")[[1]])
-  shiny_version <- gsub("[^.0-9]", "", pkgs[grepl("^shiny ", pkgs)])
+  shiny_version <- gsub("[^.0-9]", "", pkgs[grepl("^shiny\\b", pkgs)])
   package_version(shiny_version)
 }
 test_shiny_version <- function() {

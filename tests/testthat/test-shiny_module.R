@@ -35,3 +35,7 @@ test_that("iframe is displayed immediately", {
   )
 
 })
+
+test_that("shiny version is read from Suggests", {
+  expect_s3_class(shiny_version_required(), "package_version")
+})
