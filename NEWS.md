@@ -14,6 +14,8 @@
 
 - Fixed double clicking a graph element also matching elements with a longer id, such as `r30` for `r3` (#120)
 
+- Fixed the next / previous user mark buttons skipping a mark that is the very next step (#120)
+
 # reactlog 1.1.1
 
 - Fixed Font Awesome icon warning about `refresh` icon (#87)

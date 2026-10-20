@@ -79,7 +79,7 @@ Everything ends in `atTick(nextTick, cytoOptions)`: set `rlog.curTick`, call `rl
 | `firstIdle` / `lastIdle` | `idle.js` | Jump to first / last idle, not used by the UI |
 | `nextOutputCalc` / `prevOutputCalc` | `outputCalc.js` | Same helpers over `stepsOutputCalc` |
 | `nextStepInArr` / `prevStepInArr` | `outputCalc.js` | Find the next/prev array entry that is also in `filteredStepsVisible`; `false` if none |
-| `nextUserMark` / `prevUserMark` | `userMarks.js` | Own loop over `stepsUserMark`; does not check `filteredStepsVisible` |
+| `nextUserMark` / `prevUserMark` | `userMarks.js` | First mark after / last mark before `curTick`. Marks are always in `filteredStepsVisible`, so no filter check |
 | `firstUserMark` / `lastUserMark` | `userMarks.js` | `false` when there are no marks |
 | `button*` (8) | `buttons.js` | `move() \|\| firstStep()` (prev) or `move() \|\| lastStep()` (next) |
 | `resize` | `resize.js` | `rlog.cyto.resize()` then `atTick(curTick, {fit: true, forceRedraw: true})` |
@@ -192,6 +192,6 @@ This keeps snapshots stable. `reactlog_module_server()` (`R/shinyModule.R`) adds
 - `atTick` does not clamp, so callers must keep `curTick` within `0` to `log.length - 1` (`tick.js` does).
 - Keys use the old `e.which` codes (for example `83` for `s`). Use the same style for new branches so the handler stays readable as one list.
 - Letter shortcuts do not check modifiers, so Ctrl/Cmd + `s`, `l` or `f` also run them.
-- Moves that use `filteredStepsVisible` (step, idle, output calc) respect the search filter; user marks, ticks, the timeline and `firstStep`/`lastStep` do not.
+- Moves that use `filteredStepsVisible` (step, idle, output calc) respect the search filter; user marks are always kept by the filter; ticks, the timeline and `firstStep`/`lastStep` ignore it.
 - The search box is cleared in two places (`searchRegexReset` and `GraphAtStep.resetHoverStickyFilterSearch`). Any reset clears the text the user typed.
 - After editing `srcjs/`, rebuild. The page loads only the committed `reactlogAsset/reactlog.js`.
