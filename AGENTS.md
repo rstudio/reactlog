@@ -55,6 +55,6 @@ Read it before working in `R/` or `srcts/`.
 
 ## Conventions
 
-- Source is TypeScript (`tsconfig.json`, `strict` off for now). Lint is eslint 10 + typescript-eslint + prettier 3 (`eslint.config.mjs`, `prettier.config.js`).
+- Source is TypeScript (`tsconfig.json`, `strict` on). Lint is eslint 10 + typescript-eslint + prettier 3 (`eslint.config.mjs`, `prettier.config.js`).
 - Add a NEWS.md entry for user-facing changes (CONTRIBUTING.md).
 - New top-level files need an entry in `.Rbuildignore`, or R CMD check will warn.

@@ -11,7 +11,7 @@ class StatusArr {
   constructor(statusArr: StatusArr | Array<StatusEntry> = []) {
     if (statusArr instanceof StatusArr) {
       this.statusArr = _cloneDeep(statusArr.statusArr);
-    } else if (Array.isArray(statusArr)) {
+    } else {
       this.statusArr = statusArr;
     }
   }
@@ -21,10 +21,10 @@ class StatusArr {
   add(obj: StatusEntry) {
     return this.statusArr.push(obj);
   }
-  remove(): StatusEntry {
+  remove(): StatusEntry | undefined {
     return this.statusArr.pop();
   }
-  last(): StatusEntry {
+  last(): StatusEntry | undefined {
     return _last(this.statusArr);
   }
   containsStatus(status: string) {
@@ -46,15 +46,15 @@ type StatusEntry = {
 
 let expectPrevStatus = function (
   curStatus: StatusEntry,
-  prevStatus: StatusEntry,
+  prevStatus: StatusEntry | undefined,
   expectedAction: string
 ) {
-  function onError(msg: string) {
+  function onError(msg: string): never {
     console.error("curStatus: ", curStatus);
     console.error("prevStatus: ", prevStatus);
     throw msg;
   }
-  if (prevStatus.action !== expectedAction) {
+  if (prevStatus?.action !== expectedAction) {
     onError(`prior node status does not have "${expectedAction}" status`);
   }
   if (prevStatus.ctxId !== curStatus.ctxId) {

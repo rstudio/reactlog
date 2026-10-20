@@ -5,7 +5,7 @@
     "moduleResolution": "bundler",
     "lib": ["es2021", "dom"],
     "types": ["jquery"],
-    "strict": false,
+    "strict": true,
     "noEmit": true,
     "isolatedModules": true,
     "esModuleInterop": true

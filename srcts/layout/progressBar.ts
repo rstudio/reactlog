@@ -44,7 +44,7 @@ let updateFromProgressBar = function (e: JQuery.TriggeredEvent): void {
 
   let timeline = $(e.currentTarget)[0] as HTMLElement;
   // pixels from the left edge of the timeline
-  let pos = e.pageX - $(timeline).offset().left;
+  let pos = originalEvent.clientX - timeline.getBoundingClientRect().left;
 
   let width = timeline.offsetWidth; // width in pixels
 
