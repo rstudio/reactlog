@@ -187,7 +187,7 @@ let statusForEntry = function(entry: LogEntryAnyType): string {
       return "Start asynchronous calculations";
     }
     case LogStates.asyncStop: {
-      return "Start asynchronous calculations";
+      return "Stop asynchronous calculations";
     }
     case LogStates.define: {
       let defineEntry = ((entry: Object): LogEntryDefineType);

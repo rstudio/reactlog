@@ -195,5 +195,4 @@ This keeps snapshots stable. `reactlog_module_server()` (`R/shinyModule.R`) adds
 - Moves that use `filteredStepsVisible` (step, idle, output calc) respect the search filter; user marks, ticks, the timeline and `firstStep`/`lastStep` do not.
 - The search box is cleared in two places (`searchRegexReset` and `GraphAtStep.resetHoverStickyFilterSearch`). Any reset clears the text the user typed.
 - Double click searches with an unanchored regex of the key, so `r3` also matches `r30`, `r31`, and labels containing `r3`.
-- `asyncStop` shows the same status text as `asyncStart` ("Start asynchronous calculations").
 - After editing `srcjs/`, rebuild. The page loads only the committed `reactlogAsset/reactlog.js`.
