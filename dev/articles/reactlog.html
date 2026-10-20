@@ -88,7 +88,7 @@ Joe Cheng, and Barret Schloerke</h4>
             
             <h4 data-toc-skip class="date">2019-03-14</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/rstudio/reactlog/blob/main/vignettes/reactlog.Rmd" class="external-link"><code>vignettes/reactlog.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/rstudio/reactlog/blob/issue-120/vignettes/reactlog.Rmd" class="external-link"><code>vignettes/reactlog.Rmd</code></a></small>
       <div class="hidden name"><code>reactlog.Rmd</code></div>
 
     </div>
@@ -441,7 +441,8 @@ of the reactlog graph. There are four different ways to move time
 forwards and backwards within the reactlog.</p>
 <p><img src="images/navigation.png" class="r-plt" alt="" width="80%" style="display: block; margin: auto;"></p>
 <ul>
-<li>Previous / Next Step (<code>Left/Right Arrow keys</code>):
+<li>Previous / Next Step (<code>Left/Right Arrow keys</code>;
+<code>Space</code> also moves forward):
 <img src="images/buttons/prev-step.svg" width="30" style="vertical-align: middle"><img src="images/buttons/next-step.svg" width="30" style="vertical-align: middle"><ul>
 <li>These buttons move one reactive step a single step forwards (right)
 or backwards (left) within the displayed reactlog.</li>
@@ -469,15 +470,21 @@ this step.</li>
 <li>User Marked Step (<code>Home/End</code>):
 <img src="images/buttons/prev-mark.svg" width="30" style="vertical-align: middle"><img src="images/buttons/next-mark.svg" width="30" style="vertical-align: middle"><ul>
 <li>These buttons advance the progress bar to the nearest user supplied
-mark. These marks can be added by pressing <code>Ctrl + F4</code> (Mac:
-<code>Cmd + F4</code>) inside the <strong>shiny</strong>
-application.</li>
+mark. These marks can be added by pressing
+<code>Ctrl + Shift + F3</code> or <code>Ctrl + F4</code> (Mac:
+<code>Cmd + Shift + F3</code> or <code>Cmd + F4</code>) inside the
+<strong>shiny</strong> application.</li>
 </ul>
 </li>
 </ul>
 <blockquote>
 <p>Tip: Hold down the arrow keys to quickly iterate over all the steps
 of the displayed graph.</p>
+</blockquote>
+<blockquote>
+<p>Tip: Hold <code>SHIFT</code> with the
+<code>Left/Right Arrow keys</code> to move one log entry at a time,
+including entries that are not shown as their own step.</p>
 </blockquote>
 <div class="section level5">
 <h5 id="search-bar">Search Bar<a class="anchor" aria-label="anchor" href="#search-bar"></a>
@@ -494,7 +501,8 @@ module name. The search above would look at the <code>input</code>
 values in the <em>details</em> module.</p>
 </blockquote>
 <blockquote>
-<p>Tip 2: Press the ‘s’ key to bring focus to the search bar.</p>
+<p>Tip 2: Press the ‘s’ key to bring focus to the search bar, and
+<code>Esc</code> to leave it.</p>
 </blockquote>
 </div>
 </div>
@@ -572,7 +580,7 @@ highlights that element’s family tree. A single click maintains that
 highlighting. Double-clicking filters the graph to that element’s family
 tree. To clear any highlight/filter selections, click/double-click the
 background of the graph or press the <code>Esc</code> key when the graph
-is in focus.</p>
+is in focus. Press the ‘f’ key to fit the graph to the window.</p>
 <iframe src="https://player.vimeo.com/video/321837450?title=0&amp;byline=0&amp;portrait=0" width="100%" height="400" frameborder="0" seamless="seamless" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
 </div>
 <div class="section level4">
