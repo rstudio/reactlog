@@ -9,13 +9,14 @@ All CI lives in one workflow file that calls three shared jobs from
 [rstudio/shiny-workflows](https://github.com/rstudio/shiny-workflows) at tag `@v1`.
 This repo only adds one hook script, `.github/shiny-workflows/website.R`.
 For how the R and JS halves fit together, see [architecture.md](architecture.md).
-For the Node/webpack toolchain, see [jsBuild.md](jsBuild.md).
+For the Node/esbuild toolchain, see [jsBuild.md](jsBuild.md).
 
 Key files:
 
 | File | Role |
 | --- | --- |
-| `.github/workflows/R-CMD-check.yaml` | The only workflow ("Package checks"). Calls `website`, `routine`, `R-CMD-check` from shiny-workflows `@v1` |
+| `.github/workflows/R-CMD-check.yaml` | "Package checks". Calls `website`, `routine`, `R-CMD-check` from shiny-workflows `@v1` |
+| `.github/workflows/shiny-target.yaml` | "Shiny build target". Runs `npm run check-shiny-target` on build-config PRs and weekly (see [jsBuild.md](jsBuild.md)) |
 | `.github/shiny-workflows/website.R` | Hook run by the `website` job before pkgdown builds. Copies the demo and readme gifs into `pkgdown/assets/` |
 | `pkgdown/_pkgdown.yml` | pkgdown config: site URL, docsearch, `development: mode: auto` |
 | `pkgdown/favicon/` | Site favicons |
@@ -90,7 +91,7 @@ Steps that may auto-commit, in order:
 | `usethis::use_tidy_description()` | Reorders and reformats `DESCRIPTION` |
 | `devtools::document()` | `DESCRIPTION`, `NAMESPACE`, `man/` |
 | `oxipng` | Lossless PNG shrink on `man/figures/*.png` and `vignettes/*.png`. Git pathspec `*` also matches `/`, so this hits all 22 PNGs under `vignettes/images/` |
-| `npm ci` + `npm run build` | Uses Node `current`. `package.json` has a `build` script, so this runs (`npm ci` also runs `postinstall`, which builds). `build` runs `lint-all` (eslint `--fix` + prettier on `srcjs/`) then webpack. Commits changes under `inst/` and `srcjs/` plus `package-lock.json` |
+| `npm ci` + `npm run build` | Uses Node `current`. `package.json` has a `build` script, so this runs (`npm ci` also runs `postinstall`, which builds). `build` runs `lint-all` (eslint `--fix` + prettier on `srcts/`), `typecheck` (tsc), then esbuild. Commits changes under `inst/` and `srcts/` plus `package-lock.json` |
 
 There is no `README.Rmd`, `codecov.yml`, or `# @staticimports`, so those steps skip.
 After pushing, it runs `devtools::lint()` (because `.lintr` exists) and fails on
@@ -169,7 +170,7 @@ will otherwise keep rewriting.
 
 ## `.Rbuildignore`
 
-Keeps out of the tarball: `srcjs`, `bin`, `node_modules`, JS config files,
+Keeps out of the tarball: `srcts`, `bin`, `node_modules`, JS config files,
 `package.json`/`package-lock.json`, `*.js.map`, `inst/log-files`, `inst/gantt`,
 `readme-images`, `logo`, `pkgdown`, `revdep`, `.github`,
 `cran-comments.md`, `AGENTS.md`, `.agents`, `.claude`, `memory-bank`,
@@ -184,9 +185,8 @@ here.
   release tarballs from a clean clone.
 - `routine` pushes commits to your PR branch. Pull before pushing again, or you
   will get a non-fast-forward error.
-- A `srcjs/` lint problem can turn into a `routine` commit (eslint `--fix`), or
-  fail `npm run build`. Node `current` plus webpack 4 needs
-  `--openssl-legacy-provider`; keep it in `build-only`.
+- A `srcts/` lint problem can turn into a `routine` commit (eslint `--fix`), or
+  fail `npm run build`. A type error also fails `npm run build`.
 - Do not move `website.R` output back to `pkgdown/`. pkgdown 2.x ignores it
   and the demo and gifs vanish from the site with no CI error.
 - `pkgdown/assets/` is generated and gitignored. Do not commit it.

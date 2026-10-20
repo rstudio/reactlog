@@ -20,11 +20,11 @@ Key files:
 | `R/version.R` | `reactlog_upgrade()`: checks the `version` attribute |
 | `R/showReactLog.R` | `reactlog_write()`: session filter and JSON |
 | `R/renderReactLog.R` | `reactlog_render()`: upgrade, write, put JSON into `reactlog.html` |
-| `srcjs/log/logStates.js` | `LogStates` (every action name) and the Flow type of each entry |
-| `srcjs/log/initStep.js` | Gives each entry `step = index` |
-| `srcjs/graph/Graph.js` | `addEntry()`: how each action changes the graph |
-| `srcjs/graph/GraphAtStep.js` | `initStepInfo()`, `updateFilteredStepsVisible()`: which actions are visible steps |
-| `srcjs/layout/logEntry.js` | `statusForEntry()`: text shown for each action |
+| `srcts/log/logStates.ts` | `LogStates` (every action name) and the TypeScript type of each entry |
+| `srcts/log/initStep.ts` | Gives each entry `step = index` |
+| `srcts/graph/Graph.ts` | `addEntry()`: how each action changes the graph |
+| `srcts/graph/GraphAtStep.ts` | `initStepInfo()`, `updateFilteredStepsVisible()`: which actions are visible steps |
+| `srcts/layout/logEntry.ts` | `statusForEntry()`: text shown for each action |
 | `inst/reactlog/defaultLog.js`, `inst/log-files/` | Sample logs |
 
 Read Shiny's R source on GitHub (the installed package only has compiled R
@@ -103,7 +103,7 @@ Notes on fields:
 
 - `type` on `define` is one of `observable`, `observer`, `reactiveVal`,
   `reactiveValuesNames`, `reactiveValuesAsList`, `reactiveValuesAsListAll`,
-  `reactiveValuesKey` (see the commented `TypeType` in `logStates.js`). The JS
+  `reactiveValuesKey` (see the commented `TypeType` in `logStates.ts`). The JS
   only treats `observable` and `observer` as "middle/end" nodes.
 - `type` on contexts, `enter`, and `invalidateStart` is the context type
   (`observable`, `observer`, `other`, `isolate`...). `initStepInfo()` skips
@@ -116,7 +116,7 @@ Notes on fields:
   `(exit.time - enter.time) * 1000` ms. `Node` and `Edge` constructors throw if
   `time` or `session` is `undefined` (but `null` is fine; it shows as
   `"Global"`).
-- The Flow types in `logStates.js` are not exact: `enter`/`exit` entries carry
+- The types in `logStates.ts` are not exact: `enter`/`exit` entries carry
   `type` but `LogEntryEnterType`/`LogEntryExitType` do not list it.
 
 ## Version and `reactlog_upgrade()`
@@ -149,9 +149,9 @@ sees the version (JSON drops R attributes).
 
 ## How the browser assigns `step`
 
-`srcjs/log/initStep.js` runs when imported. If `window.__APP_DATA__` exists it
+`srcts/log/initStep.ts` runs when imported. If `window.__APP_DATA__` exists it
 replaces `window.log`. Then it sets `entry.step = i` for every entry.
-`index.js` then sets `rlog.log = window.log`.
+`index.ts` then sets `rlog.log = window.log`.
 
 Because of this, `step` always equals the array index of the log that was
 loaded (after session filtering). `GraphAtStep` depends on that: it reads
@@ -182,20 +182,20 @@ In shiny (`R/graph.R` and the call site):
 3. If old reactlog versions cannot handle it, raise `reactlog_min_version` in
    `R/graph.R` and the reactlog version in shiny's DESCRIPTION.
 
-In reactlog (`srcjs/`), then rebuild the bundle (`npm run build`) and commit
+In reactlog (`srcts/`), then rebuild the bundle (`npm run build`) and commit
 `inst/reactlog/reactlogAsset/`:
 
-1. `log/logStates.js`: add the name to `states`, add a `LogEntry...Type`, add
+1. `log/logStates.ts`: add the name to `states`, add a `LogEntry...Type`, add
    it to `LogEntryAnyType` (and `LogEntryHasReactId` if it has `reactId`), and
    export it.
-2. `graph/Graph.js` `addEntry()`: add a `case` (even a no-op). Unknown actions
+2. `graph/Graph.ts` `addEntry()`: add a `case` (even a no-op). Unknown actions
    hit `default` and log `console.error("unknown data.action: ", ...)`.
-3. `graph/GraphAtStep.js` `initStepInfo()`: the second `switch` makes every
+3. `graph/GraphAtStep.ts` `initStepInfo()`: the second `switch` makes every
    action a visible step by `default`. Add it to the "skip" list if it should
    not be a stop for next/prev.
-4. `graph/GraphAtStep.js` `updateFilteredStepsVisible()`: add a `case`. Its
+4. `graph/GraphAtStep.ts` `updateFilteredStepsVisible()`: add a `case`. Its
    `default` throws `"unknown logEntry action in 'next'"` when a filter is on.
-5. `layout/logEntry.js` `statusForEntry()`: add display text. Its `default`
+5. `layout/logEntry.ts` `statusForEntry()`: add display text. Its `default`
    throws `not implemented for log status`.
 6. Add a sample log with the new action to `inst/log-files/` if useful.
 
@@ -205,9 +205,9 @@ In reactlog (`srcjs/`), then rebuild the bundle (`npm run build`) and commit
   `Graph.addEntry()` ignores it. Shiny passes the raw `ctx$id` without the
   `"ctx"` prefix, so do not match its `ctxId` against other entries.
 - **`updateNodeLabel` has no producer.** Shiny does not write it today; the JS
-  handlers are left over. The comment in `Graph.js` shows an old `nodeId` field.
+  handlers are left over. The comment in `Graph.ts` shows an old `nodeId` field.
 - **`step` is the index, not a saved field.** Do not filter or reorder
-  `rlog.log` after `initStep.js` runs, or `this.log[step]` lookups break.
+  `rlog.log` after `initStep.ts` runs, or `this.log[step]` lookups break.
 - **Session filtering keeps all global entries.** Entries with `session: null`
   (every `idle`, and anything made outside a session) stay in every
   per-session log.

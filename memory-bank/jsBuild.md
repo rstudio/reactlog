@@ -1,105 +1,116 @@
 ---
 title: "JavaScript build"
-description: "The npm/grunt/webpack 4 toolchain that turns srcjs/ into the committed bundle inst/reactlog/reactlogAsset/reactlog.js, plus Babel, Flow, eslint, prettier, the pre-commit hook, the license scripts, and which CI job runs Node. Read before changing srcjs/, package.json, Gruntfile.js, or any JS config file."
+description: "The npm/esbuild/TypeScript toolchain that turns srcts/ into the committed bundle inst/reactlog/reactlogAsset/reactlog.js, plus tsconfig, eslint, prettier, the pre-commit hook, the license scripts, and which CI job runs Node. Read before changing srcts/, package.json, tsconfig.json, or any JS config file."
 ---
 
 # JavaScript build
 
-The viewer is written in Flow-typed ES6 under `srcjs/`. Grunt runs webpack 4,
-which runs Babel, and writes one minified file plus a source map into
-`inst/reactlog/reactlogAsset/`. Both files are committed, because installing
-the R package never runs Node. For how the bundle is used at runtime, see
+The viewer is written in TypeScript under `srcts/`. esbuild bundles it into one
+minified file plus a source map in `inst/reactlog/reactlogAsset/`, and `tsc`
+checks the types. Both output files are committed, because installing the R
+package never runs Node. For how the bundle is used at runtime, see
 `memory-bank/architecture.md`. For the short command list, see `AGENTS.md`.
 
-The repo moved from yarn to npm (`package-lock.json`; `yarn.lock` is gone). At
-the same time, `flow-typed install` was dropped from the `postinstall` step;
-the stubs it made are now committed in `flow-typed/`.
+The folder is named `srcts/` to match `rstudio/shiny`. The shared `routine`
+CI job knows both `srcjs/` and `srcts/`.
+
+## History
+
+Until 2026 the code was Flow-typed JavaScript in `srcjs/`, built by grunt,
+webpack 4, and Babel, with `flow-bin` 0.86, eslint 5, and prettier 1. It was
+converted by hand-editing the Flow syntax in place (renames keep the git
+history): casts `(x: T)` became `x as T`, `?T` became `T | null | undefined`,
+`%checks` became a type guard, Flow's `Object` became `any`, `$Values` and
+`$ReadOnlyArray` became their TypeScript forms, and the `states` object in
+`log/logStates.ts` became `as const` so `switch (entry.action)` narrows.
+`flow-to-ts` was tried and dropped because it rewrote formatting and removed
+blank lines.
 
 ## Key files
 
 | File | Role |
 | --- | --- |
-| `package.json` | npm scripts, `pre-commit` / `lint-staged` hook config, `flow-coverage-report` config, dependencies |
-| `Gruntfile.js` | The webpack config (`gruntConfig.webpack.reactlog`) and the `webpackSetWatch` task |
-| `.babelrc` | Babel presets: Flow stripping, `preset-env`, class properties |
-| `.flowconfig` | Flow settings; only `srcjs` is included |
-| `.eslintrc.js` / `prettier.config.js` | Lint and format rules |
+| `package.json` | npm scripts, `pre-commit` / `lint-staged` hook config, dependencies |
+| `tsconfig.json` | `tsc` settings: `noEmit`, `target` es2021, `moduleResolution` bundler, `strict` off |
+| `srcts/modules.d.ts` | `declare module` for untyped `cytoscape` / `cytoscape-dagre`, and the `window` globals |
+| `srcts/cyto/cytoFlowType.ts` | Hand-written types for the parts of cytoscape the app uses |
+| `eslint.config.mjs` / `prettier.config.js` | Lint and format rules |
 | `bin/lint_file.sh` | `eslint --fix` then `prettier --write` on the given files |
-| `bin/clean_rlog_file.sh` | Lint the given files, then `npm run build-only` |
+| `bin/clean_rlog_file.sh` | Lint the given files, `typecheck`, then `build-only` |
 | `bin/postinstall.sh` | Runs `npm run build-only` |
+| `bin/check_shiny_target.js` | Fails if our tsc / esbuild target differs from rstudio/shiny's |
 | `bin/update-license.js` | Prints a third-party license list (not used today, see below) |
 | `inst/reactlog/reactlogAsset/reactlog.js` (+ `.map`) | The committed build output |
 | `inst/reactlog/reactlog.html`, `inst/reactlog/defaultLog.js` | Page and sample log for the local dev loop |
 
 ## npm scripts
 
-- `build-only`: `NODE_OPTIONS=--openssl-legacy-provider grunt`. Runs the grunt
-  `default` task, which is `webpack:reactlog`.
-- `build`: `lint-all` then `build-only`. `lint-all` runs `bin/lint_file.sh` on
-  `srcjs/*.js srcjs/**/*.js`. All `srcjs/` sub folders are one level deep, so
-  this glob covers every file even without bash `globstar`.
-- `watch`: `lint-all` once, then `grunt webpackSetWatch default`.
-  `webpackSetWatch` sets `gruntConfig.webpack.reactlog.watch = true` before the
-  webpack task runs, so webpack keeps running and rebuilds on save. Files are
-  not linted again while watching.
+- `build-only`: `esbuild srcts/index.ts --bundle --minify --sourcemap
+  --target=es2021 --outfile=inst/reactlog/reactlogAsset/reactlog.js`. Takes
+  well under a second. esbuild strips types without checking them.
+- `typecheck`: `tsc -p .`. Writes nothing.
+- `build`: `lint-all`, then `typecheck`, then `build-only`. `lint-all` runs
+  `bin/lint_file.sh` on the `srcts` folder.
+- `watch`: `lint-all` once, then `build-only -- --watch`. No type check while
+  watching; run `npm run typecheck` (or an editor) for that.
 - `lint` / `fix`: `bin/lint_file.sh` / `bin/clean_rlog_file.sh` on files you
-  pass after `--`. `lint` with no files exits with an error.
-- `fix-all`: `fix` on every `srcjs` file (lint + build).
-- `flow-report`, `flow-status`, `flow-stop`: Flow coverage and server commands.
+  pass after `--` (files or folders). `lint` with no arguments exits with an
+  error.
+- `fix-all`: `fix` on every `srcts` file.
+- `check-shiny-target`: `bin/check_shiny_target.js` (see below). Needs
+  network access.
 - `postinstall`: `bin/postinstall.sh`, so `npm install` / `npm ci` also builds.
 - `update-license`, `lint-staged`, `git_add_compiled`: used by the license
   script and the commit hook below.
 
-## Why `--openssl-legacy-provider`
+## TypeScript
 
-Webpack 4 hashes with MD4, which OpenSSL 3 (Node 17+) no longer offers by
-default. Without the flag, `grunt` on Node 22 fails at the end of the build
-with `Fatal error: error:0308010C:digital envelope routines::unsupported`. Only
-`build-only` and `watch` set the flag; call those scripts instead of running
-`grunt` by hand.
+- `typescript` is pinned to `~6.0`. TypeScript 7 (the Go port) does not offer
+  the JS API that `typescript-eslint` needs, and `typescript-eslint` 8 lists
+  `typescript <6.1` as its peer.
+- `strict` is off. `npx tsc -p . --strict` reports about 40 errors, mostly
+  missing null checks, implicit `any`, and class fields that are set outside
+  the constructor. Fix those in their own change.
+- cytoscape 3.15 (the locked version) has no bundled types, so it is declared
+  as an untyped module and the app uses the hand-written types in
+  `cyto/cytoFlowType.ts`. Newer cytoscape ships `index.d.ts`, but upgrading it
+  changes the runtime.
+- jQuery and lodash use `@types/jquery` (v3, to match jQuery 3) and
+  `@types/lodash`.
+- No polyfills, like rstudio/shiny. The old build added `@babel/polyfill` /
+  core-js 2.
 
-## Gruntfile.js (webpack config)
+## Matching rstudio/shiny's target
 
-- `entry`: `srcjs/index.js`. It starts with `import "@babel/polyfill"`.
-- `output`: `inst/reactlog/reactlogAsset/reactlog.js`.
-- `mode: "production"`: the output is minified by Terser, even though the
-  comment next to it says "do not take time to shrink files".
-- `devtool: "source-map"`: writes `reactlog.js.map` next to the bundle and adds
-  a `//# sourceMappingURL=reactlog.js.map` line at the end.
-- One rule: `babel-loader` for `.js` files outside `node_modules`.
-- `failOnError: true`, `progress: true`. The progress output is long; read the
-  end of it.
-- `BundleAnalyzerPlugin` and `DuplicatePackageCheckerPlugin` are imported but
-  commented out in `plugins`. Turning on the analyzer in `static` mode writes
-  `report.html`, which `.gitignore` lists as
-  `inst/reactlog/reactlogAsset/report.html`.
+The tsc `target` (and `lib`) in `tsconfig.json` and esbuild's `--target` in the
+`build-only` script match rstudio/shiny: es2021 in shiny's `tsconfig.json` and
+`srcts/build/_build.ts`. The viewer only opens from a Shiny app, so its browser
+already runs Shiny's code; an older target gains nothing.
 
-## Babel, Flow, eslint, prettier
+`npm run check-shiny-target` fetches those two shiny files from GitHub (`main`,
+or pass a ref: `node bin/check_shiny_target.js v1.11.0`), prints all four
+targets, and exits 1 if any differ. `.github/workflows/shiny-target.yaml` runs
+it on PRs that touch `tsconfig.json`, `package.json`, the script, or the
+workflow, every Monday, and on demand. When it fails because shiny moved,
+update `target` and `lib` in `tsconfig.json` and `--target` in `build-only`,
+run `npm run build`, and check the viewer in a browser. It does not compare
+`lib`, so keep that in step by hand.
 
-- `.babelrc`: `@babel/preset-flow` strips types. `@babel/preset-env` uses
-  `modules: "umd"`, `useBuiltIns: "entry"` and `corejs: 2`, which swaps the
-  `@babel/polyfill` import for the needed `core-js` 2 parts.
-  `@babel/plugin-proposal-class-properties` allows class fields.
-- `.flowconfig`: `[include] srcjs`, all lints set to `error` with a few turned
-  down, `$Flow...` comments suppress errors. `[libs]` is empty. Type stubs for
-  `jquery`, `lodash` and `@babel/polyfill` are committed in `flow-typed/npm/`
-  (from `npx flow-typed install --skip true --ignoreDeps dev`; it prints
-  "Cannot call write after a stream was destroyed" on new Node but still writes
-  the files).
-- Flow coverage: `npm run flow-report` runs `flow-coverage-report` with the
-  `flow-coverage-report` block in `package.json`: files `srcjs/**/*.js`, four
-  files excluded (`utils/Console.js`, `cyto/layoutOptions.js`,
-  `log/initStep.js`, `rlog.js`), threshold 95%, text output.
-- `flow-bin` is pinned to `^0.86.0`. Its macOS binary is x86_64 only. On Apple
-  Silicon without Rosetta, `flow-report` fails right away with
-  `spawn Unknown system error -86`. Newer `flow-bin` releases have an arm64
-  binary, but report hundreds of errors on `srcjs/`, so that upgrade is its
-  own project.
-- `.eslintrc.js`: `babel-eslint` parser, `flowtype` plugin, extends
-  `plugin:flowtype/recommended` and `eslint:recommended`. Notable rules:
-  `no-console` and `no-var` are errors, `eqeqeq`, `semi`, `guard-for-in`.
+## eslint and prettier
+
+- `eslint.config.mjs` (flat config, eslint's `defineConfig()`; the older
+  `tseslint.config()` helper is deprecated): `@eslint/js` recommended plus
+  `typescript-eslint` recommended (no type-aware rules). Kept from the old
+  config: `eqeqeq`, `guard-for-in`, `no-console` and `no-var` as errors,
+  `consistent-return` as a warning, unused vars as warnings with
+  `args: "none"`, `no-fallthrough` off. Turned off to match the existing code:
+  `no-explicit-any` (Flow's `Object` became `any`), `prefer-const` (the code
+  uses `let` everywhere), and `no-this-alias` (`let self = this`).
+  `no-unused-expressions` allows `a() || b()`.
 - `prettier.config.js`: 2 spaces, width 80, double quotes, semicolons,
   `trailingComma: "es5"`, `arrowParens: "avoid"`.
+- The old formatting rules (`semi`, `comma-dangle`, `dot-location`) were
+  dropped; prettier handles them.
 
 ## The commit hook
 
@@ -111,31 +122,27 @@ a time (`concurrent: false`), adding the staged file names to each command:
 - `R/*.R`: `Rscript` runs `devtools::load_all()` and `devtools::lint()` on the
   whole package and fails if any lint is found. Needs R with `devtools`,
   `lintr` and `testthat`.
-- `.flowconfig`: `npm run flow-report-and-echo`, which runs
-  `bin/flow_report.sh`. That script skips the report with a warning when the
-  Flow binary cannot run (Apple Silicon without Rosetta).
-- `srcjs/**/*.js`: `npm run fix --` (lint those files, then build),
-  `npm run flow-report-and-echo`, then `npm run git_add_compiled --`, which runs
-  `git add` on `inst/reactlog/reactlogAsset/reactlog.js` and its `.map`, then
-  `git add` on the files.
+- `srcts/**/*.ts`: `npm run fix --` (lint those files, typecheck, build), then
+  `npm run git_add_compiled --`, which runs `git add` on
+  `inst/reactlog/reactlogAsset/reactlog.js` and its `.map`, then `git add` on
+  the files.
 
-So a JS commit rebuilds and stages the bundle for you. Where Flow cannot run,
-the Flow coverage check is skipped.
+So a TS commit rebuilds and stages the bundle for you.
 
 ## Committed bundle and the R package
 
 `reactlog.js` and `reactlog.js.map` are tracked in git so that
 `install.packages()`, `R CMD check` and CRAN never need Node. Rebuild and commit
-the bundle in the same change as any `srcjs/` edit. A clean `npm run build-only`
+the bundle in the same change as any `srcts/` edit. A clean `npm run build-only`
 on unchanged sources gives a byte-identical bundle, so a diff in `inst/` after
-building means the sources or the installed packages changed.
+building means the sources or the installed packages changed. Changes that only
+touch formatting or comments change the `.map` but not `reactlog.js`.
 
-`.Rbuildignore` keeps the JS toolchain out of the R tarball: `^srcjs`,
-`^node_modules`, `^bin`, `^flow-typed`, `^package\.json$`,
-`^package-lock\.json$`, `^Gruntfile\.js$`, `^\.babelrc$`, `^\.eslintrc\.js$`,
-`^\.flowconfig$`, `^prettier\.config\.js$`, `^inst/log-files`, and
-`.*\.js\.map$`. The last one means the source map is in git but not in the R
-package; the `sourceMappingURL` line still points to it.
+`.Rbuildignore` keeps the JS toolchain out of the R tarball: `^srcts`,
+`^node_modules`, `^bin`, `^package\.json$`, `^package-lock\.json$`,
+`^tsconfig\.json$`, `^eslint\.config\.mjs$`, `^prettier\.config\.js$`,
+`^inst/log-files`, and `.*\.js\.map$`. The last one means the source map is in
+git but not in the R package; the `sourceMappingURL` line still points to it.
 
 ## CI and Node
 
@@ -144,8 +151,9 @@ package; the `sourceMappingURL` line still points to it.
 `.github/workflows/R-CMD-check.yaml`) does: when `package.json` has a `build`
 script it runs `npm ci` (which builds through `postinstall`), then
 `npm run build` on the current Node release, and commits any changes under
-`inst/` and `srcjs/` plus `package-lock.json`. On a same-repo PR it pushes that
-commit back; on a push to `main` it fails instead. That job does not run Flow.
+`inst/`, `srcjs/`, and `srcts/` plus `package-lock.json`. On a same-repo PR it
+pushes that commit back; on a push to `main` it fails instead. A type error
+fails that job.
 
 ## License list
 
@@ -158,24 +166,35 @@ with their license text, under a header saying the package is MIT.
 ## Dev loop without Shiny
 
 1. `npm run watch` (or `npm run build-only` after each change).
-2. Open `inst/reactlog/reactlog.html` in a browser straight from disk. It loads
-   `defaultLog.js` (sets `window.log`) and then `reactlogAsset/reactlog.js`.
+2. Open `inst/reactlog/reactlog.html` in a browser straight from disk, or serve
+   `inst/reactlog/` (`python3 -m http.server`). It loads `defaultLog.js` (sets
+   `window.log`) and then `reactlogAsset/reactlog.js`.
 3. Refresh after each rebuild. To try another log, copy a file from
    `inst/log-files/` over `inst/reactlog/defaultLog.js` (and do not commit that
    unless you mean to; the website demo uses it).
 
+To check that a build change did not change behavior, load the old and new
+bundle in turn and compare `window._reactlog.curTick`,
+`window._reactlog.cyto.nodes().length` and the `#logEntry` text after the same
+button clicks and key presses. There are no JS unit tests.
+
 ## Pitfalls
 
-- Do not run `grunt` without `NODE_OPTIONS=--openssl-legacy-provider` on Node
-  17+; use `npm run build-only`.
-- On Apple Silicon without Rosetta, Flow cannot run. `npm run flow-report`
-  fails, and the commit hook skips the Flow check. Install Rosetta to get the
-  coverage check back.
+- `npm run build-only` and `watch` do not type check. Run `npm run typecheck`
+  or `npm run build` before committing.
+- Do not upgrade `typescript` past 6.0 until `typescript-eslint` supports it.
+- Bind jQuery handlers through an arrow, as in
+  `.click(() => updateGraph.buttonNextStep())`. Passing the function itself
+  hands jQuery's event in as the first argument, which for most `updateGraph`
+  functions is `cytoOptions`, and that ends up in the cytoscape layout options.
 - `npm install` / `npm ci` rebuilds the bundle. If `inst/` changes afterwards,
   check whether you meant it; restore with `git checkout -- inst/`.
+- `npm install` in a folder other than `reactlog` rewrites the `"name"` at the
+  top of `package-lock.json` (there is no `name` in `package.json`). Put it back
+  before committing.
 - The `R/*.R` hook lints the whole package, not just your staged files, and
   needs `lintr` installed.
 - `npm run build` runs `eslint --fix` and `prettier --write` on all of
-  `srcjs/`, so it can change source files, not just the bundle. CI does the same
+  `srcts/`, so it can change source files, not just the bundle. CI does the same
   and may push a commit to your PR.
 - New top-level JS files need an `.Rbuildignore` entry or `R CMD check` warns.
