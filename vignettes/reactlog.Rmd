@@ -263,16 +263,18 @@ The navigation buttons are used to jump around the recorded timeline of the reac
 knitr::include_graphics("images/navigation.png")
 ```
 
-* Previous / Next Step (`Left/Right Arrow keys`): <img src="images/buttons/prev-step.svg" width="30" style="vertical-align: middle"/> <img src="images/buttons/next-step.svg" width="30" style="vertical-align: middle"/>
+* Previous / Next Step (`Left/Right Arrow keys`; `Space` also moves forward): <img src="images/buttons/prev-step.svg" width="30" style="vertical-align: middle"/> <img src="images/buttons/next-step.svg" width="30" style="vertical-align: middle"/>
   * These buttons move one reactive step a single step forwards (right) or backwards (left) within the displayed reactlog.
 * Reactive Endpoint Calculation (`Left/Right Arrow keys + OPTION`): <img src="images/buttons/prev-output-calc.svg" width="30" style="vertical-align: middle"/> <img src="images/buttons/next-output-calc.svg" width="30" style="vertical-align: middle"/>
   * These buttons advance the progress bar to the next (or previous) reactive endpoint (ex: output values or observe statements) that finishes it's calculation phase within the displayed reactlog.  These steps were deemed important as to highlight what has changed within the reactlog when advancing to the next reactive endpoint calculation.
 * Idle Step (`Left/Right Arrow keys + OPTION + SHIFT`): <img src="images/buttons/prev-idle.svg" width="30" style="vertical-align: middle"/> <img src="images/buttons/next-idle.svg" width="30" style="vertical-align: middle"/>
   * These buttons advance the progress bar to the next time the Shiny app has idled.  This means the application is not processing any information and is waiting for something within the application to be invalidated.  A relatively large time gap will most likely appear after this step.
 * User Marked Step (`Home/End`): <img src="images/buttons/prev-mark.svg" width="30" style="vertical-align: middle"/> <img src="images/buttons/next-mark.svg" width="30" style="vertical-align: middle"/>
-  * These buttons advance the progress bar to the nearest user supplied mark. These marks can be added by pressing `Ctrl + F4` (Mac: `Cmd + F4`) inside the **shiny** application.
+  * These buttons advance the progress bar to the nearest user supplied mark. These marks can be added by pressing `Ctrl + Shift + F3` or `Ctrl + F4` (Mac: `Cmd + Shift + F3` or `Cmd + F4`) inside the **shiny** application.
 
 > Tip: Hold down the arrow keys to quickly iterate over all the steps of the displayed graph.
+
+> Tip: Hold `SHIFT` with the `Left/Right Arrow keys` to move one log entry at a time, including entries that are not shown as their own step.
 
 ##### Search Bar
 
@@ -284,7 +286,7 @@ knitr::include_graphics("images/search_bar.png")
 
 > Tip 1: Use partial matching to filter the graph down to a particular module name. The search above would look at the `input` values in the _details_ module.
 
-> Tip 2: Press the 's' key to bring focus to the search bar.
+> Tip 2: Press the 's' key to bring focus to the search bar, and `Esc` to leave it.
 
 
 ### Dependency Graph {#dependency-graph}
@@ -317,7 +319,7 @@ At each stage of the reactlog, a reactive element can have one of the following 
 
 #### Highlighting and filtering
 
-Hovering over a particular graph element (either a node or an edge) highlights that element's family tree. A single click maintains that highlighting. Double-clicking filters the graph to that element's family tree. To clear any highlight/filter selections, click/double-click the background of the graph or press the `Esc` key when the graph is in focus.
+Hovering over a particular graph element (either a node or an edge) highlights that element's family tree. A single click maintains that highlighting. Double-clicking filters the graph to that element's family tree. To clear any highlight/filter selections, click/double-click the background of the graph or press the `Esc` key when the graph is in focus. Press the 'f' key to fit the graph to the window.
 
 ```{r}
 htmltools::tags$iframe(
