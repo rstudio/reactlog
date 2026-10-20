@@ -2,7 +2,7 @@
   "private": true,
   "scripts": {
     "flow-report": "flow-coverage-report",
-    "flow-report-and-echo": "npm run flow-report && echo 'done flow report'",
+    "flow-report-and-echo": "./bin/flow_report.sh",
     "flow-status": "flow status",
     "flow-stop": "flow stop",
     "lint": "./bin/lint_file.sh",
