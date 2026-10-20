@@ -14,5 +14,6 @@ test_that("reactlog_show() passes ... to reactlog_render()", {
   log <- structure(list(), version = "1")
   local_mocked_bindings(browseURL = function(...) NULL, .package = "utils")
   expect_no_error(reactlog_show(log, session_token = "abc"))
-  expect_error(reactlog_show(log, foo = 1), "unused argument")
+  # no message match: "unused argument" is translated in other locales
+  expect_error(reactlog_show(log, foo = 1))
 })
