@@ -183,9 +183,8 @@ This keeps snapshots stable. `reactlog_module_server()` (`R/shinyModule.R`) adds
 
 `vignettes/reactlog.Rmd` lists arrows, Option+arrows, Option+Shift+arrows, Home/End, `l`, `s`, click, double click and Esc. Differences:
 
-- Not documented: Space (same as Right), Shift+arrows (raw entries), `f` (refit), Esc inside the search box (blur only).
 - The vignette says search starts at three characters. The code also searches 1-2 characters that look like a react id (`r` + digit).
-- The vignette says user marks are added with `Ctrl + F4` (Mac `Cmd + F4`); `README.md` says `Ctrl+Shift+F3` (Mac `Cmd+Shift+F3`). The key is handled by Shiny, not this repo; check Shiny before fixing either doc.
+- User marks are added in the Shiny app (not this repo) with `Ctrl/Cmd + Shift + F3` or `Ctrl/Cmd + F4`; Shiny accepts both.
 - The vignette describes output calc marks as "short green" and idle marks as "tall green", which matches the code.
 
 ## Pitfalls
