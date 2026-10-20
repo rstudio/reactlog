@@ -1,6 +1,5 @@
 // @flow
 
-import _has from "lodash/has";
 import $ from "jquery";
 
 import _sortedIndex from "lodash/sortedIndex";
@@ -38,26 +37,23 @@ let setContainers = function(
 };
 
 let updateFromProgressBar = function(e: BaseJQueryEventObject): void {
-  // Make sure left mouse button is down.
-  // Firefox is stupid; e.which is always 1 on mousemove events,
-  // even when button is not down!! So read e.originalEvent.buttons.
-  if (!_has(e.originalEvent, "buttons")) {
-    // odd type casting as jquery doesn't believe this exists
-    let originalEvent = ((e.originalEvent: Object): MouseEvent);
-    if (originalEvent.buttons !== 1) return;
-  }
-  // return if not left click
-  if (e.which !== 1) {
-    return;
-  }
+  // Make sure only the left mouse button is down.
+  // e.which is always 1 on mousemove events in Firefox, even when no button
+  // is down, so read e.originalEvent.buttons.
+  // odd type casting as jquery doesn't believe this exists
+  let originalEvent = ((e.originalEvent: Object): MouseEvent);
+  if (originalEvent.buttons !== 1) return;
+
   let timeline = $(e.currentTarget)[0];
-  let pos = e.pageX; // pageX in pixels  // || e.originalEvent.pageX;
+  // pixels from the left edge of the timeline
+  let pos = e.pageX - $(timeline).offset().left;
 
   let width = timeline.offsetWidth; // width in pixels
 
   let stepsToPresent = rlog.getGraph.stepsVisible;
   let targetStepPos = Math.min(
-    Math.max(Math.round((pos / width) * stepsToPresent.length), 0),
+    // same scale as the fill width in `updateProgressBar()`
+    Math.max(Math.round((pos / width) * (stepsToPresent.length - 1)), 0),
     stepsToPresent.length - 1
   );
   let targetStep = stepsToPresent[targetStepPos];
