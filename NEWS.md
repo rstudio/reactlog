@@ -16,6 +16,8 @@
 
 - Fixed the next / previous user mark buttons skipping a mark that is the very next step (#120)
 
+- Fixed clicking the timeline moving to a spot to the right of where it was clicked (#120)
+
 # reactlog 1.1.1
 
 - Fixed Font Awesome icon warning about `refresh` icon (#87)
