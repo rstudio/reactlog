@@ -1,5 +1,7 @@
 # reactlog (development)
 
+- The graph legend now shows that a solid line is a dependency and a dashed line is an `isolate()`d dependency, and a dotted line is an inactive dependency (one that existed earlier but is not active at the current step) (#76)
+
 - Migrated project license from GPL-3 to the MIT License.
 
 - Documented that `reactlog_show()` passes `...` on to `reactlog_render()`, so `session_token` can be set from `reactlog_show()`. The docs used to say `...` was ignored (#120)
