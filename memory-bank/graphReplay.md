@@ -244,9 +244,12 @@ layout. `resize()` calls `atTick(curTick, {fit: true, forceRedraw: true})`.
   new log action, and also update
   `initStepInfo()` and `updateFilteredStepsVisible()` (the latter throws on
   unknown actions).
-- **Layout skip uses counts only.** Swapping one edge for another (new
-  `ctxId` each cycle) does not relayout. Use `forceRedraw: true` if a change
-  must move nodes.
+- **Layout skip compares counts, and that is enough.** Every node pair from
+  `finalFilteredGraph` is always drawn, either as an active edge or as its
+  ghost edge. So when no node enters or leaves, the drawn pairs cannot change;
+  an equal added/removed edge count is the same pair swapping between ghost
+  and active (or a new `ctxId`). Checked over all 595 steps of
+  `defaultLog.js`. Use `forceRedraw: true` if a change must move nodes anyway.
 - **`fullFilteredGraphAtStep()` mutates `finalFilteredGraph`.** It sets
   `isDisplayed = false` on shared node and ghost edge objects (the code
   comment says so).
