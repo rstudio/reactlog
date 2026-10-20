@@ -50,3 +50,12 @@ npm-debug.log*
 src_old
 _ignore
 *.rej
+
+# Contributor skills. Dependency skill installers may add skills to
+# .agents/skills/ (and, via the .claude/skills symlink, Claude-specific
+# installs land there too), so only the skills listed here are tracked.
+# Update this list when adding or removing a skill.
+/.agents/*
+!/.agents/skills/
+/.agents/skills/*
+!/.agents/skills/memory-bank/
