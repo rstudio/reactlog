@@ -15,7 +15,7 @@
     "update-license": "node ./bin/update-license.js > LICENSE.note",
     "postinstall": "./bin/postinstall.sh",
     "lint-staged": "lint-staged",
-    "git_add_compiled": "git add inst/reactlog/reactlogAsset/reactlog.js && git add"
+    "git_add_compiled": "git add inst/reactlog/reactlogAsset/reactlog.js inst/reactlog/reactlogAsset/reactlog.js.map && git add"
   },
   "pre-commit": "lint-staged",
   "lint-staged": {
