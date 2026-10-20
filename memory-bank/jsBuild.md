@@ -113,7 +113,8 @@ a time (`concurrent: false`), adding the staged file names to each command:
   Flow binary cannot run (Apple Silicon without Rosetta).
 - `srcjs/**/*.js`: `npm run fix --` (lint those files, then build),
   `npm run flow-report-and-echo`, then `npm run git_add_compiled --`, which runs
-  `git add inst/reactlog/reactlogAsset/reactlog.js` and `git add` on the files.
+  `git add` on `inst/reactlog/reactlogAsset/reactlog.js` and its `.map`, then
+  `git add` on the files.
 
 So a JS commit rebuilds and stages the bundle for you. Where Flow cannot run,
 the Flow coverage check is skipped.
@@ -166,8 +167,6 @@ says the package is GPL-3, but the package is now MIT (`DESCRIPTION`,
 
 - Do not run `grunt` without `NODE_OPTIONS=--openssl-legacy-provider` on Node
   17+; use `npm run build-only`.
-- `git_add_compiled` stages `reactlog.js` but not `reactlog.js.map`. Stage the
-  map yourself or it falls out of sync with the bundle.
 - On Apple Silicon without Rosetta, Flow cannot run. `npm run flow-report`
   fails, and the commit hook skips the Flow check. Install Rosetta to get the
   coverage check back.
