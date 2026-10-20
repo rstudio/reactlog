@@ -3,17 +3,13 @@
 ^doc$
 ^cran-comments\.md$
 ^docs$
-^_pkgdown\.yml$
-^appveyor\.yml$
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^LICENSE\.md$
 ^srcjs
-^src_old
 ^\.babelrc$
 ^\.eslintrc\.js$
 ^\.flowconfig$
-^\.travis\.yml$
 ^Gruntfile\.js$
 ^package\.json$
 ^prettier\.config\.js$
@@ -21,10 +17,9 @@
 ^CODE_OF_CONDUCT\.md$
 ^node_modules
 ^bin
-^inst/reactlogAsset/report.html$
+^inst/reactlog/reactlogAsset/report\.html$
 ^flow-typed
 ^_ignore
-^\.github
 ^index\.html$
 ^\.lintr$
 ^scripts
@@ -41,3 +36,5 @@
 ^\.agents$
 ^\.claude$
 ^memory-bank$
+^\.context$
+^\.git$

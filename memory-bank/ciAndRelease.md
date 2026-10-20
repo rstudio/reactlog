@@ -173,9 +173,10 @@ will otherwise keep rewriting.
 Keeps out of the tarball: `srcjs`, `bin`, `node_modules`, JS config files,
 `package.json`/`package-lock.json`, `*.js.map`, `inst/log-files`, `inst/gantt`,
 `readme-images`, `logo`, `pkgdown`, `revdep`, `scripts`, `.github`,
-`cran-comments.md`, `AGENTS.md`, `.agents`, `.claude`, `memory-bank`. Add new
-top-level dev files here. Some lines are stale (`^_pkgdown\.yml$`,
-`^appveyor\.yml$`, `^\.travis\.yml$`, `^src_old`) and `^\.github` appears twice.
+`cran-comments.md`, `AGENTS.md`, `.agents`, `.claude`, `memory-bank`,
+`.context` (Conductor workspace files) and `.git` (a worktree's `.git` is a
+file, which R CMD build does not skip on its own). Add new top-level dev files
+here.
 
 ## Pitfalls
 
