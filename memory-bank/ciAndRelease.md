@@ -198,5 +198,3 @@ here.
 - `scripts/rhub.R` uses the old rhub v1 API (`rhub::check_for_cran()`,
   `rhub:::build_package()`). rhub 2.x moved to GitHub Actions based checks
   (`rhub::rhub_check()`), so expect to rewrite it.
-- The README "node version: 12.x" badge is stale; see [jsBuild.md](jsBuild.md)
-  for the Node version that works.

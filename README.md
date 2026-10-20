@@ -95,7 +95,7 @@ For bug reports, please use the **reactlog** [issue tracker](https://github.com/
 
 ## Development
 
-[![node version: 12.x](https://img.shields.io/badge/node-12.x-brightgreen.svg)](https://nodejs.org/en/)
+[![node version: 22.x](https://img.shields.io/badge/node-22.x-brightgreen.svg)](https://nodejs.org/en/)
 [![JavaScript type: flow](https://img.shields.io/npm/types/flow-typed.svg)](https://github.com/flow-typed/flow-typed)
 [![cytoscape](https://img.shields.io/github/package-json/dependency-version/rstudio/reactlog/cytoscape.svg)](https://js.cytoscape.org/)
 [![@babel/preset-env](https://img.shields.io/github/package-json/dependency-version/rstudio/reactlog/dev/@babel/preset-env.svg)](https://babeljs.io/)
