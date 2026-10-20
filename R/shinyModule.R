@@ -104,6 +104,7 @@ reactlog_module_server <- function(
             height = height,
             ...
           ),
+          # nolint start: indentation_linter.
           htmltools::tags$script(htmltools::HTML(paste0("
             (function() {
               var src =
@@ -113,6 +114,7 @@ reactlog_module_server <- function(
               $('#", random_id, "').attr('src', src);
             })()
           ")))
+          # nolint end
         )
 
       })
