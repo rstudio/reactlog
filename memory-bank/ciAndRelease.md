@@ -194,3 +194,7 @@ here.
   roxygen docs and check `pkgdown::build_reference_index()`.
 - Keep the `shiny` version in `DESCRIPTION` `Suggests` correct: the depends-only
   job checks without it, and `shiny_version_required()` reads it at runtime.
+- `pkgdown/_pkgdown.yml` sets docsearch with only `api_key` and `index_name`.
+  That is right for the Bootstrap 3 template the site uses: it loads
+  docsearch.js 2.6.1, which fills in Algolia's legacy app id. If the site moves
+  to `bootstrap: 5`, docsearch v3 needs an `app_id` too.
