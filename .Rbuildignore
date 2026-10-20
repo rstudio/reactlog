@@ -36,3 +36,4 @@
 ^memory-bank$
 ^\.context$
 ^\.git$
+^\.conductor$

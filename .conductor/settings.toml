@@ -1,0 +1,6 @@
+"$schema" = "https://conductor.build/schemas/settings.repo.schema.json"
+
+[scripts]
+# `npm ci` also builds the JS bundle and installs the pre-commit hook
+setup = "npm ci"
+archive = "rm -rf node_modules"
