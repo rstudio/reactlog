@@ -6,7 +6,7 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^LICENSE\.md$
-^srcjs
+^srcts
 ^\.eslintrc\.js$
 ^package\.json$
 ^prettier\.config\.js$

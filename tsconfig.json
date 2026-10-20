@@ -10,5 +10,5 @@
     "isolatedModules": true,
     "esModuleInterop": true
   },
-  "include": ["srcjs"]
+  "include": ["srcts"]
 }

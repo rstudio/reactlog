@@ -3,11 +3,11 @@
   "scripts": {
     "lint": "./bin/lint_file.sh",
     "fix": "./bin/clean_rlog_file.sh",
-    "fix-all": "npm run fix -- srcjs/*.ts srcjs/**/*.ts",
-    "lint-all": "npm run lint -- srcjs/*.ts srcjs/**/*.ts",
+    "fix-all": "npm run fix -- srcts/*.ts srcts/**/*.ts",
+    "lint-all": "npm run lint -- srcts/*.ts srcts/**/*.ts",
     "typecheck": "tsc -p .",
     "build": "npm run typecheck && npm run build-only",
-    "build-only": "esbuild srcjs/index.ts --bundle --minify --sourcemap --target=es2017 --outfile=inst/reactlog/reactlogAsset/reactlog.js",
+    "build-only": "esbuild srcts/index.ts --bundle --minify --sourcemap --target=es2017 --outfile=inst/reactlog/reactlogAsset/reactlog.js",
     "watch": "npm run build-only -- --watch",
     "update-license": "node ./bin/update-license.js > LICENSE.note",
     "postinstall": "./bin/postinstall.sh",
@@ -19,7 +19,7 @@
     "concurrent": false,
     "linters": {
       "R/*.R": "Rscript -e \"devtools::load_all(); devtools::lint(cache = FALSE) -> lints; if(length(lints) > 0) print(lints); testthat::expect_equal(length(lints), 0)\"",
-      "srcjs/**/*.ts": [
+      "srcts/**/*.ts": [
         "npm run fix --",
         "npm run git_add_compiled --"
       ]
