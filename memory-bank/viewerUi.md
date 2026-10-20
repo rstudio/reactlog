@@ -130,7 +130,7 @@ Esc order: if there is sticky data and a filter, and both hold the same react id
 
 - `mouseover` (`onMouseOver`): after a 200 ms debounce, `hoverData(target.data())`. A one-time `mouseout` cancels the debounce, and calls `hoverDataReset()` only if the hover already fired. Ignored when the target is the canvas.
 - `tap` (`onClick`): blurs `#search`. Two taps on the same target within 400 ms trigger a cytoscape `dblclick` event instead. A single tap on the background calls `stickyDatasReset()`; on an element, `stickyDatas([target.data()])`.
-- `dblclick` (`onDblClick`, a custom event fired by `onClick`): on the background, `resetHoverStickyFilterData()`. On an element, `searchRegexReset()` then `searchStringWithData(target.data())`, so double click is really a search for that element's key.
+- `dblclick` (`onDblClick`, a custom event fired by `onClick`): on the background, `resetHoverStickyFilterData()`. On an element, `searchRegexReset()` then `searchStringWithData(target.data())`, so double click is really a search for that element's key, anchored (`^key$`) so `r3` does not also match `r30`.
 
 `target.data()` is the `Node` / `Edge` / `GhostEdge` instance itself (see `cytoData` getters).
 
@@ -194,5 +194,4 @@ This keeps snapshots stable. `reactlog_module_server()` (`R/shinyModule.R`) adds
 - Letter shortcuts do not check modifiers, so Ctrl/Cmd + `s`, `l` or `f` also run them.
 - Moves that use `filteredStepsVisible` (step, idle, output calc) respect the search filter; user marks, ticks, the timeline and `firstStep`/`lastStep` do not.
 - The search box is cleared in two places (`searchRegexReset` and `GraphAtStep.resetHoverStickyFilterSearch`). Any reset clears the text the user typed.
-- Double click searches with an unanchored regex of the key, so `r3` also matches `r30`, `r31`, and labels containing `r3`.
 - After editing `srcjs/`, rebuild. The page loads only the committed `reactlogAsset/reactlog.js`.
