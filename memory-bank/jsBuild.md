@@ -50,13 +50,12 @@ blank lines.
   well under a second. esbuild strips types without checking them.
 - `typecheck`: `tsc -p .`. Writes nothing.
 - `build`: `lint-all`, then `typecheck`, then `build-only`. `lint-all` runs
-  `bin/lint_file.sh` on `srcts/*.ts srcts/**/*.ts`. All `srcts/` sub folders
-  are one level deep, so this glob covers every file even without bash
-  `globstar`.
+  `bin/lint_file.sh` on the `srcts` folder.
 - `watch`: `lint-all` once, then `build-only -- --watch`. No type check while
   watching; run `npm run typecheck` (or an editor) for that.
 - `lint` / `fix`: `bin/lint_file.sh` / `bin/clean_rlog_file.sh` on files you
-  pass after `--`. `lint` with no files exits with an error.
+  pass after `--` (files or folders). `lint` with no arguments exits with an
+  error.
 - `fix-all`: `fix` on every `srcts` file.
 - `check-shiny-target`: `bin/check_shiny_target.js` (see below). Needs
   network access.
@@ -99,7 +98,8 @@ run `npm run build`, and check the viewer in a browser. It does not compare
 
 ## eslint and prettier
 
-- `eslint.config.mjs` (flat config): `@eslint/js` recommended plus
+- `eslint.config.mjs` (flat config, eslint's `defineConfig()`; the older
+  `tseslint.config()` helper is deprecated): `@eslint/js` recommended plus
   `typescript-eslint` recommended (no type-aware rules). Kept from the old
   config: `eqeqeq`, `guard-for-in`, `no-console` and `no-var` as errors,
   `consistent-return` as a warning, unused vars as warnings with
@@ -183,10 +183,10 @@ button clicks and key presses. There are no JS unit tests.
 - `npm run build-only` and `watch` do not type check. Run `npm run typecheck`
   or `npm run build` before committing.
 - Do not upgrade `typescript` past 6.0 until `typescript-eslint` supports it.
-- The prev/next buttons are bound with `.click(updateGraph.buttonX as any)`,
-  so jQuery's click event is passed in as `cytoOptions` and merged into the
-  layout options. This is old behavior that the conversion kept; the cast hides
-  it from `tsc`.
+- Bind jQuery handlers through an arrow, as in
+  `.click(() => updateGraph.buttonNextStep())`. Passing the function itself
+  hands jQuery's event in as the first argument, which for most `updateGraph`
+  functions is `cytoOptions`, and that ends up in the cytoscape layout options.
 - `npm install` / `npm ci` rebuilds the bundle. If `inst/` changes afterwards,
   check whether you meant it; restore with `git checkout -- inst/`.
 - `npm install` in a folder other than `reactlog` rewrites the `"name"` at the
