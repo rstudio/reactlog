@@ -127,7 +127,7 @@ reactlog_module_server <- function(
 shiny_version_required <- function() {
   desc_file <- system.file("DESCRIPTION", package = "reactlog")
   suggests <- read.dcf(desc_file)[1, "Suggests"]
-  pkgs <- strsplit(suggests, ",")[[1]]
+  pkgs <- trimws(strsplit(suggests, ",")[[1]])
   shiny_version <- gsub("[^.0-9]", "", pkgs[grepl("^shiny ", pkgs)])
   package_version(shiny_version)
 }
@@ -141,6 +141,6 @@ test_shiny_version <- function() {
 }
 assert_shiny_version <- function() {
   if (!test_shiny_version()) {
-    stop("`shiny` v", shiny_version_required, " or greater must be installed")
+    stop("`shiny` v", shiny_version_required(), " or greater must be installed")
   }
 }
