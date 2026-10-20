@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "es2021",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "lib": ["es2021", "dom"],
+    "types": ["jquery"],
+    "strict": false,
+    "noEmit": true,
+    "isolatedModules": true,
+    "esModuleInterop": true
+  },
+  "include": ["srcts"]
+}

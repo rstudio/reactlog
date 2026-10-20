@@ -43,7 +43,6 @@ vignettes/*.pdf
 rsconnect/
 
 .Rproj.user
-inst/reactlog/reactlogAsset/report.html
 node_modules
 npm-debug.log*
 src_old
@@ -58,3 +57,4 @@ _ignore
 !/.agents/skills/
 /.agents/skills/*
 !/.agents/skills/memory-bank/
+.playwright-mcp/

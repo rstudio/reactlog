@@ -6,19 +6,14 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^LICENSE\.md$
-^srcjs
-^\.babelrc$
-^\.eslintrc\.js$
-^\.flowconfig$
-^Gruntfile\.js$
+^srcts
 ^package\.json$
 ^prettier\.config\.js$
 ^package-lock\.json$
+^tsconfig\.json$
 ^CODE_OF_CONDUCT\.md$
 ^node_modules
 ^bin
-^inst/reactlog/reactlogAsset/report\.html$
-^flow-typed
 ^_ignore
 ^\.lintr$
 .*\.js\.map$
@@ -37,3 +32,4 @@
 ^\.context$
 ^\.git$
 ^\.conductor$
+^\.playwright-mcp$
