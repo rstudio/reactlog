@@ -35,7 +35,8 @@
 #' enabled, it's possible for any user of your app to see at least some
 #' of the source code of your reactive expressions and observers.
 #'
-#' @param log Log produced by shiny to be processed
+#' @param log Log produced by shiny to be processed. Defaults to
+#'   [shiny::reactlog()], the log recorded in the current R session.
 #' @param time A boolean that specifies whether or not to display the
 #' time that each reactive takes to calculate a result.
 #' @param ... Arguments passed on to `reactlog_render()`, such as `session_token`.
@@ -56,10 +57,10 @@
 #' runApp(app)
 #'
 #' # once app has closed, display reactlog
-#' shiny::reactlogShow()
+#' reactlog_show()
 #' }
 
-reactlog_show <- function(log, time = TRUE, ...) {
+reactlog_show <- function(log = shiny::reactlog(), time = TRUE, ...) {
   file <- reactlog_render(log, time = as.logical(time), ...)
   utils::browseURL(file)
 }
