@@ -12,6 +12,8 @@
 
 - Fixed `Shift+Right` moving past the last log entry (#120)
 
+- Fixed double clicking a graph element also matching elements with a longer id, such as `r30` for `r3` (#120)
+
 # reactlog 1.1.1
 
 - Fixed Font Awesome icon warning about `refresh` icon (#87)
