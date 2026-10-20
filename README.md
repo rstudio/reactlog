@@ -96,7 +96,6 @@ For bug reports, please use the **reactlog** [issue tracker](https://github.com/
 ## Development
 
 [![node version: 12.x](https://img.shields.io/badge/node-12.x-brightgreen.svg)](https://nodejs.org/en/)
-[![yarn version: 1.x](https://img.shields.io/badge/yarn-1.x-257bac.svg)](https://classic.yarnpkg.com/lang/en/)
 [![JavaScript type: flow](https://img.shields.io/npm/types/flow-typed.svg)](https://github.com/flow-typed/flow-typed)
 [![cytoscape](https://img.shields.io/github/package-json/dependency-version/rstudio/reactlog/cytoscape.svg)](https://js.cytoscape.org/)
 [![@babel/preset-env](https://img.shields.io/github/package-json/dependency-version/rstudio/reactlog/dev/@babel/preset-env.svg)](https://babeljs.io/)
@@ -105,7 +104,7 @@ For bug reports, please use the **reactlog** [issue tracker](https://github.com/
 [![linter: eslint](https://img.shields.io/badge/linter-eslint-3524ca.svg)](https://eslint.org/)
 
 
-Please make sure you have [GitHub Large File Storage](https://git-lfs.github.com/), [Node.js](https://nodejs.org/en/) and [yarn](https://classic.yarnpkg.com/en/docs/install) installed.
+Please make sure you have [GitHub Large File Storage](https://git-lfs.github.com/) and [Node.js](https://nodejs.org/en/) installed.
 
 Installation script:
 
@@ -114,10 +113,10 @@ Installation script:
 git lfs install
 
 # install dependencies and build JavaScript
-yarn install
+npm install
 
 # build on file change
-yarn watch
+npm run watch
 ```
 
-By changing the file `'./inst/reactlog/defaultLog.js'` with the contents of any log file in `'./inst/log-files/'`, different default log files can be loaded.  Once the local JavaScript (`'./inst/reactlog/reactlogAsset/reactlog.js'`) has been built with `yarn build` or `yarn watch`, refresh `'./inst/reactlog/reactlog.html'` to avoid constantly spawning Shiny applications for testing.
+By changing the file `'./inst/reactlog/defaultLog.js'` with the contents of any log file in `'./inst/log-files/'`, different default log files can be loaded.  Once the local JavaScript (`'./inst/reactlog/reactlogAsset/reactlog.js'`) has been built with `npm run build` or `npm run watch`, refresh `'./inst/reactlog/reactlog.html'` to avoid constantly spawning Shiny applications for testing.

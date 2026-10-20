@@ -1,3 +1,3 @@
 #!/bin/bash -e
 
-yarn build-only
+npm run build-only

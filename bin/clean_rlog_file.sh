@@ -2,6 +2,6 @@
 
 # should be used with `npm run fix FILE`
 
-yarn lint "$@"
+npm run lint -- "$@"
 
-yarn build-only
+npm run build-only

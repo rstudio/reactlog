@@ -46,7 +46,7 @@ rsconnect/
 inst/reactlog/reactlogAsset/report.html
 node_modules
 flow-typed
-yarn-error.log
+npm-debug.log*
 src_old
 _ignore
 *.rej
