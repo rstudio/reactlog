@@ -58,5 +58,5 @@ reactlog_render <- function(log, session_token = NULL, time = TRUE) {
     recursive = TRUE
   )
 
-  return(file)
+  file
 }
