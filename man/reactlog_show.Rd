@@ -43,11 +43,11 @@ in the process, not just for a particular application or session.
 
 As an alternative to pressing \preformatted{Ctrl/Cmd+F3}--for example, if you
 are using reactives outside of the context of a Shiny
-application--you can run the \code{\link[shiny:reactlog]{shiny::reactlogShow()}} function, which will
+application--you can run the \code{\link[shiny:reactlogShow]{shiny::reactlogShow()}} function, which will
 generate the reactive log visualization as a static HTML file and
 launch it in your default browser. In this case, refreshing your
 browser will not load new activity into the report; you will need to
-call \code{\link[shiny:reactlog]{shiny::reactlogShow()}} explicitly.
+call \code{\link[shiny:reactlogShow]{shiny::reactlogShow()}} explicitly.
 
 For security and performance reasons, do not enable the reactlog
 in production environments. When the option is
@@ -72,6 +72,6 @@ shiny::reactlogShow()
 }
 }
 \seealso{
-\code{\link[shiny:reactlog]{shiny::reactlogShow()}} and
+\code{\link[shiny:reactlogShow]{shiny::reactlogShow()}} and
 \code{\link[=reactlog_enable]{reactlog_enable()}}
 }
