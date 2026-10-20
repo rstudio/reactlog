@@ -18,7 +18,7 @@ Defaults to all sessions.}
 \item{time}{A boolean that specifies whether or not to display the
 time that each reactive takes to calculate a result.}
 
-\item{...}{Future parameter expansion. Currently ignored}
+\item{...}{Arguments passed on to \code{reactlog_render()}, such as \code{session_token}.}
 }
 \description{
 Provides an interactive browser-based tool for visualizing reactive
