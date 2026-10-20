@@ -41,3 +41,14 @@ Entry point is `srcjs/index.js`, which wires DOM elements from `reactlog.html` t
 ## Website
 
 The pkgdown site (`pkgdown/`, built by `.github/shiny-workflows/website.R`) copies `readme-images/` and `inst/reactlog/` into `pkgdown/assets/`, so the demo at `/demo/reactlog.html` is the committed bundle with `defaultLog.js`.
+
+## Deep dives
+
+| Doc | Covers |
+| --- | --- |
+| [logFormat.md](logFormat.md) | Every log action and its fields, the `version` attribute, how Shiny records entries |
+| [graphReplay.md](graphReplay.md) | `Graph` / `GraphAtStep`, node and edge status, filtering, the cytoscape diff and layout |
+| [viewerUi.md](viewerUi.md) | Page DOM, navigation actions, keyboard shortcuts, timeline, status panel |
+| [shinyIntegration.md](shinyIntegration.md) | How shiny calls reactlog, the `/reactlog` endpoint, the module, tests |
+| [jsBuild.md](jsBuild.md) | npm / grunt / webpack 4 toolchain, Flow, lint, the pre-commit hook |
+| [ciAndRelease.md](ciAndRelease.md) | GitHub Actions, the pkgdown site, CRAN release files |
