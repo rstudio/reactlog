@@ -217,5 +217,3 @@ In reactlog (`srcjs/`), then rebuild the bundle (`npm run build`) and commit
   When logging is off it is `"<reactlog is turned off>"`.
 - **The log only grows.** Shiny keeps every entry in memory until
   `reactlogReset()` or restart, which is why `reactlog_disable()` warns.
-- **`asyncStop` shows the wrong text.** `statusForEntry()` returns
-  "Start asynchronous calculations" for both `asyncStart` and `asyncStop`.
