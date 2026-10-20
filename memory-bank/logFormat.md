@@ -201,10 +201,9 @@ In reactlog (`srcjs/`), then rebuild the bundle (`npm run build`) and commit
 
 ## Pitfalls
 
-- **`invalidateLater` is only half supported.** Shiny writes it, and
-  `logEntry.js` and `updateFilteredStepsVisible()` know it, but `Graph.addEntry()`
-  has no `case` for it, so each one logs a "unknown data.action" console error
-  during replay. Shiny also passes the raw `ctx$id` without the `"ctx"` prefix.
+- **`invalidateLater` has no graph effect.** It is a status-bar step only;
+  `Graph.addEntry()` ignores it. Shiny passes the raw `ctx$id` without the
+  `"ctx"` prefix, so do not match its `ctxId` against other entries.
 - **`updateNodeLabel` has no producer.** Shiny does not write it today; the JS
   handlers are left over. The comment in `Graph.js` shows an old `nodeId` field.
 - **`step` is the index, not a saved field.** Do not filter or reorder
