@@ -21,7 +21,6 @@
 ^flow-typed
 ^_ignore
 ^\.lintr$
-^scripts
 .*\.js\.map$
 ^inst/log-files
 ^readme-images
