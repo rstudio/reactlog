@@ -45,7 +45,6 @@ rsconnect/
 .Rproj.user
 inst/reactlog/reactlogAsset/report.html
 node_modules
-flow-typed
 npm-debug.log*
 src_old
 _ignore

@@ -12,7 +12,8 @@ the R package never runs Node. For how the bundle is used at runtime, see
 `memory-bank/architecture.md`. For the short command list, see `AGENTS.md`.
 
 The repo moved from yarn to npm (`package-lock.json`; `yarn.lock` is gone). At
-the same time, `flow-typed install` was dropped from the `postinstall` step.
+the same time, `flow-typed install` was dropped from the `postinstall` step;
+the stubs it made are now committed in `flow-typed/`.
 
 ## Key files
 
@@ -81,8 +82,10 @@ with `Fatal error: error:0308010C:digital envelope routines::unsupported`. Only
   `@babel/plugin-proposal-class-properties` allows class fields.
 - `.flowconfig`: `[include] srcjs`, all lints set to `error` with a few turned
   down, `$Flow...` comments suppress errors. `[libs]` is empty. Type stubs for
-  `jquery` / `lodash` used to come from `flow-typed install` in postinstall;
-  `flow-typed/` is in `.gitignore`, so a fresh clone has none.
+  `jquery`, `lodash` and `@babel/polyfill` are committed in `flow-typed/npm/`
+  (from `npx flow-typed install --skip true --ignoreDeps dev`; it prints
+  "Cannot call write after a stream was destroyed" on new Node but still writes
+  the files).
 - Flow coverage: `npm run flow-report` runs `flow-coverage-report` with the
   `flow-coverage-report` block in `package.json`: files `srcjs/**/*.js`, four
   files excluded (`utils/Console.js`, `cyto/layoutOptions.js`,
