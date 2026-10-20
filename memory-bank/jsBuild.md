@@ -27,7 +27,7 @@ the stubs it made are now committed in `flow-typed/`.
 | `bin/lint_file.sh` | `eslint --fix` then `prettier --write` on the given files |
 | `bin/clean_rlog_file.sh` | Lint the given files, then `npm run build-only` |
 | `bin/postinstall.sh` | Runs `npm run build-only` |
-| `bin/update-license.js`, `scripts/license_checker.js` | Print a third-party license list (not used today, see below) |
+| `bin/update-license.js` | Prints a third-party license list (not used today, see below) |
 | `inst/reactlog/reactlogAsset/reactlog.js` (+ `.map`) | The committed build output |
 | `inst/reactlog/reactlog.html`, `inst/reactlog/defaultLog.js` | Page and sample log for the local dev loop |
 
@@ -150,12 +150,10 @@ commit back; on a push to `main` it fails instead. That job does not run Flow.
 ## License list
 
 `bin/update-license.js` (run by `npm run update-license`, writing
-`LICENSE.note`) and `scripts/license_checker.js` are near copies. Both use
-`license-checker` to list the packages in `dependencies` with their license
-text. `LICENSE.note` does not exist in the repo, and the shared `routine`
-workflow's `license-note` step is off by default. The header both scripts print
-says the package is GPL-3, but the package is now MIT (`DESCRIPTION`,
-`LICENSE`).
+`LICENSE.note`) uses `license-checker` to list the packages in `dependencies`
+with their license text, under a header saying the package is MIT.
+`LICENSE.note` does not exist in the repo, and the shared `routine` workflow's
+`license-note` step is off by default.
 
 ## Dev loop without Shiny
 
