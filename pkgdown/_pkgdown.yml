@@ -8,6 +8,3 @@ template:
 ## `.github/shiny-workflows/website.R` copies `inst/reactlog/` to `pkgdown/assets/demo/`
 ## and `readme-images/` to `pkgdown/assets/readme-images/`.
 ## pkgdown copies `pkgdown/assets/` to the site root, hosting the live demo and readme images.
-
-development:
-  mode: auto
