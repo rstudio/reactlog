@@ -17,7 +17,7 @@
 ^Gruntfile\.js$
 ^package\.json$
 ^prettier\.config\.js$
-^yarn
+^package-lock\.json$
 ^CODE_OF_CONDUCT\.md$
 ^node_modules
 ^bin

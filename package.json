@@ -2,16 +2,16 @@
   "private": true,
   "scripts": {
     "flow-report": "flow-coverage-report",
-    "flow-report-and-echo": "yarn flow-report && echo 'done flow report'",
+    "flow-report-and-echo": "npm run flow-report && echo 'done flow report'",
     "flow-status": "flow status",
     "flow-stop": "flow stop",
     "lint": "./bin/lint_file.sh",
     "fix": "./bin/clean_rlog_file.sh",
-    "fix-all": "yarn fix srcjs/*.js srcjs/**/*.js",
-    "lint-all": "yarn lint srcjs/*.js srcjs/**/*.js",
-    "build": "yarn lint-all && yarn build-only",
+    "fix-all": "npm run fix -- srcjs/*.js srcjs/**/*.js",
+    "lint-all": "npm run lint -- srcjs/*.js srcjs/**/*.js",
+    "build": "npm run lint-all && npm run build-only",
     "build-only": "grunt",
-    "watch": "yarn lint-all && grunt webpackSetWatch default",
+    "watch": "npm run lint-all && grunt webpackSetWatch default",
     "update-license": "node ./bin/update-license.js > LICENSE.note",
     "postinstall": "./bin/postinstall.sh",
     "lint-staged": "lint-staged",
@@ -22,8 +22,8 @@
     "concurrent": false,
     "linters": {
       "R/*.R": "Rscript -e \"devtools::load_all(); devtools::lint(cache = FALSE) -> lints; if(length(lints) > 0) print(lints); testthat::expect_equal(length(lints), 0)\"",
-      ".flowconfig": "yarn flow-report-and-echo",
-      "srcjs/**/*.js": ["yarn fix", "yarn flow-report-and-echo", "yarn git_add_compiled"]
+      ".flowconfig": "npm run flow-report-and-echo",
+      "srcjs/**/*.js": ["npm run fix --", "npm run flow-report-and-echo", "npm run git_add_compiled --"]
     }
   },
   "flow-coverage-report": {
