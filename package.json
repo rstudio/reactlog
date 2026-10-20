@@ -11,7 +11,7 @@
     "lint-all": "yarn lint srcjs/*.js srcjs/**/*.js",
     "build": "yarn lint-all && yarn build-only",
     "build-only": "NODE_OPTIONS=--openssl-legacy-provider grunt",
-    "watch": "yarn lint-all && grunt webpackSetWatch default",
+    "watch": "yarn lint-all && NODE_OPTIONS=--openssl-legacy-provider grunt webpackSetWatch default",
     "update-license": "node ./bin/update-license.js > LICENSE.note",
     "postinstall": "./bin/postinstall.sh",
     "lint-staged": "lint-staged",
