@@ -1,7 +1,7 @@
 import { rlog } from "../rlog";
 import { atTick } from "./atTick";
 
-let resize = function() {
+let resize = function () {
   // tell cytoscape to update it's layout bounds
   rlog.cyto.resize();
   // force a redraw

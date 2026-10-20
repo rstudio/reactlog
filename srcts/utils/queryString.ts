@@ -1,9 +1,8 @@
 // Modified from https: //stackoverflow.com/a/13419367/591574
 function parseQuery(queryString = window.location.search): any {
   let query = {};
-  let pairs = (queryString[0] === "?"
-    ? queryString.substr(1)
-    : queryString
+  let pairs = (
+    queryString[0] === "?" ? queryString.substr(1) : queryString
   ).split("&");
   for (let i = 0; i < pairs.length; i++) {
     let pair = pairs[i].split("=");

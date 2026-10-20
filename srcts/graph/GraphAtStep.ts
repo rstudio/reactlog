@@ -115,7 +115,6 @@ class GraphAtStep {
     let idleArr = [];
     let startI = 0;
 
-    // eslint-disable-next-line no-constant-condition
     while (true) {
       // if async start, then async stop, then idle... skip them
       if (
@@ -170,7 +169,7 @@ class GraphAtStep {
 
       switch (logItem.action) {
         case LogStates.invalidateStart: {
-          let logEntry = (logItem as LogEntryInvalidateStartType);
+          let logEntry = logItem as LogEntryInvalidateStartType;
           if (logEntry.type === "other") {
             break;
           }
@@ -387,7 +386,7 @@ class GraphAtStep {
     if (hasLength(this.stickyDatas)) {
       if (
         _some(
-          this.stickyDatas.map(function(data) {
+          this.stickyDatas.map(function (data) {
             return graph.hasSomeData(data);
           })
         )
@@ -397,7 +396,7 @@ class GraphAtStep {
           this.stickyDatas
         );
         graph.hoverStatusOnNodeIds(stickyTree, "sticky");
-        this.stickyDatas.map(function(data) {
+        this.stickyDatas.map(function (data) {
           graph.highlightSelected(data, "selected");
         });
         if (!this.hoverData) {
@@ -414,7 +413,7 @@ class GraphAtStep {
         this.finalFilteredGraph.familyTreeNodeIdsForDatas(this.filterDatas)
       );
       // graph.hoverStatusOnNodeIds(this.filterDatas.map((x) => x.reactId), "filtered");
-      this.filterDatas.map(function(data) {
+      this.filterDatas.map(function (data) {
         graph.highlightSelected(data, "filtered");
       });
     }
@@ -471,14 +470,14 @@ class GraphAtStep {
     let matchedElements: Array<SomeGraphData> = _filter(
       // (mapValues(graph.nodes): ArraySomeGraphData),
       mapValues(this.finalCompleteGraph.nodes),
-      function(node: Node) {
+      function (node: Node) {
         return regex.test(node.label) || regex.test(node.key);
       }
     );
     if (matchedElements.length === 0) {
       matchedElements = _filter(
         mapValues(this.finalCompleteGraph.edges),
-        function(edge: Edge) {
+        function (edge: Edge) {
           return regex.test(edge.ghostKey);
         }
       );
@@ -486,7 +485,7 @@ class GraphAtStep {
     if (matchedElements.length === 0) {
       matchedElements = _filter(
         mapValues(this.finalCompleteGraph.edgesUnique),
-        function(edge: GhostEdge) {
+        function (edge: GhostEdge) {
           return regex.test(edge.key);
         }
       );
@@ -497,7 +496,7 @@ class GraphAtStep {
       this.updateStickyDatasReset();
       this.updateFilterDatasReset();
     } else {
-      this.updateStickyDatas((matchedElements as Array<any>));
+      this.updateStickyDatas(matchedElements as Array<any>);
       this.updateFilterDatas(
         // for some reason, an array of node does not work with an array of (node, edge, or ghostedge)
         matchedElements as Array<any>
@@ -525,14 +524,14 @@ class GraphAtStep {
     // add any points and edges that have not be defined yet
     // do not include regular edges, only unique edges
     // append all missing nodes
-    mapValues(finalGraph.nodes).map(function(fullNode) {
+    mapValues(finalGraph.nodes).map(function (fullNode) {
       if (!graph.nodes.has(fullNode.key)) {
         // stomps finalGraph node value, but currently not a consequence to worry about
         fullNode.isDisplayed = false;
         graph.nodes.set(fullNode.key, fullNode);
       }
     });
-    mapValues(finalGraph.edgesUnique).map(function(fullEdge) {
+    mapValues(finalGraph.edgesUnique).map(function (fullEdge) {
       if (!graph.edgesUnique.has(fullEdge.key)) {
         // stomps finalGraph edge value, but currently not a consequence to worry about
         fullEdge.isDisplayed = false;
@@ -562,8 +561,8 @@ class GraphAtStep {
     let someNodeHasNewLabel = false;
 
     // enter visible nodes
-    nodesLRB.right.map(function(graphNode: CytoscapeElement) {
-      let graphNodeData = (graphNode.data() as Node);
+    nodesLRB.right.map(function (graphNode: CytoscapeElement) {
+      let graphNodeData = graphNode.data() as Node;
       cy.add(graphNode)
         .data("cytoLabel_", graphNodeData.cytoLabel)
         .data("cytoLabelShort_", graphNodeData.cytoLabelShort)
@@ -575,11 +574,11 @@ class GraphAtStep {
       // });
     });
     // update visible nodes
-    nodesLRB.both.map(function(cytoNode: CytoscapeElement) {
-      let cyNode = (cy.$id(cytoNode.id()) as CytoscapeNode);
+    nodesLRB.both.map(function (cytoNode: CytoscapeElement) {
+      let cyNode = cy.$id(cytoNode.id()) as CytoscapeNode;
 
-      let graphNode = (graphNodes.$id(cytoNode.id()) as CytoscapeNode);
-      let graphNodeData = (graphNode.data() as Node);
+      let graphNode = graphNodes.$id(cytoNode.id()) as CytoscapeNode;
+      let graphNodeData = graphNode.data() as Node;
       let graphClasses = graphNodeData.cytoClasses;
 
       switch (cyNode.data("type")) {
@@ -610,7 +609,7 @@ class GraphAtStep {
 
       // pulse value change
       if (graphNodeData.valueChangedStatus.isActiveAtStep(k)) {
-        onLayoutReady.push(function() {
+        onLayoutReady.push(function () {
           cyNode.flashClass("nodeStartBig", 125);
         });
       }
@@ -619,7 +618,7 @@ class GraphAtStep {
         graphNodeData.invalidateStatus.isActiveAtStep(k) ||
         graphNodeData.enterStatus.isActiveAtStep(k)
       ) {
-        onLayoutReady.push(function() {
+        onLayoutReady.push(function () {
           switch (graphNodeData.type) {
             case "observable":
               cyNode.flashClass("nodeMiddleBig", 125);
@@ -632,7 +631,7 @@ class GraphAtStep {
       }
     });
     // exit visible nodes
-    nodesLRB.left.map(function(cytoNode) {
+    nodesLRB.left.map(function (cytoNode) {
       cy.remove(cytoNode);
       // .animate({duration: cytoDur});
     });
@@ -641,8 +640,8 @@ class GraphAtStep {
     let graphEdges = graphCyto.edges();
     let edgesLRB = cyEdges.diff(graphEdges);
     // enter visible edges
-    edgesLRB.right.map(function(graphEdge: CytoscapeEdge) {
-      let graphEdgeData = (graphEdge.data() as Edge);
+    edgesLRB.right.map(function (graphEdge: CytoscapeEdge) {
+      let graphEdgeData = graphEdge.data() as Edge;
       cy.add(graphEdge)
         .classes(graphEdgeData.cytoClasses)
         .removeStyle()
@@ -653,7 +652,7 @@ class GraphAtStep {
       // });
     });
     // update visible edges
-    edgesLRB.both.map(function(cytoEdge) {
+    edgesLRB.both.map(function (cytoEdge) {
       let graphEdgeData = graphEdges.$id(cytoEdge.id()).data();
       cy.$id(cytoEdge.id())
         // .classes()
@@ -667,7 +666,7 @@ class GraphAtStep {
       // });
     });
     // exit visible edges
-    edgesLRB.left.map(function(cytoEdge) {
+    edgesLRB.left.map(function (cytoEdge) {
       // var graphEdge = cytoEdge.data();
       // remove the original edge
       cy.remove(cytoEdge);
@@ -679,7 +678,7 @@ class GraphAtStep {
     // send in sorted elements according to the key.
     // If provided in a consistent order, layouts are consistent.
     // `eles` default to `options.eles != null ? options.eles : cy.$();`
-    let sortedElements = cy.$().sort(function(a, b) {
+    let sortedElements = cy.$().sort(function (a, b) {
       return a.data().key > b.data().key ? 1 : -1;
     });
 
@@ -693,7 +692,7 @@ class GraphAtStep {
       cytoOptions.forceRedraw !== true
     ) {
       // do not re-render layout... just call onLayoutReady
-      onLayoutReady.map(function(fn) {
+      onLayoutReady.map(function (fn) {
         fn();
       });
     } else {
@@ -715,8 +714,8 @@ class GraphAtStep {
             // provide elements in sorted order to make determanistic layouts
             eles: sortedElements,
             // run on layout ready
-            ready: function() {
-              onLayoutReady.map(function(fn) {
+            ready: function () {
+              onLayoutReady.map(function (fn) {
                 fn();
               });
             },

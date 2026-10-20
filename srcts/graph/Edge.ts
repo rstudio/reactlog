@@ -4,10 +4,10 @@ import { HoverStatus } from "./HoverStatus";
 
 import type { ReactIdType, CtxIdType } from "../log/logStates";
 
-let ghostKey = function(reactId: ReactIdType, depOnReactId: ReactIdType) {
+let ghostKey = function (reactId: ReactIdType, depOnReactId: ReactIdType) {
   return `${reactId} depends on ${depOnReactId}`;
 };
-let edgeKey = function(
+let edgeKey = function (
   reactId: ReactIdType,
   depOnReactId: ReactIdType,
   ctxId: CtxIdType
@@ -106,18 +106,18 @@ type EdgeIdType = string;
 type GraphNodeKeyType = string;
 
 type EdgeInputType = EdgeLikeType & {
-  ctxId: CtxIdType,
+  ctxId: CtxIdType;
 };
 
 type EdgeLikeType = {
-  reactId: ReactIdType,
-  depOnReactId: ReactIdType,
-  session: string | null | undefined,
-  time: number,
-  hoverStatus?: HoverStatus | null | undefined,
-  isDisplayed?: boolean,
-  status?: string,
-  isGhost?: boolean,
+  reactId: ReactIdType;
+  depOnReactId: ReactIdType;
+  session: string | null | undefined;
+  time: number;
+  hoverStatus?: HoverStatus | null | undefined;
+  isDisplayed?: boolean;
+  status?: string;
+  isGhost?: boolean;
 };
 
 export { Edge, edgeKey, ghostKey };

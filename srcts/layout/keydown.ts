@@ -7,7 +7,7 @@ import * as updateGraph from "../updateGraph";
 import { hasLength } from "../graph/GraphAtStep";
 import { rlog } from "../rlog";
 
-let onKeydown = function(e: JQuery.KeyDownEvent): void {
+let onKeydown = function (e: JQuery.KeyDownEvent): void {
   // console.log("keydown: ", e);
   let target = $(e.target).get(0) as HTMLElement;
   if (target.id && target.id === "search") {
@@ -150,7 +150,7 @@ let onKeydown = function(e: JQuery.KeyDownEvent): void {
   }
   if (e.which === 83) {
     // s
-    _defer(function() {
+    _defer(function () {
       $("#search").focus();
     });
     e.stopPropagation();
@@ -174,7 +174,7 @@ let onKeydown = function(e: JQuery.KeyDownEvent): void {
   }
 };
 
-let addKeydown = function(jqueryContainer: JQuery) {
+let addKeydown = function (jqueryContainer: JQuery) {
   jqueryContainer.keydown(onKeydown);
 };
 

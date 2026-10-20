@@ -1,6 +1,6 @@
 import colors from "../style/colors";
 
-let styleHelper = function(selector: string, style: any) {
+let styleHelper = function (selector: string, style: any) {
   return {
     selector: selector,
     style: style,

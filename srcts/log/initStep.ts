@@ -8,6 +8,6 @@ if (window.__APP_DATA__) {
   window.log = window.__APP_DATA__;
 }
 
-_map(window.log as LogType, function(entry, i: number) {
+_map(window.log as LogType, function (entry, i: number) {
   entry.step = i;
 });

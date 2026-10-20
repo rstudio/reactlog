@@ -40,11 +40,11 @@ class StatusArr {
 }
 
 type StatusEntry = {
-  action: ActionsType,
-  ctxId: string,
+  action: ActionsType;
+  ctxId: string;
 };
 
-let expectPrevStatus = function(
+let expectPrevStatus = function (
   curStatus: StatusEntry,
   prevStatus: StatusEntry,
   expectedAction: string

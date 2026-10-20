@@ -112,7 +112,7 @@ class Node {
         this.calculationTime = null;
         break;
     }
-    this.statusArr.add((logEntry as StatusEntry));
+    this.statusArr.add(logEntry as StatusEntry);
     return this.statusArr;
   }
   statusRemove(logEntry: LogEntryAnyType): StatusEntry {
@@ -276,21 +276,21 @@ type NodeHoverKeyType = string;
 type NodeIdType = string;
 
 type NodeInputType = {
-  reactId: string,
-  label: string,
-  type: string,
-  session: string | null | undefined,
-  time: number,
-  isFrozen?: boolean,
-  statusArr?: StatusArr,
-  value: string | null | undefined,
-  hoverStatus?: HoverStatus,
-  valueChangedStatus?: ActiveStateStatus,
-  enterStatus?: ActiveStateStatus,
-  invalidateStatus?: ActiveStateStatus,
-  isDisplayed?: boolean,
-  calculationTime?: number,
-  calculationStartMap?: Map<CtxIdType, number>,
+  reactId: string;
+  label: string;
+  type: string;
+  session: string | null | undefined;
+  time: number;
+  isFrozen?: boolean;
+  statusArr?: StatusArr;
+  value: string | null | undefined;
+  hoverStatus?: HoverStatus;
+  valueChangedStatus?: ActiveStateStatus;
+  enterStatus?: ActiveStateStatus;
+  invalidateStatus?: ActiveStateStatus;
+  isDisplayed?: boolean;
+  calculationTime?: number;
+  calculationStartMap?: Map<CtxIdType, number>;
 };
 
 export { Node };

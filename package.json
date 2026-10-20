@@ -3,13 +3,13 @@
   "scripts": {
     "lint": "./bin/lint_file.sh",
     "fix": "./bin/clean_rlog_file.sh",
-    "fix-all": "npm run fix -- srcts/*.ts srcts/**/*.ts",
-    "lint-all": "npm run lint -- srcts/*.ts srcts/**/*.ts",
+    "fix-all": "npm run fix -- srcts",
+    "lint-all": "npm run lint -- srcts",
     "typecheck": "tsc -p .",
-    "build": "npm run typecheck && npm run build-only",
+    "build": "npm run lint-all && npm run typecheck && npm run build-only",
     "build-only": "esbuild srcts/index.ts --bundle --minify --sourcemap --target=es2021 --outfile=inst/reactlog/reactlogAsset/reactlog.js",
     "check-shiny-target": "node bin/check_shiny_target.js",
-    "watch": "npm run build-only -- --watch",
+    "watch": "npm run lint-all && npm run build-only -- --watch",
     "update-license": "node ./bin/update-license.js > LICENSE.note",
     "postinstall": "./bin/postinstall.sh",
     "lint-staged": "lint-staged",
@@ -27,15 +27,17 @@
     }
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@types/jquery": "^3.5.34",
     "@types/lodash": "^4.17.26",
     "esbuild": "^0.28.2",
-    "eslint": "5.x",
+    "eslint": "^10.13.0",
     "license-checker": "^25.0.1",
     "lint-staged": "8.x",
     "pre-commit": "^1.2.2",
-    "prettier": "1.x",
-    "typescript": "~6.0.3"
+    "prettier": "^3.9.10",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.72.0"
   },
   "dependencies": {
     "cytoscape": "3.x",
