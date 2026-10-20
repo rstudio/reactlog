@@ -31,7 +31,8 @@ blank lines.
 | File | Role |
 | --- | --- |
 | `package.json` | npm scripts, `pre-commit` / `lint-staged` hook config, dependencies |
-| `tsconfig.json` | `tsc` settings: `noEmit`, `target` es2021, `moduleResolution` bundler, `strict` on |
+| `tsconfig.json` | `tsc` settings: `noEmit`, `target` es2021, `moduleResolution` bundler, `strict` on. Leaves out `srcts/__tests__/` |
+| `tsconfig.test.json` | Extends `tsconfig.json`, adds the tests and `@types/node` |
 | `srcts/modules.d.ts` | `declare module` for untyped `cytoscape` / `cytoscape-dagre`, and the `window` globals |
 | `srcts/cyto/cytoFlowType.ts` | Hand-written types for the parts of cytoscape the app uses |
 | `eslint.config.mjs` / `prettier.config.js` | Lint and format rules |
@@ -48,8 +49,15 @@ blank lines.
 - `build-only`: `esbuild srcts/index.ts --bundle --minify --sourcemap
   --target=es2021 --outfile=inst/reactlog/reactlogAsset/reactlog.js`. Takes
   well under a second. esbuild strips types without checking them.
-- `typecheck`: `tsc -p .`. Writes nothing.
-- `build`: `lint-all`, then `typecheck`, then `build-only`. `lint-all` runs
+- `typecheck`: `tsc -p .` (app code, browser types only), then
+  `tsc -p tsconfig.test.json` (app plus tests, with Node types). Writes
+  nothing.
+- `test`: bundles `srcts/__tests__/graphReplay.test.ts` for Node with esbuild
+  (into `node_modules/.cache/reactlog-test/`) and runs it with plain `node`
+  (`node:test` still reports and sets the exit code). Not `node --test`:
+  newer Node treats its arguments as globs, which skip `node_modules/`.
+  See "Tests" below.
+- `build`: `lint-all`, then `typecheck`, then `test`, then `build-only`. `lint-all` runs
   `bin/lint_file.sh` on the `srcts` folder.
 - `watch`: `lint-all` once, then `build-only -- --watch`. No type check while
   watching; run `npm run typecheck` (or an editor) for that.
@@ -140,7 +148,7 @@ touch formatting or comments change the `.map` but not `reactlog.js`.
 
 `.Rbuildignore` keeps the JS toolchain out of the R tarball: `^srcts`,
 `^node_modules`, `^bin`, `^package\.json$`, `^package-lock\.json$`,
-`^tsconfig\.json$`, `^eslint\.config\.mjs$`, `^prettier\.config\.js$`,
+`^tsconfig\.json$`, `^tsconfig\.test\.json$`, `^eslint\.config\.mjs$`, `^prettier\.config\.js$`,
 `^inst/log-files`, and `.*\.js\.map$`. The last one means the source map is in
 git but not in the R package; the `sourceMappingURL` line still points to it.
 
@@ -176,7 +184,40 @@ with their license text, under a header saying the package is MIT.
 To check that a build change did not change behavior, load the old and new
 bundle in turn and compare `window._reactlog.curTick`,
 `window._reactlog.cyto.nodes().length` and the `#logEntry` text after the same
-button clicks and key presses. There are no JS unit tests.
+button clicks and key presses.
+
+## Tests
+
+`srcts/__tests__/graphReplay.test.ts` replays every `.js` log in
+`inst/log-files/` through `GraphAtStep`. For each log it checks the step lists
+(visible, idle, output calc, user mark), and at the first, middle, and last
+visible step it checks the node and edge counts plus a fingerprint. Then it
+filters on the first node and checks the filtered steps and the filtered graph
+at the last of them. It runs in about 0.2 seconds, and `npm run build` runs it,
+so CI's `routine` job does too. Adding a log file without adding its counts
+fails the test.
+
+- The fingerprint is a short sha256 of each node, edge, and ghost edge's key,
+  `cytoClasses`, and (for nodes) `cytoLabelShort`, the things cytoscape draws.
+  It catches wrong statuses that leave the counts the same.
+- The graph modules read `window` when they load, and `rlog.ts` and
+  `GraphAtStep.ts` import each other. So the test imports `./setupWindow`
+  (a minimal `window` stub) first, then `../rlog`, then `GraphAtStep`. jQuery
+  and cytoscape load fine in Node without a DOM.
+- `readLog` numbers the steps with `initStep()` from `log/initStep.ts`, the
+  same function the app uses.
+- The log folder is found from the bundle's `__dirname`
+  (`node_modules/.cache/reactlog-test/`), so the bundle runs from any folder.
+  Move the `--outfile` and that path must change too.
+- The counts and fingerprints are recorded from the code, not worked out by
+  hand. If a change moves them on purpose, check the viewer in a browser, then
+  copy the new values from the failing test's `actual` output.
+- `@types/node` is `^22`, the oldest Node the build is known to work on, so
+  `tsc` flags Node APIs that are newer than that. Only the tests see these
+  types; `tsconfig.json` leaves `srcts/__tests__/` out, so app code cannot
+  use Node globals.
+- Nothing tests the DOM or cytoscape drawing; use the browser comparison
+  above for that.
 
 ## Pitfalls
 

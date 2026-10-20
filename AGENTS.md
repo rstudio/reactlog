@@ -15,8 +15,9 @@ JavaScript (npm; Node 22 works):
 ```bash
 npm ci                         # install; postinstall also runs the build
 npm run build-only             # esbuild -> inst/reactlog/reactlogAsset/reactlog.js (no type check)
-npm run typecheck              # tsc, no output files
-npm run build                  # eslint --fix + prettier on srcts, typecheck, then build
+npm run typecheck              # tsc for app code, then for tests (tsconfig.test.json); no output files
+npm test                       # replay the sample logs in inst/log-files/ (node:test)
+npm run build                  # eslint --fix + prettier on srcts, typecheck, test, then build
 npm run watch                  # lint, then rebuild on change (no type check)
 npm run lint -- srcts/foo.ts   # eslint --fix + prettier on given files
 npm run check-shiny-target     # fail if tsc/esbuild target differs from rstudio/shiny (needs network)
