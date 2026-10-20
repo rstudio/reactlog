@@ -37,3 +37,7 @@
 ^logo
 ^pkgdown$
 ^revdep$
+^AGENTS\.md$
+^\.agents$
+^\.claude$
+^memory-bank$
