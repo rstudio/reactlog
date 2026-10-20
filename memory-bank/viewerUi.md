@@ -192,6 +192,6 @@ This keeps snapshots stable. `reactlog_module_server()` (`R/shinyModule.R`) adds
 - `atTick` does not clamp, so callers must keep `curTick` within `0` to `log.length - 1` (`tick.js` does).
 - Keys use the old `e.which` codes (for example `83` for `s`). Use the same style for new branches so the handler stays readable as one list.
 - Letter shortcuts do not check modifiers, so Ctrl/Cmd + `s`, `l` or `f` also run them.
-- Moves that use `filteredStepsVisible` (step, idle, output calc) respect the search filter; user marks are always kept by the filter; ticks, the timeline and `firstStep`/`lastStep` ignore it.
+- Moves that use `filteredStepsVisible` (step, idle, output calc) respect the search filter; user marks are always kept by the filter; ticks, the timeline and `firstStep`/`lastStep` ignore it. The timeline ignores it on purpose: a click goes to the step under the pointer, even if the filtered graph does not show that step's action.
 - The search box is cleared in two places (`searchRegexReset` and `GraphAtStep.resetHoverStickyFilterSearch`). Any reset clears the text the user typed.
 - After editing `srcjs/`, rebuild. The page loads only the committed `reactlogAsset/reactlog.js`.
