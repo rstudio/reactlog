@@ -3,8 +3,8 @@
   "scripts": {
     "lint": "./bin/lint_file.sh",
     "fix": "./bin/clean_rlog_file.sh",
-    "fix-all": "npm run fix -- srcts/*.ts srcts/**/*.ts",
-    "lint-all": "npm run lint -- srcts/*.ts srcts/**/*.ts",
+    "fix-all": "npm run fix -- srcts",
+    "lint-all": "npm run lint -- srcts",
     "typecheck": "tsc -p .",
     "build": "npm run lint-all && npm run typecheck && npm run build-only",
     "build-only": "esbuild srcts/index.ts --bundle --minify --sourcemap --target=es2021 --outfile=inst/reactlog/reactlogAsset/reactlog.js",
