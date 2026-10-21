@@ -67,6 +67,9 @@ $(function () {
   $("#legendInvalidated").css("background-color", colors.nodes.invalidated);
   $("#legendCalculating").css("background-color", colors.nodes.calculating);
   $("#legendReady").css("background-color", colors.nodes.ready);
+  $("#legendDependency").css("border-top-color", colors.edges.running);
+  $("#legendIsolate").css("border-top-color", colors.edges.isolate);
+  $("#legendGhost").css("border-top-color", colors.ghostEdges.default);
   {
     // display the frozen legend item only if a frozen state exists
     let entry;

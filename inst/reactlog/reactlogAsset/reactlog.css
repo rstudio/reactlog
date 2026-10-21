@@ -289,6 +289,20 @@ text {
   min-height: 14px;
   border-radius: 2px;
 }
+.legendRowSection {
+  margin-top: 12px;
+}
+.legendLine {
+  border-top: 2px solid;
+  width: 14px;
+  min-width: 14px;
+}
+#legendIsolate {
+  border-top-style: dashed;
+}
+#legendGhost {
+  border-top-style: dotted;
+}
 .legendLabel {
   -ms-flex-preferred-size: 0;
   flex: 0 0 auto;
