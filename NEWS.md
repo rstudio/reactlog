@@ -1,6 +1,8 @@
 # reactlog (development)
 
-- The graph legend now shows that a solid line is a dependency and a dashed line is an `isolate()`d dependency, and a dotted line is an inactive dependency (one that existed earlier but is not active at the current step) (#76)
+- `reactlog_show()` now uses `shiny::reactlog()` as its default `log`, so `reactlog_show()` works with no arguments after running an app (#91)
+
+- The graph legend now shows that a solid line is a dependency, a dashed line is an `isolate()`d dependency, and a dotted line is an inactive dependency (one that existed earlier but is not active at the current step) (#76)
 
 - Migrated project license from GPL-3 to the MIT License.
 

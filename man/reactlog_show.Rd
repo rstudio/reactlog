@@ -7,10 +7,11 @@
 \usage{
 reactlog_render(log, session_token = NULL, time = TRUE)
 
-reactlog_show(log, time = TRUE, ...)
+reactlog_show(log = shiny::reactlog(), time = TRUE, ...)
 }
 \arguments{
-\item{log}{Log produced by shiny to be processed}
+\item{log}{Log produced by shiny to be processed. Defaults to
+\code{\link[shiny:reactlog]{shiny::reactlog()}}, the log recorded in the current R session.}
 
 \item{session_token}{token to be used to subset which session is displayed.
 Defaults to all sessions.}
@@ -68,7 +69,7 @@ app <- system.file("examples/01_hello", package = "shiny")
 runApp(app)
 
 # once app has closed, display reactlog
-shiny::reactlogShow()
+reactlog_show()
 }
 }
 \seealso{
