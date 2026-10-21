@@ -17,3 +17,18 @@ test_that("reactlog_show() passes ... to reactlog_render()", {
   # no message match: "unused argument" is translated in other locales
   expect_error(reactlog_show(log, foo = 1))
 })
+
+test_that("reactlog_show() defaults to shiny::reactlog()", {
+  skip_if_not_installed("shiny")
+  called <- FALSE
+  local_mocked_bindings(
+    reactlog = function() {
+      called <<- TRUE
+      structure(list(), version = "1")
+    },
+    .package = "shiny"
+  )
+  local_mocked_bindings(browseURL = function(...) NULL, .package = "utils")
+  reactlog_show()
+  expect_true(called)
+})
