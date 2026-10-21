@@ -65,7 +65,7 @@ dependencies and execution in your application.</p>
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">reactlog_render</span><span class="op">(</span><span class="va">log</span>, session_token <span class="op">=</span> <span class="cn">NULL</span>, time <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">reactlog_show</span><span class="op">(</span><span class="va">log</span>, time <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">reactlog_show</span><span class="op">(</span>log <span class="op">=</span> <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactlog.html" class="external-link">reactlog</a></span><span class="op">(</span><span class="op">)</span>, time <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -73,7 +73,8 @@ dependencies and execution in your application.</p>
 
 
 <dl><dt id="arg-log">log<a class="anchor" aria-label="anchor" href="#arg-log"></a></dt>
-<dd><p>Log produced by shiny to be processed</p></dd>
+<dd><p>Log produced by shiny to be processed. Defaults to
+<code><a href="https://rdrr.io/pkg/shiny/man/reactlog.html" class="external-link">shiny::reactlog()</a></code>, the log recorded in the current R session.</p></dd>
 
 
 <dt id="arg-session-token">session_token<a class="anchor" aria-label="anchor" href="#arg-session-token"></a></dt>
@@ -137,7 +138,7 @@ of the source code of your reactive expressions and observers.</p>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/runApp.html" class="external-link">runApp</a></span><span class="op">(</span><span class="va">app</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># once app has closed, display reactlog</span></span></span>
-<span class="r-in"><span><span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactlog.html" class="external-link">reactlogShow</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">reactlog_show</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
