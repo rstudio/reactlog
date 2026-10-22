@@ -5,6 +5,31 @@ template:
     docsearch:
       api_key: 92ef29642e191511d07e46ef46619dd9
       index_name: rstudio_reactlog
+reference:
+- title: Record
+  desc: Turn on Shiny's reactlog before running your app.
+  contents:
+  - reactlog_enable
+- title: View
+  desc: Open the reactlog in a browser, or save it to a file.
+  contents:
+  - reactlog_show
+  - reactlog_write
+- title: Embed
+  desc: >
+    Show the reactlog as an htmlwidget in R Markdown, Quarto, the RStudio
+    viewer, or a Shiny app.
+  contents:
+  - reactlog_widget
+  - reactlog_widget_output
+- title: Shiny modules
+  desc: >
+    Add the reactlog to your own Shiny app, with a refresh button to show new
+    activity.
+  contents:
+  - reactlog_module_ui
+  - reactlog_widget_module_ui
+
 ## `.github/shiny-workflows/website.R` copies `inst/reactlog/` to `pkgdown/assets/demo/`
 ## and `readme-images/` to `pkgdown/assets/readme-images/`.
 ## pkgdown copies `pkgdown/assets/` to the site root, hosting the live demo and readme images.
