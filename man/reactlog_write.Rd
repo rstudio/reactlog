@@ -20,3 +20,13 @@ Write the reactlog to a file.  If a session token is provided, all reactive
 interactions will be subsetted to either the global session or the
 session provided.
 }
+\examples{
+\dontrun{
+reactlog_write(shiny::reactlog(), "reactlog.json")
+log <- reactlog_read("reactlog.json")
+reactlog_show(log)
+}
+}
+\seealso{
+\code{\link[=reactlog_read]{reactlog_read()}} to read the file back in.
+}

@@ -76,7 +76,14 @@ reactlog_show <- function(log = shiny::reactlog(), time = TRUE, ...) {
 #'   json representation is return.
 #' @param session_token Session token identifier to be used when subsetting the
 #'   complete reactlog
+#' @seealso [reactlog_read()] to read the file back in.
 #' @export
+#' @examples
+#' \dontrun{
+#' reactlog_write(shiny::reactlog(), "reactlog.json")
+#' log <- reactlog_read("reactlog.json")
+#' reactlog_show(log)
+#' }
 reactlog_write <- function(log, file = stdout(), session_token = NULL) {
   if (!is.null(session_token)) {
     log <- Filter(
@@ -103,6 +110,20 @@ reactlog_write <- function(log, file = stdout(), session_token = NULL) {
   }
 }
 
+#' Read reactlog
+#'
+#' Read a reactlog written by [reactlog_write()], so it can be passed to
+#' [reactlog_show()] or [reactlog_render()].
+#'
+#' @param file JSON file written by [reactlog_write()].
+#' @return The reactlog: a list of log entries with a `version` attribute.
+#' @export
+reactlog_read <- function(file) {
+  log <- jsonlite::read_json(file, simplifyVector = FALSE)
+  # ponytail: the JSON has no version field; "1" is the only version so far
+  attr(log, "version") <- "1"
+  log
+}
 
 write_utf8 <- function(x, file, ...) {
   writeLines(enc2utf8(x), file, ..., useBytes = TRUE)

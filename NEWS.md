@@ -4,6 +4,8 @@
 
 - The graph legend now shows that a solid line is a dependency, a dashed line is an `isolate()`d dependency, and a dotted line is an inactive dependency (one that existed earlier but is not active at the current step) (#76)
 
+- New `reactlog_read()` reads a file written by `reactlog_write()` back into a log that `reactlog_show()` can display (#71)
+
 - Migrated project license from GPL-3 to the MIT License.
 
 - Added a `?` button to the reactlog header. Hover over it or click it to see every keyboard shortcut, with key names for your operating system. The navigation button tooltips now also use your operating system's key names. The vignette has the same list (#73)
