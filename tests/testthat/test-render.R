@@ -50,3 +50,31 @@ test_that("reactlog_widget() inlines the page and defaults to shiny::reactlog()"
   # no line breaks inside the base64 data uris
   expect_false(grepl("base64,[A-Za-z0-9+/=]*\n", html))
 })
+
+test_that("reactlog_render() fills the template and copies the assets", {
+  file <- reactlog_render(structure(list(), version = "1"), time = FALSE)
+  html <- paste(readLines(file, warn = FALSE), collapse = "\n")
+
+  expect_false(grepl("__DATA__", html, fixed = TRUE))
+  expect_false(grepl("defaultLog.js", html, fixed = TRUE))
+  expect_true(grepl("window.__APP_TIME__ = String(\"FALSE\")", html, fixed = TRUE))
+  expect_true(file.exists(file.path(dirname(file), "reactlogAsset", "reactlog.js")))
+})
+
+test_that("reactlog_widget() passes `time`, `session_token`, and sizes on", {
+  skip_if_not_installed("htmlwidgets")
+  log <- structure(list(
+    list(action = "define", reactId = "r1", label = "label_session_a", session = "a"),
+    list(action = "define", reactId = "r2", label = "label_session_b", session = "b")
+  ), version = "1")
+  w <- reactlog_widget(
+    log, time = FALSE, session_token = "a",
+    width = 300, height = 200, elementId = "my_log"
+  )
+
+  expect_true(grepl("String(\"FALSE\")", w$x$html, fixed = TRUE))
+  expect_true(grepl("label_session_a", w$x$html, fixed = TRUE))
+  expect_false(grepl("label_session_b", w$x$html, fixed = TRUE))
+  expect_equal(c(w$width, w$height), c(300, 200))
+  expect_equal(w$elementId, "my_log")
+})
