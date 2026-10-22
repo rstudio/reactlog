@@ -51,6 +51,56 @@ reactlog_widget <- function(
   )
 }
 
+#' Shiny bindings for `reactlog_widget()`
+#'
+#' Output and render functions for using [reactlog_widget()] within Shiny
+#' applications. The log is read when `expr` runs, so make `expr` depend on an
+#' input (such as a refresh button) to show newer entries.
+#'
+#' The first render runs before Shiny is idle for the first time, so it may not
+#' show a complete step. Refresh to load the full log.
+#'
+#' @param output_id Output variable to read from.
+#' @param width,height Must be a valid CSS unit (like `"100%"`, `"400px"`,
+#'   `"auto"`) or a number, which will be coerced to a string and have `"px"`
+#'   appended.
+#' @param expr An expression that returns a [reactlog_widget()].
+#' @param env The environment in which to evaluate `expr`.
+#' @param quoted Is `expr` a quoted expression (with `quote()`)?
+#' @export
+#' @examples
+#' if (interactive()) {
+#'   library(shiny)
+#'   reactlog_enable()
+#'
+#'   ui <- fluidPage(
+#'     numericInput("n", "n", 1),
+#'     actionButton("refresh", "Refresh"),
+#'     reactlog_widget_output("reactlog")
+#'   )
+#'   server <- function(input, output, session) {
+#'     output$reactlog <- render_reactlog_widget({
+#'       input$refresh
+#'       reactlog_widget(session_token = session$token)
+#'     })
+#'   }
+#'   shinyApp(ui, server)
+#' }
+reactlog_widget_output <- function(output_id, width = "100%", height = "600px") {
+  rlang::check_installed("htmlwidgets")
+  htmlwidgets::shinyWidgetOutput(output_id, "reactlog", width, height, package = "reactlog")
+}
+
+#' @rdname reactlog_widget_output
+#' @export
+render_reactlog_widget <- function(expr, env = parent.frame(), quoted = FALSE) {
+  rlang::check_installed("htmlwidgets")
+  if (!quoted) {
+    expr <- substitute(expr)
+  }
+  htmlwidgets::shinyRenderWidget(expr, reactlog_widget_output, env, quoted = TRUE)
+}
+
 # Put the css, js, and images into the page so it works from an iframe `srcdoc`
 reactlog_inline_assets <- function(html) {
   asset_dir <- inst_reactlog_assets()

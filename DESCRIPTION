@@ -31,7 +31,9 @@ Suggests:
     htmlwidgets,
     knitr,
     shiny (>= 1.5.0),
-    testthat
+    shinytest2,
+    testthat,
+    withr
 VignetteBuilder: 
     knitr
 Config/roxygen2/version: 8.1.1
