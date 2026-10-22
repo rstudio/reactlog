@@ -33,6 +33,7 @@ reactlog_widget <- function(
   elementId = NULL # nolint: object_name_linter.
 ) {
   rlang::check_installed("htmlwidgets")
+  if (missing(log)) rlang::check_installed("shiny")
 
   html <- reactlog_page_html(log, time = as.logical(time), ...)
 

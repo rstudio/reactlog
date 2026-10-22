@@ -15,12 +15,14 @@ reactlog_enable <- function() {
 #' @export
 #' @rdname setReactLog
 reactlog_disable <- function(warn = TRUE) {
-  if (!isTRUE(warn) && !identical(warn, FALSE)) {
-    stop("'warn' must be either 'TRUE' or 'FALSE'")
+  if (!rlang::is_bool(warn)) {
+    cli::cli_abort(
+      "{.arg warn} must be {.code TRUE} or {.code FALSE}, not {.obj_type_friendly {warn}}."
+    )
   }
 
   options(shiny.reactlog = FALSE)
   if (isTRUE(warn)) {
-    warning("Please restart R to free up 'reactlog' memory", call. = FALSE)
+    cli::cli_warn("Please restart R to free up {.pkg reactlog} memory.")
   }
 }

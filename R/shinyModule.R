@@ -145,9 +145,7 @@ test_shiny_version <- function() {
   })
 }
 assert_shiny_version <- function() {
-  if (!test_shiny_version()) {
-    stop("`shiny` v", shiny_version_required(), " or greater must be installed")
-  }
+  rlang::check_installed("shiny", version = as.character(shiny_version_required()))
 }
 
 
