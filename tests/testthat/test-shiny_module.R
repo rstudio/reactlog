@@ -22,6 +22,8 @@ test_that("iframe is displayed immediately", {
     testthat::skip(paste0("Insufficient shiny version. Need >= ", shiny_version_required()))
   }
 
+  # testServer() calls require(shiny); attach it first so nothing is printed
+  withr::local_package("shiny")
   shiny::testServer(
     reactlog_module_server,
     args = list(
