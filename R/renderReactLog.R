@@ -11,31 +11,7 @@ inst_reactlog_assets <- function() {
 #' @param session_token token to be used to subset which session is displayed.
 #'   Defaults to all sessions.
 reactlog_render <- function(log, session_token = NULL, time = TRUE) {
-  log <- reactlog_upgrade(log)
-
-  template_file <- inst_reactlog_file("reactlog.html")
-  # does not need utf8 support
-  html <- paste(readLines(template_file, warn = FALSE), collapse = "\n")
-
-  # get the json form of the lgo without writing to disk
-  json_blob <- as.character(
-    reactlog_write(log, file = NULL, session_token = session_token)
-  )
-
-  fixed_sub <- function(...) {
-    sub(..., fixed = TRUE)
-  }
-
-  html <- fixed_sub(
-    "__DATA__", paste(json_blob, collapse = "\n"),
-    fixed_sub(
-      "__TIME__", paste0("\"", time, "\""),
-      fixed_sub(
-        "<script src=\"defaultLog.js\"></script>", "",
-        html
-      )
-    )
-  )
+  html <- reactlog_page_html(log, session_token = session_token, time = time)
 
   # check if shiny is even available
   if (requireNamespace("shiny", quietly = TRUE)) {
@@ -59,4 +35,33 @@ reactlog_render <- function(log, session_token = NULL, time = TRUE) {
   )
 
   file
+}
+
+fixed_sub <- function(...) {
+  sub(..., fixed = TRUE)
+}
+
+# The reactlog page as one string. Assets are still linked from `reactlogAsset/`.
+reactlog_page_html <- function(log, session_token = NULL, time = TRUE) {
+  log <- reactlog_upgrade(log)
+
+  template_file <- inst_reactlog_file("reactlog.html")
+  # does not need utf8 support
+  html <- paste(readLines(template_file, warn = FALSE), collapse = "\n")
+
+  # get the json form of the lgo without writing to disk
+  json_blob <- as.character(
+    reactlog_write(log, file = NULL, session_token = session_token)
+  )
+
+  fixed_sub(
+    "__DATA__", paste(json_blob, collapse = "\n"),
+    fixed_sub(
+      "__TIME__", paste0("\"", time, "\""),
+      fixed_sub(
+        "<script src=\"defaultLog.js\"></script>", "",
+        html
+      )
+    )
+  )
 }

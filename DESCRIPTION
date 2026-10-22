@@ -23,10 +23,12 @@ Depends:
     R (>= 3.0.2)
 Imports:
     jsonlite (>= 0.9.16),
+    rlang,
     rmarkdown
 Suggests:
     fontawesome (>= 0.3.0),
     htmltools,
+    htmlwidgets,
     knitr,
     shiny (>= 1.5.0),
     testthat

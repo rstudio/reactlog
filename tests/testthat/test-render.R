@@ -32,3 +32,21 @@ test_that("reactlog_show() defaults to shiny::reactlog()", {
   reactlog_show()
   expect_true(called)
 })
+
+test_that("reactlog_widget() inlines the page and defaults to shiny::reactlog()", {
+  skip_if_not_installed("shiny")
+  skip_if_not_installed("htmlwidgets")
+  local_mocked_bindings(
+    reactlog = function() structure(list(), version = "1"),
+    .package = "shiny"
+  )
+  w <- reactlog_widget()
+  expect_s3_class(w, "htmlwidget")
+  expect_no_error(htmltools::renderTags(w))
+  html <- w$x$html
+  expect_false(grepl("reactlogAsset/", html, fixed = TRUE))
+  expect_false(grepl("images/iconSearch.svg", html, fixed = TRUE))
+  expect_true(grepl("data:image/svg+xml;base64,", html, fixed = TRUE))
+  # no line breaks inside the base64 data uris
+  expect_false(grepl("base64,[A-Za-z0-9+/=]*\n", html))
+})
