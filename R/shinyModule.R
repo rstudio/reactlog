@@ -55,14 +55,17 @@
 reactlog_module_ui <- function(include_refresh = TRUE, id = "reactlog_module") {
   ns <- shiny::NS(id)
   shiny::tagList(
-    if (isTRUE(include_refresh))
-      shiny::actionButton(
-        ns("refresh"),
-        "",
-        icon = shiny::icon("arrows-rotate", lib = "font-awesome"),
-        class = "btn-sm btn-warning"
-      ),
+    if (isTRUE(include_refresh)) refresh_button(ns),
     shiny::uiOutput(ns("iframe"))
+  )
+}
+
+refresh_button <- function(ns) {
+  shiny::actionButton(
+    ns("refresh"),
+    "",
+    icon = shiny::icon("arrows-rotate", lib = "font-awesome"),
+    class = "btn-sm btn-warning"
   )
 }
 
@@ -145,4 +148,64 @@ assert_shiny_version <- function() {
   if (!test_shiny_version()) {
     stop("`shiny` v", shiny_version_required(), " or greater must be installed")
   }
+}
+
+
+#' Reactlog widget Shiny module
+#'
+#' Displays a [reactlog_widget()] in the given application, filtered to the
+#' current session. Unlike [reactlog_module_ui()], the log is sent through
+#' Shiny's websocket, so it does not need the `reactlog` URL that Shiny serves.
+#'
+#' The log is read when the widget renders. Click the refresh button to show
+#' newer entries. The first render runs before Shiny is idle for the first
+#' time, so it may not show a complete step until refreshed.
+#'
+#' @inheritParams reactlog_module_ui
+#' @param width,height Size of the widget. Must be a valid CSS unit or a number.
+#' @seealso [reactlog_widget_output()]
+#' @rdname reactlog_widget_module
+#' @export
+#' @examples
+#' if (interactive()) {
+#'   library(shiny)
+#'   reactlog_enable()
+#'
+#'   ui <- fluidPage(
+#'     numericInput("n", "n", 1),
+#'     reactlog_widget_module_ui()
+#'   )
+#'   server <- function(input, output, session) {
+#'     reactlog_widget_module_server()
+#'   }
+#'   shinyApp(ui, server)
+#' }
+reactlog_widget_module_ui <- function(
+  include_refresh = TRUE,
+  id = "reactlog_widget_module",
+  width = "100%",
+  height = "600px"
+) {
+  ns <- shiny::NS(id)
+  shiny::tagList(
+    if (isTRUE(include_refresh)) refresh_button(ns),
+    reactlog_widget_output(ns("widget"), width = width, height = height)
+  )
+}
+
+#' @rdname reactlog_widget_module
+#' @export
+reactlog_widget_module_server <- function(id = "reactlog_widget_module") {
+  assert_shiny_version()
+
+  shiny::moduleServer(
+    id,
+    function(input, output, session) {
+      output$widget <- render_reactlog_widget({
+        # trigger render refresh
+        input$refresh
+        reactlog_widget(session_token = session$token)
+      })
+    }
+  )
 }

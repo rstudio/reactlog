@@ -1,5 +1,7 @@
 # reactlog (development)
 
+- Added `reactlog_widget()`, which shows the reactlog as an htmlwidget so it can be embedded in R Markdown or Quarto documents. Like `reactlog_show()`, `log` defaults to `shiny::reactlog()`. To show it in a Shiny app, use `reactlog_widget_module_ui()` and `reactlog_widget_module_server()`, or `reactlog_widget_output()` and `render_reactlog_widget()`. Requires the htmlwidgets package (#160)
+
 - `reactlog_show()` now uses `shiny::reactlog()` as its default `log`, so `reactlog_show()` works with no arguments after running an app (#91)
 
 - The graph legend now shows that a solid line is a dependency, a dashed line is an `isolate()`d dependency, and a dotted line is an inactive dependency (one that existed earlier but is not active at the current step) (#76)
