@@ -32,3 +32,19 @@ test_that("reactlog_show() defaults to shiny::reactlog()", {
   reactlog_show()
   expect_true(called)
 })
+
+test_that("reactlog_read() reads back what reactlog_write() wrote", {
+  log <- list(list(
+    action = "define", reactId = "r1", label = "a\\b\"c\\",
+    type = "observable", session = NULL, time = 1
+  ))
+  attr(log, "version") <- "1"
+  file <- tempfile(fileext = ".json")
+  on.exit(unlink(file))
+  reactlog_write(log, file)
+
+  log2 <- reactlog_read(file)
+  expect_identical(attr(log2, "version"), "1")
+  expect_identical(reactlog_write(log2, NULL), reactlog_write(log, NULL))
+  expect_no_error(reactlog_render(log2))
+})
