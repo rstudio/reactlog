@@ -45,3 +45,14 @@ test_that("shiny version is read from Suggests", {
   )
   expect_length(shiny_version_required(), 1)
 })
+
+test_that("module UIs namespace their outputs and can drop the refresh button", {
+  skip_if_not_installed("htmlwidgets")
+  has <- function(ui, text) grepl(text, as.character(ui), fixed = TRUE)
+  for (ui in list(reactlog_module_ui, reactlog_widget_module_ui)) {
+    expect_true(has(ui(id = "x"), "id=\"x-refresh\""))
+    expect_false(has(ui(include_refresh = FALSE, id = "x"), "x-refresh"))
+  }
+  expect_true(has(reactlog_module_ui(id = "x"), "id=\"x-iframe\""))
+  expect_true(has(reactlog_widget_module_ui(id = "x"), "id=\"x-widget\""))
+})
