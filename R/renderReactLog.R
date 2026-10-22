@@ -14,7 +14,7 @@ reactlog_render <- function(log, session_token = NULL, time = TRUE) {
   html <- reactlog_page_html(log, session_token = session_token, time = time)
 
   # check if shiny is even available
-  if (requireNamespace("shiny", quietly = TRUE)) {
+  if (rlang::is_installed("shiny")) {
     # add resource path to pkg files for shiny
     # (avoids warning of tmp folder moving around)
     shiny::addResourcePath(
@@ -42,8 +42,13 @@ fixed_sub <- function(...) {
 }
 
 # The reactlog page as one string. Assets are still linked from `reactlogAsset/`.
-reactlog_page_html <- function(log, session_token = NULL, time = TRUE) {
-  log <- reactlog_upgrade(log)
+reactlog_page_html <- function(
+  log,
+  session_token = NULL,
+  time = TRUE,
+  call = rlang::caller_env()
+) {
+  log <- reactlog_upgrade(log, call = call)
 
   template_file <- inst_reactlog_file("reactlog.html")
   # does not need utf8 support
