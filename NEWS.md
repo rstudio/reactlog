@@ -6,6 +6,8 @@
 
 - Migrated project license from GPL-3 to the MIT License.
 
+- Added a `?` button to the reactlog header. Hover over it or click it to see every keyboard shortcut, with key names for your operating system. The navigation button tooltips now also use your operating system's key names. The vignette has the same list (#73)
+
 - Documented that `reactlog_show()` passes `...` on to `reactlog_render()`, so `session_token` can be set from `reactlog_show()`. The docs used to say `...` was ignored (#120)
 
 - Fixed `reactlog_render()` printing "Loading required namespace: shiny" (#120)

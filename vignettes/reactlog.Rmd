@@ -276,6 +276,8 @@ knitr::include_graphics("images/navigation.png")
 
 > Tip: Hold `SHIFT` with the `Left/Right Arrow keys` to move one log entry at a time, including entries that are not shown as their own step.
 
+> All key bindings are listed in [Keyboard shortcuts](#keyboard-shortcuts).
+
 ##### Search Bar
 
 The search bar matches the name or ID of each reactive graph element. All matching elements are increased in size to signify a match and all matching elements' family trees are displayed. The search becomes active after three characters, and if no matches are found, the full graph is displayed.
@@ -348,6 +350,32 @@ knitr::include_graphics("images/elements.png")
 
 
 Fortunately, **shiny**'s `reactive()` and `observe()` functions have a `label` argument. If provided, **reactlog** will use this value to label the corresponding nodes.
+
+### Keyboard shortcuts {#keyboard-shortcuts}
+
+Hover over or click the `?` button at the top right of **reactlog** to see these shortcuts with the key names for your computer.
+
+Inside the **shiny** application (Mac users: use `Cmd` in place of `Ctrl`):
+
+| Keys | Action |
+|------|--------|
+| `Ctrl + F3` | Open **reactlog** |
+| `Ctrl + Shift + F3` or `Ctrl + F4` | Add a user mark at the current time |
+
+Inside **reactlog** (`Alt` is `Option` on a Mac):
+
+| Keys | Action |
+|------|--------|
+| `Right Arrow` or `Space` | Next step |
+| `Left Arrow` | Previous step |
+| `Shift + Left/Right Arrow` | Previous / next log entry, including entries that are not shown as their own step |
+| `Alt + Left/Right Arrow` | Previous / next reactive endpoint calculation |
+| `Alt + Shift + Left/Right Arrow` | Previous / next idle step |
+| `Home` / `End` | Previous / next user mark (or the start / end of the log) |
+| `s` | Focus the search bar |
+| `Esc` | Leave the search bar; otherwise clear the highlight and filter |
+| `f` | Fit the graph to the window |
+| `l` | Show or hide detailed information about the current step |
 
 ## Learn more {#learn-more}
 

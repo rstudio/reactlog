@@ -12,6 +12,7 @@ import colors from "./style/colors";
 import * as cytoscapeInit from "./cyto/cytoscapeInit";
 
 import * as layoutKeydown from "./layout/keydown";
+import * as shortcuts from "./layout/shortcuts";
 
 import * as updateGraph from "./updateGraph";
 
@@ -128,6 +129,7 @@ $(function () {
   );
 
   updateGraph.searchStringContainer($("#search"));
+  shortcuts.setup();
 
   {
     let docBody = document.body;
