@@ -47,6 +47,5 @@ test_that("render_reactlog_widget() shows the log and re-renders with new entrie
 
 test_that("widget module shows the log and its refresh button loads new entries", {
   app <- local_app()
-  app$click("reactlog_widget_module-refresh")
   expect_log_grows(app, widget_module_iframe, "reactlog_widget_module-refresh")
 })

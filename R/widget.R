@@ -58,7 +58,9 @@ reactlog_widget <- function(
 #' input (such as a refresh button) to show newer entries.
 #'
 #' The first render runs before Shiny is idle for the first time, so it may not
-#' show a complete step. Refresh to load the full log.
+#' show a complete step. Refresh to load the full log, or use
+#' [reactlog_widget_module_ui()], which waits for the first flush. Each render
+#' sends the whole reactlog page (about 600 KB) plus the log.
 #'
 #' @param output_id Output variable to read from.
 #' @param width,height Must be a valid CSS unit (like `"100%"`, `"400px"`,

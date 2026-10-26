@@ -157,12 +157,14 @@ assert_shiny_version <- function() {
 #' current session. Unlike [reactlog_module_ui()], the log is sent through
 #' Shiny's websocket, so it does not need the `reactlog` URL that Shiny serves.
 #'
-#' The log is read when the widget renders. Click the refresh button to show
-#' newer entries. The first render runs before Shiny is idle for the first
-#' time, so it may not show a complete step until refreshed.
+#' The log is read when the widget renders, after Shiny's first flush. Click
+#' the refresh button to show newer entries. Each render sends the whole
+#' reactlog page (about 600 KB) plus the log.
 #'
 #' @inheritParams reactlog_module_ui
 #' @param width,height Size of the widget. Must be a valid CSS unit or a number.
+#'   Unlike [reactlog_module_ui()], the size is set in the UI function, not the
+#'   server function.
 #' @seealso [reactlog_widget_output()]
 #' @rdname reactlog_widget_module
 #' @export
@@ -201,9 +203,14 @@ reactlog_widget_module_server <- function(id = "reactlog_widget_module") {
   shiny::moduleServer(
     id,
     function(input, output, session) {
+      # Wait for the first flush so the first render shows a complete step
+      ready <- shiny::reactiveVal(FALSE)
+      session$onFlushed(function() ready(TRUE), once = TRUE)
+
       output$widget <- render_reactlog_widget({
         # trigger render refresh
         input$refresh
+        shiny::req(ready())
         reactlog_widget(session_token = session$token)
       })
     }

@@ -29,7 +29,9 @@ input (such as a refresh button) to show newer entries.
 }
 \details{
 The first render runs before Shiny is idle for the first time, so it may not
-show a complete step. Refresh to load the full log.
+show a complete step. Refresh to load the full log, or use
+\code{\link[=reactlog_widget_module_ui]{reactlog_widget_module_ui()}}, which waits for the first flush. Each render
+sends the whole reactlog page (about 600 KB) plus the log.
 }
 \examples{
 if (interactive()) {

@@ -19,7 +19,9 @@ reactlog_widget_module_server(id = "reactlog_widget_module")
 
 \item{id}{\pkg{shiny} module id to use}
 
-\item{width, height}{Size of the widget. Must be a valid CSS unit or a number.}
+\item{width, height}{Size of the widget. Must be a valid CSS unit or a number.
+Unlike \code{\link[=reactlog_module_ui]{reactlog_module_ui()}}, the size is set in the UI function, not the
+server function.}
 }
 \description{
 Displays a \code{\link[=reactlog_widget]{reactlog_widget()}} in the given application, filtered to the
@@ -27,9 +29,9 @@ current session. Unlike \code{\link[=reactlog_module_ui]{reactlog_module_ui()}},
 Shiny's websocket, so it does not need the \code{reactlog} URL that Shiny serves.
 }
 \details{
-The log is read when the widget renders. Click the refresh button to show
-newer entries. The first render runs before Shiny is idle for the first
-time, so it may not show a complete step until refreshed.
+The log is read when the widget renders, after Shiny's first flush. Click
+the refresh button to show newer entries. Each render sends the whole
+reactlog page (about 600 KB) plus the log.
 }
 \examples{
 if (interactive()) {
