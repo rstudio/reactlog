@@ -11,7 +11,17 @@ inst_reactlog_assets <- function() {
 #' @param session_token token to be used to subset which session is displayed.
 #'   Defaults to all sessions.
 reactlog_render <- function(log, session_token = NULL, time = TRUE) {
-  html <- reactlog_page_html(log, session_token = session_token, time = time)
+  reactlog_render_file(log, session_token = session_token, time = time)
+}
+
+# `call` names the user-facing function in error messages
+reactlog_render_file <- function(
+  log,
+  session_token = NULL,
+  time = TRUE,
+  call = rlang::caller_env()
+) {
+  html <- reactlog_page_html(log, session_token = session_token, time = time, call = call)
 
   # check if shiny is even available
   if (rlang::is_installed("shiny")) {

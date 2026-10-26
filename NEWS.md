@@ -1,6 +1,6 @@
 # reactlog (development)
 
-- Error and warning messages now use cli and name the function you called. Missing or too-old shiny now gives a clear message from `rlang::check_installed()`, including when `reactlog_show()` or `reactlog_widget()` is called with no `log`. cli is now an imported package.
+- Error and warning messages now use cli and name the function you called. Missing or too-old shiny now gives a clear message from `rlang::check_installed()`, including when `reactlog_show()` or `reactlog_widget()` is called with no `log`. cli is now an imported package (#164)
 
 - Added `reactlog_widget()`, which shows the reactlog as an htmlwidget so it can be embedded in R Markdown or Quarto documents. Like `reactlog_show()`, `log` defaults to `shiny::reactlog()`. To show it in a Shiny app, use `reactlog_widget_module_ui()` and `reactlog_widget_module_server()`, or `reactlog_widget_output()` and `render_reactlog_widget()`. Requires the htmlwidgets package (#160)
 

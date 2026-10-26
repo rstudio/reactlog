@@ -62,7 +62,7 @@
 
 reactlog_show <- function(log = shiny::reactlog(), time = TRUE, ...) {
   if (missing(log)) rlang::check_installed("shiny")
-  file <- reactlog_render(log, time = as.logical(time), ...)
+  file <- reactlog_render_file(log, time = as.logical(time), ...)
   utils::browseURL(file)
 }
 

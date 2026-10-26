@@ -32,3 +32,12 @@
       x `log` has version "2".
       i reactlog supports version "1".
 
+---
+
+    Code
+      reactlog_show(list())
+    Condition
+      Error in `reactlog_show()`:
+      ! `log` is missing a version attribute.
+      i Use `shiny::reactlog()` to get a log.
+

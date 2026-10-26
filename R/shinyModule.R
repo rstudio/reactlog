@@ -144,8 +144,14 @@ test_shiny_version <- function() {
     FALSE
   })
 }
-assert_shiny_version <- function() {
-  rlang::check_installed("shiny", version = as.character(shiny_version_required()))
+assert_shiny_version <- function(call = rlang::caller_env()) {
+  # Fail instead of asking to install; this runs at the start of a live session
+  rlang::local_options(rlib_restart_package_not_found = FALSE)
+  rlang::check_installed(
+    "shiny",
+    version = as.character(shiny_version_required()),
+    call = call
+  )
 }
 
 
