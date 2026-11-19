@@ -1,5 +1,7 @@
 # reactlog (development)
 
+* The R package now lives in `pkg-r/`. For development installs use `remotes::install_github("rstudio/reactlog/pkg-r")`.
+
 - `reactlog_show()` now uses `shiny::reactlog()` as its default `log`, so `reactlog_show()` works with no arguments after running an app (#91)
 
 - The graph legend now shows that a solid line is a dependency, a dashed line is an `isolate()`d dependency, and a dotted line is an inactive dependency (one that existed earlier but is not active at the current step) (#76)

@@ -5,6 +5,8 @@ description: "How reactlog and the shiny package call each other: the R exports,
 
 # Shiny Integration
 
+R package paths in this guide are relative to `pkg-r/`. Run npm and Git commands from the repository root.
+
 reactlog does not record anything itself. shiny records the log and owns the
 keyboard shortcuts and the `/reactlog` HTTP endpoint. reactlog turns a log into
 an HTML page and offers a module that shows that page in an iframe. The two

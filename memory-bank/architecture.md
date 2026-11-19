@@ -5,12 +5,18 @@ description: "How reactlog fits together: Shiny's recorded log, the R functions 
 
 # Architecture
 
-`reactlog` has two halves:
+R package paths below are relative to `pkg-r/`. JavaScript source paths are relative to the repository root.
+
+The R viewer has two parts:
 
 - **R package** (`R/`): small. It takes the log that Shiny records while `options(shiny.reactlog = TRUE)` is set, turns it into JSON, and injects it into an HTML page.
 - **JavaScript app** (`srcts/`): most of the code. A TypeScript single page app, bundled with esbuild, that replays the log step by step and draws the reactive graph with cytoscape + dagre.
 
-The built bundle `inst/reactlog/reactlogAsset/reactlog.js` (and its `.map`) is committed. CRAN and `R-CMD-check` never run Node; the shared `routine` CI job runs `npm ci` + `npm run build` and commits any bundle changes back to the PR.
+The built bundle `inst/reactlog/reactlogAsset/reactlog.js` (and its `.map`) is committed. CRAN and `R-CMD-check` never run Node. CI checks the rebuilt bundle against the committed files.
+
+## Standalone reports
+
+`pkg-py/src/reactlog/` loads saved traces and renders an HTML report with embedded assets. Its TypeScript is in `viewer/`. Run `npm run build-report` at the root to regenerate the JavaScript in the Python package. The replay tests run with `npm test`. Browser and report tests run from `pkg-py/` with `uv run --extra dev python -m pytest`.
 
 ## R side
 

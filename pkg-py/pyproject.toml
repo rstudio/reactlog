@@ -1,0 +1,21 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "reactlog"
+version = "0.1.0.dev0"
+description = "Render Shiny reactive traces as interactive HTML reports"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
+
+[project.urls]
+Repository = "https://github.com/rstudio/reactlog"
+
+[project.optional-dependencies]
+dev = ["pytest", "pytest-playwright"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/reactlog"]

@@ -5,6 +5,8 @@ description: "The npm/esbuild/TypeScript toolchain that turns srcts/ into the co
 
 # JavaScript build
 
+R package paths in this guide are relative to `pkg-r/`. Run npm and Git commands from the repository root.
+
 The viewer is written in TypeScript under `srcts/`. esbuild bundles it into one
 minified file plus a source map in `inst/reactlog/reactlogAsset/`, and `tsc`
 checks the types. Both output files are committed, because installing the R
@@ -46,6 +48,7 @@ blank lines.
 
 ## npm scripts
 
+- `build-report`: bundles the standalone TypeScript in `viewer/` into the installed Python assets.
 - `build-only`: `esbuild srcts/index.ts --bundle --minify --sourcemap
   --target=es2021 --outfile=inst/reactlog/reactlogAsset/reactlog.js`. Takes
   well under a second. esbuild strips types without checking them.
@@ -57,7 +60,7 @@ blank lines.
   (`node:test` still reports and sets the exit code). Not `node --test`:
   newer Node treats its arguments as globs, which skip `node_modules/`.
   See "Tests" below.
-- `build`: `lint-all`, then `typecheck`, then `test`, then `build-only`. `lint-all` runs
+- `build`: `lint-all`, then `typecheck`, then `test`, then `build-only` and `build-report`. `lint-all` runs
   `bin/lint_file.sh` on the `srcts` folder.
 - `watch`: `lint-all` once, then `build-only -- --watch`. No type check while
   watching; run `npm run typecheck` (or an editor) for that.

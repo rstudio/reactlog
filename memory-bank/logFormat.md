@@ -5,6 +5,8 @@ description: "The reactlog log format end to end: how Shiny records entries, eve
 
 # Log Format
 
+R package paths in this guide are relative to `pkg-r/`. Run npm and Git commands from the repository root.
+
 A reactlog is a flat list of entries, in the order they happened. Each entry is
 a small named list (in R) or object (in JSON) with an `action` field and a few
 other fields. Shiny writes the log. This package only reads it, turns it into

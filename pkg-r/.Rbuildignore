@@ -1,0 +1,15 @@
+^CRAN-RELEASE$
+^Meta$
+^doc$
+^cran-comments\.md$
+^docs$
+^.*\.Rproj$
+^\.Rproj\.user$
+^LICENSE\.md$
+^\.lintr$
+.*\.js\.map$
+^inst/log-files
+^readme-images
+^inst/gantt
+^pkgdown$
+^revdep$

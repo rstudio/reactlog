@@ -5,6 +5,8 @@ description: "How reactlog's GitHub Actions work (the reusable rstudio/shiny-wor
 
 # CI, website, and release
 
+R package paths in this guide are relative to `pkg-r/`. Run npm and Git commands from the repository root.
+
 All CI lives in one workflow file that calls three shared jobs from
 [rstudio/shiny-workflows](https://github.com/rstudio/shiny-workflows) at tag `@v1`.
 This repo only adds one hook script, `.github/shiny-workflows/website.R`.
@@ -39,8 +41,7 @@ Key files:
   `workflow_dispatch` in [rstudio/reactlog#99](https://github.com/rstudio/reactlog/issues/99)
   so that [rstudio/shinycoreci](https://github.com/rstudio/shinycoreci) can start runs remotely.
 
-All three jobs run on every trigger. They have no inputs set, so they use the
-shiny-workflows defaults.
+All three jobs use `pkg-r` as the R working directory. The routine job runs npm at the repository root. The standalone report workflow also checks both committed bundles and tests the installed Python wheel in Chromium.
 
 ## `website` job (`website.yaml`)
 

@@ -5,6 +5,8 @@ description: "The reactlog viewer page: DOM ids in reactlog.html, how srcts/inde
 
 # Viewer UI and navigation
 
+R package paths in this guide are relative to `pkg-r/`. Run npm and Git commands from the repository root.
+
 The viewer is one HTML page (`inst/reactlog/reactlog.html`) plus the bundle built from `srcts/`. This doc covers what the user sees and how input (buttons, keys, mouse, timeline) turns into a new step on screen. For the overall data flow see [architecture.md](architecture.md). For how a step becomes a graph (statuses, filtering, cytoscape diff) see [graphReplay.md](graphReplay.md).
 
 Key files:
