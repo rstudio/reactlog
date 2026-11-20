@@ -5,6 +5,8 @@ description: "How reactlog and the shiny package call each other: the R exports,
 
 # Shiny Integration
 
+R package paths in this guide are relative to `pkg-r/`. Run npm and Git commands from the repository root.
+
 reactlog does not record anything itself. shiny records the log and owns the
 keyboard shortcuts and the `/reactlog` HTTP endpoint. reactlog turns a log into
 an HTML page and offers a module that shows that page in an iframe. The two
@@ -22,10 +24,10 @@ Key files:
 | `R/setReactLog.R` | `reactlog_enable()`, `reactlog_disable()` |
 | `R/version.R` | `reactlog_upgrade()` |
 | `R/showReactLog.R` | `reactlog_show()`, `reactlog_write()`, `write_utf8()` |
-| `R/renderReactLog.R` | `reactlog_render()`, `inst_reactlog_file()`, `inst_reactlog_assets()` |
+| `R/renderReactLog.R` | `reactlog_render()` |
 | `R/shinyModule.R` | `reactlog_module_ui()`, `reactlog_module_server()` |
 | `R/version.R` | `shiny_version_required()`, `test_shiny_version()`, `assert_shiny_version()` |
-| `inst/reactlog/reactlog.html` | HTML template with `__DATA__` and `__TIME__` placeholders |
+| `inst/report/reactlog.html` | Installed copy of the shared report template |
 | `inst/examples/03_reactivity/` | Example app using the module, plus old shinytest files |
 | `tests/testthat/test-shiny_module.R` | The only test file |
 | `rstudio/shiny:R/graph.R` | `reactlog()`, `reactlogShow()`, `reactlogReset()`, `reactlogAddMark()`, `renderReactlog()`, `check_reactlog()`, `RLog` |
@@ -95,21 +97,9 @@ Keyboard handlers live in `initReactlog()` in
 
 1. Calls `reactlog_upgrade()`, which stops unless `attr(log, "version")` is
    `"1"`.
-2. Reads `inst/reactlog/reactlog.html`.
-3. Gets JSON from `reactlog_write(log, file = NULL, session_token = session_token)`.
-4. Replaces `__DATA__` with the JSON, `__TIME__` with `"TRUE"` or `"FALSE"`
-   (quoted), and removes the `defaultLog.js` script tag. The template reads them
-   as `window.__APP_DATA__` and `window.__APP_TIME__`.
-5. If shiny can be loaded, calls `shiny::addResourcePath("reactlogAsset", inst_reactlog_assets())`.
-6. Writes the HTML to a `tempfile()` and copies `inst/reactlog/reactlogAsset/`
-   next to it.
-
-The template loads its CSS, JS and images with relative `reactlogAsset/...`
-paths. For the static file, the copied folder next to the temp file serves
-them. For the `/reactlog` endpoint, the page is served from the app's root, so
-`reactlogAsset/...` is served by shiny's resource path handler from the
-installed package folder. That is why `reactlog_render()` registers the
-resource path even though it also copies the folder.
+2. Serializes the selected session and global entries with `reactlog_write()`.
+3. Escapes the JSON for inline HTML and fills the template with that JSON, CSS, and JavaScript.
+4. Returns a temporary, self-contained HTML file. Shiny serves it directly for the shortcut and iframe.
 
 ### `reactlog_write()` and session filtering
 
@@ -149,11 +139,7 @@ If `getOption("shiny.testmode")` is `TRUE` when the iframe renders,
 an app runs under shinytest or shinytest2 (`test.mode` in
 `rstudio/shiny:R/runapp.R`).
 
-On the JS side, `srcts/utils/shinytest.ts` sets `inTestMode` when the page's
-query has `test=1`. Then `srcts/layout/logEntry.ts` shows `(shinytest)` instead
-of the time and session, and `Node.calculationTimeStr` in `srcts/graph/Node.ts`
-returns `(shinytest)` instead of milliseconds. This keeps screenshots stable
-between runs.
+The shared report shows `(shinytest)` for clock and duration labels in test mode.
 
 ## Version contract
 
@@ -228,15 +214,6 @@ reactlog side first and then raise shiny's minimum version.
   from outside the session.
 - The `/reactlog` endpoint ignores `w` and always uses `time = TRUE`. There is
   no way to turn timing off from the module or the shortcut.
-- `reactlog_render()` registers the `reactlogAsset` resource path as a side
-  effect. Removing it breaks the endpoint and module pages (missing CSS/JS),
-  while the static `reactlogShow()` file still works.
-- `reactlog_render()` puts the JSON into the template with
-  `sub(fixed = TRUE)`, which still treats `\\` in the replacement as an escape.
-  Each pair of backslashes in the JSON becomes one, so log values that contain
-  backslashes are changed (and can break the page).
-- `reactlog_show()` documents `...` as ignored, but passes it to
-  `reactlog_render()`. Any name other than `session_token` is an error.
 - The shinytest files depend on screenshots and the deprecated `shinytest`
   package. Rebuilding the JS bundle can change the PNGs, and nothing in CI will
   tell you.

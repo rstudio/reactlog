@@ -5,6 +5,8 @@ description: "How reactlog's GitHub Actions work (the reusable rstudio/shiny-wor
 
 # CI, website, and release
 
+R package paths in this guide are relative to `pkg-r/`. Run npm and Git commands from the repository root.
+
 All CI lives in one workflow file that calls three shared jobs from
 [rstudio/shiny-workflows](https://github.com/rstudio/shiny-workflows) at tag `@v1`.
 This repo only adds one hook script, `.github/shiny-workflows/website.R`.
@@ -39,8 +41,7 @@ Key files:
   `workflow_dispatch` in [rstudio/reactlog#99](https://github.com/rstudio/reactlog/issues/99)
   so that [rstudio/shinycoreci](https://github.com/rstudio/shinycoreci) can start runs remotely.
 
-All three jobs run on every trigger. They have no inputs set, so they use the
-shiny-workflows defaults.
+All three jobs use `pkg-r` as the R working directory. The routine job runs npm at the repository root. The standalone report workflow also checks both committed bundles and tests the installed Python wheel in Chromium.
 
 ## `website` job (`website.yaml`)
 
@@ -60,18 +61,10 @@ builds into the `dev/` sub-site, and a release version builds the main site.
 pkgdown 2.x copies only `pkgdown/assets/` to the site root. `website.R`:
 
 - copies `readme-images/` to `pkgdown/assets/readme-images/`,
-- copies `inst/reactlog/` to `pkgdown/assets/` and renames it to `demo`.
-
-So `https://rstudio.github.io/reactlog/demo/reactlog.html` is the committed
-JS bundle plus `defaultLog.js`, and `README.md` loads its gifs from
-`http://rstudio.github.io/reactlog/readme-images/*.gif`. Each `file.copy()` is
-wrapped in `stopifnot()`, so a missing folder fails the job. This was broken
-for months because the script used to copy into `pkgdown/` (old
-`template: assets:` setting); fixed in
-[rstudio/reactlog#119](https://github.com/rstudio/reactlog/issues/119).
+- renders the cranwhales sample through the local R package and writes its self-contained HTML to `pkgdown/assets/demo/reactlog.html`.
 
 To test locally: `Rscript .github/shiny-workflows/website.R`, then
-`pkgdown::build_site()`, and check `docs/demo/reactlog.html` and
+`pkgdown::build_site()`, and check `pkg-r/docs/demo/reactlog.html` and
 `docs/readme-images/`.
 
 ## `routine` job (`routine.yaml`)

@@ -1,6 +1,6 @@
 Meta
 doc
-inst/doc
+pkg-r/inst/doc
 
 # History files
 .Rhistory
@@ -25,8 +25,8 @@ docs/
 .Rproj.user/
 
 # produced vignettes
-vignettes/*.html
-vignettes/*.pdf
+pkg-r/vignettes/*.html
+pkg-r/vignettes/*.pdf
 
 # OAuth2 token, see https://github.com/hadley/httr/releases/tag/v0.3
 .httr-oauth
@@ -58,3 +58,9 @@ _ignore
 /.agents/skills/*
 !/.agents/skills/memory-bank/
 .playwright-mcp/
+
+# Python package development
+.venv/
+__pycache__/
+.pytest_cache/
+pkg-py/dist/

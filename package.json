@@ -5,26 +5,27 @@
     "fix": "./bin/clean_rlog_file.sh",
     "fix-all": "npm run fix -- srcts",
     "lint-all": "npm run lint -- srcts",
-    "typecheck": "tsc -p . && tsc -p tsconfig.test.json",
-    "test": "esbuild srcts/__tests__/graphReplay.test.ts --bundle --platform=node --log-level=warning --outfile=node_modules/.cache/reactlog-test/graphReplay.test.cjs && node node_modules/.cache/reactlog-test/graphReplay.test.cjs",
-    "build": "npm run lint-all && npm run typecheck && npm test && npm run build-only",
-    "build-only": "esbuild srcts/index.ts --bundle --minify --sourcemap --target=es2021 --outfile=inst/reactlog/reactlogAsset/reactlog.js",
+    "typecheck": "tsc -p . && tsc -p tsconfig.test.json && tsc -p viewer",
+    "test": "esbuild srcts/__tests__/graphReplay.test.ts --bundle --platform=node --log-level=warning --outfile=node_modules/.cache/reactlog-test/graphReplay.test.cjs && node node_modules/.cache/reactlog-test/graphReplay.test.cjs && esbuild viewer/replay.test.ts --bundle --platform=node --outfile=node_modules/.cache/reactlog-test/report.cjs && node node_modules/.cache/reactlog-test/report.cjs",
+    "build": "npm run lint-all && npm run typecheck && npm test && npm run build-only && npm run build-report",
+    "build-only": "esbuild srcts/index.ts --bundle --minify --sourcemap --target=es2021 --outfile=pkg-r/inst/reactlog/reactlogAsset/reactlog.js",
     "check-shiny-target": "node bin/check_shiny_target.js",
     "watch": "npm run lint-all && npm run build-only -- --watch",
     "update-license": "node ./bin/update-license.js > LICENSE.note",
     "postinstall": "./bin/postinstall.sh",
     "lint-staged": "lint-staged",
-    "git_add_compiled": "git add inst/reactlog/reactlogAsset/reactlog.js inst/reactlog/reactlogAsset/reactlog.js.map && git add"
+    "git_add_compiled": "git add pkg-r/inst/reactlog/reactlogAsset/reactlog.js pkg-r/inst/reactlog/reactlogAsset/reactlog.js.map && git add",
+    "build-report": "node bin/build-report.mjs"
   },
   "pre-commit": "lint-staged",
   "lint-staged": {
     "concurrent": false,
     "linters": {
-      "R/*.R": "Rscript -e \"devtools::load_all(); devtools::lint(cache = FALSE) -> lints; if(length(lints) > 0) print(lints); testthat::expect_equal(length(lints), 0)\"",
       "srcts/**/*.ts": [
         "npm run fix --",
         "npm run git_add_compiled --"
-      ]
+      ],
+      "pkg-r/R/*.R": "Rscript -e \"devtools::load_all('pkg-r'); devtools::lint('pkg-r', cache = FALSE) -> lints; if(length(lints) > 0) print(lints); testthat::expect_equal(length(lints), 0)\""
     }
   },
   "devDependencies": {

@@ -1,0 +1,15 @@
+url: https://rstudio.github.io/reactlog/
+
+repo:
+  url:
+    home: https://github.com/rstudio/reactlog/
+    source: https://github.com/rstudio/reactlog/blob/HEAD/pkg-r/
+    issue: https://github.com/rstudio/reactlog/issues/
+    user: https://github.com/
+
+template:
+  params:
+    docsearch:
+      api_key: 92ef29642e191511d07e46ef46619dd9
+      index_name: rstudio_reactlog
+# website.R renders the shared report into pkgdown/assets/demo/reactlog.html.

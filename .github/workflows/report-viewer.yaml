@@ -1,0 +1,41 @@
+name: Standalone report viewer
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - run: npm ci
+      - run: npm run build-report
+      - name: Check committed viewer bundles
+        run: git diff --exit-code -- pkg-r/inst/reactlog pkg-r/inst/report pkg-py/src/reactlog/assets
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          working-directory: pkg-r
+          packages: local::.
+          dependencies: '"hard"'
+      - uses: astral-sh/setup-uv@v7
+        with:
+          python-version: "3.10"
+      - name: Build and test the installed wheel
+        working-directory: pkg-py
+        run: |
+          uv build
+          uv sync --locked --extra dev --no-install-project
+          uv pip install --no-deps dist/*.whl
+          uv run --no-sync playwright install --with-deps chromium
+          uv run --no-sync python -m pytest tests ../tests

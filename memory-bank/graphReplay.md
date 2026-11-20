@@ -5,6 +5,8 @@ description: "How the JS app turns the log into a graph at any step: Graph.addEn
 
 # Graph replay
 
+R package paths in this guide are relative to `pkg-r/`. Run npm and Git commands from the repository root.
+
 The viewer never stores a graph per step. For every redraw it starts from an
 empty `Graph`, applies log entries `0..k` with `Graph.addEntry()`, adds
 hover/sticky/filter flags, pads the result with nodes and edges that only

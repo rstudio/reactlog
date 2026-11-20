@@ -1,4 +1,4 @@
-// Replays each sample log in inst/log-files/ and checks the graph at a few
+// Replays each sample log in pkg-r/inst/log-files/ and checks the graph at a few
 // steps. Run with `npm test`. The counts and fingerprints were recorded from the
 // current code. If a change moves them on purpose, check the viewer in a
 // browser, then update them.
@@ -106,7 +106,15 @@ const expected: Record<
 };
 
 // The bundle runs from node_modules/.cache/reactlog-test/
-const logDir = path.join(__dirname, "..", "..", "..", "inst", "log-files");
+const logDir = path.join(
+  __dirname,
+  "..",
+  "..",
+  "..",
+  "pkg-r",
+  "inst",
+  "log-files"
+);
 
 // Each file is `window.log = [...];`
 function readLog(file: string): LogType {
