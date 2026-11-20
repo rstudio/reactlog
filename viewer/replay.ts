@@ -7,6 +7,10 @@ export interface TraceEvent {
   readonly reactId?: string | null;
   readonly depOnReactId?: string | null;
   readonly error?: string;
+  readonly time?: number;
+  readonly time_sec?: number;
+  readonly ctxId?: string | number;
+  readonly session?: string | null;
   readonly invalidated_node_ids?: readonly string[];
 }
 
@@ -79,6 +83,8 @@ function dependencyKey(event: TraceEvent): string | undefined {
 export function replayGraph(trace: ReactlogTrace, step: number) {
   checkTraceVersion(trace.trace_version);
   const states = new Map<string, NodeState>();
+  const starts = new Map<string, number>();
+  const calculationTimes = new Map<string, number>();
   const frozen = new Set<string>();
   const inactiveEdges = new Set<string>();
 
@@ -92,10 +98,23 @@ export function replayGraph(trace: ReactlogTrace, step: number) {
   for (let i = 0; i <= step && i < trace.log.length; i++) {
     const event = trace.log[i]!;
     const { action, reactId } = event;
+    const time = event.time_sec ?? event.time;
+    if (reactId && time !== undefined && (action === "enter" || action === "exit")) {
+      const context = JSON.stringify([event.session, reactId, event.ctxId]);
+      if (action === "enter") {
+        starts.set(context, time);
+        calculationTimes.delete(reactId);
+      } else {
+        const start = starts.get(context);
+        if (start !== undefined) calculationTimes.set(reactId, time - start);
+        starts.delete(context);
+      }
+    }
     const state = reactiveEventState(action, event.error);
     if (state) {
       for (const target of event.invalidated_node_ids ?? [reactId]) {
         if (!target) continue;
+        if (state === "invalidating" || state === "invalidated") calculationTimes.delete(target);
         // Output observers can exit normally after handling a renderer error.
         if (action === "exit" && state === "ready" && states.get(target) === "error") continue;
         states.set(target, state);
@@ -112,5 +131,5 @@ export function replayGraph(trace: ReactlogTrace, step: number) {
   }
 
   for (const id of frozen) states.set(id, "frozen");
-  return { states, inactiveEdges };
+  return { states, inactiveEdges, calculationTimes };
 }

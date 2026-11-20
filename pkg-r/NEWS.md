@@ -1,5 +1,7 @@
 # reactlog (development)
 
+* `reactlog_show()`, `reactlog_render()`, and the live app shortcut open the shared Reactlog report. You can send someone the rendered HTML file and they can explore it offline.
+
 * The R package now lives in `pkg-r/`. For development installs use `remotes::install_github("rstudio/reactlog/pkg-r")`.
 
 - `reactlog_show()` now uses `shiny::reactlog()` as its default `log`, so `reactlog_show()` works with no arguments after running an app (#91)

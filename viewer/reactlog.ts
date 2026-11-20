@@ -1228,8 +1228,8 @@ function updateFlushUI() {
   }
   const cardTime = (document.getElementById('flush-card-time') as any);
   if (cardTime) {
-    const dur = Math.max(0, (curWave.endTime - curWave.startTime) * 1000);
-    cardTime.textContent = `${formatTime(curWave.startTime)} (${Math.round(dur)}ms)`;
+    const dur = Math.max(0, curWave.endTime - curWave.startTime);
+    cardTime.textContent = `${formatTime(curWave.startTime)} (${formatDuration(dur)})`;
   }
   const cardTrigger = (document.getElementById('flush-card-trigger') as any);
   if (cardTrigger) {
@@ -1427,7 +1427,14 @@ function escapeHTML(str: any) {
     .replace(/'/g, '&#39;');
 }
 
+const inTestMode = new URLSearchParams(window.location?.search).get('test') === '1';
+
+function formatDuration(seconds: number) {
+  return inTestMode ? '(shinytest)' : `${Math.round(seconds * 1000)}ms`;
+}
+
 function formatTime(sec: any) {
+  if (inTestMode) return '(shinytest)';
   if (sec === undefined || sec === null) return '';
   const s = Number(sec);
   const mins = Math.floor(s / 60);
@@ -2716,6 +2723,10 @@ function renderGraph() {
     text.innerHTML = graphNodeLabel(n);
     const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
     title.textContent = `${nodeDisplayName(n)} · ${state}${n.line ? ' · line ' + n.line : ''}`;
+    const duration = replay.calculationTimes.get(n.id);
+    const showDuration = duration !== undefined && document.documentElement.dataset.calculationTime !== 'false';
+    const timing = showDuration ? ` · ${formatDuration(duration)}` : '';
+    title.textContent += timing;
     g.appendChild(title);
     g.appendChild(text);
 
@@ -2728,7 +2739,7 @@ function renderGraph() {
     const modCountText = n.members && n.members.length < totalModNodes
       ? `${n.members.length}/${totalModNodes} nodes`
       : `${n.members ? n.members.length : 0} node${n.members && n.members.length === 1 ? '' : 's'}`;
-    subText.textContent = n.type === 'module' ? `${modCountText} · click to expand` : `${kind.label} · ${state}`;
+    subText.textContent = n.type === 'module' ? `${modCountText} · click to expand` : `${kind.label} · ${state}${timing}`;
     g.appendChild(subText);
 
     const execCount = execCounts.get(n.id) || 0;
@@ -3441,7 +3452,7 @@ function normalizeReactlogData(loadedData: any): ReactlogData {
   const nodesMap: Record<string, any> = Object.create(null);
   const edgesMap: Map<string, any> = new Map();
   const normEvents: any[] = [];
-  let sIdx = 0;
+  const invalidations = new Set(['invalidate', 'invalidateStart', 'propagate']);
 
   let minEpochTime = Infinity;
   let isEpoch = false;
@@ -3507,7 +3518,8 @@ function normalizeReactlogData(loadedData: any): ReactlogData {
 
   const isolateDepthBySession: Map<string, number> = new Map();
 
-  rawEvents.forEach((item: any) => {
+  rawEvents.forEach((item: any, rawIndex: number) => {
+    const step = normEvents.length;
     const act = item.action || item.event || '';
     const sessKey = String(item.session || loadedData.session || 'default');
     if (act === 'isolateEnter') {
@@ -3518,7 +3530,7 @@ function normalizeReactlogData(loadedData: any): ReactlogData {
 
     const nid = item.reactId || item.node_id || item.id;
     const lbl = resolveNodeLabel(nid, item.label || item.node_label);
-    const ntype = item.type || item.node_type || 'calc';
+    const ntype = item.type || item.node_type || nodesMap[nid]?.type || 'calc';
     const depFrom = item.depOnReactId || item.dependsOn || item.edge_from;
     const depTo = nid || item.reactId || item.edge_to;
     const depFromLbl = depFrom ? resolveNodeLabel(depFrom) : '';
@@ -3527,7 +3539,7 @@ function normalizeReactlogData(loadedData: any): ReactlogData {
     const tSec = Math.max(0, baseEpoch > 0 ? (rawT - baseEpoch) : rawT);
     const tMs = Number(item.timestamp || (tSec * 1000));
     const prov = item.provenance || 'observed';
-    const phase = item.phase || (sIdx <= initEnd || ['define', 'analysisInit', 'createContext', 'sessionInit'].includes(act) ? 'init' : 'interaction');
+    const phase = item.phase || (rawIndex <= initEnd || ['define', 'analysisInit', 'createContext', 'sessionInit'].includes(act) ? 'init' : 'interaction');
     const isIsolated = Boolean(item.isolate || (isolateDepthBySession.get(sessKey) || 0) > 0);
 
     if (act === 'dependsOn' && depFrom && depTo && !R_SENTINEL_IDS.has(String(depFrom)) && !R_SENTINEL_IDS.has(String(depTo))) {
@@ -3554,8 +3566,34 @@ function normalizeReactlogData(loadedData: any): ReactlogData {
       else details = lbl ? `Event '${act}' on '${lbl}'` : `Event '${act}'`;
     }
 
+    if (act === 'userMark') {
+      const label = String(item.label || 'Bookmark');
+      const title = `🔖 ${label}`;
+      normEvents.push({
+        step, action: act, event: act, node_label: title, label: title, type: 'mark',
+        phase: 'interaction', session: sessKey, time: tSec, time_sec: tSec,
+        provenance: prov, details: `User mark: ${label}`, line: item.line, source_file: item.source_file,
+        mark_wave: { is_mark: true, start_step: step, end_step: step, start_time: tSec, end_time: tSec,
+          trigger_label: title, short_label: `🔖 ${label.slice(0, 20)}`, human_action: `Mark: ${label}` },
+      });
+      return;
+    }
+    const isInvalidation = invalidations.has(act);
+    const previous = normEvents.at(-1);
+    if (isInvalidation && previous && invalidations.has(previous.action) && previous.phase === phase) {
+      if (nid && !previous.invalidated_node_ids.includes(nid)) previous.invalidated_node_ids.push(nid);
+      if (lbl && !previous.invalidated_node_labels.includes(lbl)) previous.invalidated_node_labels.push(lbl);
+      const count = previous.invalidated_node_ids.length;
+      previous.details = `Invalidated ${count} reactive node${count === 1 ? '' : 's'}`;
+      return;
+    }
     normEvents.push({
-      step: sIdx,
+      ...(isInvalidation && {
+        invalidated_node_ids: item.invalidated_node_ids || (nid ? [nid] : []),
+        invalidated_node_labels: item.invalidated_node_labels || (lbl ? [lbl] : []),
+      }),
+      step,
+      ctxId: item.ctxId,
       action: act,
       event: act,
       id: nid,
@@ -3583,7 +3621,7 @@ function normalizeReactlogData(loadedData: any): ReactlogData {
       source_file: item.source_file,
       plot: item.plot
     });
-    sIdx++;
+
   });
 
   const finalNodes = Object.values(nodesMap);

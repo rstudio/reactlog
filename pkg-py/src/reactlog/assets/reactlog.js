@@ -200,6 +200,8 @@ var ReactlogViewer = (() => {
   function replayGraph(trace, step) {
     checkTraceVersion(trace.trace_version);
     const states = /* @__PURE__ */ new Map();
+    const starts = /* @__PURE__ */ new Map();
+    const calculationTimes = /* @__PURE__ */ new Map();
     const frozen = /* @__PURE__ */ new Set();
     const inactiveEdges = /* @__PURE__ */ new Set();
     for (const event of trace.log) {
@@ -211,10 +213,23 @@ var ReactlogViewer = (() => {
     for (let i = 0; i <= step && i < trace.log.length; i++) {
       const event = trace.log[i];
       const { action, reactId } = event;
+      const time = event.time_sec ?? event.time;
+      if (reactId && time !== void 0 && (action === "enter" || action === "exit")) {
+        const context = JSON.stringify([event.session, reactId, event.ctxId]);
+        if (action === "enter") {
+          starts.set(context, time);
+          calculationTimes.delete(reactId);
+        } else {
+          const start = starts.get(context);
+          if (start !== void 0) calculationTimes.set(reactId, time - start);
+          starts.delete(context);
+        }
+      }
       const state = reactiveEventState(action, event.error);
       if (state) {
         for (const target of event.invalidated_node_ids ?? [reactId]) {
           if (!target) continue;
+          if (state === "invalidating" || state === "invalidated") calculationTimes.delete(target);
           if (action === "exit" && state === "ready" && states.get(target) === "error") continue;
           states.set(target, state);
         }
@@ -229,7 +244,7 @@ var ReactlogViewer = (() => {
       }
     }
     for (const id of frozen) states.set(id, "frozen");
-    return { states, inactiveEdges };
+    return { states, inactiveEdges, calculationTimes };
   }
 
   // viewer/reactlog.ts
@@ -1371,8 +1386,8 @@ var ReactlogViewer = (() => {
     }
     const cardTime = document.getElementById("flush-card-time");
     if (cardTime) {
-      const dur = Math.max(0, (curWave.endTime - curWave.startTime) * 1e3);
-      cardTime.textContent = `${formatTime(curWave.startTime)} (${Math.round(dur)}ms)`;
+      const dur = Math.max(0, curWave.endTime - curWave.startTime);
+      cardTime.textContent = `${formatTime(curWave.startTime)} (${formatDuration(dur)})`;
     }
     const cardTrigger = document.getElementById("flush-card-trigger");
     if (cardTrigger) {
@@ -1549,7 +1564,12 @@ var ReactlogViewer = (() => {
     if (str === null || str === void 0) return "";
     return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
   }
+  var inTestMode = new URLSearchParams(window.location?.search).get("test") === "1";
+  function formatDuration(seconds) {
+    return inTestMode ? "(shinytest)" : `${Math.round(seconds * 1e3)}ms`;
+  }
   function formatTime(sec) {
+    if (inTestMode) return "(shinytest)";
     if (sec === void 0 || sec === null) return "";
     const s = Number(sec);
     const mins = Math.floor(s / 60);
@@ -2752,6 +2772,10 @@ var ReactlogViewer = (() => {
       text.innerHTML = graphNodeLabel(n);
       const title = document.createElementNS("http://www.w3.org/2000/svg", "title");
       title.textContent = `${nodeDisplayName(n)} · ${state}${n.line ? " · line " + n.line : ""}`;
+      const duration = replay.calculationTimes.get(n.id);
+      const showDuration = duration !== void 0 && document.documentElement.dataset.calculationTime !== "false";
+      const timing = showDuration ? ` · ${formatDuration(duration)}` : "";
+      title.textContent += timing;
       g.appendChild(title);
       g.appendChild(text);
       const subText = document.createElementNS("http://www.w3.org/2000/svg", "text");
@@ -2761,7 +2785,7 @@ var ReactlogViewer = (() => {
       subText.setAttribute("font-size", "12px");
       const totalModNodes = n.module ? totalNodesByModule.get(n.module) || n.members.length : n.members ? n.members.length : 0;
       const modCountText = n.members && n.members.length < totalModNodes ? `${n.members.length}/${totalModNodes} nodes` : `${n.members ? n.members.length : 0} node${n.members && n.members.length === 1 ? "" : "s"}`;
-      subText.textContent = n.type === "module" ? `${modCountText} · click to expand` : `${kind.label} · ${state}`;
+      subText.textContent = n.type === "module" ? `${modCountText} · click to expand` : `${kind.label} · ${state}${timing}`;
       g.appendChild(subText);
       const execCount = execCounts.get(n.id) || 0;
       if (execCount > 1) {
@@ -3413,7 +3437,7 @@ var ReactlogViewer = (() => {
     const nodesMap = /* @__PURE__ */ Object.create(null);
     const edgesMap = /* @__PURE__ */ new Map();
     const normEvents = [];
-    let sIdx = 0;
+    const invalidations = /* @__PURE__ */ new Set(["invalidate", "invalidateStart", "propagate"]);
     let minEpochTime = Infinity;
     let isEpoch = false;
     rawEvents.forEach((item) => {
@@ -3475,7 +3499,8 @@ var ReactlogViewer = (() => {
       if (action === "queueEmpty") initEnd = index;
     }
     const isolateDepthBySession = /* @__PURE__ */ new Map();
-    rawEvents.forEach((item) => {
+    rawEvents.forEach((item, rawIndex) => {
+      const step = normEvents.length;
       const act = item.action || item.event || "";
       const sessKey = String(item.session || loadedData.session || "default");
       if (act === "isolateEnter") {
@@ -3485,7 +3510,7 @@ var ReactlogViewer = (() => {
       }
       const nid = item.reactId || item.node_id || item.id;
       const lbl = resolveNodeLabel(nid, item.label || item.node_label);
-      const ntype = item.type || item.node_type || "calc";
+      const ntype = item.type || item.node_type || nodesMap[nid]?.type || "calc";
       const depFrom = item.depOnReactId || item.dependsOn || item.edge_from;
       const depTo = nid || item.reactId || item.edge_to;
       const depFromLbl = depFrom ? resolveNodeLabel(depFrom) : "";
@@ -3494,7 +3519,7 @@ var ReactlogViewer = (() => {
       const tSec = Math.max(0, baseEpoch > 0 ? rawT - baseEpoch : rawT);
       const tMs = Number(item.timestamp || tSec * 1e3);
       const prov = item.provenance || "observed";
-      const phase = item.phase || (sIdx <= initEnd || ["define", "analysisInit", "createContext", "sessionInit"].includes(act) ? "init" : "interaction");
+      const phase = item.phase || (rawIndex <= initEnd || ["define", "analysisInit", "createContext", "sessionInit"].includes(act) ? "init" : "interaction");
       const isIsolated = Boolean(item.isolate || (isolateDepthBySession.get(sessKey) || 0) > 0);
       if (act === "dependsOn" && depFrom && depTo && !R_SENTINEL_IDS.has(String(depFrom)) && !R_SENTINEL_IDS.has(String(depTo))) {
         const edgeKey = `${depFrom}==>${depTo}`;
@@ -3518,8 +3543,53 @@ var ReactlogViewer = (() => {
         else if (act === "idle" || act === "queueEmpty") details = "Idle";
         else details = lbl ? `Event '${act}' on '${lbl}'` : `Event '${act}'`;
       }
+      if (act === "userMark") {
+        const label = String(item.label || "Bookmark");
+        const title = `🔖 ${label}`;
+        normEvents.push({
+          step,
+          action: act,
+          event: act,
+          node_label: title,
+          label: title,
+          type: "mark",
+          phase: "interaction",
+          session: sessKey,
+          time: tSec,
+          time_sec: tSec,
+          provenance: prov,
+          details: `User mark: ${label}`,
+          line: item.line,
+          source_file: item.source_file,
+          mark_wave: {
+            is_mark: true,
+            start_step: step,
+            end_step: step,
+            start_time: tSec,
+            end_time: tSec,
+            trigger_label: title,
+            short_label: `🔖 ${label.slice(0, 20)}`,
+            human_action: `Mark: ${label}`
+          }
+        });
+        return;
+      }
+      const isInvalidation = invalidations.has(act);
+      const previous = normEvents.at(-1);
+      if (isInvalidation && previous && invalidations.has(previous.action) && previous.phase === phase) {
+        if (nid && !previous.invalidated_node_ids.includes(nid)) previous.invalidated_node_ids.push(nid);
+        if (lbl && !previous.invalidated_node_labels.includes(lbl)) previous.invalidated_node_labels.push(lbl);
+        const count = previous.invalidated_node_ids.length;
+        previous.details = `Invalidated ${count} reactive node${count === 1 ? "" : "s"}`;
+        return;
+      }
       normEvents.push({
-        step: sIdx,
+        ...isInvalidation && {
+          invalidated_node_ids: item.invalidated_node_ids || (nid ? [nid] : []),
+          invalidated_node_labels: item.invalidated_node_labels || (lbl ? [lbl] : [])
+        },
+        step,
+        ctxId: item.ctxId,
         action: act,
         event: act,
         id: nid,
@@ -3547,7 +3617,6 @@ var ReactlogViewer = (() => {
         source_file: item.source_file,
         plot: item.plot
       });
-      sIdx++;
     });
     const finalNodes = Object.values(nodesMap);
     const finalEdges = Array.from(edgesMap.values());

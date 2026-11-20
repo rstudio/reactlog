@@ -19,7 +19,15 @@ jobs:
       - run: npm ci
       - run: npm run build-report
       - name: Check committed viewer bundles
-        run: git diff --exit-code -- pkg-r/inst/reactlog pkg-py/src/reactlog/assets
+        run: git diff --exit-code -- pkg-r/inst/reactlog pkg-r/inst/report pkg-py/src/reactlog/assets
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          working-directory: pkg-r
+          packages: local::.
+          dependencies: '"hard"'
       - uses: astral-sh/setup-uv@v7
         with:
           python-version: "3.10"
@@ -30,4 +38,4 @@ jobs:
           uv sync --locked --extra dev --no-install-project
           uv pip install --no-deps dist/*.whl
           uv run --no-sync playwright install --with-deps chromium
-          uv run --no-sync python -m pytest
+          uv run --no-sync python -m pytest tests ../tests

@@ -12,7 +12,7 @@
 <!-- [![Coverage status](https://codecov.io/gh/rstudio/reactlog/branch/main/graph/badge.svg)](https://codecov.io/github/rstudio/reactlog?branch=main) -->
 
 
-<img src="http://rstudio.github.io/reactlog/readme-images/pythagoras.gif" style="border: 1px solid black; box-shadow: 5px 5px 5px #eee;" width="100%">
+
 
 [Shiny](https://shiny.rstudio.com/) is an R package from RStudio that makes it incredibly easy to build interactive web applications with R.  Behind the scenes, Shiny builds a reactive graph that can quickly become intertwined and difficult to debug. **reactlog** provides a visual insight into that _black box_ of Shiny reactivity.
 
@@ -79,9 +79,6 @@ To mark a specific execution time point within your Shiny app, press the key com
 
 Here is a [demo](https://rstudio.github.io/reactlog/demo/reactlog.html) of the **reactlog** visualization applied to the [`cranwhales`](https://github.com/rstudio/cranwhales) shiny app.
 
-[
-<img src="http://rstudio.github.io/reactlog/readme-images/cranwhales.gif" style="border: 1px solid black; box-shadow: 5px 5px 5px #eee;" width="100%">
-](https://rstudio.github.io/reactlog/demo/reactlog.html)
 
 For more examples and explanation, see the [**reactlog** vignette](https://rstudio.github.io/reactlog/articles/reactlog.html#reactlog).
 
@@ -95,27 +92,4 @@ For bug reports, please use the **reactlog** [issue tracker](https://github.com/
 
 ## Development
 
-[![node version: 22.x](https://img.shields.io/badge/node-22.x-brightgreen.svg)](https://nodejs.org/en/)
-[![language: TypeScript](https://img.shields.io/badge/language-TypeScript-3178c6.svg)](https://www.typescriptlang.org/)
-[![cytoscape](https://img.shields.io/github/package-json/dependency-version/rstudio/reactlog/cytoscape.svg)](https://js.cytoscape.org/)
-[![esbuild](https://img.shields.io/github/package-json/dependency-version/rstudio/reactlog/dev/esbuild.svg)](https://esbuild.github.io/)
-[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
-[![linter: eslint](https://img.shields.io/badge/linter-eslint-3524ca.svg)](https://eslint.org/)
-
-
-Please make sure you have [GitHub Large File Storage](https://git-lfs.github.com/) and [Node.js](https://nodejs.org/en/) installed.
-
-Run these commands at the repository root:
-
-```bash
-# install git lfs hooks
-git lfs install
-
-# install dependencies and build JavaScript
-npm install
-
-# build on file change
-npm run watch
-```
-
-By changing the file `'./pkg-r/inst/reactlog/defaultLog.js'` with the contents of any log file in `'./pkg-r/inst/log-files/'`, different default log files can be loaded.  Once the local JavaScript (`'./pkg-r/inst/reactlog/reactlogAsset/reactlog.js'`) has been built with `npm run build` or `npm run watch`, refresh `'./pkg-r/inst/reactlog/reactlog.html'` to avoid constantly spawning Shiny applications for testing.
+From the repository root, run `npm ci` and `npm run build-report` to rebuild the shared report. To preview it locally, run `Rscript .github/shiny-workflows/website.R` and open `pkg-r/pkgdown/assets/demo/reactlog.html`.

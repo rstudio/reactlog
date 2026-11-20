@@ -4,11 +4,9 @@ This file provides guidance to AI coding agents (Claude Code, etc.) when working
 
 ## What this is
 
-The R package in `pkg-r/` visualizes Shiny's reactive dependency graph. A small R side (`R/`) injects Shiny's recorded log into an HTML page; a TypeScript app (`srcts/`) replays it as a cytoscape graph.
+Both packages embed the report under `viewer/`. R calls `reactlog_render()` for saved and live reports. Python uses `format_reactlog_html()`. After editing the shared template, CSS, or TypeScript, run `npm run build-report` and commit the generated assets in `pkg-r/inst/report/` and `pkg-py/src/reactlog/assets/`. Package installations require no Node runtime.
 
-The built bundle `pkg-r/inst/reactlog/reactlogAsset/reactlog.js` (and its `.map`) **is committed**. CRAN and `R-CMD-check` never run Node. If you change anything in `srcts/`, rebuild and commit the bundle with your change.
-
-The standalone report lives in `viewer/`. Its template, CSS and compiled JavaScript ship in `pkg-py/src/reactlog/assets/`. Run `npm run build-report` after editing the report TypeScript. The Python package renders saved traces. Shiny owns recording, CLI commands and session integration.
+The original Cytoscape viewer under `srcts/` has its own build and replay tests. Its committed assets live under `pkg-r/inst/reactlog/`.
 
 ## Commands
 

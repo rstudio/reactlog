@@ -6,6 +6,7 @@ import io
 import json
 import keyword
 import os
+import re
 import tokenize
 from pathlib import Path
 from typing import Any, Dict, List, Optional, cast
@@ -611,7 +612,7 @@ def load_reactlog_json(
                     )
         if isolated:
             ev_dict["isolate"] = True
-        for key in ("error", "source_file", "line"):
+        for key in ("error", "source_file", "line", "ctxId"):
             if key in item:
                 ev_dict[key] = item[key]
         preview = item.get("plot")
@@ -859,17 +860,6 @@ def format_reactlog_html(
         </section>
         """
 
-    source_tab = (
-        '<button class="btn icon" id="source-tab" aria-label="App code" title="App code" role="tab" '
-        'aria-selected="false" aria-controls="source-panel" '
-        'onclick="showSidebarPanel(\'source\')"><span aria-hidden="true">&lt;/&gt;</span></button>'
-    )
-    source_panel = (
-        '<pre class="source-panel sidebar-panel" id="source-panel" role="tabpanel" '
-        'aria-labelledby="source-tab" hidden>'
-        '<select id="source-file-select" aria-label="Source file" onchange="showSourceFile(this.value)" hidden></select><code>'
-        f"{formatted_source}</code></pre>"
-    )
     escaped_json = (
         json.dumps(reactlog, indent=2)
         .replace("<", "\\u003c")
@@ -889,15 +879,16 @@ def format_reactlog_html(
     css, html_template, js = _load_reactlog_viewer_assets()
     indented_js = "\n".join(("  " + line if line else "") for line in js.splitlines())
 
-    return (
-        html_template.replace("__REACTLOG_THEME__", safe_theme)
-        .replace("__REACTLOG_TITLE__", escaped_title)
-        .replace("__REACTLOG_CSS__", css)
-        .replace("__REACTLOG_SOURCE_PANEL__", source_panel)
-        .replace("__REACTLOG_SOURCE_TAB__", source_tab)
-        .replace("__REACTLOG_VIDEO_TAB_BTN__", video_tab_btn)
-        .replace("__REACTLOG_VIDEO_PANEL__", video_panel)
-        .replace("__REACTLOG_DATA__", escaped_json)
-        .replace("__REACTLOG_RAW_SOURCE__", escaped_source_raw)
-        .replace("__REACTLOG_SCRIPT__", indented_js)
-    )
+    fields = {
+        "THEME": safe_theme,
+        "CALCULATION_TIME": "true",
+        "TITLE": escaped_title,
+        "CSS": css,
+        "SOURCE_HTML": formatted_source,
+        "VIDEO_TAB_BTN": video_tab_btn,
+        "VIDEO_PANEL": video_panel,
+        "DATA": escaped_json,
+        "RAW_SOURCE": escaped_source_raw,
+        "SCRIPT": indented_js,
+    }
+    return re.sub(r"__REACTLOG_([A-Z_]+)__", lambda m: fields[m[1]], html_template)

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="__REACTLOG_THEME__">
+<html lang="en" data-theme="__REACTLOG_THEME__" data-calculation-time="__REACTLOG_CALCULATION_TIME__">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -261,12 +261,12 @@ __REACTLOG_CSS__
           <details class="event-history" id="event-history"><summary>Event history</summary><div class="event-list" id="event-list"></div></details>
         </div>
 
-        __REACTLOG_SOURCE_PANEL__
+        <pre class="source-panel sidebar-panel" id="source-panel" role="tabpanel" aria-labelledby="source-tab" hidden><select id="source-file-select" aria-label="Source file" onchange="showSourceFile(this.value)" hidden></select><code>__REACTLOG_SOURCE_HTML__</code></pre>
       </aside>
 
       <nav class="sidebar-rail" id="sidebar-rail" aria-label="Graph tools">
         <button class="btn icon" id="btn-toggle-inspector-bottom" onclick="showSidebarPanel('timeline')" aria-label="Node details" title="Node details"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7v1"/></svg></button>
-        __REACTLOG_SOURCE_TAB__
+        <button class="btn icon" id="source-tab" aria-label="App code" title="App code" role="tab" aria-selected="false" aria-controls="source-panel" onclick="showSidebarPanel('source')"><span aria-hidden="true">&lt;/&gt;</span></button>
         __REACTLOG_VIDEO_TAB_BTN__
       </nav>
       __REACTLOG_VIDEO_PANEL__

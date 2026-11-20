@@ -7,7 +7,9 @@ description: "The npm/esbuild/TypeScript toolchain that turns srcts/ into the co
 
 R package paths in this guide are relative to `pkg-r/`. Run npm and Git commands from the repository root.
 
-The viewer is written in TypeScript under `srcts/`. esbuild bundles it into one
+The shared viewer lives in `viewer/`. `npm run build-report` builds its JavaScript once and installs identical HTML, CSS, and JavaScript in both language packages.
+
+The original viewer is written in TypeScript under `srcts/`. esbuild bundles it into one
 minified file plus a source map in `inst/reactlog/reactlogAsset/`, and `tsc`
 checks the types. Both output files are committed, because installing the R
 package never runs Node. For how the bundle is used at runtime, see
@@ -48,7 +50,7 @@ blank lines.
 
 ## npm scripts
 
-- `build-report`: bundles the standalone TypeScript in `viewer/` into the installed Python assets.
+- `build-report`: bundles the standalone TypeScript in `viewer/` for both packages.
 - `build-only`: `esbuild srcts/index.ts --bundle --minify --sourcemap
   --target=es2021 --outfile=inst/reactlog/reactlogAsset/reactlog.js`. Takes
   well under a second. esbuild strips types without checking them.

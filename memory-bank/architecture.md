@@ -7,29 +7,17 @@ description: "How reactlog fits together: Shiny's recorded log, the R functions 
 
 R package paths below are relative to `pkg-r/`. JavaScript source paths are relative to the repository root.
 
-The R viewer has two parts:
+The report UI lives in `viewer/`. Both packages embed the same HTML, CSS and JavaScript in their output. Run `npm run build-report` at the repository root to update the installed assets in both packages.
 
-- **R package** (`R/`): small. It takes the log that Shiny records while `options(shiny.reactlog = TRUE)` is set, turns it into JSON, and injects it into an HTML page.
-- **JavaScript app** (`srcts/`): most of the code. A TypeScript single page app, bundled with esbuild, that replays the log step by step and draws the reactive graph with cytoscape + dagre.
+## R and Python entry points
 
-The built bundle `inst/reactlog/reactlogAsset/reactlog.js` (and its `.map`) is committed. CRAN and `R-CMD-check` never run Node. CI checks the rebuilt bundle against the committed files.
+R checks the log version, filters by session through `reactlog_write()`, and embeds the JSON in the shared template. `reactlog_show()` opens the resulting HTML file. Shiny's live endpoint and iframe module serve the same self-contained file from `reactlog_render()`.
 
-## Standalone reports
+Python's `load_reactlog_json()` prepares a saved trace. `format_reactlog_html()` embeds it with the same viewer and optional source and video controls. The TypeScript viewer also reads raw event arrays from R and from its JSON import menu.
 
-`pkg-py/src/reactlog/` loads saved traces and renders an HTML report with embedded assets. Its TypeScript is in `viewer/`. Run `npm run build-report` at the root to regenerate the JavaScript in the Python package. The replay tests run with `npm test`. Browser and report tests run from `pkg-py/` with `uv run --extra dev python -m pytest`.
+The cross-language Chromium test in `tests/test_report_parity.py` opens output from both installed packages. The pkgdown demo uses the R renderer with the cranwhales sample log.
 
-## R side
-
-1. Shiny records log entries while `shiny.reactlog` is on (`reactlog_enable()` / `reactlog_disable()` in `R/setReactLog.R` just set that option). `shiny::reactlogShow()`, or Ctrl/Cmd+F3 in a running app, calls into this package.
-2. `reactlog_render()` (`R/renderReactLog.R`):
-   - checks the log's `version` attribute with `reactlog_upgrade()` (`R/version.R`; only version `"1"` exists),
-   - turns the log into JSON with `reactlog_write()` (`R/showReactLog.R`), optionally keeping only one session plus global entries,
-   - replaces placeholders in `inst/reactlog/reactlog.html`: `__DATA__` becomes the JSON, `__TIME__` the time flag, and the `defaultLog.js` script tag is removed,
-   - writes a temp HTML file and copies `reactlogAsset/` next to it.
-3. `reactlog_show()` opens that file in a browser.
-4. `reactlog_module_ui()` / `reactlog_module_server()` (`R/shinyModule.R`) embed the viewer as an iframe that points at Shiny's own `reactlog?w=...&s=...` endpoint. The module needs the shiny version listed in DESCRIPTION `Suggests`, which `shiny_version_required()` reads at runtime, so keep that field accurate.
-
-## Browser side (`srcts/`)
+## Original Cytoscape viewer (`srcts/`)
 
 Entry point is `srcts/index.ts`, which wires DOM elements from `reactlog.html` to the modules below on page load.
 
@@ -43,10 +31,6 @@ Entry point is `srcts/index.ts`, which wires DOM elements from `reactlog.html` t
 ## Fast JS dev loop without Shiny
 
 `inst/reactlog/reactlog.html` loads `defaultLog.js` (which sets `window.log = [...]`) and then the bundle. Open that HTML file directly in a browser after building. To try a different log, copy one of `inst/log-files/log-*.js` over `inst/reactlog/defaultLog.js`.
-
-## Website
-
-The pkgdown site (`pkgdown/`, built by `.github/shiny-workflows/website.R`) copies `readme-images/` and `inst/reactlog/` into `pkgdown/assets/`, so the demo at `/demo/reactlog.html` is the committed bundle with `defaultLog.js`.
 
 ## Deep dives
 

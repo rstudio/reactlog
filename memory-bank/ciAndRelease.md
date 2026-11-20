@@ -61,18 +61,10 @@ builds into the `dev/` sub-site, and a release version builds the main site.
 pkgdown 2.x copies only `pkgdown/assets/` to the site root. `website.R`:
 
 - copies `readme-images/` to `pkgdown/assets/readme-images/`,
-- copies `inst/reactlog/` to `pkgdown/assets/` and renames it to `demo`.
-
-So `https://rstudio.github.io/reactlog/demo/reactlog.html` is the committed
-JS bundle plus `defaultLog.js`, and `README.md` loads its gifs from
-`http://rstudio.github.io/reactlog/readme-images/*.gif`. Each `file.copy()` is
-wrapped in `stopifnot()`, so a missing folder fails the job. This was broken
-for months because the script used to copy into `pkgdown/` (old
-`template: assets:` setting); fixed in
-[rstudio/reactlog#119](https://github.com/rstudio/reactlog/issues/119).
+- renders the cranwhales sample through the local R package and writes its self-contained HTML to `pkgdown/assets/demo/reactlog.html`.
 
 To test locally: `Rscript .github/shiny-workflows/website.R`, then
-`pkgdown::build_site()`, and check `docs/demo/reactlog.html` and
+`pkgdown::build_site()`, and check `pkg-r/docs/demo/reactlog.html` and
 `docs/readme-images/`.
 
 ## `routine` job (`routine.yaml`)

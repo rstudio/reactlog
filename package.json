@@ -15,7 +15,7 @@
     "postinstall": "./bin/postinstall.sh",
     "lint-staged": "lint-staged",
     "git_add_compiled": "git add pkg-r/inst/reactlog/reactlogAsset/reactlog.js pkg-r/inst/reactlog/reactlogAsset/reactlog.js.map && git add",
-    "build-report": "esbuild viewer/reactlog.ts --bundle --format=iife --global-name=ReactlogViewer --target=es2022 --charset=utf8 --outfile=pkg-py/src/reactlog/assets/reactlog.js"
+    "build-report": "node bin/build-report.mjs"
   },
   "pre-commit": "lint-staged",
   "lint-staged": {
